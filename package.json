@@ -1,0 +1,25 @@
+{
+  "name": "front-line-whanau",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Front Line Families Support Hub NZ — A sovereign, privacy-first digital platform supporting families of preterm twins in Aotearoa New Zealand.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "neonatal",
+    "preterm",
+    "whanau",
+    "support",
+    "new-zealand",
+    "privacy-first"
+  ],
+  "author": "fivepanelhat",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^8.0.16"
+  }
+}
