@@ -152,8 +152,8 @@ button {
 
 .glass-panel {
   background: var(--color-bg-glass);
-  backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
   border: var(--border-glass);
   border-radius: var(--radius-lg);
 }
@@ -222,8 +222,8 @@ button {
   height: var(--header-height);
   z-index: 100;
   background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   border-bottom: var(--border-glass);
   transition: background var(--transition-base);
 }
