@@ -1,0 +1,191 @@
+/* ============================================================
+   Front Line Whānau — Global Styles
+   ============================================================
+   Tailwind base + custom component layers ported from the
+   original design system. Trauma-informed, culturally grounded.
+   ============================================================ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base Layer ─────────────────────────────────────────────── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading font-bold leading-tight text-text-primary;
+  }
+
+  a {
+    @apply text-accent-secondary transition-colors duration-150;
+  }
+
+  a:hover {
+    @apply text-accent-primary;
+  }
+
+  button {
+    @apply cursor-pointer border-none bg-transparent font-body;
+  }
+}
+
+/* ── Component Layer ────────────────────────────────────────── */
+@layer components {
+  /* Gradient text effect — preserved from original */
+  .text-gradient {
+    @apply bg-gradient-brand bg-clip-text text-transparent;
+  }
+
+  /* Glassmorphism panel */
+  .glass-panel {
+    background: rgba(30, 41, 59, 0.65);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    @apply rounded-xl border border-white/[0.08];
+  }
+
+  /* Screen-reader only */
+  .sr-only {
+    @apply absolute h-px w-px overflow-hidden whitespace-nowrap border-0 p-0;
+    clip: rect(0, 0, 0, 0);
+    margin: -1px;
+  }
+
+  /* ── Buttons ────────────────────────────────────────────── */
+  .btn {
+    @apply inline-flex items-center gap-2 rounded-lg px-7 py-3.5 text-sm font-semibold tracking-tight transition-all duration-250 ease-smooth;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-brand text-white shadow-btn-primary;
+  }
+
+  .btn-primary:hover {
+    @apply -translate-y-0.5 shadow-btn-primary-hover;
+  }
+
+  .btn-secondary {
+    @apply border border-accent-primary/15 bg-bg-secondary text-text-primary;
+  }
+
+  .btn-secondary:hover {
+    @apply -translate-y-0.5 bg-surface;
+  }
+
+  /* ── Section Headers ────────────────────────────────────── */
+  .section-label {
+    @apply mb-2 text-sm font-semibold uppercase tracking-widest text-accent-primary;
+  }
+
+  .section-title {
+    @apply mb-4 text-heading-2 md:text-heading-1;
+  }
+
+  .section-description {
+    @apply mx-auto max-w-xl text-lg text-text-secondary;
+  }
+
+  /* ── Feature Cards ──────────────────────────────────────── */
+  .feature-card {
+    @apply relative overflow-hidden rounded-xl border border-white/[0.08] bg-bg-card p-8 transition-all duration-250;
+  }
+
+  .feature-card::before {
+    content: '';
+    @apply absolute left-0 right-0 top-0 h-[3px] bg-gradient-brand opacity-0 transition-opacity duration-250;
+  }
+
+  .feature-card:hover {
+    @apply -translate-y-1 border-accent-primary/20 shadow-lg shadow-glow;
+  }
+
+  .feature-card:hover::before {
+    @apply opacity-100;
+  }
+
+  /* ── Feature Icon Backgrounds ───────────────────────────── */
+  .feature-icon {
+    @apply mb-6 flex h-12 w-12 items-center justify-center rounded-lg text-2xl;
+  }
+
+  .feature-icon--pathway {
+    background: rgba(99, 102, 241, 0.12);
+  }
+  .feature-icon--forms {
+    background: rgba(6, 182, 212, 0.12);
+  }
+  .feature-icon--vault {
+    background: rgba(245, 158, 11, 0.12);
+  }
+  .feature-icon--doc {
+    background: rgba(16, 185, 129, 0.12);
+  }
+  .feature-icon--dir {
+    background: rgba(236, 72, 153, 0.12);
+  }
+  .feature-icon--ai {
+    background: rgba(139, 92, 246, 0.12);
+  }
+
+  /* ── Value Items ────────────────────────────────────────── */
+  .value-item {
+    @apply rounded-xl border border-white/[0.08] p-6 transition-all duration-250;
+    background: rgba(15, 23, 42, 0.5);
+  }
+
+  .value-item:hover {
+    @apply border-accent-primary/20;
+    background: rgba(30, 41, 59, 0.4);
+  }
+
+  /* ── Privacy Badge ──────────────────────────────────────── */
+  .privacy-badge {
+    @apply flex items-center gap-1 rounded-full border border-accent-success/20 bg-accent-success/10 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-widest text-accent-success;
+  }
+
+  /* ── Hero Background Effect ─────────────────────────────── */
+  .hero-bg::before {
+    content: '';
+    @apply absolute -left-1/2 -top-1/2 h-[200%] w-[200%] animate-fade-in;
+    background: radial-gradient(
+        ellipse at 30% 20%,
+        rgba(99, 102, 241, 0.08) 0%,
+        transparent 50%
+      ),
+      radial-gradient(ellipse at 70% 80%, rgba(6, 182, 212, 0.06) 0%, transparent 50%);
+  }
+
+  /* ── Nav Link Underline Effect ──────────────────────────── */
+  .nav-underline::after {
+    content: '';
+    @apply absolute bottom-0 left-0 h-0.5 w-0 rounded-full bg-gradient-brand transition-all duration-250;
+  }
+
+  .nav-underline:hover::after {
+    @apply w-full;
+  }
+}
+
+/* ── Utility Layer ──────────────────────────────────────────── */
+@layer utilities {
+  .animate-delay-100 {
+    animation-delay: 0.1s;
+  }
+  .animate-delay-200 {
+    animation-delay: 0.2s;
+  }
+  .animate-delay-300 {
+    animation-delay: 0.3s;
+  }
+  .animate-delay-400 {
+    animation-delay: 0.4s;
+  }
+}
