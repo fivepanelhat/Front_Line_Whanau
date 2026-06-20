@@ -9,7 +9,19 @@
  * - Trauma-informed: no pressuring language
  */
 
-import type { AgentResponse, GuardrailResult, GuardrailFailure } from './types';
+import type { AgentResponse } from './types';
+
+export interface GuardrailResult {
+  passed: boolean;
+  failures: GuardrailFailure[];
+  modifiedResponse?: string;
+}
+
+export interface GuardrailFailure {
+  guardrail: 'grounding' | 'hallucination' | 'cultural-safety' | 'child-protection' | 'trauma-informed';
+  reason: string;
+  severity: 'warning' | 'block';
+}
 
 // ── Child Protection Keywords ────────────────────────────────
 
@@ -68,7 +80,7 @@ export function checkGuardrails(response: AgentResponse): GuardrailResult {
   const failures: GuardrailFailure[] = [];
 
   // 1. Grounding check — responses should cite sources
-  if (response.sources.length === 0 && response.confidence > 0.3) {
+  if ((response.sources || []).length === 0 && response.confidence > 0.3) {
     failures.push({
       guardrail: 'grounding',
       reason: 'Response does not cite any sources. All factual claims should reference a guide, directory entry, or statute.',

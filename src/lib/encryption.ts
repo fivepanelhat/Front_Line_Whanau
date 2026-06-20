@@ -34,7 +34,7 @@ const IV_LENGTH = 12; // 96-bit IV for GCM
  */
 export async function deriveKey(
   passphrase: string,
-  salt: Uint8Array,
+  salt: Uint8Array<ArrayBuffer>,
 ): Promise<CryptoKey> {
   const encoder = new TextEncoder();
   const keyMaterial = await crypto.subtle.importKey(
@@ -48,7 +48,7 @@ export async function deriveKey(
   return crypto.subtle.deriveKey(
     {
       name: 'PBKDF2',
-      salt,
+      salt: salt,
       iterations: PBKDF2_ITERATIONS,
       hash: 'SHA-256',
     },
@@ -62,15 +62,19 @@ export async function deriveKey(
 /**
  * Generate a random salt for key derivation.
  */
-export function generateSalt(): Uint8Array {
-  return crypto.getRandomValues(new Uint8Array(SALT_LENGTH));
+export function generateSalt(): Uint8Array<ArrayBuffer> {
+  const buffer = new ArrayBuffer(SALT_LENGTH);
+  const bytes = new Uint8Array(buffer);
+  return crypto.getRandomValues(bytes);
 }
 
 /**
  * Generate a random initialisation vector for AES-GCM.
  */
-export function generateIV(): Uint8Array {
-  return crypto.getRandomValues(new Uint8Array(IV_LENGTH));
+export function generateIV(): Uint8Array<ArrayBuffer> {
+  const buffer = new ArrayBuffer(IV_LENGTH);
+  const bytes = new Uint8Array(buffer);
+  return crypto.getRandomValues(bytes);
 }
 
 // ── Encryption ───────────────────────────────────────────────
@@ -92,7 +96,7 @@ export async function encrypt(
   const key = await deriveKey(passphrase, salt);
 
   const ciphertextBuffer = await crypto.subtle.encrypt(
-    { name: 'AES-GCM', iv },
+    { name: 'AES-GCM', iv: iv },
     key,
     encoder.encode(data),
   );
@@ -122,7 +126,7 @@ export async function decrypt(
   const key = await deriveKey(passphrase, salt);
 
   const plaintextBuffer = await crypto.subtle.decrypt(
-    { name: 'AES-GCM', iv },
+    { name: 'AES-GCM', iv: iv },
     key,
     ciphertext,
   );
@@ -153,9 +157,10 @@ function bufferToBase64(buffer: ArrayBuffer | Uint8Array): string {
   return btoa(binary);
 }
 
-function base64ToBuffer(base64: string): Uint8Array {
+function base64ToBuffer(base64: string): Uint8Array<ArrayBuffer> {
   const binary = atob(base64);
-  const bytes = new Uint8Array(binary.length);
+  const buffer = new ArrayBuffer(binary.length);
+  const bytes = new Uint8Array(buffer);
   for (let i = 0; i < binary.length; i++) {
     bytes[i] = binary.charCodeAt(i);
   }

@@ -1,7 +1,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-export function Header() {
+interface HeaderProps {
+  onLaunchHub: () => void;
+}
+
+export function Header({ onLaunchHub }: HeaderProps) {
   return (
     <header
       className="fixed left-0 right-0 top-0 z-50 border-b border-white/[0.08] bg-bg-primary/85 backdrop-blur-xl transition-colors duration-250"
@@ -29,7 +33,7 @@ export function Header() {
 
         {/* Navigation */}
         <nav aria-label="Main navigation">
-          <ul className="hidden list-none gap-8 md:flex">
+          <ul className="hidden list-none gap-8 md:flex items-center">
             <li>
               <a
                 href="#features"
@@ -49,13 +53,13 @@ export function Header() {
               </a>
             </li>
             <li>
-              <a
-                href="#getting-started"
-                className="nav-underline relative pb-1 text-sm font-medium tracking-wide text-text-secondary hover:text-text-primary"
+              <button
+                onClick={onLaunchHub}
+                className="rounded-lg bg-accent-primary/20 border border-accent-primary/45 px-4 py-2 text-xs font-semibold text-accent-primary hover:bg-accent-primary hover:text-white transition-all"
                 id="nav-start"
               >
-                Get Started
-              </a>
+                Launch Hub
+              </button>
             </li>
           </ul>
         </nav>
@@ -81,3 +85,4 @@ export function Header() {
     </header>
   );
 }
+

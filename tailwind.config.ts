@@ -70,6 +70,9 @@ const config: Config = {
       },
 
       /* ── Transitions ─────────────────────────────────── */
+      transitionDuration: {
+        '250': '250ms',
+      },
       transitionTimingFunction: {
         'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
       },
