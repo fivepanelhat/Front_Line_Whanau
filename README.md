@@ -18,13 +18,16 @@ This platform exists to reduce that burden by providing clear, personalised, and
 ## The 5 W's – Problems We Are Solving
 
 ### Why (The Problem)
+
 - Fragmented and hard-to-access support information
 - Complex WINZ and IRD application processes
 - High stress and trauma during NICU stays
 - Limited culturally safe and coordinated support
 
 ### What (The Solution)
+
 A sovereign, privacy-first digital platform offering:
+
 - Personalised support pathways
 - Intelligent form pre-filling
 - Secure document storage (Taonga Vault)
@@ -32,10 +35,12 @@ A sovereign, privacy-first digital platform offering:
 - Services directory with real-world contacts
 
 ### Who
+
 **Primary**: Front Line Families of preterm twins and extended whānau  
 **Secondary**: Neonatal teams, social workers, midwives, and support organisations
 
 ### Where (Real-World Application Examples)
+
 - Applying for Preterm Baby Payment while baby is in NICU
 - Managing housing repairs or tenancy issues after discharge
 - Coordinating Home Help and financial support
@@ -43,6 +48,7 @@ A sovereign, privacy-first digital platform offering:
 - Enabling extended whānau to assist with documentation
 
 ### How
+
 - Sovereign Edge AI + client-side first architecture
 - Multi-agent system (Aether Summit + 3 specialist agents)
 - Strong alignment with Te Tiriti o Waitangi and Te Mana Raraunga principles
@@ -55,6 +61,7 @@ A sovereign, privacy-first digital platform offering:
 The **Front Line Families Support Hub NZ** is founded on a commitment to **rangatiratanga**, cultural safety, legal compliance, and balanced protection for both families and practitioners.
 
 ### Core Values
+
 - **Rangatiratanga & Whānau Sovereignty** — Front Line Families retain final decision-making.
 - **Kaitiakitanga** — Responsible guardianship of data as taonga.
 - **Inclusivity & Non-Discrimination** — Open to all families regardless of background or family structure.
@@ -62,21 +69,26 @@ The **Front Line Families Support Hub NZ** is founded on a commitment to **ranga
 - **Respect for All Cultures** — Supports diverse beliefs while grounded in Te Tiriti o Waitangi.
 
 ### Regulatory Compliance
+
 Fully aligned with:
+
 - Privacy Act 2020 & Health Information Privacy Code 2020
 - Oranga Tamariki Act 1989
 - Care of Children Act 2004
 - Health Practitioners Competence Assurance Act 2003
 
 ### Māori Data Sovereignty
+
 Aligned with **Te Mana Raraunga** principles and **Te Tiriti o Waitangi**.
 
 ### Sovereign AI & Privacy-First Design
+
 - Client-side / Edge-first by default
 - Strong encryption with user control
 - Transparent consent flows
 
 ### Protection of Front Line Families & Practitioners
+
 - Informed consent is final
 - Strong safeguards for vulnerable whānau
 - Professional autonomy and good faith protections for practitioners
@@ -97,6 +109,7 @@ Aligned with **Te Mana Raraunga** principles and **Te Tiriti o Waitangi**.
 ## Getting Started (Development)
 
 ### Prerequisites
+
 - Node.js 18+
 - Git
 
