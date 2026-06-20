@@ -1,0 +1,130 @@
+[
+  {
+    "name": "Taranaki Base Hospital Neonatal Unit",
+    "category": "Medical & Hospital Support",
+    "contact": "(06) 753 6139",
+    "offer": "Neonatal care, social work support, discharge planning",
+    "relevance": "Primary medical support during NICU stay",
+    "region": "Taranaki"
+  },
+  {
+    "name": "Health NZ Taranaki",
+    "category": "Medical & Hospital Support",
+    "contact": "Main hospital switchboard",
+    "offer": "Maternity, postnatal, and neonatal services",
+    "relevance": "Core hospital support",
+    "region": "Taranaki"
+  },
+  {
+    "name": "Work and Income (WINZ)",
+    "category": "Financial Support",
+    "contact": "0800 559 009",
+    "offer": "Preterm Baby Payment, Home Help, Recoverable Assistance, Accommodation Supplement",
+    "relevance": "Critical financial support",
+    "region": "National"
+  },
+  {
+    "name": "Inland Revenue (IRD)",
+    "category": "Financial Support",
+    "contact": "0800 227 774",
+    "offer": "Best Start Tax Credit, Preterm Baby Payment",
+    "relevance": "Tax credits and parental leave payments",
+    "region": "National"
+  },
+  {
+    "name": "Taranaki WINZ Offices",
+    "category": "Financial Support",
+    "contact": "New Plymouth & Hāwera",
+    "offer": "In-person support for applications",
+    "relevance": "Local access point",
+    "region": "Taranaki"
+  },
+  {
+    "name": "Little Miracles Trust",
+    "category": "Neonatal & Preterm Specific Support",
+    "contact": "info@littlemiraclestrust.org.nz",
+    "offer": "Emotional support, care packs, peer support, playgroups",
+    "relevance": "National neonatal charity – very relevant",
+    "region": "National"
+  },
+  {
+    "name": "Multiples Taranaki",
+    "category": "Neonatal & Preterm Specific Support",
+    "contact": "Via Multiples NZ (0800 489 467)",
+    "offer": "Peer support, equipment hire for twins",
+    "relevance": "Specific to multiples families",
+    "region": "Taranaki"
+  },
+  {
+    "name": "Whānau Āwhina Plunket",
+    "category": "Well Child & Parenting Support",
+    "contact": "PlunketLine: 0800 933 922",
+    "offer": "Well Child checks, feeding support, developmental advice",
+    "relevance": "Essential postnatal support",
+    "region": "National"
+  },
+  {
+    "name": "Taranaki Plunket",
+    "category": "Well Child & Parenting Support",
+    "contact": "0800 184 803",
+    "offer": "Local clinics and home visits",
+    "relevance": "Direct local support",
+    "region": "Taranaki"
+  },
+  {
+    "name": "1737 Need to Talk?",
+    "category": "Mental Health & Emotional Support",
+    "contact": "Text or call 1737",
+    "offer": "24/7 free counselling",
+    "relevance": "Immediate mental health support",
+    "region": "National"
+  },
+  {
+    "name": "PlunketLine",
+    "category": "Mental Health & Emotional Support",
+    "contact": "0800 933 922",
+    "offer": "Parenting advice + emotional support",
+    "relevance": "24/7 support line",
+    "region": "National"
+  },
+  {
+    "name": "PADA",
+    "category": "Mental Health & Emotional Support",
+    "contact": "(04) 461 6318 (Office)",
+    "offer": "General information and resources (not a crisis line)",
+    "relevance": "Specific to perinatal mental health",
+    "region": "National"
+  },
+  {
+    "name": "Taranaki Retreat",
+    "category": "Mental Health & Emotional Support",
+    "contact": "(06) 215 0993",
+    "offer": "Free community-based mental health support, Waimanako Hub, and residential retreat",
+    "relevance": "Crisis and peer support in Taranaki",
+    "region": "Taranaki"
+  },
+  {
+    "name": "Tenancy Services",
+    "category": "Housing & Tenancy Support",
+    "contact": "0800 836 262",
+    "offer": "Advice on repairs, rights, mediation",
+    "relevance": "Critical if housing issues arise",
+    "region": "National"
+  },
+  {
+    "name": "Community Law Taranaki",
+    "category": "Housing & Tenancy Support",
+    "contact": "(06) 759 1492 or 0800 529 878",
+    "offer": "Free legal advice on tenancy, welfare benefits, and general legal matters",
+    "relevance": "Advocacy and legal support",
+    "region": "Taranaki"
+  },
+  {
+    "name": "Oranga Tamariki",
+    "category": "Child Protection & Family Support",
+    "contact": "0508 326 459",
+    "offer": "Child wellbeing and family support",
+    "relevance": "When additional family support is needed",
+    "region": "National"
+  }
+]

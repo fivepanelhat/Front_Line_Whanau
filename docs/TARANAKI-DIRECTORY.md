@@ -50,16 +50,17 @@ This document is the source data for the platform's services directory database 
 ### Perinatal Anxiety & Depression Aotearoa (PADA)
 - **Category**: Mental Health
 - **Region**: National
-- **Phone**: 0800 726 222
+- **Phone**: (04) 461 6318 (Office)
 - **URL**: https://www.pada.nz/
-- **Description**: Support for parents experiencing anxiety or depression during pregnancy or after birth. Peer support, information, and referral pathways.
+- **Description**: Provides resources and directories for perinatal mental health. (Note: For immediate support, please contact 1737 or PlunketLine).
 
 ### Taranaki Retreat
 - **Category**: Mental Health
 - **Region**: Taranaki
-- **Phone**: (06) 752 2289
+- **Address**: 35 Octavius Place, New Plymouth (Waimanako Hub) / 517 Hurford Road, Omata (Residential)
+- **Phone**: (06) 215 0993
 - **URL**: https://taranakiretreat.org.nz/
-- **Description**: Free community-based mental health crisis service. Walk-in support, overnight stays, and peer support.
+- **Description**: Free community-based mental health support, peer support, walk-in services, and residential retreat stays.
 
 ---
 
@@ -85,8 +86,8 @@ This document is the source data for the platform's services directory database 
 ### Citizens Advice Bureau — New Plymouth
 - **Category**: Financial
 - **Region**: Taranaki
-- **Address**: 34 Currie Street, New Plymouth 4310
-- **Phone**: (06) 758 2134
+- **Address**: 32 Leach Street (Community House), New Plymouth
+- **Phone**: (06) 758 9542
 - **URL**: https://www.cab.org.nz/
 - **Description**: Free, confidential advice on financial entitlements, tenancy rights, employment, and government services.
 
@@ -114,6 +115,14 @@ This document is the source data for the platform's services directory database 
 - **Phone**: (06) 759 6060
 - **URL**: https://www.npdc.govt.nz/
 - **Description**: Local council housing assistance, healthy homes assessments, and community services.
+
+### Community Law Taranaki
+- **Category**: Housing
+- **Region**: Taranaki
+- **Address**: Level 1, Vero House, 10-12 Devon Street East, New Plymouth 4310
+- **Phone**: (06) 759 1492 or 0800 529 878
+- **URL**: https://www.taranakicommunitylaw.org.nz/
+- **Description**: Free legal advice, advocacy, and assistance with tenancy, welfare benefits, and general legal matters.
 
 ---
 
