@@ -18,50 +18,35 @@ This platform exists to reduce that burden by providing clear, personalised, and
 ## The 5 W's – Problems We Are Solving
 
 ### Why (The Problem)
-
-Families of preterm twins in New Zealand often struggle with:
-
-- Scattered and hard-to-find information about financial, housing, and health support
-- Complex and time-consuming application processes for WINZ and IRD payments
-- High levels of stress, trauma, and isolation during and after NICU stays
-- Missing out on entitled support due to lack of clear guidance
-- Limited culturally safe and coordinated support systems
+- Fragmented and hard-to-access support information
+- Complex WINZ and IRD application processes
+- High stress and trauma during NICU stays
+- Limited culturally safe and coordinated support
 
 ### What (The Solution)
-
-We are building a **sovereign, privacy-first digital platform** that provides:
-
+A sovereign, privacy-first digital platform offering:
 - Personalised support pathways
-- Intelligent form pre-filling for WINZ and IRD applications
-- Secure document storage and an Independent Client-Side Documentor
-- Up-to-date services directory
-- Trauma-informed and culturally grounded assistance
+- Intelligent form pre-filling
+- Secure document storage (Taonga Vault)
+- Independent Client-Side Documentor
+- Services directory with real-world contacts
 
 ### Who
-
-**Primary users**: Front Line Families of preterm twin newborns and their extended whānau.
-
-**Secondary users**: Neonatal social workers, midwives, Plunket nurses, and community support workers.
+**Primary**: Front Line Families of preterm twins and extended whānau  
+**Secondary**: Neonatal teams, social workers, midwives, and support organisations
 
 ### Where (Real-World Application Examples)
-
-This platform can be applied in real situations such as:
-
-- **During NICU stay**: Helping parents apply for Preterm Baby Payment and Home Help while their babies are still in hospital.
-- **Discharge planning**: Coordinating WINZ support, housing assistance, and follow-up care before leaving the hospital.
-- **Housing crisis**: Guiding families through urgent repair requests or tenancy issues when their home becomes unsuitable after bringing preterm babies home.
-- **Financial stress**: Assisting with applications for Best Start, Recoverable Assistance, and Accommodation Supplement.
-- **Mental health support**: Providing easy access to PlunketLine, 1737, and local perinatal mental health resources.
-- **Extended whānau involvement**: Enabling grandparents or other family members to help manage documents and applications with family consent.
+- Applying for Preterm Baby Payment while baby is in NICU
+- Managing housing repairs or tenancy issues after discharge
+- Coordinating Home Help and financial support
+- Accessing mental health resources (PlunketLine, 1737)
+- Enabling extended whānau to assist with documentation
 
 ### How
-
-We are building this using:
-
-- Sovereign Edge AI with client-side-first architecture
-- A multi-agent system (Aether Summit + specialist agents)
+- Sovereign Edge AI + client-side first architecture
+- Multi-agent system (Aether Summit + 3 specialist agents)
 - Strong alignment with Te Tiriti o Waitangi and Te Mana Raraunga principles
-- Clear informed consent flows and legal compliance
+- Clear informed consent and legal compliance
 
 ---
 
@@ -122,21 +107,19 @@ We recognise that practitioners (neonatal teams, social workers, midwives, and s
 
 ## Key Features
 
-- Personalised support pathways (financial, housing, mental health, practical)
-- Intelligent form pre-filling for WINZ and IRD applications
-- Secure multi-modal document storage (Taonga Vault)
+- Personalised support pathways
+- Intelligent form pre-filling (WINZ, IRD, Tenancy)
+- Secure multi-modal document storage
 - Independent Client-Side Documentor
-- Up-to-date Taranaki and national services directory
-- Trauma-informed, culturally grounded design
-- Sovereign Edge AI with strong privacy protections
+- Taranaki + National services directory
+- Trauma-informed and culturally grounded design
 
 ---
 
 ## Getting Started (Development)
 
 ### Prerequisites
-
-- Node.js 18 or higher + npm
+- Node.js 18+
 - Git
 
 ### Windows (PowerShell)
