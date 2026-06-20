@@ -5,7 +5,7 @@
 - [x] Governance files (README, CONTRIBUTING, CODE_OF_CONDUCT, SECURITY, LICENSE)
 - [ ] Clean up tech stack (remove `next.config.ts`)
 - [ ] Reorganize `src/` folder structure
-- [ ] Add `TODO.md` to repository
+- [x] Add `TODO.md` to repository
 
 ## Phase 2: Core AI System
 - [ ] Build **Aether Summit** (Lead Orchestrator)
