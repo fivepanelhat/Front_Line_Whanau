@@ -8,6 +8,7 @@ import { encrypt, decrypt, openVault, encryptWithKey, decryptWithKey, type Encry
 import { ConsentScope } from '@/lib/consent';
 import { assessPassphrase } from '@/lib/passphrase';
 import { SERVICES } from '@/data/directory';
+import { CATEGORY_LABELS } from '@/data/types';
 
 // Static directory data imported directly from the markdown spec
 // Active pathway template checklists
@@ -860,12 +861,9 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
                   aria-label="Filter by category"
                 >
                   <option value="All">All Categories</option>
-                  <option value="Neonatal">Neonatal</option>
-                  <option value="Health">Health</option>
-                  <option value="Mental Health">Mental Health</option>
-                  <option value="Financial">Financial</option>
-                  <option value="Housing">Housing</option>
-                  <option value="Community">Community</option>
+                  {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
+                    <option key={key} value={key}>{label}</option>
+                  ))}
                 </select>
               </div>
 
@@ -877,7 +875,7 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
                       <div className="flex justify-between items-start gap-2">
                         <h3 className="font-bold text-sm text-text-primary">{srv.name}</h3>
                         <span className="text-[9px] uppercase tracking-wider font-extrabold bg-accent-secondary/15 text-accent-secondary rounded px-2 py-0.5 whitespace-nowrap">
-                          {srv.categories[0]}
+                          {CATEGORY_LABELS[srv.categories[0]] || srv.categories[0]}
                         </span>
                       </div>
                       <p className="text-xs text-text-secondary mt-2 leading-relaxed">{srv.description}</p>
