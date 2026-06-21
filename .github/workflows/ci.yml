@@ -51,7 +51,7 @@ jobs:
         run: npm ci
 
       - name: Run Vitest
-        run: npm run test
+        run: npm run test:ci
         env:
           CI: true
 
