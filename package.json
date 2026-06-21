@@ -11,8 +11,7 @@
     "type-check": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "test:ci": "vitest run --coverage --reporter=verbose",
+    "test:ci": "vitest run --reporter=verbose --coverage",
     "test:e2e": "playwright test",
     "docs:directory": "tsx scripts/generate-directory-doc.ts"
   },
