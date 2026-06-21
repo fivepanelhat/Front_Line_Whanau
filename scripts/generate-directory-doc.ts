@@ -12,11 +12,11 @@ import { join } from 'node:path';
 import { groupByCategory } from '../src/data/directory';
 import type { Service } from '../src/data/directory';
 
-function renderService(s: Service): string {
-  const lines = [`### ${s.name}`, ''];
+function renderService(s: Service, label: string): string {
+  const lines = [`### ${s.name} (${label})`, ''];
   lines.push(`- **Region**: ${s.region}`);
   if (s.address) lines.push(`- **Address**: ${s.address}`);
-  lines.push(`- **Contact**: ${s.contact}${s.altContact ? ` or ${s.altContact}` : ''}`);
+  lines.push(`- **Contact**: \`${s.contact}\`${s.altContact ? ` or \`${s.altContact}\`` : ''}`);
   if (s.hours) lines.push(`- **Hours**: ${s.hours}`);
   if (s.url) lines.push(`- **URL**: <${s.url}>`);
   if (s.crisis) lines.push(`- **Crisis line**: yes`);
@@ -32,7 +32,7 @@ function build(): string {
 
   const parts: string[] = [
     '<!-- GENERATED FILE — do not edit by hand.',
-    '     Edit src/data/services.ts and run: npx tsx scripts/generate-directory-doc.ts -->',
+    '     Edit `src/data/services.ts` and run: `npx tsx scripts/generate-directory-doc.ts` -->',
     '',
     '# Taranaki Services Directory',
     '',
@@ -48,7 +48,7 @@ function build(): string {
 
   for (const [label, services] of Object.entries(groups)) {
     parts.push(`## ${label}`, '');
-    for (const s of services) parts.push(renderService(s));
+    for (const s of services) parts.push(renderService(s, label));
     parts.push('---', '');
   }
 
