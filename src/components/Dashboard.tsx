@@ -4,8 +4,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { AetherSummit } from '@/ai/aether-summit';
 import { useConsent, useConsentManager } from '@/hooks/useConsent';
 import { useEncryptedJournal, type DecryptedJournalEntry } from '@/hooks/useEncryptedJournal';
-import { encrypt, decrypt, type EncryptedPayload } from '@/lib/encryption';
+import { encrypt, decrypt, openVault, encryptWithKey, decryptWithKey, type EncryptedPayload } from '@/lib/encryption';
 import { ConsentScope } from '@/lib/consent';
+import { assessPassphrase } from '@/lib/passphrase';
 
 // Static directory data imported directly from the markdown spec
 const DIRECTORY_SERVICES = [
@@ -127,6 +128,15 @@ const PATHWAY_DATA = {
 
 export function Dashboard({ onClose }: { onClose: () => void }) {
   const [activeTab, setActiveTab] = useState<'ai' | 'pathways' | 'vault' | 'journal' | 'directory'>('ai');
+  const [hasVaultSalt, setHasVaultSalt] = useState(false);
+  const [hasJournalSalt, setHasJournalSalt] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setHasVaultSalt(!!localStorage.getItem('flw-vault-salt'));
+      setHasJournalSalt(!!localStorage.getItem('flw-journal-salt'));
+    }
+  }, []);
   
   // Consent Scopes
   const { hasConsent: aiProcessGranted, grantConsent: grantAiProcess, revokeConsent: revokeAiProcess } = useConsent('ai.process');
@@ -225,10 +235,22 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
     }
   }, [isVaultUnlocked]);
 
-  const handleUnlockVault = () => {
-    if (vaultPassword.length >= 4) {
+  const handleUnlockVault = async () => {
+    const assessment = assessPassphrase(vaultPassword);
+    if (!hasVaultSalt && !assessment.acceptable) {
+      alert(assessment.message);
+      return;
+    }
+    try {
+      const saltKey = `flw-vault-salt`;
+      const existingSalt = localStorage.getItem(saltKey) ?? undefined;
+      const vault = await openVault('vault', vaultPassword, existingSalt);
+      localStorage.setItem(saltKey, vault.salt);
+      setHasVaultSalt(true);
       setIsVaultUnlocked(true);
       setVaultLog([`[Vault] Unlocked using Web Crypto derived key.`]);
+    } catch (err) {
+      alert('Failed to unlock vault. Check your passphrase.');
     }
   };
 
@@ -236,12 +258,19 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
     if (!newFileName || !newFileContent) return;
     setVaultLog((prev) => [...prev, `[Encrypt] Initializing AES-256-GCM encryption...`]);
     try {
-      const payload = await encrypt(newFileContent, vaultPassword);
+      const saltKey = `flw-vault-salt`;
+      const existingSalt = localStorage.getItem(saltKey) ?? undefined;
+      const vault = await openVault('vault', vaultPassword, existingSalt);
+      const payload = await encryptWithKey(newFileContent, vault);
       const newFile = {
         id: `file-${Date.now()}`,
         name: newFileName,
         description: 'Client-side Encrypted Document',
-        payload,
+        payload: {
+          ciphertext: payload.ciphertext,
+          iv: payload.iv,
+          salt: vault.salt
+        },
         timestamp: new Date().toLocaleDateString()
       };
 
@@ -252,7 +281,7 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
       setVaultLog((prev) => [
         ...prev,
         `[Derive] Derived key from passphrase. Iterations: 600,000.`,
-        `[Salt] Generated unique base64 salt: ${payload.salt.substring(0, 10)}...`,
+        `[Salt] Generated unique base64 salt: ${vault.salt.substring(0, 10)}...`,
         `[IV] Generated 96-bit base64 IV: ${payload.iv}`,
         `[Ciphertext] Encrypted ciphertext generated: ${payload.ciphertext.substring(0, 16)}...`,
         `[Success] Saved to encrypted local storage successfully.`
@@ -267,7 +296,13 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
 
   const handleDecryptFile = async (fileId: string, payload: EncryptedPayload) => {
     try {
-      const decrypted = await decrypt(payload, vaultPassword);
+      const saltKey = `flw-vault-salt`;
+      const existingSalt = localStorage.getItem(saltKey) ?? undefined;
+      const vault = await openVault('vault', vaultPassword, existingSalt);
+      const decrypted = await decryptWithKey({
+        ciphertext: payload.ciphertext,
+        iv: payload.iv
+      }, vault);
       setDecryptedFileText((prev) => ({ ...prev, [fileId]: decrypted }));
       setVaultLog((prev) => [...prev, `[Decrypt] Successfully decrypted file '${fileId}'`]);
     } catch (err) {
@@ -289,9 +324,21 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
   const [selectedMood, setSelectedMood] = useState('🥰 Calmed');
   const [journalTags, setJournalTags] = useState('');
 
-  const handleUnlockJournal = () => {
-    if (journalPassword.length >= 4) {
+  const handleUnlockJournal = async () => {
+    const assessment = assessPassphrase(journalPassword);
+    if (!hasJournalSalt && !assessment.acceptable) {
+      alert(assessment.message);
+      return;
+    }
+    try {
+      const saltKey = `flw-journal-salt`;
+      const existingSalt = localStorage.getItem(saltKey) ?? undefined;
+      const vault = await openVault('journal', journalPassword, existingSalt);
+      localStorage.setItem(saltKey, vault.salt);
+      setHasJournalSalt(true);
       setIsJournalUnlocked(true);
+    } catch (err) {
+      alert('Failed to unlock journal. Check your password.');
     }
   };
 
@@ -399,6 +446,9 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
                 {aiExecuteGranted ? 'Active' : 'Disabled'}
               </button>
             </div>
+            <p className="text-[10px] text-text-muted mt-1 pt-1 border-t border-white/[0.08]">
+              Consent Log: a private log only you can verify with your passphrase — kept on your device.
+            </p>
           </div>
         </aside>
 
@@ -612,21 +662,34 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
               {!isVaultUnlocked ? (
                 <div className="glass-panel p-8 max-w-md mx-auto text-center space-y-4">
                   <div className="text-4xl">🔒</div>
-                  <h3 className="text-lg font-bold">Unlock Taonga Vault</h3>
-                  <p className="text-xs text-text-secondary">Enter a secure local passphrase to derive your encryption keys.</p>
+                  <h3 className="text-lg font-bold">{hasVaultSalt ? 'Unlock Taonga Vault' : 'Create Taonga Vault'}</h3>
+                  <p className="text-xs text-text-secondary">
+                    {hasVaultSalt 
+                      ? 'Enter your secure local passphrase to unlock your documents.'
+                      : 'Create a secure local passphrase to initialize your sovereign vault.'}
+                  </p>
                   <input
                     type="password"
-                    placeholder="Enter Passphrase (min 4 chars)"
+                    placeholder="Enter Passphrase"
                     value={vaultPassword}
                     onChange={(e) => setVaultPassword(e.target.value)}
                     className="w-full rounded-lg border border-white/[0.08] bg-bg-secondary px-4 py-2.5 text-center focus:outline-none"
                   />
+                  {!hasVaultSalt && vaultPassword && (
+                    <div className={`text-xs p-2 rounded ${assessPassphrase(vaultPassword).acceptable ? 'bg-accent-success/15 text-accent-success' : 'bg-accent-warm/15 text-accent-warm'}`}>
+                      {assessPassphrase(vaultPassword).message}
+                    </div>
+                  )}
+                  <p className="text-[11px] text-text-muted leading-relaxed">
+                    Your passphrase encrypts everything on this device. We never see it and we
+                    can't reset it — if it's lost, the data is gone. That's what keeps it yours.
+                  </p>
                   <button
                     onClick={handleUnlockVault}
-                    disabled={vaultPassword.length < 4}
+                    disabled={hasVaultSalt ? vaultPassword.length < 4 : !assessPassphrase(vaultPassword).acceptable}
                     className="w-full rounded-lg bg-accent-primary py-2.5 font-bold text-white hover:bg-accent-primary/80 disabled:opacity-50"
                   >
-                    Unlock
+                    {hasVaultSalt ? 'Unlock' : 'Create Vault'}
                   </button>
                 </div>
               ) : (
@@ -730,21 +793,34 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
               {!isJournalUnlocked ? (
                 <div className="glass-panel p-8 max-w-md mx-auto text-center space-y-4">
                   <div className="text-4xl">📝</div>
-                  <h3 className="text-lg font-bold">Unlock Journal</h3>
-                  <p className="text-xs text-text-secondary">Enter a password credentials to load and decrypt your personal entries.</p>
+                  <h3 className="text-lg font-bold">{hasJournalSalt ? 'Unlock Journal' : 'Create Journal'}</h3>
+                  <p className="text-xs text-text-secondary">
+                    {hasJournalSalt 
+                      ? 'Enter your secure local password to load and decrypt your personal entries.'
+                      : 'Create a secure local password to initialize your private journal.'}
+                  </p>
                   <input
                     type="password"
-                    placeholder="Enter Journal Password (min 4 chars)"
+                    placeholder="Enter Journal Password"
                     value={journalPassword}
                     onChange={(e) => setJournalPassword(e.target.value)}
                     className="w-full rounded-lg border border-white/[0.08] bg-bg-secondary px-4 py-2.5 text-center focus:outline-none"
                   />
+                  {!hasJournalSalt && journalPassword && (
+                    <div className={`text-xs p-2 rounded ${assessPassphrase(journalPassword).acceptable ? 'bg-accent-success/15 text-accent-success' : 'bg-accent-warm/15 text-accent-warm'}`}>
+                      {assessPassphrase(journalPassword).message}
+                    </div>
+                  )}
+                  <p className="text-[11px] text-text-muted leading-relaxed">
+                    Your passphrase encrypts everything on this device. We never see it and we
+                    can't reset it — if it's lost, the data is gone. That's what keeps it yours.
+                  </p>
                   <button
                     onClick={handleUnlockJournal}
-                    disabled={journalPassword.length < 4}
+                    disabled={hasJournalSalt ? journalPassword.length < 4 : !assessPassphrase(journalPassword).acceptable}
                     className="w-full rounded-lg bg-accent-primary py-2.5 font-bold text-white hover:bg-accent-primary/80 disabled:opacity-50"
                   >
-                    Unlock
+                    {hasJournalSalt ? 'Unlock' : 'Create Journal'}
                   </button>
                 </div>
               ) : (

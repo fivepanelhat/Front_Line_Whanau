@@ -2,6 +2,7 @@ import { TaongaKnowledgeWeaver } from "./knowledge-weaver";
 import { WhanauPathwayArchitect } from "./pathway-architect";
 import { SovereignExecutor } from "./executor";
 import { AgentResponse, OrchestrationContext } from "./types";
+import { checkGuardrails } from "./guardrails";
 
 export class AetherSummit {
   private knowledgeWeaver = new TaongaKnowledgeWeaver();
@@ -21,28 +22,48 @@ export class AetherSummit {
     }
 
     const query = userQuery.toLowerCase();
+    let response: AgentResponse;
 
     if (this.isResearchQuery(query)) {
-      return await this.knowledgeWeaver.process(userQuery, context);
+      response = await this.knowledgeWeaver.process(userQuery, context);
     } 
     else if (this.isPlanningQuery(query)) {
-      return await this.pathwayArchitect.process(userQuery, context);
+      response = await this.pathwayArchitect.process(userQuery, context);
     } 
     else if (this.isExecutionQuery(query)) {
-      return await this.executor.process(userQuery, context);
+      response = await this.executor.process(userQuery, context);
     } 
     else {
       // Multi-agent synthesis for complex/general queries
       const research = await this.knowledgeWeaver.process(userQuery, context);
       const plan = await this.pathwayArchitect.process(userQuery, context);
 
-      return {
+      response = {
         content: this.synthesize(research.content, plan.content),
         confidence: Math.min(research.confidence, plan.confidence),
         agentUsed: "Aether Summit (Multi-agent)",
         requiresHumanReview: true,
+        sources: [...(research.sources || []), ...(plan.sources || [])],
       };
     }
+
+    const gate = checkGuardrails(response);
+    if (!gate.passed) {
+      return {
+        content:
+          "I want to get this exactly right for you, so I won't give a number I can't " +
+          'confirm. Here is the official source, and a social worker can confirm your ' +
+          'specific situation.',
+        confidence: 0.2,
+        requiresHumanReview: true,
+        agentUsed: response.agentUsed,
+        showUrgentHelp: gate.showUrgentHelp,
+      };
+    }
+
+    response.content = gate.modifiedResponse ?? response.content;
+    response.showUrgentHelp = gate.showUrgentHelp;
+    return response;
   }
 
   /**
@@ -58,14 +79,15 @@ export class AetherSummit {
       agent: response.agentUsed || 'aether-summit',
       content: response.content,
       confidence: response.confidence,
-      sources: response.sources?.map(s => ({ type: 'general', title: s, reference: '#' })) || [],
+      sources: response.sources?.map(s => ({ type: 'general', title: s, reference: s })) || [],
       suggestedActions: [],
-      timestamp: new Date()
+      timestamp: new Date(),
+      showUrgentHelp: response.showUrgentHelp
     };
   }
 
   private isResearchQuery(q: string): boolean {
-    return q.includes("what is") || q.includes("how much") || q.includes("eligibility") || q.includes("amount");
+    return q.includes("what is") || q.includes("how much") || q.includes("eligibility") || q.includes("amount") || q.includes("preterm") || q.includes("best start") || q.includes("home help");
   }
 
   private isPlanningQuery(q: string): boolean {

@@ -20,12 +20,25 @@ export interface EncryptedPayload {
   salt: string;
 }
 
+/** A vault = one derived key + one salt, opened once per session, held in memory only. */
+export interface VaultKey {
+  key: CryptoKey;
+  salt: string; // base64, persisted per-vault (NOT per-entry)
+}
+
+export interface EntryPayload {
+  ciphertext: string; // base64
+  iv: string;         // base64 — UNIQUE per entry (never reused with this key)
+}
+
 // ── Constants ────────────────────────────────────────────────
 
 const PBKDF2_ITERATIONS = 600_000; // OWASP recommended minimum
 const KEY_LENGTH = 256; // AES-256
 const SALT_LENGTH = 16; // 128-bit salt
 const IV_LENGTH = 12; // 96-bit IV for GCM
+
+const cache = new Map<string, VaultKey>(); // namespace -> key (cleared on lock/unload)
 
 // ── Key Derivation ───────────────────────────────────────────
 
@@ -60,6 +73,36 @@ export async function deriveKey(
 }
 
 /**
+ * Derive an HMAC key from a passphrase using PBKDF2.
+ */
+export async function deriveHmacKey(
+  passphrase: string,
+  salt: Uint8Array<ArrayBuffer>,
+): Promise<CryptoKey> {
+  const encoder = new TextEncoder();
+  const keyMaterial = await crypto.subtle.importKey(
+    'raw',
+    encoder.encode(passphrase),
+    'PBKDF2',
+    false,
+    ['deriveKey'],
+  );
+
+  return crypto.subtle.deriveKey(
+    {
+      name: 'PBKDF2',
+      salt: salt,
+      iterations: PBKDF2_ITERATIONS,
+      hash: 'SHA-256',
+    },
+    keyMaterial,
+    { name: 'HMAC', hash: 'SHA-256', length: 256 },
+    false,
+    ['sign', 'verify'],
+  );
+}
+
+/**
  * Generate a random salt for key derivation.
  */
 export function generateSalt(): Uint8Array<ArrayBuffer> {
@@ -75,6 +118,46 @@ export function generateIV(): Uint8Array<ArrayBuffer> {
   const buffer = new ArrayBuffer(IV_LENGTH);
   const bytes = new Uint8Array(buffer);
   return crypto.getRandomValues(bytes);
+}
+
+// ── Vault Management ─────────────────────────────────────────
+
+export async function openVault(
+  namespace: string,
+  passphrase: string,
+  existingSaltB64?: string,
+): Promise<VaultKey> {
+  const cached = cache.get(namespace);
+  if (cached) return cached;
+
+  const salt = existingSaltB64 ? base64ToBuffer(existingSaltB64) : generateSalt();
+  const key = await deriveKey(passphrase, salt); // PBKDF2 600k — ONCE
+  const vault: VaultKey = { key, salt: bufferToBase64(salt) };
+  cache.set(namespace, vault);
+  return vault;
+}
+
+export function lockVault(namespace: string) {
+  cache.delete(namespace); // forget the key; passphrase is never stored
+}
+
+export async function encryptWithKey(data: string, vault: VaultKey): Promise<EntryPayload> {
+  const iv = generateIV(); // fresh per call — critical for GCM
+  const ct = await crypto.subtle.encrypt(
+    { name: 'AES-GCM', iv },
+    vault.key,
+    new TextEncoder().encode(data),
+  );
+  return { ciphertext: bufferToBase64(ct), iv: bufferToBase64(iv) };
+}
+
+export async function decryptWithKey(payload: EntryPayload, vault: VaultKey): Promise<string> {
+  const pt = await crypto.subtle.decrypt(
+    { name: 'AES-GCM', iv: base64ToBuffer(payload.iv) },
+    vault.key,
+    base64ToBuffer(payload.ciphertext),
+  );
+  return new TextDecoder().decode(pt);
 }
 
 // ── Encryption ───────────────────────────────────────────────
@@ -148,7 +231,7 @@ export async function hashForAudit(data: string): Promise<string> {
 
 // ── Utilities ────────────────────────────────────────────────
 
-function bufferToBase64(buffer: ArrayBuffer | Uint8Array): string {
+export function bufferToBase64(buffer: ArrayBuffer | Uint8Array): string {
   const bytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
   let binary = '';
   for (let i = 0; i < bytes.byteLength; i++) {
@@ -157,7 +240,7 @@ function bufferToBase64(buffer: ArrayBuffer | Uint8Array): string {
   return btoa(binary);
 }
 
-function base64ToBuffer(base64: string): Uint8Array<ArrayBuffer> {
+export function base64ToBuffer(base64: string): Uint8Array<ArrayBuffer> {
   const binary = atob(base64);
   const buffer = new ArrayBuffer(binary.length);
   const bytes = new Uint8Array(buffer);
@@ -167,7 +250,7 @@ function base64ToBuffer(base64: string): Uint8Array<ArrayBuffer> {
   return bytes;
 }
 
-function bufferToHex(buffer: ArrayBuffer): string {
+export function bufferToHex(buffer: ArrayBuffer): string {
   return Array.from(new Uint8Array(buffer))
     .map((b) => b.toString(16).padStart(2, '0'))
     .join('');

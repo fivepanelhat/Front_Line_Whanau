@@ -4,6 +4,7 @@ export interface AgentResponse {
   sources?: string[];
   requiresHumanReview?: boolean;
   agentUsed?: string;
+  showUrgentHelp?: boolean;
 }
 
 export interface OrchestrationContext {

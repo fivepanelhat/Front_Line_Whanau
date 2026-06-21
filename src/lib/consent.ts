@@ -4,10 +4,10 @@
  * Manages informed consent for all data operations.
  * Consent is granular (per scope), auditable, and revocable.
  *
- * Persists to localStorage with an immutable audit trail.
+ * Persists to localStorage with a key-chained verifiable audit trail.
  */
 
-import { hashForAudit } from './encryption';
+import { bufferToHex } from './encryption';
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -25,7 +25,8 @@ export interface ConsentRecord {
   scope: ConsentScope;
   granted: boolean;
   timestamp: string;
-  /** SHA-256 hash of scope + timestamp for tamper detection */
+  prevHash: string;
+  /** HMAC of prevHash + scope + granted + timestamp */
   hash: string;
 }
 
@@ -108,6 +109,33 @@ export const CONSENT_DESCRIPTIONS: Record<ConsentScope, {
   },
 };
 
+// ── HMAC Helpers ─────────────────────────────────────────────
+
+async function hmac(key: CryptoKey, msg: string): Promise<string> {
+  const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(msg));
+  return bufferToHex(sig);
+}
+
+/** Each record commits to the previous one → tampering breaks the chain. */
+async function createAuditRecord(
+  hmacKey: CryptoKey, scope: ConsentScope, granted: boolean, prevHash: string,
+): Promise<ConsentRecord> {
+  const timestamp = new Date().toISOString();
+  const hash = await hmac(hmacKey, `${prevHash}:${scope}:${granted}:${timestamp}`);
+  return { scope, granted, timestamp, prevHash, hash };
+}
+
+/** Verify the whole chain. Honest guarantee: detects edits to anyone holding the key. */
+export async function verifyAuditTrail(hmacKey: CryptoKey, trail: ConsentRecord[]): Promise<boolean> {
+  let prev = 'GENESIS';
+  for (const r of trail) {
+    const expect = await hmac(hmacKey, `${prev}:${r.scope}:${r.granted}:${r.timestamp}`);
+    if (expect !== r.hash || r.prevHash !== prev) return false;
+    prev = r.hash;
+  }
+  return true;
+}
+
 // ── Consent Manager ──────────────────────────────────────────
 
 export class ConsentManager {
@@ -136,24 +164,30 @@ export class ConsentManager {
   /**
    * Grant consent for a scope and record in audit trail.
    */
-  async grantConsent(scope: ConsentScope): Promise<void> {
+  async grantConsent(scope: ConsentScope, hmacKey?: CryptoKey): Promise<void> {
     this.state.consents[scope] = true;
 
-    const record = await this.createAuditRecord(scope, true);
+    const prev = this.state.auditTrail[this.state.auditTrail.length - 1]?.hash ?? 'GENESIS';
+    const record = hmacKey
+      ? await createAuditRecord(hmacKey, scope, true, prev)
+      : { scope, granted: true, timestamp: new Date().toISOString(), prevHash: prev, hash: 'UNVERIFIED' };
+    
     this.state.auditTrail.push(record);
-
     this.saveState();
   }
 
   /**
    * Revoke consent for a scope and record in audit trail.
    */
-  async revokeConsent(scope: ConsentScope): Promise<void> {
+  async revokeConsent(scope: ConsentScope, hmacKey?: CryptoKey): Promise<void> {
     this.state.consents[scope] = false;
 
-    const record = await this.createAuditRecord(scope, false);
-    this.state.auditTrail.push(record);
+    const prev = this.state.auditTrail[this.state.auditTrail.length - 1]?.hash ?? 'GENESIS';
+    const record = hmacKey
+      ? await createAuditRecord(hmacKey, scope, false, prev)
+      : { scope, granted: false, timestamp: new Date().toISOString(), prevHash: prev, hash: 'UNVERIFIED' };
 
+    this.state.auditTrail.push(record);
     this.saveState();
   }
 
@@ -174,10 +208,13 @@ export class ConsentManager {
   /**
    * Reset all consents to defaults. Records the reset in audit trail.
    */
-  async resetToDefaults(): Promise<void> {
+  async resetToDefaults(hmacKey?: CryptoKey): Promise<void> {
     for (const scope of Object.keys(this.state.consents) as ConsentScope[]) {
       if (this.state.consents[scope] !== DEFAULT_CONSENTS[scope]) {
-        const record = await this.createAuditRecord(scope, DEFAULT_CONSENTS[scope]);
+        const prev = this.state.auditTrail[this.state.auditTrail.length - 1]?.hash ?? 'GENESIS';
+        const record = hmacKey
+          ? await createAuditRecord(hmacKey, scope, DEFAULT_CONSENTS[scope], prev)
+          : { scope, granted: DEFAULT_CONSENTS[scope], timestamp: new Date().toISOString(), prevHash: prev, hash: 'UNVERIFIED' };
         this.state.auditTrail.push(record);
       }
     }
@@ -194,16 +231,6 @@ export class ConsentManager {
   }
 
   // ── Private Helpers ──────────────────────────────────────
-
-  private async createAuditRecord(
-    scope: ConsentScope,
-    granted: boolean,
-  ): Promise<ConsentRecord> {
-    const timestamp = new Date().toISOString();
-    const hash = await hashForAudit(`${scope}:${granted}:${timestamp}`);
-
-    return { scope, granted, timestamp, hash };
-  }
 
   private loadState(): ConsentState {
     if (typeof window === 'undefined') {

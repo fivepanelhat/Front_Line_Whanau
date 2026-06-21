@@ -1,193 +1,128 @@
-/**
- * Guardrails — Safety & Cultural Checks
- *
- * Validates all AI agent responses before delivery:
- * - Grounding: responses must cite sources
- * - Hallucination detection: cross-reference against known data
- * - Cultural safety: Te Tiriti principles
- * - Child protection: Oranga Tamariki Act compliance
- * - Trauma-informed: no pressuring language
- */
-
 import type { AgentResponse } from './types';
 
-export interface GuardrailResult {
-  passed: boolean;
-  failures: GuardrailFailure[];
-  modifiedResponse?: string;
-}
-
 export interface GuardrailFailure {
-  guardrail: 'grounding' | 'hallucination' | 'cultural-safety' | 'child-protection' | 'trauma-informed';
+  guardrail: 'grounding' | 'unsourced-claim' | 'child-safety' | 'trauma-informed' | 'cultural-safety';
   reason: string;
   severity: 'warning' | 'block';
 }
 
-// ── Child Protection Keywords ────────────────────────────────
+export interface GuardrailResult {
+  passed: boolean;                 // false if ANY block-level failure
+  failures: GuardrailFailure[];
+  modifiedResponse?: string;
+  showUrgentHelp?: boolean;        // gentle, opt-in — NOT injected into AI prose
+}
 
-const CHILD_PROTECTION_INDICATORS = [
-  'abuse',
-  'neglect',
-  'harm',
-  'hurt',
-  'hitting',
-  'beating',
-  'starving',
-  'unsafe',
-  'danger',
-  'scared of parent',
-  'afraid of',
-  'bruise',
-  'injury',
-  'broken bone',
-  'shaken',
-  'burn',
+// Word-boundary triage. This is a heuristic prompt to offer help, NOT detection,
+// and MUST be reviewed by a qualified practitioner before production use.
+const CHILD_SAFETY_TERMS = [
+  'being hurt', 'being hit', 'beaten', 'shaken', 'not safe at home',
+  'scared of (?:my|their) (?:partner|parent)', 'someone is hurting',
 ];
 
-const CHILD_PROTECTION_RESOURCES = `
-**If you are concerned about a child's safety, please contact:**
-- **Oranga Tamariki**: 0508 326 459 (0508 FAMILY) — 24/7
-- **Police**: 111 (emergency) or 105 (non-emergency)
-- **Healthline**: 0800 611 116
-- **PlunketLine**: 0800 933 922
+// Asserting money/law without a source is a BLOCK — never ship an unsourced figure.
+const FACTUAL_CLAIM = /\$\s?\d|per week|per fortnight|\bAct \d{4}\b|\bsection \d+/i;
 
-You are not alone. These services are free and confidential.
-`;
-
-// ── Trauma-Informed Language Patterns ────────────────────────
-
-const PRESSURING_PHRASES = [
-  'you must',
-  'you need to immediately',
-  'failure to',
-  'you are required',
-  'it is your duty',
-  'you have no choice',
-  'this is mandatory',
-  'you are obligated',
-];
-
-const TRAUMA_INFORMED_ALTERNATIVES: Record<string, string> = {
+const PRESSURING: Record<string, string> = {
   'you must': 'you may want to consider',
   'you need to immediately': 'when you feel ready, you might',
   'failure to': 'if this step is not completed',
   'you are required': 'it would be helpful to',
+  'you have no choice': 'one option you could consider',
+  'this is mandatory': 'this is usually expected',
+  'you are obligated': 'you may be expected',
+  'it is your duty': 'it may help to',
 };
 
-// ── Main Guardrail Check ─────────────────────────────────────
+const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 export function checkGuardrails(response: AgentResponse): GuardrailResult {
   const failures: GuardrailFailure[] = [];
+  const content = response.content;
+  let modified = content;
 
-  // 1. Grounding check — responses should cite sources
-  if ((response.sources || []).length === 0 && response.confidence > 0.3) {
+  // 1. Unsourced factual claim → BLOCK (this is the real anti-hallucination gate)
+  const hasClaim = FACTUAL_CLAIM.test(content);
+  const hasSource = (response.sources ?? []).length > 0;
+  if (hasClaim && !hasSource) {
+    failures.push({
+      guardrail: 'unsourced-claim',
+      severity: 'block',
+      reason: 'States a monetary/legal figure with no official source. Do not deliver.',
+    });
+  }
+
+  // 2. Grounding — softer warning when confident but uncited
+  if (!hasSource && response.confidence > 0.3 && !hasClaim) {
     failures.push({
       guardrail: 'grounding',
-      reason: 'Response does not cite any sources. All factual claims should reference a guide, directory entry, or statute.',
       severity: 'warning',
+      reason: 'No source cited for a confident response.',
     });
   }
 
-  // 2. Child protection check
-  const childProtectionTriggered = checkChildProtection(response.content);
-  if (childProtectionTriggered) {
+  // 3. Child-safety triage — word-boundary, never auto-injects contacts into prose
+  const lower = content.toLowerCase();
+  const triggered = CHILD_SAFETY_TERMS.some((t) =>
+    new RegExp(`\\b${t}\\b`, 'i').test(lower),
+  );
+
+  if (triggered) {
     failures.push({
-      guardrail: 'child-protection',
-      reason: 'Response content relates to potential child safety concerns. Child protection resources must be surfaced.',
+      guardrail: 'child-safety',
       severity: 'warning',
+      reason: 'Response content relates to potential child safety concerns.',
     });
   }
 
-  // 3. Trauma-informed language check
-  const traumaCheck = checkTraumaInformed(response.content);
-  if (traumaCheck.length > 0) {
-    failures.push({
-      guardrail: 'trauma-informed',
-      reason: `Response contains pressuring language: ${traumaCheck.join(', ')}. Use gentler alternatives.`,
-      severity: 'warning',
-    });
+  // 4. Trauma-informed rewrite (all phrases covered, regex-escaped, word-bounded)
+  for (const [phrase, alt] of Object.entries(PRESSURING)) {
+    const re = new RegExp(`\\b${escapeRe(phrase)}\\b`, 'gi');
+    if (re.test(modified)) {
+      failures.push({
+        guardrail: 'trauma-informed',
+        severity: 'warning',
+        reason: `Softened pressuring phrase: "${phrase}".`,
+      });
+      modified = modified.replace(re, alt);
+    }
   }
 
-  // 4. Cultural safety — basic checks
-  const culturalCheck = checkCulturalSafety(response.content);
-  if (culturalCheck) {
-    failures.push(culturalCheck);
-  }
-
-  // Build modified response if needed
-  let modifiedResponse = response.content;
-
-  if (childProtectionTriggered) {
-    modifiedResponse += '\n\n---\n\n' + CHILD_PROTECTION_RESOURCES;
-  }
-
-  // Replace pressuring language
-  for (const phrase of traumaCheck) {
-    const alternative = TRAUMA_INFORMED_ALTERNATIVES[phrase];
-    if (alternative) {
-      modifiedResponse = modifiedResponse.replace(
-        new RegExp(phrase, 'gi'),
-        alternative,
-      );
+  // 5. Cultural-safety — advisory only, punctuation-tolerant, no dead rules
+  const macron: Array<[RegExp, string]> = [
+    [/\bwhanau\b/g, 'whānau'],
+    [/\bmaori\b/gi, 'Māori'],
+    [/\baotearoa\b/g, 'Aotearoa'],
+  ];
+  for (const [re, correct] of macron) {
+    if (re.test(modified)) {
+      failures.push({
+        guardrail: 'cultural-safety',
+        severity: 'warning',
+        reason: `Use "${correct}" (macron/capitalisation).`,
+      });
+      modified = modified.replace(re, correct);
     }
   }
 
   return {
-    passed: failures.filter((f) => f.severity === 'block').length === 0,
+    passed: failures.every((f) => f.severity !== 'block'),
     failures,
-    modifiedResponse: modifiedResponse !== response.content ? modifiedResponse : undefined,
+    modifiedResponse: modified !== content ? modified : undefined,
+    showUrgentHelp: triggered, // UI decides how to offer this, gently and opt-in
   };
 }
 
-// ── Helper Functions ─────────────────────────────────────────
-
-function checkChildProtection(content: string): boolean {
-  const lower = content.toLowerCase();
-  return CHILD_PROTECTION_INDICATORS.some((indicator) => lower.includes(indicator));
-}
-
-function checkTraumaInformed(content: string): string[] {
-  const lower = content.toLowerCase();
-  return PRESSURING_PHRASES.filter((phrase) => lower.includes(phrase));
-}
-
-function checkCulturalSafety(content: string): GuardrailFailure | null {
-  // Check for common te reo Māori errors (missing macrons in key terms)
-  const incorrectTerms = [
-    { wrong: 'whanau', correct: 'whānau' },
-    { wrong: 'maori', correct: 'Māori' },
-    { wrong: 'taonga', correct: 'taonga' }, // taonga has no macron — this is correct
-    { wrong: 'aotearoa', correct: 'Aotearoa' },
-  ];
-
-  // Use word boundary check for case-sensitive terms that should be capitalised
-  const contentWords = content.split(/\s+/);
-  for (const term of incorrectTerms) {
-    if (term.wrong !== term.correct) {
-      if (contentWords.some((w) => w === term.wrong)) {
-        return {
-          guardrail: 'cultural-safety',
-          reason: `"${term.wrong}" should be "${term.correct}" (correct macron/capitalisation).`,
-          severity: 'warning',
-        };
-      }
-    }
-  }
-
-  return null;
-}
-
-/**
- * Check if a user's journal entry or message indicates
- * potential child safety concerns. Returns resources if so.
- */
 export function checkUserContentForChildSafety(content: string): {
   triggered: boolean;
   resources: string | null;
 } {
-  const triggered = checkChildProtection(content);
+  const lower = content.toLowerCase();
+  const triggered = CHILD_SAFETY_TERMS.some((t) =>
+    new RegExp(`\\b${t}\\b`, 'i').test(lower)
+  );
   return {
     triggered,
-    resources: triggered ? CHILD_PROTECTION_RESOURCES : null,
+    resources: triggered ? "Oranga Tamariki: 0508 326 459" : null,
   };
 }

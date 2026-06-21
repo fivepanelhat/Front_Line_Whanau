@@ -11,7 +11,7 @@
  */
 
 import { useState, useCallback, useEffect } from 'react';
-import { encrypt, decrypt, type EncryptedPayload } from '@/lib/encryption';
+import { openVault, encryptWithKey, decryptWithKey, type EncryptedPayload, type EntryPayload } from '@/lib/encryption';
 
 export interface StoredEntry {
   id: string;
@@ -57,6 +57,15 @@ export function useEncryptedStorage(namespace: string, passphrase: string | null
     [storageKey],
   );
 
+  const getVault = useCallback(async (): Promise<any> => {
+    if (!passphrase) return null;
+    const saltKey = `flw-${namespace}-salt`;
+    const existingSalt = localStorage.getItem(saltKey) ?? undefined;
+    const vault = await openVault(namespace, passphrase, existingSalt);
+    localStorage.setItem(saltKey, vault.salt);
+    return vault;
+  }, [namespace, passphrase]);
+
   /**
    * Save a new encrypted entry.
    */
@@ -68,7 +77,16 @@ export function useEncryptedStorage(namespace: string, passphrase: string | null
       if (!passphrase) return null;
 
       try {
-        const encrypted = await encrypt(plaintext, passphrase);
+        const vault = await getVault();
+        if (!vault) return null;
+
+        const payload: EntryPayload = await encryptWithKey(plaintext, vault);
+        const encrypted: EncryptedPayload = {
+          ciphertext: payload.ciphertext,
+          iv: payload.iv,
+          salt: vault.salt,
+        };
+
         const now = new Date().toISOString();
         const id = `${namespace}-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
 
@@ -91,7 +109,7 @@ export function useEncryptedStorage(namespace: string, passphrase: string | null
         return null;
       }
     },
-    [passphrase, entries, namespace, persistEntries],
+    [passphrase, entries, namespace, persistEntries, getVault],
   );
 
   /**
@@ -105,12 +123,19 @@ export function useEncryptedStorage(namespace: string, passphrase: string | null
       if (!entry) return null;
 
       try {
-        return await decrypt(entry.encrypted, passphrase);
+        const vault = await getVault();
+        if (!vault) return null;
+
+        const payload: EntryPayload = {
+          ciphertext: entry.encrypted.ciphertext,
+          iv: entry.encrypted.iv,
+        };
+        return await decryptWithKey(payload, vault);
       } catch {
         return null; // Wrong passphrase or corrupted data
       }
     },
-    [passphrase, entries],
+    [passphrase, entries, getVault],
   );
 
   /**
@@ -125,7 +150,16 @@ export function useEncryptedStorage(namespace: string, passphrase: string | null
       if (!passphrase) return false;
 
       try {
-        const encrypted = await encrypt(plaintext, passphrase);
+        const vault = await getVault();
+        if (!vault) return false;
+
+        const payload: EntryPayload = await encryptWithKey(plaintext, vault);
+        const encrypted: EncryptedPayload = {
+          ciphertext: payload.ciphertext,
+          iv: payload.iv,
+          salt: vault.salt,
+        };
+
         const updated = entries.map((e) =>
           e.id === id
             ? {
@@ -147,7 +181,7 @@ export function useEncryptedStorage(namespace: string, passphrase: string | null
         return false;
       }
     },
-    [passphrase, entries, persistEntries],
+    [passphrase, entries, persistEntries, getVault],
   );
 
   /**

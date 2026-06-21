@@ -104,6 +104,34 @@ Aligned with **Te Mana Raraunga** principles and **Te Tiriti o Waitangi**.
 - Taranaki + National services directory
 - Trauma-informed and culturally grounded design
 
+## Architecture (current state)
+
+This is a **Next.js (App Router)** application that currently runs **entirely
+client-side**. All encryption, storage, consent, and AI routing happen in the
+browser. There is no server component yet.
+
+- `src/app/`        Next.js routes and layout
+- `src/components/`  UI (Dashboard, Hero, Values, etc.)
+- `src/lib/`         Encryption, consent, passphrase logic
+- `src/hooks/`       Encrypted storage / journal / consent hooks
+- `src/ai/`          Aether Summit orchestrator + specialist agents
+- `src/data/`        Entitlement + directory reference data
+
+### What is real today
+
+- AES-256-GCM client-side encryption (Web Crypto), per-vault key derivation
+- Granular, on-device consent with a key-verifiable audit log
+- AI agents return **dated, officially-sourced** entitlement info (no live LLM yet)
+
+### Planned (not yet implemented)
+
+- Optional encrypted server sync (Supabase) — the `.env` keys and Prisma
+  scripts are scaffolding for this and are **not wired up**
+- Live LLM inference behind explicit consent
+
+> Until server sync ships, data lives only on the device. Clearing the browser
+> or losing the passphrase means the data is gone — by design.
+
 ---
 
 ## Getting Started (Development)
@@ -113,9 +141,9 @@ Aligned with **Te Mana Raraunga** principles and **Te Tiriti o Waitangi**.
 - Node.js 18+
 - Git
 
-### Windows (PowerShell)
+### Installation & Run
 
-```powershell
+```bash
 git clone https://github.com/fivepanelhat/Front_Line_Whanau.git
 cd Front_Line_Whanau
 npm install
