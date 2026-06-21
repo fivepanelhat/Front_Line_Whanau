@@ -10,8 +10,10 @@ jobs:
   lint-typecheck-build:
     name: Lint, Type Check & Build
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -22,13 +24,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Lint
+      - name: Run ESLint
         run: npm run lint
 
-      - name: Type Check
+      - name: Run TypeScript type check
         run: npm run type-check
 
-      - name: Build
+      - name: Build project
         run: npm run build
 
   unit-tests:
@@ -36,7 +38,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -47,13 +50,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run Tests
-        run: npm run test:ci
+      - name: Run Vitest
+        run: npm run test
+        env:
+          CI: true
 
+      # Upload coverage report as artifact (optional but recommended)
       - name: Upload coverage reports
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: vitest-coverage
+          name: vitest-coverage-report
           path: coverage/
           retention-days: 7
