@@ -2,7 +2,29 @@
 
 ## Overview
 
-The Front Line Families Support Hub NZ is a **sovereign, privacy-first platform** built on **Next.js 15** with the App Router. It follows a **client-side-first** architecture where sensitive data is encrypted before leaving the browser, and server-side processing only occurs with **explicit informed consent**.
+This is a **Next.js (App Router)** application that currently runs **entirely client-side**. All encryption, storage, consent, and AI routing happen in the browser. There is no server component yet.
+
+### Directory Structure
+
+- `src/app/` — Next.js routes and layout
+- `src/components/` — UI (Dashboard, Hero, Values, etc.)
+- `src/lib/` — Encryption, consent, passphrase logic
+- `src/hooks/` — Encrypted storage / journal / consent hooks
+- `src/ai/` — Aether Summit orchestrator + specialist agents
+- `src/data/` — Entitlement + directory reference data
+
+### What is real today
+
+- AES-256-GCM client-side encryption (Web Crypto), per-vault key derivation.
+- Granular, on-device consent with a key-verifiable audit log.
+- AI agents return **dated, officially-sourced** entitlement info (no live LLM yet).
+
+### Planned (not yet implemented)
+
+- Optional encrypted server sync (Supabase) — the `.env` keys and Prisma scripts are scaffolding for this and are **not wired up**.
+- Live LLM inference behind explicit consent.
+
+> **Important:** Until server sync ships, data lives only on the device. Clearing the browser storage or losing the passphrase means the data is gone — by design.
 
 ---
 
