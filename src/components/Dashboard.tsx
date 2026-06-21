@@ -7,96 +7,9 @@ import { useEncryptedJournal, type DecryptedJournalEntry } from '@/hooks/useEncr
 import { encrypt, decrypt, openVault, encryptWithKey, decryptWithKey, type EncryptedPayload } from '@/lib/encryption';
 import { ConsentScope } from '@/lib/consent';
 import { assessPassphrase } from '@/lib/passphrase';
+import { SERVICES } from '@/data/directory';
 
 // Static directory data imported directly from the markdown spec
-const DIRECTORY_SERVICES = [
-  {
-    name: 'Taranaki Base Hospital — Neonatal Unit',
-    category: 'Neonatal',
-    region: 'Taranaki',
-    address: 'David Street, New Plymouth 4310',
-    phone: '(06) 753 6139',
-    description: 'Level 2 neonatal unit providing care for preterm and unwell newborns. Supports babies from 32 weeks gestation.'
-  },
-  {
-    name: 'Taranaki DHB — Maternity Services',
-    category: 'Neonatal',
-    region: 'Taranaki',
-    phone: '(06) 753 6139',
-    description: 'Maternity and postnatal services including home visits, lactation support, and discharge planning.'
-  },
-  {
-    name: 'Healthline',
-    category: 'Health',
-    region: 'National',
-    phone: '0800 611 116',
-    description: 'Free health advice from registered nurses, available 24 hours a day.'
-  },
-  {
-    name: 'PlunketLine',
-    category: 'Health',
-    region: 'National',
-    phone: '0800 933 922',
-    description: 'Free parenting advice and support 24/7. Covers feeding, sleep, development, and postnatal mental health.'
-  },
-  {
-    name: '1737 — Need to Talk?',
-    category: 'Mental Health',
-    region: 'National',
-    phone: '1737 (call or text)',
-    description: 'Free counselling service. Call or text 1737 to talk with a trained counsellor about anything — stress, anxiety, or grief.'
-  },
-  {
-    name: 'Perinatal Anxiety & Depression Aotearoa (PADA)',
-    category: 'Mental Health',
-    region: 'National',
-    phone: '0800 726 222',
-    description: 'Support for parents experiencing anxiety or depression during pregnancy or after birth.'
-  },
-  {
-    name: 'Taranaki Retreat',
-    category: 'Mental Health',
-    region: 'Taranaki',
-    phone: '(06) 752 2289',
-    description: 'Free community-based mental health crisis service. Walk-in support, overnight stays, and peer support.'
-  },
-  {
-    name: 'Work and Income (WINZ) — New Plymouth',
-    category: 'Financial',
-    region: 'Taranaki',
-    address: '31-39 Hurlstone Drive, New Plymouth',
-    phone: '0800 559 009',
-    description: 'Government financial assistance including Preterm Baby Payment, Childcare Assistance, Accommodation Supplement.'
-  },
-  {
-    name: 'Inland Revenue (IRD) — Best Start / Working for Families',
-    category: 'Financial',
-    region: 'National',
-    phone: '0800 227 774',
-    description: 'Best Start tax credit ($73.86/week per child for the first year), Working for Families, and Parental Leave.'
-  },
-  {
-    name: 'Tenancy Services (MBIE)',
-    category: 'Housing',
-    region: 'National',
-    phone: '0800 836 262',
-    description: 'Government tenancy advice. Covers repair requests, Healthy Homes Standards, bond disputes, and tenant rights.'
-  },
-  {
-    name: 'Kāinga Ora — Homes and Communities',
-    category: 'Housing',
-    region: 'National',
-    phone: '0800 801 601',
-    description: 'Public housing provider. Manages the Housing Register and emergency housing referrals.'
-  },
-  {
-    name: 'Multiple Birth Association — New Zealand',
-    category: 'Community',
-    region: 'National',
-    description: 'Support network for families with twins, triplets, and higher-order multiples. Peer support and community events.'
-  }
-];
-
 // Active pathway template checklists
 const PATHWAY_DATA = {
   financial: {
@@ -354,8 +267,8 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
   const [searchDir, setSearchDir] = useState('');
   const [selectedDirCategory, setSelectedDirCategory] = useState<string>('All');
 
-  const filteredServices = DIRECTORY_SERVICES.filter((srv) => {
-    const matchCat = selectedDirCategory === 'All' || srv.category === selectedDirCategory;
+  const filteredServices = SERVICES.filter((srv) => {
+    const matchCat = selectedDirCategory === 'All' || srv.categories.some(c => c.replace('-', ' ').toLowerCase() === selectedDirCategory.toLowerCase());
     const matchSearch = srv.name.toLowerCase().includes(searchDir.toLowerCase()) ||
                         srv.description.toLowerCase().includes(searchDir.toLowerCase());
     return matchCat && matchSearch;
@@ -964,7 +877,7 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
                       <div className="flex justify-between items-start gap-2">
                         <h3 className="font-bold text-sm text-text-primary">{srv.name}</h3>
                         <span className="text-[9px] uppercase tracking-wider font-extrabold bg-accent-secondary/15 text-accent-secondary rounded px-2 py-0.5 whitespace-nowrap">
-                          {srv.category}
+                          {srv.categories[0]}
                         </span>
                       </div>
                       <p className="text-xs text-text-secondary mt-2 leading-relaxed">{srv.description}</p>
@@ -974,15 +887,30 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
                     </div>
                     
                     <div className="flex items-center justify-between border-t border-white/[0.04] pt-3 mt-2">
-                      <span className="text-xs font-bold text-text-secondary">📞 {srv.phone || 'N/A'}</span>
-                      {srv.phone && (
-                        <a 
-                          href={`tel:${srv.phone.replace(/[^0-9]/g, '')}`}
-                          className="text-xs font-semibold text-accent-secondary hover:underline"
-                        >
-                          Call
-                        </a>
-                      )}
+                      <span className="text-xs font-bold text-text-secondary">
+                        {srv.contact.includes('@') ? '✉️ ' : '📞 '}
+                        {srv.contact}
+                      </span>
+                      <div className="flex gap-2">
+                        {srv.contact && !srv.contact.includes('@') && (
+                          <a 
+                            href={`tel:${srv.contact.replace(/[^0-9]/g, '')}`}
+                            className="text-xs font-semibold text-accent-secondary hover:underline"
+                          >
+                            Call
+                          </a>
+                        )}
+                        {srv.url && (
+                          <a 
+                            href={srv.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs font-semibold text-accent-secondary hover:underline"
+                          >
+                            Website
+                          </a>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}
