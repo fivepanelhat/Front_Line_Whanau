@@ -3,12 +3,14 @@ import { AgentState } from "../types";
 import { KaitiakiCrawler } from "./kaitiaki-crawler";
 import { RangahauHauora } from "./rangahau-hauora";
 import { ManaAwhina } from "./mana-awhina";
+import { ArohaTohunga } from "./aroha-tohunga";
 
 export class AetherSummit extends BaseAgent {
   private agents = {
     kaitiaki_crawler: new KaitiakiCrawler(),
     rangahau_hauora: new RangahauHauora(),
     mana_awhina: new ManaAwhina(),
+    aroha_tohunga: new ArohaTohunga(),
   };
 
   constructor() {
@@ -28,10 +30,8 @@ export class AetherSummit extends BaseAgent {
     let agentToUse = "kaitiaki_crawler";
 
     if (state.query?.toLowerCase().includes("medical") || state.query?.toLowerCase().includes("health")) {
-      agentToUse = "rangahau_hauora";
-    }
-
-    if (state.userRole === "parent" || state.query?.toLowerCase().includes("cultural")) {
+      agentToUse = state.userRole === "parent" ? "aroha_tohunga" : "rangahau_hauora";
+    } else if (state.userRole === "parent" || state.query?.toLowerCase().includes("cultural")) {
       agentToUse = "mana_awhina";
     }
 
