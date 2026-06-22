@@ -18,8 +18,8 @@ export class AetherSummit extends BaseAgent {
   constructor() {
     super({
       name: "aether_summit",
-      description: "Main orchestrator",
-      systemPrompt: "You are Aether Summit, the lead orchestrator.",
+      description: "Main orchestrator for Front_Line_Whanau agent system",
+      systemPrompt: "You are Aether Summit, the lead orchestrator of the Front_Line_Whanau AI system.",
     });
   }
 
@@ -28,20 +28,28 @@ export class AetherSummit extends BaseAgent {
   }
 
   async invoke(state: AgentState): Promise<Partial<AgentState>> {
-    // Simple routing logic (can be made smarter later)
-    let agentToUse = "kaitiaki_crawler";
-    const queryLower = state.query?.toLowerCase() || "";
+    const query = state.query?.toLowerCase() || "";
 
-    if (queryLower.includes("financial") || queryLower.includes("winz") || queryLower.includes("payment") || queryLower.includes("entitlement") || queryLower.includes("support")) {
-      agentToUse = "tautoko_kaiwhina";
-    } else if (queryLower.includes("medical") || queryLower.includes("health")) {
-      agentToUse = state.userRole === "parent" ? "aroha_tohunga" : "rangahau_hauora";
-    } else if (state.userRole === "parent" || queryLower.includes("cultural")) {
-      agentToUse = "mana_awhina";
+    let selectedAgent = "kaitiaki_crawler"; // default
+
+    if (query.includes("medical") || query.includes("health") || query.includes("preterm")) {
+      selectedAgent = "rangahau_hauora";
     }
 
-    const selectedAgent = this.agents[agentToUse as keyof typeof this.agents];
-    const result = await selectedAgent.invoke(state);
+    if (query.includes("support") || query.includes("financial") || query.includes("winz") || query.includes("payment")) {
+      selectedAgent = "tautoko_kaiwhina";
+    }
+
+    if (query.includes("cultural") || query.includes("māori") || query.includes("tikanga")) {
+      selectedAgent = "mana_awhina";
+    }
+
+    if (state.userRole === "parent" || query.includes("explain") || query.includes("what does it mean")) {
+      selectedAgent = "aroha_tohunga";
+    }
+
+    const agent = this.agents[selectedAgent as keyof typeof this.agents];
+    const result = await agent.invoke(state);
 
     return {
       ...result,
