@@ -25,6 +25,23 @@ We’ll keep the existing concept but formalise it:
   - **Tautoko Kaiwhina** – Services directory maintenance
   - **Māmā & Pāpā Reo** – Lived experience integration
 
+## Target Directory Layout (`src/ai/`)
+
+```text
+src/ai/
+├── agents/
+│   ├── base.ts
+│   ├── aether-summit.ts          # Orchestrator
+│   ├── kaitiaki-crawler.ts
+│   ├── rangahau-hauora.ts
+│   └── mana-awhina.ts
+├── graph.ts                      # Main LangGraph workflow
+├── rag.ts                        # RAG pipeline
+├── types.ts                      # Shared types & state
+├── tools.ts                      # Reusable tools
+└── index.ts
+```
+
 ## Next Steps for Full Kitout
 
 We recommend performing the following in order:
