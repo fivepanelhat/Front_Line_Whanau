@@ -5,7 +5,7 @@
   "engines": {
     "node": ">=22"
   },
-  "description": "Front Line Families Support Hub NZ — A sovereign, privacy-first digital platform supporting families of preterm twins in Aotearoa New Zealand.",
+  "description": "A sovereign, privacy-first digital platform supporting whānau of preterm twins navigating complex frontline services in Aotearoa New Zealand. Built with client-side encryption (Taonga Vault), Te Tiriti alignment, and LangGraph-powered AI orchestration.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -20,13 +20,16 @@
     "docs:directory": "tsx scripts/generate-directory-doc.ts"
   },
   "keywords": [
-    "neonatal",
-    "preterm",
-    "whanau",
-    "support",
-    "new-zealand",
+    "preterm-twins",
+    "neonatal-support",
     "privacy-first",
-    "sovereign-ai"
+    "sovereign-ai",
+    "langgraph",
+    "nextjs",
+    "supabase",
+    "aotearoa",
+    "te-tiriti",
+    "maori-data-sovereignty"
   ],
   "author": "fivepanelhat",
   "license": "MIT",
