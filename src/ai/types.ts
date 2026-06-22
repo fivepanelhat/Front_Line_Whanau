@@ -1,3 +1,23 @@
+import { BaseMessage } from "@langchain/core/messages";
+
+export type UserRole = "parent" | "practitioner" | "organisation";
+
+export interface AgentState {
+  messages: BaseMessage[];
+  currentAgent?: string;
+  userRole?: UserRole;
+  query?: string;
+  context?: string;
+  results?: any[];
+  needsHumanReview?: boolean;
+}
+
+export interface AgentConfig {
+  name: string;
+  description: string;
+  systemPrompt: string;
+}
+
 export interface AgentResponse {
   content: string;
   confidence: number;
@@ -15,7 +35,7 @@ export interface OrchestrationContext {
   urgency?: 'low' | 'medium' | 'high';
 }
 
-export interface BaseAgent {
+export interface LegacyBaseAgent {
   name: string;
   description: string;
   process(query: string, context?: OrchestrationContext): Promise<AgentResponse>;

@@ -1,7 +1,7 @@
-import { BaseAgent, AgentResponse, OrchestrationContext } from './types';
+import { LegacyBaseAgent, AgentResponse, OrchestrationContext } from './types';
 import { getEntitlement, describeEntitlement } from '@/data/entitlements';
 
-export class TaongaKnowledgeWeaver implements BaseAgent {
+export class TaongaKnowledgeWeaver implements LegacyBaseAgent {
   name = 'Taonga Knowledge Weaver';
   description = 'Surfaces dated, officially-sourced entitlement information';
 

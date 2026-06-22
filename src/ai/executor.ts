@@ -1,6 +1,6 @@
-import { BaseAgent, AgentResponse, OrchestrationContext } from './types';
+import { LegacyBaseAgent, AgentResponse, OrchestrationContext } from './types';
 
-export class SovereignExecutor implements BaseAgent {
+export class SovereignExecutor implements LegacyBaseAgent {
   name = "Sovereign Executor";
   description = "Generates templates and supports execution of actions";
 

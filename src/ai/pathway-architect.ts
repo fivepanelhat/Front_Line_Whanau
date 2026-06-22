@@ -1,6 +1,6 @@
-import { BaseAgent, AgentResponse, OrchestrationContext } from './types';
+import { LegacyBaseAgent, AgentResponse, OrchestrationContext } from './types';
 
-export class WhanauPathwayArchitect implements BaseAgent {
+export class WhanauPathwayArchitect implements LegacyBaseAgent {
   name = "Whānau Pathway Architect";
   description = "Designs clear, culturally safe support pathways";
 
