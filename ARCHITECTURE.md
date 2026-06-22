@@ -5,6 +5,7 @@
 **Front_Line_Whanau** is a privacy-first, sovereign digital platform designed to support whānau of preterm twins and families navigating complex frontline services in Aotearoa New Zealand.
 
 The architecture prioritises:
+
 - **Client-side data sovereignty** (encryption at rest)
 - **Cultural safety** and alignment with Te Tiriti o Waitangi
 - **Modular, maintainable code**
@@ -19,15 +20,15 @@ The architecture prioritises:
 
 ## Technology Stack
 
-| Layer              | Technology                          | Purpose                              |
-|--------------------|-------------------------------------|--------------------------------------|
-| Frontend           | Next.js 15 (App Router) + TypeScript | Main application framework           |
-| Styling            | Tailwind CSS + shadcn/ui            | UI components                        |
-| Desktop            | Tauri 2                             | Cross-platform desktop app           |
-| Database & Auth    | Supabase (Postgres + pgvector)      | Data storage, auth, RAG              |
-| AI Orchestration   | LangGraph                           | Multi-agent workflows                |
-| Testing            | Vitest + Playwright                 | Unit + E2E testing                   |
-| CI/CD              | GitHub Actions                      | Automated testing & deployment       |
+| Layer            | Technology                           | Purpose                        |
+|------------------|--------------------------------------|--------------------------------|
+| Frontend         | Next.js 15 (App Router) + TypeScript | Main application framework     |
+| Styling          | Tailwind CSS + shadcn/ui             | UI components                  |
+| Desktop          | Tauri 2                              | Cross-platform desktop app     |
+| Database & Auth  | Supabase (Postgres + pgvector)       | Data storage, auth, RAG        |
+| AI Orchestration | LangGraph                            | Multi-agent workflows          |
+| Testing          | Vitest + Playwright                  | Unit + E2E testing             |
+| CI/CD            | GitHub Actions                       | Automated testing & deployment |
 
 ## High-Level Architecture
 
@@ -86,12 +87,12 @@ graph LR
 
 ### Agent Roles
 
-| Agent | Role | Consent Required |
-| ------- | ------ | ----------------- |
-| **Aether Summit** | Lead orchestrator — routes queries, maintains context, filters responses | No (orchestration only) |
-| **Knowledge Weaver** | Information retrieval from directory, guides, and NZ statutes | No (public data) |
-| **Pathway Architect** | Generates personalised support pathways | Yes (`ai.process`) |
-| **Executor** | Takes action — form pre-fill, document drafts, reminders | Yes (`ai.execute`) |
+| Agent                 | Role                                                                     | Consent Required        |
+|-----------------------|--------------------------------------------------------------------------|-------------------------|
+| **Aether Summit**     | Lead orchestrator — routes queries, maintains context, filters responses | No (orchestration only) |
+| **Knowledge Weaver**  | Information retrieval from directory, guides, and NZ statutes            | No (public data)        |
+| **Pathway Architect** | Generates personalised support pathways                                  | Yes (`ai.process`)      |
+| **Executor**          | Takes action — form pre-fill, document drafts, reminders                 | Yes (`ai.execute`)      |
 
 ### Guardrails
 
