@@ -1,34 +1,35 @@
-# Architecture — Front Line Families Support Hub NZ
+# Architecture
 
 ## Overview
 
-This is a **Next.js (App Router)** application that currently runs **entirely client-side**. All encryption, storage, consent, and AI routing happen in the browser. There is no server component yet.
+**Front_Line_Whanau** is a privacy-first, sovereign digital platform designed to support whānau of preterm twins and families navigating complex frontline services in Aotearoa New Zealand.
 
-### Directory Structure
+The architecture prioritises:
+- **Client-side data sovereignty** (encryption at rest)
+- **Cultural safety** and alignment with Te Tiriti o Waitangi
+- **Modular, maintainable code**
+- **Scalable AI agent system**
 
-- `src/app/` — Next.js routes and layout
-- `src/components/` — UI (Dashboard, Hero, Values, etc.)
-- `src/lib/` — Encryption, consent, passphrase logic
-- `src/hooks/` — Encrypted storage / journal / consent hooks
-- `src/ai/` — Aether Summit orchestrator + specialist agents
-- `src/data/` — Entitlement + directory reference data
+## Core Principles
 
-### What is real today
+- **Privacy by Design**: Sensitive data stays on-device by default (Taonga Vault).
+- **Role-Based Experience**: Separate but unified experiences for whānau/parents and practitioners/organisations.
+- **Cultural Safety First**: All content and features are reviewed through a Te Ao Māori lens.
+- **Progressive Enhancement**: Core functionality works offline/client-side; optional server sync available.
 
-- AES-256-GCM client-side encryption (Web Crypto), per-vault key derivation.
-- Granular, on-device consent with a key-verifiable audit log.
-- AI agents return **dated, officially-sourced** entitlement info (no live LLM yet).
+## Technology Stack
 
-### Planned (not yet implemented)
+| Layer              | Technology                          | Purpose                              |
+|--------------------|-------------------------------------|--------------------------------------|
+| Frontend           | Next.js 15 (App Router) + TypeScript | Main application framework           |
+| Styling            | Tailwind CSS + shadcn/ui            | UI components                        |
+| Desktop            | Tauri 2                             | Cross-platform desktop app           |
+| Database & Auth    | Supabase (Postgres + pgvector)      | Data storage, auth, RAG              |
+| AI Orchestration   | LangGraph                           | Multi-agent workflows                |
+| Testing            | Vitest + Playwright                 | Unit + E2E testing                   |
+| CI/CD              | GitHub Actions                      | Automated testing & deployment       |
 
-- Optional encrypted server sync (Supabase) — the `.env` keys and Prisma scripts are scaffolding for this and are **not wired up**.
-- Live LLM inference behind explicit consent.
-
-> **Important:** Until server sync ships, data lives only on the device. Clearing the browser storage or losing the passphrase means the data is gone — by design.
-
----
-
-## System Architecture
+## High-Level Architecture
 
 ```mermaid
 graph TB
@@ -86,7 +87,7 @@ graph LR
 ### Agent Roles
 
 | Agent | Role | Consent Required |
-|-------|------|-----------------|
+| ------- | ------ | ----------------- |
 | **Aether Summit** | Lead orchestrator — routes queries, maintains context, filters responses | No (orchestration only) |
 | **Knowledge Weaver** | Information retrieval from directory, guides, and NZ statutes | No (public data) |
 | **Pathway Architect** | Generates personalised support pathways | Yes (`ai.process`) |
@@ -103,124 +104,22 @@ graph LR
 
 ## Data Flow
 
-### Encryption Flow
+1. **User interacts** with either Parent or Practitioner portal.
+2. **Search / Query** goes through the unified directory.
+3. **AI Agents** (via LangGraph) enrich results with curated, sourced information.
+4. **Sensitive data** is encrypted locally before storage.
+5. **Optional sync** to Supabase only happens with explicit user consent.
 
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant B as Browser
-    participant E as Encryption (Web Crypto)
-    participant S as Supabase
+## Security & Privacy
 
-    U->>B: Creates journal entry
-    B->>E: Encrypt with user key (AES-256-GCM)
-    E->>B: Returns ciphertext + IV + salt
-    B->>B: Store locally (IndexedDB)
-    
-    alt User consents to sync
-        B->>S: Send encrypted blob
-        S->>S: Store (server never sees plaintext)
-    end
-    
-    U->>B: Views entry
-    B->>E: Decrypt with user key
-    E->>B: Returns plaintext
-    B->>U: Display
-```
+- All sensitive data is encrypted using Web Crypto API (AES-GCM).
+- Keys are derived per user/vault.
+- No plaintext sensitive data is sent to servers by default.
+- Row Level Security (RLS) is used when Supabase sync is enabled.
 
-### Consent Flow
+## Future Considerations
 
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant C as Consent Manager
-    participant A as Audit Trail
-    participant F as Feature
-
-    F->>C: Request scope (e.g., "journal.write")
-    C->>C: Check existing consent
-    
-    alt No consent
-        C->>U: Show ConsentDialog
-        U->>C: Grant / Deny
-        C->>A: Record decision + timestamp
-    end
-    
-    alt Consent granted
-        C->>F: Allow operation
-    else Consent denied
-        C->>F: Block operation (graceful fallback)
-    end
-```
-
----
-
-## Directory Structure
-
-```
-src/
-├── app/                    # Next.js 15 App Router
-│   ├── layout.tsx          # Root layout
-│   ├── page.tsx            # Landing page
-│   ├── globals.css         # Tailwind + custom layers
-│   ├── api/                # API routes
-│   │   ├── directory/      # Services directory CRUD
-│   │   ├── consent/        # Consent verification
-│   │   └── forms/          # Form pre-fill logic
-│   ├── dashboard/          # App dashboard
-│   ├── journal/            # Mental health journal
-│   ├── vault/              # Taonga vault (documents)
-│   └── directory/          # Services directory
-├── components/             # Reusable UI components
-│   ├── ui/                 # Primitives (Button, Card, etc.)
-│   ├── Header.tsx
-│   ├── Hero.tsx
-│   ├── Features.tsx
-│   ├── Values.tsx
-│   ├── Footer.tsx
-│   ├── ConsentDialog.tsx
-│   └── ConsentBanner.tsx
-├── lib/                    # Core utilities
-│   ├── encryption.ts       # Web Crypto API wrappers
-│   ├── consent.ts          # Consent manager
-│   └── edge-ai.ts          # Edge AI helpers
-├── ai/                     # 1+3 Agent System
-│   ├── types.ts            # Shared interfaces
-│   ├── aether-summit.ts    # Orchestrator
-│   ├── knowledge-weaver.ts # Information agent
-│   ├── pathway-architect.ts# Planning agent
-│   ├── executor.ts         # Action agent
-│   └── guardrails.ts       # Safety checks
-└── hooks/                  # Custom React hooks
-    ├── useConsent.ts
-    ├── useEncryptedStorage.ts
-    └── useLocalStorage.ts
-```
-
----
-
-## Technology Stack
-
-| Layer | Technology | Rationale |
-|-------|-----------|-----------|
-| Framework | Next.js 15 (App Router) | Server components, API routes, edge runtime |
-| Language | TypeScript (strict) | Type safety for sensitive data handling |
-| Styling | Tailwind CSS v3 | Design system tokens, responsive, accessible |
-| Database | Supabase (PostgreSQL) | RLS policies, real-time, NZ data residency options |
-| ORM | Prisma | Type-safe queries, migrations, seeding |
-| Encryption | Web Crypto API | Browser-native, no external dependencies |
-| Testing | Vitest + Playwright | Fast unit tests + reliable E2E |
-| CI/CD | GitHub Actions → Vercel | Automated quality gates |
-
----
-
-## Regulatory Compliance
-
-| Regulation | How We Comply |
-|-----------|---------------|
-| Privacy Act 2020 | Client-side encryption, informed consent, data minimisation |
-| Health Information Privacy Code 2020 | Health data never stored in plaintext server-side |
-| Oranga Tamariki Act 1989 | Mandatory reporting pathways documented |
-| Care of Children Act 2004 | Consent model respects parental/guardian authority |
-| Residential Tenancies Act 1986 | Tenancy template guides reference current law |
-| Te Mana Raraunga | Māori data sovereignty principles embedded in architecture |
+- Full Tauri desktop integration
+- Dual portal UI/UX refinement
+- Live LLM inference (behind consent gates)
+- Advanced analytics for practitioners (anonymised)

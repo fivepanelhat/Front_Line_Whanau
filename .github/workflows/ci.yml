@@ -15,7 +15,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -27,10 +27,10 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
-      - name: Run TypeScript type check
+      - name: Type Check
         run: npm run type-check
 
-      - name: Build project
+      - name: Build
         run: npm run build
 
   unit-tests:
@@ -41,7 +41,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -50,12 +50,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run Vitest
+      - name: Run Tests with Coverage
         run: npm run test:ci
         env:
           CI: true
 
-      # Upload coverage report as artifact (optional but recommended)
       - name: Upload coverage reports
         uses: actions/upload-artifact@v4
         if: always()
@@ -63,3 +62,26 @@ jobs:
           name: vitest-coverage-report
           path: coverage/
           retention-days: 7
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4

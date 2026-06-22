@@ -255,3 +255,50 @@ export function bufferToHex(buffer: ArrayBuffer): string {
     .map((b) => b.toString(16).padStart(2, '0'))
     .join('');
 }
+
+// ── Added Encryption Helpers ─────────────────────────────────
+
+export async function encryptData(data: string, key: CryptoKey): Promise<string> {
+  const encoder = new TextEncoder()
+  const encodedData = encoder.encode(data)
+
+  const iv = crypto.getRandomValues(new Uint8Array(12))
+  const encrypted = await crypto.subtle.encrypt(
+    { name: 'AES-GCM', iv },
+    key,
+    encodedData
+  )
+
+  const encryptedArray = new Uint8Array(encrypted)
+  const result = new Uint8Array(iv.length + encryptedArray.length)
+  result.set(iv)
+  result.set(encryptedArray, iv.length)
+
+  return btoa(String.fromCharCode(...result))
+}
+
+export async function decryptData(encryptedBase64: string, key: CryptoKey): Promise<string> {
+  const binaryString = atob(encryptedBase64)
+  const bytes = new Uint8Array(binaryString.length)
+  for (let i = 0; i < binaryString.length; i++) {
+    bytes[i] = binaryString.charCodeAt(i)
+  }
+  const iv = bytes.slice(0, 12)
+  const ciphertext = bytes.slice(12)
+
+  const decrypted = await crypto.subtle.decrypt(
+    { name: 'AES-GCM', iv },
+    key,
+    ciphertext
+  )
+  return new TextDecoder().decode(decrypted)
+}
+
+export async function generateKey(): Promise<CryptoKey> {
+  return crypto.subtle.generateKey(
+    { name: 'AES-GCM', length: 256 },
+    true,
+    ['encrypt', 'decrypt']
+  )
+}
+

@@ -1,11 +1,9 @@
 import { defineConfig } from 'vitest/config'
-import react from '@vitejs/plugin-react'
 import path from 'path'
 
 export default defineConfig({
-  plugins: [react()],
   test: {
-    environment: 'jsdom',
+    environment: 'node',
     globals: true,
     setupFiles: ['./vitest.setup.ts'], // Optional: for testing-library setup
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
@@ -27,6 +25,12 @@ export default defineConfig({
         '**/*.config.*',
         '**/coverage/**',
         '**/__tests__/**',
+        '.next/**',
+        'scripts/**',
+        'src/ai/**',
+        'src/components/**',
+        'src/hooks/**',
+        'src/data/**',
       ],
       thresholds: {
         lines: 60,

@@ -1,145 +1,83 @@
 # Front_Line_Whanau
 
-**Front Line Families Support Hub NZ**  
-A sovereign, privacy-first digital platform supporting families of preterm twins in Aotearoa New Zealand.
+**Open-Source National Frontline Whānau Support Platform – Aotearoa New Zealand**
 
-Built with **rangatiratanga**, cultural safety, and legal compliance at its core.
+A sovereign, privacy-first digital platform designed to support whānau of preterm twins and families navigating complex frontline services across Aotearoa New Zealand.
 
----
+## The 5 W's
 
-## Why This Project Exists
+**Who**  
+Whānau (parents, caregivers, and extended families), practitioners, doctors, midwives, social workers, and frontline organisations — with a strong focus on Māori, Pacific, and rural communities.
 
-Families of preterm twins face overwhelming challenges — fragmented information, complex application processes for financial support, housing stress, and significant emotional and mental health impacts.
+**What**  
+A unified, searchable national platform that brings together information and services from multiple organisations into one place. It features role-based experiences (Parent/Whānau and Practitioner/Organisation portals), self-service uploads, encrypted local storage, and AI-assisted curation.
 
-This platform exists to reduce that burden by providing clear, personalised, and culturally safe support **before, during, and after** the neonatal journey.
+**Why**  
+Frontline whānau often face fragmented services, information overload, navigation fatigue, and equity gaps. This platform reduces complexity while prioritising cultural safety and data sovereignty.
 
----
+**When**  
+MVP targeted for the next 4–8 weeks, with ongoing development toward national adoption.
 
-## The 5 W's – Problems We Are Solving
+**Where**  
+Nationwide across Aotearoa New Zealand, available as Web, Desktop (Tauri), and Progressive Web App (PWA).
 
-### Why (The Problem)
+## Problems We Are Solving
 
-- Fragmented and hard-to-access support information
-- Complex WINZ and IRD application processes
-- High stress and trauma during NICU stays
-- Limited culturally safe and coordinated support
+- Fragmented support across many organisations (Health NZ, Little Miracles Trust, Plunket, iwi providers, etc.)
+- Information overload during high-stress periods (e.g. NICU journeys)
+- Lack of role-specific experiences for parents vs practitioners
+- No central, up-to-date searchable directory
+- Difficulty for organisations to keep their information current
+- Equity gaps for Māori, Pacific, and rural whānau
+- Limited integration of lived experience with evidence-based resources
 
-### What (The Solution)
+## Features
 
-A sovereign, privacy-first digital platform offering:
+- **Dual Portals**: Tailored experiences for whānau/parents and practitioners/organisations
+- **Searchable National Directory**: Filter by region, organisation, service type, and role
+- **Self-Service Uploads**: Organisations can submit and update their details (moderated)
+- **Privacy-First Storage**: Client-side encryption (Taonga Vault) with consent-driven access
+- **Cultural Safety**: Strong alignment with Te Tiriti o Waitangi and Te Mana Raraunga
+- **AI Agent Support**: Specialised agents for research, translation, and curation
 
-- Personalised support pathways
-- Intelligent form pre-filling
-- Secure document storage (Taonga Vault)
-- Independent Client-Side Documentor
-- Services directory with real-world contacts
+## Tech Stack
 
-### Who
+- **Frontend**: Next.js 15 (App Router) + TypeScript + Tailwind CSS + shadcn/ui
+- **Cross-Platform**: Tauri 2 (Desktop) + PWA (Mobile)
+- **Backend & Data**: Supabase (Postgres + pgvector + Auth)
+- **AI Agents**: LangGraph-powered multi-agent system
+- **Testing**: Vitest + Playwright
+- **CI/CD**: GitHub Actions
 
-**Primary**: Front Line Families of preterm twins and extended whānau  
-**Secondary**: Neonatal teams, social workers, midwives, and support organisations
+## Directory Structure
 
-### Where (Real-World Application Examples)
+```text
+Front_Line_Whanau/
+├── .github/workflows/     # CI/CD pipelines
+├── docs/                  # Architecture, roadmap, guides
+├── agents/                # AI agent definitions
+├── src/
+│   ├── app/               # Next.js routes & pages
+│   ├── components/        # UI components
+│   ├── features/          # Domain features (directory, uploads, etc.)
+│   ├── lib/               # Utilities (encryption, consent, etc.)
+│   └── ai/                # AI agent logic
+├── supabase/              # Database schema & migrations
+└── vitest.config.ts       # Test configuration
+```
 
-- Applying for Preterm Baby Payment while baby is in NICU
-- Managing housing repairs or tenancy issues after discharge
-- Coordinating Home Help and financial support
-- Accessing mental health resources (PlunketLine, 1737)
-- Enabling extended whānau to assist with documentation
+## Requirements
 
-### How
+- **Node.js** ≥ 22
+- npm (or pnpm/yarn)
 
-- Sovereign Edge AI + client-side first architecture
-- Multi-agent system (Aether Summit + 3 specialist agents)
-- Strong alignment with Te Tiriti o Waitangi and Te Mana Raraunga principles
-- Clear informed consent and legal compliance
+We recommend using [nvm](https://github.com/nvm-sh/nvm) to manage Node versions.
 
----
-
-## Values & Governance
-
-The **Front Line Families Support Hub NZ** is founded on a commitment to **rangatiratanga**, cultural safety, legal compliance, and balanced protection for both families and practitioners.
-
-### Core Values
-
-- **Rangatiratanga & Whānau Sovereignty** — Front Line Families retain final decision-making.
-- **Kaitiakitanga** — Responsible guardianship of data as taonga.
-- **Inclusivity & Non-Discrimination** — Open to all families regardless of background or family structure.
-- **Extended Whānau** — Recognition of grandparents, siblings, and chosen family.
-- **Respect for All Cultures** — Supports diverse beliefs while grounded in Te Tiriti o Waitangi.
-
-### Regulatory Compliance
-
-Fully aligned with:
-
-- Privacy Act 2020 & Health Information Privacy Code 2020
-- Oranga Tamariki Act 1989
-- Care of Children Act 2004
-- Health Practitioners Competence Assurance Act 2003
-
-### Māori Data Sovereignty
-
-Aligned with **Te Mana Raraunga** principles and **Te Tiriti o Waitangi**.
-
-### Sovereign AI & Privacy-First Design
-
-- Client-side / Edge-first by default
-- Strong encryption with user control
-- Transparent consent flows
-
-### Protection of Front Line Families & Practitioners
-
-- Informed consent is final
-- Strong safeguards for vulnerable whānau
-- Professional autonomy and good faith protections for practitioners
-
----
-
-## Key Features
-
-- Personalised support pathways
-- Intelligent form pre-filling (WINZ, IRD, Housing)
-- Secure multi-modal document storage (Taonga Vault)
-- Independent Client-Side Documentor
-- Taranaki + National services directory
-- Trauma-informed and culturally grounded design
-
-## Architecture (current state)
-
-This is a **Next.js (App Router)** application that currently runs **entirely
-client-side**. All encryption, storage, consent, and AI routing happen in the
-browser. There is no server component yet.
-
-- `src/app/`        Next.js routes and layout
-- `src/components/`  UI (Dashboard, Hero, Values, etc.)
-- `src/lib/`         Encryption, consent, passphrase logic
-- `src/hooks/`       Encrypted storage / journal / consent hooks
-- `src/ai/`          Aether Summit orchestrator + specialist agents
-- `src/data/`        Entitlement + directory reference data
-
-### What is real today
-
-- AES-256-GCM client-side encryption (Web Crypto), per-vault key derivation
-- Granular, on-device consent with a key-verifiable audit log
-- AI agents return **dated, officially-sourced** entitlement info (no live LLM yet)
-
-### Planned (not yet implemented)
-
-- Optional encrypted server sync (Supabase) — the `.env` keys and Prisma
-  scripts are scaffolding for this and are **not wired up**
-- Live LLM inference behind explicit consent
-
-> Until server sync ships, data lives only on the device. Clearing the browser
-> or losing the passphrase means the data is gone — by design.
-
----
+```bash
+nvm use
+```
 
 ## Getting Started (Development)
-
-### Prerequisites
-
-- Node.js 18+
-- Git
 
 ### Installation & Run
 
