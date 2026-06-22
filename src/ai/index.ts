@@ -23,3 +23,35 @@ export async function askAgent(query: string, userRole: "parent" | "practitioner
   return result.messages[result.messages.length - 1].content;
 }
 
+export async function askAgentWithHITL(
+  query: string, 
+  userRole: "parent" | "practitioner"
+) {
+  const config = { 
+    configurable: { thread_id: "user-session-123" } // Unique per user/session
+  };
+
+  let result = (await agentApp.invoke(
+    {
+      messages: [new HumanMessage(query)],
+      userRole,
+      query,
+    },
+    config
+  )) as any;
+
+  // Check if we hit a human review interrupt
+  if (result.__interrupt__) {
+    return {
+      status: "needs_review",
+      interrupt: result.__interrupt__[0].value,
+      threadId: config.configurable.thread_id,
+    };
+  }
+
+  return {
+    status: "complete",
+    response: result.messages[result.messages.length - 1].content,
+  };
+}
+
