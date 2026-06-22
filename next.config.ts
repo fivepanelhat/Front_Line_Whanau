@@ -1,21 +1,12 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  reactStrictMode: true,
+  output: 'export',           // Required for Tauri
+  distDir: 'out',             // Tauri will use this folder
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**.supabase.co',
-      },
-    ],
+    unoptimized: true,
   },
-  // Experimental features for Next.js 15
-  experimental: {
-    serverActions: {
-      bodySizeLimit: '2mb',
-    },
-  },
+  trailingSlash: true,        // Recommended for static export
 };
 
 export default nextConfig;

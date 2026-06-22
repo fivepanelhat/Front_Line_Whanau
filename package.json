@@ -7,17 +7,13 @@
   },
   "description": "A sovereign, privacy-first digital platform supporting whānau of preterm twins navigating complex frontline services in Aotearoa New Zealand. Built with client-side encryption (Taonga Vault), Te Tiriti alignment, and LangGraph-powered AI orchestration.",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "type-check": "tsc --noEmit",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "test:ci": "vitest run --coverage --reporter=verbose",
-    "test:e2e": "playwright test",
-    "docs:directory": "tsx scripts/generate-directory-doc.ts"
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
+    "tauri:build:windows": "tauri build --target x86_64-pc-windows-msvc",
+    "tauri:build:linux": "tauri build --target x86_64-unknown-linux-gnu"
   },
   "keywords": [
     "preterm-twins",
@@ -36,16 +32,18 @@
   "dependencies": {
     "@langchain/community": "^1.1.29",
     "@langchain/core": "^1.2.0",
+    "@langchain/google-genai": "^2.2.0",
     "@langchain/langgraph": "^1.4.4",
-    "@langchain/openai": "^1.5.1",
     "@prisma/client": "^6.8.0",
     "@supabase/supabase-js": "^2.108.2",
-    "next": "^15.3.0",
+    "@tauri-apps/api": "^2.11.1",
+    "next": "^16.2.9",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.52.0",
+    "@tauri-apps/cli": "^2.11.3",
     "@types/node": "^22.15.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",

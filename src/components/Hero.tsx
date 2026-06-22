@@ -1,5 +1,5 @@
 interface HeroProps {
-  onLaunchHub: () => void;
+  onLaunchHub?: () => void;
 }
 
 export function Hero({ onLaunchHub }: HeroProps) {

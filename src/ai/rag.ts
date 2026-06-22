@@ -1,19 +1,31 @@
 import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
-import { OpenAIEmbeddings } from "@langchain/openai";
+import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+let vectorStoreInstance: SupabaseVectorStore | null = null;
 
-export const vectorStore = new SupabaseVectorStore(new OpenAIEmbeddings(), {
-  client: supabase,
-  tableName: "documents",
-  queryName: "match_documents",
-});
+export function getVectorStore(): SupabaseVectorStore {
+  if (!vectorStoreInstance) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "placeholder-key";
+    
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    vectorStoreInstance = new SupabaseVectorStore(new GoogleGenerativeAIEmbeddings({ model: "gemini-embedding-2" }), {
+      client: supabase,
+      tableName: "documents",
+      queryName: "match_documents",
+    });
+  }
+  return vectorStoreInstance;
+}
 
 export async function retrieveRelevantContext(query: string, k = 6): Promise<string> {
-  const docs = await vectorStore.similaritySearch(query, k);
-  return docs.map((doc) => doc.pageContent).join("\n\n---\n\n");
+  try {
+    const store = getVectorStore();
+    const docs = await store.similaritySearch(query, k);
+    return docs.map((doc) => doc.pageContent).join("\n\n---\n\n");
+  } catch (error) {
+    console.warn("RAG retrieval failed (possibly due to missing API keys/DB connection):", error);
+    return "No relevant context found.";
+  }
 }

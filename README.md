@@ -1,6 +1,6 @@
 # Front_Line_Whanau
 
-**Open-Source National Frontline Whānau Support Platform – Aotearoa New Zealand**
+Open-Source National Frontline Whānau Support Platform – Aotearoa New Zealand
 
 A sovereign, privacy-first digital platform designed to support whānau of preterm twins and families navigating complex frontline services across Aotearoa New Zealand.
 
@@ -87,3 +87,14 @@ cd Front_Line_Whanau
 npm install
 npm run dev
 ```
+
+### Tauri Desktop Commands
+
+After setup, you can use these commands:
+
+| Command | Platform | What it does |
+| --------- | ---------- | -------------- |
+| `npm run tauri:dev` | Windows/Linux | Run desktop app in development mode |
+| `npm run tauri:build` | Current OS | Build for current operating system |
+| `npm run tauri:build:windows` | Any | Build Windows installer (.msi) |
+| `npm run tauri:build:linux` | Any | Build Linux AppImage + .deb |

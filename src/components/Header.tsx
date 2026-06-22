@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 interface HeaderProps {
-  onLaunchHub: () => void;
+  onLaunchHub?: () => void;
 }
 
 export function Header({ onLaunchHub }: HeaderProps) {

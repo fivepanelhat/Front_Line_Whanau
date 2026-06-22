@@ -1,20 +1,32 @@
 import { BaseMessage, SystemMessage, HumanMessage } from "@langchain/core/messages";
-import { ChatOpenAI } from "@langchain/openai";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { AgentConfig, AgentState } from "../types";
+import { getRoleAwareSystemPrompt } from "../utils/prompts";
+import { ResponseStyleGuide } from "../tools/response-style-guide";
 
 export abstract class BaseAgent {
-  protected llm = new ChatOpenAI({
-    model: "gpt-4o-mini",
-    temperature: 0.3,
-  });
+  protected llm: ChatGoogleGenerativeAI;
 
-  constructor(protected config: AgentConfig) {}
+  constructor(protected config: AgentConfig) {
+    this.llm = new ChatGoogleGenerativeAI({
+      model: "gemini-2.5-flash",           // Fast and capable
+      temperature: 0.7,
+      apiKey: process.env.GOOGLE_API_KEY,
+    });
+  }
 
   abstract getSystemPrompt(state: AgentState): string;
 
   async invoke(state: AgentState): Promise<Partial<AgentState>> {
+    const roleAwarePrompt = getRoleAwareSystemPrompt(
+      this.getSystemPrompt(state),
+      state.userRole
+    );
+
+    const fullSystemPrompt = `${ResponseStyleGuide}\n\n${roleAwarePrompt}`;
+
     const messages: BaseMessage[] = [
-      new SystemMessage(this.getSystemPrompt(state)),
+      new SystemMessage(fullSystemPrompt),
       ...state.messages,
     ];
 

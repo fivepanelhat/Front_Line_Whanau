@@ -1,20 +1,9 @@
 import { StateGraph, END, interrupt } from "@langchain/langgraph";
-import { AgentState } from "./types";
+import { AgentState, AgentStateAnnotation } from "./types";
 import { AetherSummit } from "./agents/aether-summit";
 import { retrieveRelevantContext } from "./rag";
 
-const graph = new StateGraph<AgentState>({
-  channels: {
-    messages: { value: (x, y) => x.concat(y), default: () => [] },
-    currentAgent: { value: (x, y) => y ?? x },
-    userRole: { value: (x, y) => y ?? x },
-    query: { value: (x, y) => y ?? x },
-    context: { value: (x, y) => y ?? x },
-    results: { value: (x, y) => y ?? x },
-    needsHumanReview: { value: (x, y) => y ?? x },
-    humanApproved: { value: (x, y) => y ?? x },
-  },
-});
+const graph = new StateGraph(AgentStateAnnotation);
 
 const aetherSummit = new AetherSummit();
 

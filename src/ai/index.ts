@@ -12,13 +12,14 @@ export * from "./agents/tautoko-kaiwhina";
 
 import { agentApp } from "./graph";
 import { HumanMessage } from "@langchain/core/messages";
+import { UserRole } from "./types";
 
-export async function askAgent(query: string, userRole: "parent" | "practitioner" | "organisation") {
-  const result = (await agentApp.invoke({
+export async function askAgent(query: string, userRole: UserRole) {
+  const result = await agentApp.invoke({
     messages: [new HumanMessage(query)],
     userRole,
     query,
-  })) as any;
+  }) as any;
 
   return result.messages[result.messages.length - 1].content;
 }

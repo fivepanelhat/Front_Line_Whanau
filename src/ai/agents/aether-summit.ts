@@ -51,9 +51,11 @@ export class AetherSummit extends BaseAgent {
     const agent = this.agents[selectedAgent as keyof typeof this.agents];
     const result = await agent.invoke(state);
 
+    // Optional: Add role context to final response
     return {
       ...result,
       currentAgent: "aether_summit",
+      // You can store role-specific metadata here if needed
     };
   }
 }
