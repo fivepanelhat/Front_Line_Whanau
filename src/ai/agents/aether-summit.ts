@@ -4,6 +4,7 @@ import { KaitiakiCrawler } from "./kaitiaki-crawler";
 import { RangahauHauora } from "./rangahau-hauora";
 import { ManaAwhina } from "./mana-awhina";
 import { ArohaTohunga } from "./aroha-tohunga";
+import { TautokoKaiwhina } from "./tautoko-kaiwhina";
 
 export class AetherSummit extends BaseAgent {
   private agents = {
@@ -11,6 +12,7 @@ export class AetherSummit extends BaseAgent {
     rangahau_hauora: new RangahauHauora(),
     mana_awhina: new ManaAwhina(),
     aroha_tohunga: new ArohaTohunga(),
+    tautoko_kaiwhina: new TautokoKaiwhina(),
   };
 
   constructor() {
@@ -28,10 +30,13 @@ export class AetherSummit extends BaseAgent {
   async invoke(state: AgentState): Promise<Partial<AgentState>> {
     // Simple routing logic (can be made smarter later)
     let agentToUse = "kaitiaki_crawler";
+    const queryLower = state.query?.toLowerCase() || "";
 
-    if (state.query?.toLowerCase().includes("medical") || state.query?.toLowerCase().includes("health")) {
+    if (queryLower.includes("financial") || queryLower.includes("winz") || queryLower.includes("payment") || queryLower.includes("entitlement") || queryLower.includes("support")) {
+      agentToUse = "tautoko_kaiwhina";
+    } else if (queryLower.includes("medical") || queryLower.includes("health")) {
       agentToUse = state.userRole === "parent" ? "aroha_tohunga" : "rangahau_hauora";
-    } else if (state.userRole === "parent" || state.query?.toLowerCase().includes("cultural")) {
+    } else if (state.userRole === "parent" || queryLower.includes("cultural")) {
       agentToUse = "mana_awhina";
     }
 

@@ -8,6 +8,7 @@ export * from "./agents/kaitiaki-crawler";
 export * from "./agents/rangahau-hauora";
 export * from "./agents/mana-awhina";
 export * from "./agents/aroha-tohunga";
+export * from "./agents/tautoko-kaiwhina";
 
 import { agentApp } from "./graph";
 import { HumanMessage } from "@langchain/core/messages";
