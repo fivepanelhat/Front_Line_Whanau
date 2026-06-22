@@ -1,20 +1,17 @@
-import { agentApp } from "../src/ai/graph";
-import { AgentState } from "../src/ai/types";
-import { HumanMessage } from "@langchain/core/messages";
+import { askAgent } from "../src/ai";
 
 async function main() {
-  console.log("Invoking LangGraph workflow...");
+  console.log("Calling askAgent helper...");
   try {
-    const result = (await agentApp.invoke({
-      messages: [new HumanMessage("What financial support is available for parents of preterm twins?")],
-      userRole: "parent",
-      query: "What financial support is available for parents of preterm twins?",
-    })) as any;
+    const answer = await askAgent(
+      "What financial support is available for parents of preterm twins?",
+      "parent"
+    );
 
     console.log("\nResponse:\n");
-    console.log(result.messages[result.messages.length - 1].content);
+    console.log(answer);
   } catch (error) {
-    console.error("Error invoking graph:", error);
+    console.error("Error asking agent:", error);
   }
 }
 
