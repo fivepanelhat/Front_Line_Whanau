@@ -9,9 +9,9 @@
 - [x] Basic AI agent structure (`src/ai/`)
 - [x] Vitest + CI setup
 - [x] Consistent Node.js 22 enforcement
-- [ ] Dual Portal UI (Parent vs Practitioner)
+- [x] Dual Portal UI (Parent vs Practitioner)
 - [ ] Organisation self-service upload flow
-- [ ] Connect Supabase (optional sync)
+- [x] Connect Supabase (optional sync)
 
 ## Phase 1: MVP (Target: July – August 2026)
 
@@ -47,9 +47,9 @@
 
 ## Key Milestones
 
-| Milestone              | Target Date     | Status     |
-|------------------------|------------------|------------|
-| Dual Portals MVP       | July 2026        | In Progress |
-| Full Agent Swarm + RAG | August 2026      | Planned    |
-| Public Beta            | October 2026     | Planned    |
-| National Partnerships  | Q1 2027          | Planned    |
+| Milestone              | Target Date  | Status      |
+|------------------------|--------------|-------------|
+| Dual Portals MVP       | July 2026    | In Progress |
+| Full Agent Swarm + RAG | August 2026  | Planned     |
+| Public Beta            | October 2026 | Planned     |
+| National Partnerships  | Q1 2027      | Planned     |
