@@ -10,6 +10,7 @@ export interface AgentState {
   context?: string;
   results?: any[];
   needsHumanReview?: boolean;
+  humanApproved?: boolean;
 }
 
 export interface AgentConfig {
