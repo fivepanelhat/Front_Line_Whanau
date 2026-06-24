@@ -5,10 +5,8 @@
    original design system. Trauma-informed, culturally grounded.
    ============================================================ */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
 /* ── Base Layer ─────────────────────────────────────────────── */
 @layer base {
   @media (prefers-reduced-motion: reduce) {
