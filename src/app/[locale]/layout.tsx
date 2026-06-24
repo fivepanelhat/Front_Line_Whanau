@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { defaultLocale } from '@/i18n';
 import { RoleProvider } from '@/context';
+import { Header } from '@/components/Header';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit', display: 'swap', weight: ['400','500','600','700'] });
@@ -27,7 +28,10 @@ export default async function LocaleLayout(props: {
       <body className={`${inter.variable} ${outfit.variable} font-body antialiased min-h-screen overflow-x-hidden bg-bg-primary text-base leading-relaxed text-text-primary`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <RoleProvider>
-            {children}
+            <Header />
+            <div className="pt-[72px]">
+              {children}
+            </div>
           </RoleProvider>
         </NextIntlClientProvider>
       </body>

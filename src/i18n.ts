@@ -1,15 +1,9 @@
 import { getRequestConfig } from 'next-intl/server';
 import { getUserLocale } from './lib/locale';
+import { locales, defaultLocale } from './lib/locale-config';
 
-export const locales = ['en-NZ', 'mi'] as const;
-export type Locale = (typeof locales)[number];
-
-export const defaultLocale: Locale = 'en-NZ';
-
-export const localeNames: Record<Locale, string> = {
-  'en-NZ': 'English (NZ)',
-  mi: 'Te Reo Māori',
-};
+export { locales, defaultLocale, localeNames } from './lib/locale-config';
+export type { Locale } from './lib/locale-config';
 
 export default getRequestConfig(async () => {
   const locale = await getUserLocale();

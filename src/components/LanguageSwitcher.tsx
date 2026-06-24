@@ -2,7 +2,7 @@
 
 import { useTransition } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { locales, localeNames, Locale } from '@/i18n';
+import { locales, localeNames, Locale } from '@/lib/locale-config';
 import { switchLocale } from '@/lib/actions/locale';
 
 /**

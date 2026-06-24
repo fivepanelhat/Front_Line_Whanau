@@ -1,4 +1,4 @@
-import { Locale, defaultLocale, locales } from '@/i18n';
+import { Locale, defaultLocale, locales } from './locale-config';
 import { cookies } from 'next/headers';
 
 export function isValidLocale(locale: string): locale is Locale {

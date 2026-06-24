@@ -16,13 +16,14 @@ test.describe('Language switcher', () => {
   });
 
   test('EN button is marked active (aria-pressed=true) on en-NZ route', async ({ page }) => {
-    const enButton = page.getByRole('button', { name: /en/i }).first();
+    const enButton = page.locator('#language-switcher').getByRole('button', { name: /en/i }).first();
     await expect(enButton).toHaveAttribute('aria-pressed', 'true');
   });
 
   test('both locale buttons are present', async ({ page }) => {
-    await expect(page.getByText('EN')).toBeVisible();
-    await expect(page.getByText('Te Reo')).toBeVisible();
+    const switcher = page.locator('#language-switcher');
+    await expect(switcher.getByRole('button', { name: /en/i })).toBeVisible();
+    await expect(switcher.getByRole('button', { name: /te reo/i })).toBeVisible();
   });
 
   test('page is navigable at /mi route', async ({ page }) => {
