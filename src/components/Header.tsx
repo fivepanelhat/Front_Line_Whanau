@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 interface HeaderProps {
   onLaunchHub?: () => void;
@@ -63,6 +64,9 @@ export function Header({ onLaunchHub }: HeaderProps) {
             </li>
           </ul>
         </nav>
+
+        {/* Language Switcher */}
+        <LanguageSwitcher />
 
         {/* Privacy Badge */}
         <div className="privacy-badge" id="privacy-badge">

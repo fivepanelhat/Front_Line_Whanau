@@ -11,6 +11,15 @@
 
 /* ── Base Layer ─────────────────────────────────────────────── */
 @layer base {
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   html {
     scroll-behavior: smooth;
   }
@@ -26,6 +35,7 @@
 
   a {
     @apply text-accent-secondary transition-colors duration-150;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary rounded-sm;
   }
 
   a:hover {
@@ -34,6 +44,7 @@
 
   button {
     @apply cursor-pointer border-none bg-transparent font-body;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary rounded-sm;
   }
 }
 

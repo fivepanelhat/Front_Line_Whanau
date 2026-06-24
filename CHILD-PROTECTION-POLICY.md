@@ -76,7 +76,7 @@ The AI agent system (Aether Summit and specialist agents) is configured to:
 
 ## Escalation Pathway
 
-```
+```text
 Concern Identified
         │
         ▼

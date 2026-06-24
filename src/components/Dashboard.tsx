@@ -121,7 +121,7 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     const saved = localStorage.getItem('flw-pathway-progress');
     if (saved) {
-      try { setPathwayProgress(JSON.parse(saved)); } catch {}
+      try { setPathwayProgress(JSON.parse(saved)); } catch (e) { /* ignore parser error */ }
     }
   }, []);
 
@@ -144,7 +144,7 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
     if (isVaultUnlocked) {
       const saved = localStorage.getItem('flw-vault-files');
       if (saved) {
-        try { setVaultFiles(JSON.parse(saved)); } catch {}
+        try { setVaultFiles(JSON.parse(saved)); } catch (e) { /* ignore parser error */ }
       }
     }
   }, [isVaultUnlocked]);

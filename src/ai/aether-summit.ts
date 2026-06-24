@@ -1,13 +1,50 @@
+import 'server-only';
 import { TaongaKnowledgeWeaver } from "./knowledge-weaver";
 import { WhanauPathwayArchitect } from "./pathway-architect";
 import { SovereignExecutor } from "./executor";
 import { AgentResponse, OrchestrationContext } from "./types";
 import { checkGuardrails } from "./guardrails";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 
 export class AetherSummit {
   private knowledgeWeaver = new TaongaKnowledgeWeaver();
   private pathwayArchitect = new WhanauPathwayArchitect();
   private executor = new SovereignExecutor();
+
+  async classifyIntent(query: string): Promise<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'COMPLEX'> {
+    if (!process.env.GOOGLE_API_KEY) {
+      // Stub mode / fallback
+      if (this.isResearchQuery(query)) return 'RESEARCH';
+      if (this.isPlanningQuery(query)) return 'PLANNING';
+      if (this.isExecutionQuery(query)) return 'EXECUTION';
+      return 'COMPLEX';
+    }
+
+    try {
+      const llm = new ChatGoogleGenerativeAI({
+        model: "gemini-1.5-flash",
+        temperature: 0,
+      });
+      
+      const prompt = `Classify the following query from a family seeking support. 
+Return ONLY one of the following exact strings:
+RESEARCH (if asking for information, facts, amounts, eligibility)
+PLANNING (if asking for steps, pathways, advice, what to do)
+EXECUTION (if asking to fill a form, generate a template, or apply)
+COMPLEX (if it involves multiple of the above or is general)
+
+Query: "${query}"`;
+      
+      const response = await llm.invoke(prompt);
+      const text = (response.content as string).trim().toUpperCase();
+      if (['RESEARCH', 'PLANNING', 'EXECUTION', 'COMPLEX'].includes(text)) {
+        return text as any;
+      }
+      return 'COMPLEX';
+    } catch (e) {
+      return 'COMPLEX';
+    }
+  }
 
   async orchestrate(context: OrchestrationContext): Promise<AgentResponse> {
     const { userQuery, consentGiven = false } = context;
@@ -24,19 +61,23 @@ export class AetherSummit {
     const query = userQuery.toLowerCase();
     let response: AgentResponse;
 
-    if (this.isResearchQuery(query)) {
+    const intent = await this.classifyIntent(query);
+
+    if (intent === 'RESEARCH') {
       response = await this.knowledgeWeaver.process(userQuery, context);
     } 
-    else if (this.isPlanningQuery(query)) {
+    else if (intent === 'PLANNING') {
       response = await this.pathwayArchitect.process(userQuery, context);
     } 
-    else if (this.isExecutionQuery(query)) {
+    else if (intent === 'EXECUTION') {
       response = await this.executor.process(userQuery, context);
     } 
     else {
       // Multi-agent synthesis for complex/general queries
-      const research = await this.knowledgeWeaver.process(userQuery, context);
-      const plan = await this.pathwayArchitect.process(userQuery, context);
+      const [research, plan] = await Promise.all([
+        this.knowledgeWeaver.process(userQuery, context),
+        this.pathwayArchitect.process(userQuery, context)
+      ]);
 
       response = {
         content: this.synthesize(research.content, plan.content),

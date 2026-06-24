@@ -1,11 +1,14 @@
-import { defineConfig } from 'vitest/config'
-import path from 'path'
+import { defineConfig } from 'vitest/config';
+import react from '@vitejs/plugin-react';
+import path from 'path';
+
+const alias = { '@': path.resolve(__dirname, './src') };
 
 export default defineConfig({
+  plugins: [react()],
   test: {
-    environment: 'node',
     globals: true,
-    setupFiles: ['./vitest.setup.ts'], // Optional: for testing-library setup
+    setupFiles: ['./vitest.setup.ts'],
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
     exclude: [
       'node_modules',
@@ -14,13 +17,38 @@ export default defineConfig({
       'coverage',
       '**/*.e2e.{ts,tsx}',
     ],
+
+    // Run lib/server tests in node; component tests in jsdom
+    projects: [
+      {
+        test: {
+          name: 'node',
+          globals: true,
+          environment: 'node',
+          include: ['src/__tests__/lib/**/*.{test,spec}.{ts,tsx}'],
+        },
+        resolve: { alias },
+      },
+      {
+        plugins: [react()],
+        test: {
+          name: 'components',
+          globals: true,
+          environment: 'jsdom',
+          include: ['src/__tests__/components/**/*.{test,spec}.{ts,tsx}'],
+          setupFiles: ['./vitest.setup.ts'],
+        },
+        resolve: { alias },
+      },
+    ],
+
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
       reportsDirectory: './coverage',
       exclude: [
         'node_modules/',
-        'src/app/**',           // App Router pages (usually not unit tested)
+        'src/app/**',
         '**/*.d.ts',
         '**/*.config.*',
         '**/coverage/**',
@@ -28,21 +56,15 @@ export default defineConfig({
         '.next/**',
         'scripts/**',
         'src/ai/**',
-        'src/components/**',
-        'src/hooks/**',
         'src/data/**',
       ],
       thresholds: {
-        lines: 60,
-        functions: 60,
-        branches: 50,
-        statements: 60,
+        lines: 70,
+        functions: 70,
+        branches: 60,
+        statements: 70,
       },
     },
   },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
-})
+  resolve: { alias },
+});
