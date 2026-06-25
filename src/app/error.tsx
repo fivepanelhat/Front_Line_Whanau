@@ -14,12 +14,12 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-8 text-center">
+    <div className="flex flex-col items-center justify-center py-16 text-center">
       <h2 className="text-2xl font-semibold">Something went wrong</h2>
-      <p className="mt-2 text-muted">We’ve logged the issue. Please try again.</p>
+      <p className="mt-2 text-text-secondary">We've logged this issue.</p>
       <button
         onClick={() => reset()}
-        className="mt-6 rounded-lg bg-accent-primary px-6 py-2 text-white hover:opacity-90"
+        className="mt-6 rounded-lg bg-accent-primary px-6 py-2 text-white"
       >
         Try again
       </button>

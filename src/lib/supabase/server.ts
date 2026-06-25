@@ -1,6 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
-import { env } from '@/lib/env';
+import { env } from '@/env';
 
 /**
  * Server-side Supabase client (anon key, respects RLS).
