@@ -1,63 +1,47 @@
 'use client';
 
-import { useTransition } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
-import { locales, localeNames, Locale } from '@/lib/locale-config';
-import { switchLocale } from '@/lib/actions/locale';
+import { useLocale } from 'next-intl';
+import { useRouter, usePathname } from 'next/navigation';
+import { locales, localeNames } from '@/lib/locale-config';
 
-/**
- * LanguageSwitcher
- *
- * Renders a respectful toggle between English (NZ) and Te Reo Māori.
- * Design decisions:
- * - Both language names appear in their own language (never "Maori" in English
- *   mode — it's always "Te Reo Māori") to respect mana of te reo.
- * - Uses a pill toggle rather than a dropdown to keep it lightweight and
- *   accessible.
- * - Disabled during the transition to prevent double-clicks.
- * - aria-pressed reflects the active locale clearly for screen readers.
- */
+// Inline lightweight class join helper to replace external tailwind-merge dependency
+function cn(...inputs: (string | boolean | undefined)[]) {
+  return inputs.filter(Boolean).join(' ');
+}
+
 export function LanguageSwitcher() {
-  const locale = useLocale() as Locale;
-  const t = useTranslations('languageSwitcher');
-  const [isPending, startTransition] = useTransition();
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
 
-  function handleSwitch(next: Locale) {
-    if (next === locale) return;
-    startTransition(async () => {
-      await switchLocale(next);
-    });
-  }
+  const handleLocaleChange = (newLocale: string) => {
+    const newPath = pathname.replace(`/${locale}`, `/${newLocale}`);
+    router.push(newPath);
+  };
 
   return (
-    <div
-      role="group"
-      aria-label={t('label')}
-      className="flex items-center gap-1 rounded-full border border-white/15 bg-white/5 p-1 backdrop-blur-sm"
-      id="language-switcher"
-    >
-      {locales.map((l) => {
-        const isActive = l === locale;
+    <div className="inline-flex rounded-xl border border-border bg-bg-primary p-1 shadow-sm">
+      {locales.map((loc) => {
+        const isActive = locale === loc;
         return (
           <button
-            key={l}
-            onClick={() => handleSwitch(l)}
-            disabled={isPending}
-            {...(isActive ? { 'aria-pressed': true } : { 'aria-pressed': false })}
-            aria-label={l === 'mi' ? t('choosingMaori') : t('choosingEnglish')}
-            className={[
-              'rounded-full px-3 py-1 text-xs font-semibold transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-primary',
+            key={loc}
+            onClick={() => handleLocaleChange(loc)}
+            className={cn(
+              'rounded-lg px-4 py-1.5 text-sm font-medium transition-all duration-200',
               isActive
                 ? 'bg-accent-primary text-white shadow-sm'
-                : 'text-text-secondary hover:text-text-primary disabled:opacity-50',
-            ].join(' ')}
+                : 'text-text-secondary hover:bg-bg-secondary hover:text-text-primary'
+            )}
+            aria-current={isActive ? 'true' : undefined}
+            aria-label={`Switch to ${localeNames[loc]}`}
           >
-            {/* Always display the language name in that language itself */}
-            {l === 'mi' ? 'Te Reo' : 'EN'}
-            <span className="sr-only"> — {localeNames[l]}</span>
+            {localeNames[loc]}
           </button>
         );
       })}
     </div>
   );
 }
+
+export default LanguageSwitcher;

@@ -6,15 +6,16 @@
     "submit": "Tukuna",
     "cancel": "Whakakore",
     "save": "Tiaki",
-    "back": "Hoki",
     "close": "Katia",
-    "learnMore": "Mōhiotia ake",
+    "back": "Hoki",
+    "next": "Panuku",
     "privacy": "Kei te tiakina tō tūmataiti",
-    "notMedicalAdvice": "He mea hōhonu tēnei papatono hei tautoko māramatanga me te tautoko ā-hoa — ehara i te whakakapi mō te tohutohu hauora ngaio. Me kimi tonu i ō kaitiaki hauora.",
+    "notMedicalAdvice": "Ehara tēnei i te whakakapi mō te tohutohu hauora ngaio. Tēnā koa kōrero ki tō tīma hauora.",
     "privacyFirst": "Tūmataiti Tuatahi",
     "sovereignData": "Ka noho tō raraunga ki Aotearoa",
     "error": "He hapa kē tēnei. Ngana anō.",
-    "errorContact": "Mēnā ka haere tonu tēnei, whakapā atu ki tō rōpū tiaki hauora."
+    "errorContact": "Mēnā ka haere tonu tēnei, whakapā atu ki tō rōpū tiaki hauora.",
+    "culturalSafety": "Kua hangaia tēnei papaaho i runga i ngā mātāpono o Te Tiriti o Waitangi me te haumaru ahurea."
   },
   "navigation": {
     "home": "Kāinga",
@@ -25,7 +26,9 @@
     "features": "Ngā Āhuatanga",
     "values": "Ō Mātou Uara",
     "launchHub": "Whakaekea te Puna",
-    "skipToContent": "Tere atu ki ngā ihirangi matua"
+    "skipToContent": "Tere atu ki ngā ihirangi matua",
+    "login": "Takiuru",
+    "logout": "Takiputa"
   },
   "languageSwitcher": {
     "label": "Huri reo",
@@ -41,7 +44,8 @@
     "heroDescription": "He papatono motuhake, tūmataiti-tuatahi hei hono i ngā whānau o ngā pēpi matua ki ngā ratonga, ki ngā mōhiotanga, ki ētahi atu — puta noa i Aotearoa.",
     "ctaDirectory": "Tirohia te Rārangi",
     "ctaResources": "Tirohia ngā Rauemi",
-    "ctaLaunchHub": "Tomokia tō whatunga"
+    "ctaLaunchHub": "Tomokia tō whatunga",
+    "intro": "He papaaho tūmataiti hei āwhina i ngā whānau ki te whakatere i ngā ratonga me ngā mōhiohio i runga i te mana me te atawhai."
   },
   "roleSelector": {
     "title": "Nau mai, haere mai — Tūtaki",
@@ -49,16 +53,16 @@
     "parentTitle": "He Mātua / Whānau ahau",
     "parentDescription": "Kimihia he tautoko, he mōhiotanga, he arahi mō tō haerenga",
     "practitionerTitle": "He Kaimahi Hauora / Whakahaere ahau",
-    "practitionerDescription": "Uru atu ki ngā taputapu, ngā rauemi, me te whakahaere rārangi",
+    "practitionerDescription": "Access tools, resources, and directory management",
     "choosePortal": "Kōwhiria tō whatunga ki te haere tonu"
   },
   "features": {
-    "title": "I hangaia mō te whānau, e te whānau",
+    "title": "I hangaia mō te whānau, e the whānau",
     "subtitle": "I hoahoa ia āhuatanga me te haumaru ahurea me te tūmataiti i roto i tōna ngākau.",
     "privacyTitle": "Tūmataiti Motuhake",
     "privacyDescription": "Kāore tō raraunga e rere ana i Aotearoa. He whiriwhiri-mutunga me tō mana whakahaere.",
     "directoryTitle": "Rārangi ā-Motu",
-    "directoryDescription": "Kimihia ngā ratonga, ngā rōpū tautoko, me ngā tohunga i ngā rohe katoa o Aotearoa.",
+    "directoryDescription": "Kimihia ngā ratonga, ngā rōpū tautoko, me ngā tohunga i ngā wāhi katoa o Aotearoa.",
     "culturalTitle": "Haumaru Ahurea",
     "culturalDescription": "I hoahoa tahi me ōna mō ngā whānau Māori. Ngā tikanga e hāngai ana ki Te Tiriti o Waitangi i ngā wāhi katoa.",
     "supportTitle": "Tautoko ā-Hoa",
@@ -76,21 +80,23 @@
     "whanauTitle": "Whānau-Aro",
     "whanauDescription": "Ka tautokohia te whānau katoa — kaua ko te tūroro anake. Ko ngā tuākana, ko ngā hoa rangatira, ko ngā koro, ko ngā kuia hoki.",
     "tikaTitle": "Tika me Pono",
-    "tikaDescription": "He mōhiotanga tōtika, tika, e hāngai ana ki te ahurea — i ngā wā katoa.",
+    "tikaDescription": "He mōhiotanga tōtika, tika, e hāngai ana ki te ahurea — i ngā wā koa.",
     "manaakiTitle": "Manaakitanga",
     "manaakiDescription": "He tiaki pono me te manaaki i ia āhuatanga, i ia kupu, i ia whakawhitinga."
   },
   "directory": {
     "title": "Rārangi ā-Motu",
     "subtitle": "Ngā ratonga me te tautoko puta noa i Aotearoa",
-    "searchPlaceholder": "Rapua ngā ratonga, ngā whakahaere, ngā momo tautoko rānei...",
+    "searchPlaceholder": "Rapua ngā ratonga, ngā whakahaere rānei...",
     "filterRegion": "Tātari mā te rohe",
     "filterType": "Tātari mā te momo ratonga",
     "allRegions": "Ngā rohe katoa",
     "allTypes": "Ngā momo ratonga katoa",
-    "noResults": "Kāore he ratonga i kitea e hāngai ana ki tō rapu.",
+    "noResults": "Kāore he hua i kitea. Whakamātauria te whakawhānui i tō rapunga.",
     "noResultsSuggestion": "Ngana ki te whakawhanui i tō rapu, tīpakohia rānei he rohe kē atu.",
     "verifiedBadge": "Ratonga whakamana",
+    "verified": "Kua manatoko",
+    "contact": "Whakapā",
     "contactOrganisation": "Whakapā ki te whakahaere",
     "viewDetails": "Tirohia ngā taipitopito",
     "addListing": "Tāpirihia tō ratonga",
@@ -113,6 +119,11 @@
       "southland": "Murihiku / Southland"
     }
   },
+  "resources": {
+    "title": "Ngā Rauemi me ngā Arataki",
+    "searchPlaceholder": "Rapua ngā arataki me ngā rauemi...",
+    "categories": "Ngā kāwai"
+  },
   "portal": {
     "parent": {
       "welcome": "Nau mai ki tō whatunga whānau",
@@ -130,21 +141,32 @@
       "guidelines": "Ngā aratohu me ngā tikanga"
     }
   },
+  "privacy": {
+    "title": "Tūmataiti me te Rangatiratanga o ngā Raraunga",
+    "description": "Kei a koe te mana o ō raraunga. E whai ana mātou i ngā mātāpono o Te Mana Raraunga me te Ture Tūmataiti o Aotearoa.",
+    "yourData": "Ō Raraunga, Tō Mana",
+    "encryption": "Kei te whakamuna ngā tuhinga, ā, kei te tiakina pai."
+  },
   "consent": {
-    "title": "Ō kōwhiringa tūmataiti",
+    "title": "Whakaae me te Tiri",
     "subtitle": "Kei a koe te mana o ō mōhiohio. Arotakehia, hurihia hoki ō hiahia i ngā wā katoa.",
+    "manage": "Whakahaerehia ko wai ka āhei ki te kite i ō mōhiohio",
+    "records": "Ngā Tuhinga Whakaae",
     "analyticsTitle": "Tātaritanga whakamahi",
     "analyticsDescription": "Āwhina mai i a mātou ki te whakapai ake i te papatono mā te tohatoha raraunga whakamahi kore-ingoa. Kāore he mōhiohio whaiaro e kohia ana.",
     "supportTitle": "Tūhono tautoko ā-hoa",
     "supportDescription": "Tukua mātou ki te tūtohu i ngā hononga ki ētahi atu whānau i ngā āhuatanga ōrite.",
-    "grant": "Āhei",
-    "revoke": "Tangohia",
-    "granted": "Āhei ana",
-    "revoked": "Tangohia ana",
+    "grant": "Kei te pai",
+    "revoke": "Kāore e pai",
+    "granted": "Kei te whakaae ana",
+    "revoked": "Kei te whakakahore ana",
     "savedAt": "I whakahou whakamutunga",
     "disclaimer": "Ka taea e koe te huri i tō āheitanga i ngā wā katoa. Ko te huri i tō āheitanga kāore e pā ana ki ngā ratonga kua riro ke."
   },
   "errors": {
+    "somethingWrong": "I puta he hapa. Tēnā koa ngana anō.",
+    "notFound": "Kāore i kitea te whārangi",
+    "unauthorized": "Kāore i a koe te mana ki te uru ki tēnei.",
     "pageTitle": "He hapa kē tēnei",
     "pageDescription": "Kua rēhia mātou i te take, ka titiro ake.",
     "tryAgain": "Ngana anō",

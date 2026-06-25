@@ -1,92 +1,139 @@
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { LanguageSwitcher } from './LanguageSwitcher';
+import LanguageSwitcher from './LanguageSwitcher';
 
-interface HeaderProps {
-  onLaunchHub?: () => void;
-}
+export function Header() {
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
-export function Header({ onLaunchHub }: HeaderProps) {
+  const toggleMenu = () => setIsOpen(!isOpen);
+  const closeMenu = () => setIsOpen(false);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (
+        isOpen &&
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [isOpen]);
+
   return (
-    <header
-      className="fixed left-0 right-0 top-0 z-50 border-b border-white/[0.08] bg-bg-primary/85 backdrop-blur-xl transition-colors duration-250"
-      id="site-header"
-    >
-      <div className="mx-auto flex h-[72px] max-w-site items-center justify-between px-6">
+    <header className="sticky top-0 z-50 border-b border-border bg-bg-primary/95 backdrop-blur supports-[backdrop-filter]:bg-bg-primary/80">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Logo */}
-        <Link
-          href="/"
-          className="flex items-center gap-2 font-heading text-xl font-bold text-text-primary hover:text-text-primary"
-          id="logo-link"
+        <Link 
+          href="/" 
+          className="flex items-center gap-2 text-xl font-semibold tracking-tight text-text-primary"
+          onClick={closeMenu}
         >
-          <Image
-            src="/favicon.svg"
-            alt=""
-            width={36}
-            height={36}
-            className="h-9 w-9"
-            priority
-          />
-          <span>
-            Front Line <span className="text-gradient">Whānau</span>
-          </span>
+          Front Line Whānau
         </Link>
 
-        {/* Navigation */}
-        <nav aria-label="Main navigation">
-          <ul className="hidden list-none gap-8 md:flex items-center">
-            <li>
-              <a
-                href="#features"
-                className="nav-underline relative pb-1 text-sm font-medium tracking-wide text-text-secondary hover:text-text-primary"
-                id="nav-features"
-              >
-                Features
-              </a>
-            </li>
-            <li>
-              <a
-                href="#values"
-                className="nav-underline relative pb-1 text-sm font-medium tracking-wide text-text-secondary hover:text-text-primary"
-                id="nav-values"
-              >
-                Values
-              </a>
-            </li>
-            <li>
-              <button
-                onClick={onLaunchHub}
-                className="rounded-lg bg-accent-primary/20 border border-accent-primary/45 px-4 py-2 text-xs font-semibold text-accent-primary hover:bg-accent-primary hover:text-white transition-all"
-                id="nav-start"
-              >
-                Launch Hub
-              </button>
-            </li>
-          </ul>
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
+          <Link href="/directory" className="hover:text-accent-primary transition-colors">
+            Directory
+          </Link>
+          <Link href="/resources" className="hover:text-accent-primary transition-colors">
+            Resources
+          </Link>
+          <Link href="/support" className="hover:text-accent-primary transition-colors">
+            Support
+          </Link>
         </nav>
 
-        {/* Language Switcher */}
-        <LanguageSwitcher />
-
-        {/* Privacy Badge */}
-        <div className="privacy-badge" id="privacy-badge">
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-          </svg>
-          Privacy-First
+        {/* Desktop Right Side */}
+        <div className="hidden md:flex items-center gap-4">
+          <LanguageSwitcher />
+          <button className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-bg-secondary transition-colors">
+            Log in
+          </button>
         </div>
+
+        {/* Mobile Hamburger Button */}
+        <button
+          ref={buttonRef}
+          onClick={toggleMenu}
+          className="md:hidden rounded-lg p-2 hover:bg-bg-secondary transition-colors"
+          aria-label={isOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isOpen}
+        >
+          {isOpen ? (
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          )}
+        </button>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {isOpen && (
+        <div 
+          ref={menuRef}
+          className="md:hidden border-t border-border bg-bg-primary"
+        >
+          <div className="flex flex-col px-6 py-6 space-y-4 text-base font-medium">
+            <Link 
+              href="/directory" 
+              className="py-2 hover:text-accent-primary transition-colors"
+              onClick={closeMenu}
+            >
+              Directory
+            </Link>
+            <Link 
+              href="/resources" 
+              className="py-2 hover:text-accent-primary transition-colors"
+              onClick={closeMenu}
+            >
+              Resources
+            </Link>
+            <Link 
+              href="/support" 
+              className="py-2 hover:text-accent-primary transition-colors"
+              onClick={closeMenu}
+            >
+              Support
+            </Link>
+
+            <div className="pt-4 border-t border-border">
+              <LanguageSwitcher />
+            </div>
+
+            <div className="pt-2">
+              <button 
+                className="w-full rounded-lg border border-border px-4 py-3 text-sm font-medium hover:bg-bg-secondary transition-colors"
+                onClick={closeMenu}
+              >
+                Log in
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
 
+export default Header;

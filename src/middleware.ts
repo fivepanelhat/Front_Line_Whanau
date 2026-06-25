@@ -1,5 +1,5 @@
 import createMiddleware from 'next-intl/middleware';
-import { locales, defaultLocale } from './src/i18n';
+import { locales, defaultLocale } from './i18n';
 
 export default createMiddleware({
   locales,
@@ -9,5 +9,6 @@ export default createMiddleware({
 });
 
 export const config = {
-  matcher: ['/((?!_next|.*\\..*).*)'],
+  // Match only internationalized pathnames and root
+  matcher: ['/', '/(mi|en-NZ)/:path*'],
 };

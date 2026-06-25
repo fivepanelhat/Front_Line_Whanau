@@ -8,13 +8,15 @@
     "save": "Save",
     "back": "Back",
     "close": "Close",
+    "next": "Next",
     "learnMore": "Learn more",
     "privacy": "Your privacy is protected",
-    "notMedicalAdvice": "This platform provides information and peer support only — it is not a substitute for professional medical advice. Always consult your healthcare team.",
+    "notMedicalAdvice": "This is not a substitute for professional medical advice. Please consult your healthcare team.",
     "privacyFirst": "Privacy-First",
     "sovereignData": "Your data stays in Aotearoa",
     "error": "Something went wrong. Please try again.",
-    "errorContact": "If this continues, contact your care team directly."
+    "errorContact": "If this continues, contact your care team directly.",
+    "culturalSafety": "This platform is designed with cultural safety and Te Tiriti o Waitangi principles in mind."
   },
   "navigation": {
     "home": "Home",
@@ -25,7 +27,9 @@
     "features": "Features",
     "values": "Our Values",
     "launchHub": "Launch Hub",
-    "skipToContent": "Skip to main content"
+    "skipToContent": "Skip to main content",
+    "login": "Log in",
+    "logout": "Log out"
   },
   "languageSwitcher": {
     "label": "Change language",
@@ -40,8 +44,9 @@
     "heroSubtitle": "Private. Culturally safe. Built for Aotearoa.",
     "heroDescription": "A sovereign, privacy-first platform connecting whānau of preterm twins with services, information, and each other — across Aotearoa New Zealand.",
     "ctaDirectory": "Browse Directory",
-    "ctaResources": "View Resources",
-    "ctaLaunchHub": "Enter your portal"
+    "ctaResources": "View Resources & Guides",
+    "ctaLaunchHub": "Enter your portal",
+    "intro": "A sovereign platform to help families navigate support, services, and information with dignity and care."
   },
   "roleSelector": {
     "title": "Nau mai, haere mai — Welcome",
@@ -88,9 +93,11 @@
     "filterType": "Filter by service type",
     "allRegions": "All regions",
     "allTypes": "All service types",
-    "noResults": "No services found matching your search.",
+    "noResults": "No results found. Try broadening your search.",
     "noResultsSuggestion": "Try broadening your search or selecting a different region.",
     "verifiedBadge": "Verified service",
+    "verified": "Verified",
+    "contact": "Contact",
     "contactOrganisation": "Contact organisation",
     "viewDetails": "View details",
     "addListing": "Add your service",
@@ -113,6 +120,11 @@
       "southland": "Murihiku / Southland"
     }
   },
+  "resources": {
+    "title": "Resources & Guides",
+    "searchPlaceholder": "Search guides and resources...",
+    "categories": "Categories"
+  },
   "portal": {
     "parent": {
       "welcome": "Welcome to your whānau portal",
@@ -130,9 +142,17 @@
       "guidelines": "Guidelines & protocols"
     }
   },
+  "privacy": {
+    "title": "Privacy & Data Sovereignty",
+    "description": "Your data stays under your control. We follow Te Mana Raraunga principles and the NZ Privacy Act.",
+    "yourData": "Your Data, Your Control",
+    "encryption": "Documents are encrypted and stored securely."
+  },
   "consent": {
-    "title": "Your privacy choices",
+    "title": "Consent & Sharing",
     "subtitle": "You are in control of your information. Review and change your preferences at any time.",
+    "manage": "Manage who can access your information",
+    "records": "Consent Records",
     "analyticsTitle": "Usage analytics",
     "analyticsDescription": "Help us improve the platform by sharing anonymous usage data. No personal information is collected.",
     "supportTitle": "Peer support matching",
@@ -145,6 +165,9 @@
     "disclaimer": "You can withdraw consent at any time. Withdrawing consent will not affect services already received."
   },
   "errors": {
+    "somethingWrong": "Something went wrong. Please try again.",
+    "notFound": "Page not found",
+    "unauthorized": "You don't have permission to access this.",
     "pageTitle": "Something went wrong",
     "pageDescription": "We've logged the issue and will look into it.",
     "tryAgain": "Try again",

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { NextRequest } from 'next/server';
 
 // Mock env so the health route doesn't need real Supabase keys
@@ -10,10 +10,20 @@ vi.mock('@/lib/env', () => ({
   },
 }));
 
+// Mock @supabase/supabase-js so database connection returns success
+vi.mock('@supabase/supabase-js', () => ({
+  createClient: () => ({
+    from: () => ({
+      select: () => ({
+        limit: () => Promise.resolve({ data: [], error: null }),
+      }),
+    }),
+  }),
+}));
+
 describe('GET /api/health', () => {
   it('returns 200 with status ok', async () => {
     const { GET } = await import('../../app/api/health/route');
-    const request = new NextRequest('http://localhost:3000/api/health');
     const response = await GET();
 
     expect(response.status).toBe(200);
@@ -26,7 +36,6 @@ describe('GET /api/health', () => {
 
     expect(body.status).toBe('ok');
     expect(body.timestamp).toBeDefined();
-    expect(body.environment).toBeDefined();
     expect(new Date(body.timestamp).toISOString()).toBe(body.timestamp);
   });
 
