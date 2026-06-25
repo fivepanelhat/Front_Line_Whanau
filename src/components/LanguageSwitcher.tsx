@@ -43,7 +43,7 @@ export function LanguageSwitcher() {
             key={l}
             onClick={() => handleSwitch(l)}
             disabled={isPending}
-            aria-pressed={isActive}
+            {...(isActive ? { 'aria-pressed': true } : { 'aria-pressed': false })}
             aria-label={l === 'mi' ? t('choosingMaori') : t('choosingEnglish')}
             className={[
               'rounded-full px-3 py-1 text-xs font-semibold transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-primary',

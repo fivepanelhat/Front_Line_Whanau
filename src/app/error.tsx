@@ -19,7 +19,7 @@ export default function Error({
       <p className="mt-2 text-muted">We’ve logged the issue. Please try again.</p>
       <button
         onClick={() => reset()}
-        className="mt-6 rounded-lg bg-accent-primary px-6 py-2 text-white"
+        className="mt-6 rounded-lg bg-accent-primary px-6 py-2 text-white hover:opacity-90"
       >
         Try again
       </button>
