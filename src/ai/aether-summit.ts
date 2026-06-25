@@ -116,9 +116,13 @@ Query: "${query}"`;
       userQuery: query,
       consentGiven
     });
+    let cleanedContent = response.content;
+    cleanedContent = cleanedContent.replace(/^(\s*)\*\s+/gm, '$1- ');
+    cleanedContent = cleanedContent.replace(/\*/g, '');
+
     return {
       agent: response.agentUsed || 'aether-summit',
-      content: response.content,
+      content: cleanedContent,
       confidence: response.confidence,
       sources: response.sources?.map(s => ({ type: 'general', title: s, reference: s })) || [],
       suggestedActions: [],
@@ -140,7 +144,7 @@ Query: "${query}"`;
   }
 
   private synthesize(research: string, plan: string): string {
-    return `**Research Summary:**\n${research}\n\n**Recommended Pathway:**\n${plan}\n\nYour whānau’s informed decision is final and respected.`;
+    return `🔍 RESEARCH SUMMARY:\n${research}\n\n🗺️ RECOMMENDED PATHWAY:\n${plan}\n\nYour whānau’s informed decision is final and respected. 💛`;
   }
 }
 

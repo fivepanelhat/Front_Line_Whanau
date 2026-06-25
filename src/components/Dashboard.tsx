@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { AetherSummit } from '@/ai/aether-summit';
 import { useConsent, useConsentManager } from '@/hooks/useConsent';
 import { useEncryptedJournal, type DecryptedJournalEntry } from '@/hooks/useEncryptedJournal';
 import { encrypt, decrypt, openVault, encryptWithKey, decryptWithKey, type EncryptedPayload } from '@/lib/encryption';
@@ -40,8 +39,19 @@ const PATHWAY_DATA = {
   }
 };
 
-export function Dashboard({ onClose }: { onClose: () => void }) {
-  const [activeTab, setActiveTab] = useState<'ai' | 'pathways' | 'vault' | 'journal' | 'directory'>('ai');
+function cleanAsterisks(text: string): string {
+  if (!text) return '';
+  // Remove **bold**
+  let cleaned = text.replace(/\*\*(.*?)\*\*/g, '$1');
+  // Convert bullet point style "* " or " * " to "- "
+  cleaned = cleaned.replace(/^(\s*)\*\s+/gm, '$1- ');
+  // Remove any remaining *italic*
+  cleaned = cleaned.replace(/\*(.*?)\*/g, '$1');
+  return cleaned;
+}
+
+export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void; initialTab?: 'ai' | 'pathways' | 'vault' | 'journal' | 'directory' }) {
+  const [activeTab, setActiveTab] = useState<'ai' | 'pathways' | 'vault' | 'journal' | 'directory'>(initialTab);
   const [hasVaultSalt, setHasVaultSalt] = useState(false);
   const [hasJournalSalt, setHasJournalSalt] = useState(false);
 
@@ -57,13 +67,12 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
   const { hasConsent: aiExecuteGranted, grantConsent: grantAiExecute, revokeConsent: revokeAiExecute } = useConsent('ai.execute');
 
   // --- AI Assistant Tab State ---
-  const [summitInstance] = useState(() => new AetherSummit());
   const [chatInput, setChatInput] = useState('');
   const [chatMessages, setChatMessages] = useState<Array<{ sender: 'user' | 'agent'; text: string; agent?: string; sources?: any[]; suggestedActions?: any[] }>>([
     {
       sender: 'agent',
       agent: 'aether-summit',
-      text: `**Kia ora!** Welcome to your private, sovereign support hub dashboard. 💛\n\nI can help you look up NZ health and financial services, design pathways, and draft WINZ or tenancy templates. All interactions are protected under NZ Privacy policies.`,
+      text: `Kia ora! Welcome to your private, sovereign support hub dashboard. 💛\n\nI can help you look up NZ health and financial services, design pathways, and draft WINZ or tenancy templates. All interactions are protected under NZ Privacy policies.`,
       suggestedActions: [
         { label: 'Explore Financial Support', type: 'info', target: 'preterm baby payment' },
         { label: 'Get Housing Help', type: 'info', target: 'healthy homes' },
@@ -92,13 +101,24 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
       if (aiProcessGranted) scopes.push('ai.process');
       if (aiExecuteGranted) scopes.push('ai.execute');
 
-      const res = await summitInstance.process(queryText, scopes);
+      const response = await fetch('/api/summit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: queryText,
+          scopes,
+        }),
+      });
+      if (!response.ok) throw new Error('API call failed');
+      const res = await response.json();
       
       setChatMessages((prev) => [
         ...prev,
         {
           sender: 'agent',
-          text: res.content,
+          text: cleanAsterisks(res.content),
           agent: res.agent,
           sources: res.sources,
           suggestedActions: res.suggestedActions
@@ -447,7 +467,7 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
               {(!aiProcessGranted || !aiExecuteGranted) && (
                 <div className="mb-4 rounded-xl border border-accent-warm/20 bg-accent-warm/5 p-4 flex items-center justify-between gap-4">
                   <div className="text-xs text-text-secondary">
-                    💡 **Informed Consent Notice:** Some AI pathways or document generation capabilities require active consent scopes for local processing.
+                    💡 Informed Consent Notice: Some AI pathways or document generation capabilities require active consent scopes for local processing.
                   </div>
                   <button 
                     onClick={() => {

@@ -2,10 +2,12 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { useLocale } from 'next-intl';
 import LanguageSwitcher from './LanguageSwitcher';
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const locale = useLocale();
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -40,7 +42,7 @@ export function Header() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Logo */}
         <Link 
-          href="/" 
+          href={`/${locale}`} 
           className="flex items-center gap-2 text-xl font-semibold tracking-tight text-text-primary"
           onClick={closeMenu}
         >
@@ -49,13 +51,13 @@ export function Header() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
-          <Link href="/directory" className="hover:text-accent-primary transition-colors">
+          <Link href={`/${locale}/directory`} className="hover:text-accent-primary transition-colors">
             Directory
           </Link>
-          <Link href="/resources" className="hover:text-accent-primary transition-colors">
+          <Link href={`/${locale}/resources`} className="hover:text-accent-primary transition-colors">
             Resources
           </Link>
-          <Link href="/support" className="hover:text-accent-primary transition-colors">
+          <Link href={`/${locale}/support`} className="hover:text-accent-primary transition-colors">
             Support
           </Link>
         </nav>
@@ -96,21 +98,21 @@ export function Header() {
         >
           <div className="flex flex-col px-6 py-6 space-y-4 text-base font-medium">
             <Link 
-              href="/directory" 
+              href={`/${locale}/directory`} 
               className="py-2 hover:text-accent-primary transition-colors"
               onClick={closeMenu}
             >
               Directory
             </Link>
             <Link 
-              href="/resources" 
+              href={`/${locale}/resources`} 
               className="py-2 hover:text-accent-primary transition-colors"
               onClick={closeMenu}
             >
               Resources
             </Link>
             <Link 
-              href="/support" 
+              href={`/${locale}/support`} 
               className="py-2 hover:text-accent-primary transition-colors"
               onClick={closeMenu}
             >

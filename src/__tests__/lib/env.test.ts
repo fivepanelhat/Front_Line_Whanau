@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // Mock next/headers before importing env (env.ts calls parse at module load time)
 vi.mock('next/headers', () => ({ cookies: vi.fn() }));
@@ -28,14 +28,14 @@ describe('env validation', () => {
   it('defaults NODE_ENV to development when unset', async () => {
     process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://example.supabase.co';
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'anon-key-value';
-    delete process.env.NODE_ENV;
+    delete (process.env as any).NODE_ENV;
 
     const { env } = await import('../../lib/env');
     expect(env.NODE_ENV).toBe('development');
   });
 
   it('throws a descriptive error when NEXT_PUBLIC_SUPABASE_URL is missing', async () => {
-    delete process.env.NEXT_PUBLIC_SUPABASE_URL;
+    delete (process.env as any).NEXT_PUBLIC_SUPABASE_URL;
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'anon-key-value';
 
     await expect(import('../../lib/env')).rejects.toThrow(
@@ -52,7 +52,7 @@ describe('env validation', () => {
 
   it('throws a descriptive error when NEXT_PUBLIC_SUPABASE_ANON_KEY is missing', async () => {
     process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://example.supabase.co';
-    delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    delete (process.env as any).NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
     await expect(import('../../lib/env')).rejects.toThrow(
       /NEXT_PUBLIC_SUPABASE_ANON_KEY/

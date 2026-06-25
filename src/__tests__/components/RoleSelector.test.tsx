@@ -3,15 +3,32 @@ import { render, screen, fireEvent } from '@testing-library/react';
 
 // ── Mocks ──────────────────────────────────────────────────────────────────
 
+const mockPush = vi.fn();
 vi.mock('next/navigation', () => ({
-  useRouter: () => ({ push: vi.fn() }),
+  useRouter: () => ({ push: mockPush }),
 }));
 
+const mockSetRole = vi.fn();
 vi.mock('@/context', () => ({
-  useRole: () => ({ setRole: vi.fn() }),
+  useRole: () => ({ setRole: mockSetRole }),
 }));
 
-// ── Tests ──────────────────────────────────────────────────────────────────
+vi.mock('next-intl', () => ({
+  useLocale: () => 'en-NZ',
+  useTranslations: () => (key: string) => {
+    const keys: Record<string, string> = {
+      title: 'Nau mai, haere mai — Welcome',
+      subtitle: 'Supporting whānau of preterm twins across Aotearoa New Zealand',
+      parentTitle: 'I am a Parent / Whānau',
+      parentDescription: 'Get support, information, and guidance for your journey',
+      practitionerTitle: 'I am a Practitioner / Organisation',
+      practitionerDescription: 'Access tools, resources, and directory management',
+    };
+    return keys[key] || key;
+  },
+}));
+
+// ── Mocks override logic ───────────────────────────────────────────────────
 
 describe('RoleSelector', () => {
   beforeEach(() => {
@@ -23,6 +40,7 @@ describe('RoleSelector', () => {
     render(<RoleSelector />);
 
     expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
+    expect(screen.getByText(/supporting whānau/i)).toBeInTheDocument();
   });
 
   it('renders Parent / Whānau button', async () => {
@@ -44,12 +62,6 @@ describe('RoleSelector', () => {
   });
 
   it('calls setRole and router.push when Parent button is clicked', async () => {
-    const mockSetRole = vi.fn();
-    const mockPush = vi.fn();
-
-    vi.mocked(await import('@/context')).useRole = () => ({ setRole: mockSetRole });
-    vi.mocked(await import('next/navigation')).useRouter = () => ({ push: mockPush });
-
     const { default: RoleSelector } = await import('../../components/RoleSelector');
     render(<RoleSelector />);
 
@@ -57,16 +69,10 @@ describe('RoleSelector', () => {
     fireEvent.click(parentButton);
 
     expect(mockSetRole).toHaveBeenCalledWith('parent');
-    expect(mockPush).toHaveBeenCalledWith('/parent');
+    expect(mockPush).toHaveBeenCalledWith('/en-NZ/parent');
   });
 
   it('calls setRole and router.push when Practitioner button is clicked', async () => {
-    const mockSetRole = vi.fn();
-    const mockPush = vi.fn();
-
-    vi.mocked(await import('@/context')).useRole = () => ({ setRole: mockSetRole });
-    vi.mocked(await import('next/navigation')).useRouter = () => ({ push: mockPush });
-
     const { default: RoleSelector } = await import('../../components/RoleSelector');
     render(<RoleSelector />);
 
@@ -74,6 +80,6 @@ describe('RoleSelector', () => {
     fireEvent.click(practitionerButton);
 
     expect(mockSetRole).toHaveBeenCalledWith('practitioner');
-    expect(mockPush).toHaveBeenCalledWith('/practitioner');
+    expect(mockPush).toHaveBeenCalledWith('/en-NZ/practitioner');
   });
 });

@@ -31,8 +31,8 @@ export class TaongaKnowledgeWeaver implements LegacyBaseAgent {
 
     return {
       content:
-        'I can point you to official information on Preterm Baby Payment, Best Start, ' +
-        'and WINZ Home Help. For your exact entitlement, a neonatal social worker can confirm.',
+        '🔍 I can point you to official information on Preterm Baby Payment 💰, Best Start 👶, ' +
+        'and WINZ Home Help 🏠. For your exact entitlement, a neonatal social worker can confirm. 🩺',
       confidence: 0.5,
       requiresHumanReview: true,
       agentUsed: this.name,

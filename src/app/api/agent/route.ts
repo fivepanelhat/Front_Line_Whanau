@@ -23,7 +23,15 @@ export async function POST(request: NextRequest) {
     const responseText = result.messages?.[result.messages.length - 1]?.content || 
                         "Sorry, I couldn't generate a response right now.";
 
-    return NextResponse.json({ response: responseText });
+    let responseString = typeof responseText === 'string'
+      ? responseText
+      : JSON.stringify(responseText);
+
+    // Clean formatting asterisks
+    responseString = responseString.replace(/^(\s*)\*\s+/gm, '$1- ');
+    responseString = responseString.replace(/\*/g, '');
+
+    return NextResponse.json({ response: responseString });
   } catch (error) {
     console.error('AI Agent Error:', error);
     return NextResponse.json(

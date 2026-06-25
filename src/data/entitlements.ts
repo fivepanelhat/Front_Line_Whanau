@@ -91,7 +91,7 @@ export function describeEntitlement(status: EntitlementStatus): { text: string; 
     return {
       confident: true,
       text:
-        `**${e.title}**` +
+        `${e.title}` +
         (moneyStr ? `\n- Maximum: ${moneyStr}` : '') +
         (e.durationNote ? `\n- ${e.durationNote}` : '') +
         `\n- Source (verified ${e.lastVerified}): ${e.source}` +
@@ -103,7 +103,7 @@ export function describeEntitlement(status: EntitlementStatus): { text: string; 
   return {
     confident: false,
     text:
-      `**${e.title}**\n` +
+      `${e.title}\n` +
       `I can't confirm the current amount right now (${status.reason}). ` +
       `Please check the official source so you get the figure that applies today:\n${e.source}\n` +
       `A neonatal social worker can also confirm what you're entitled to.`,
