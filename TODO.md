@@ -1,30 +1,33 @@
-# TODO & Open Tasks
+# TODO & Active Tasks — Whānau Preterm Support Hub NZ
 
 ## High Priority (This Week)
 
-- [ ] Fix E2E failures for role selection buttons on home page (`e2e/home.e2e.ts`)
-- [ ] Fix language switcher visibility and active state tests
+- [ ] Stabilise E2E tests for role selection buttons on home page
+- [ ] Stabilise language switcher E2E tests (visibility + active state)
 - [ ] Add `data-testid` attributes to:
-  - Role selection buttons (Parent / Practitioner)
+  - Parent / Practitioner role buttons
   - Language switcher component
-- [ ] Update E2E tests to use more resilient selectors where needed
+- [ ] Update E2E selectors to be more resilient
 
 ## Medium Priority
 
-- [ ] Create `.github/workflows/ci.yml` with proper Playwright setup
-- [ ] Add E2E test documentation in `docs/testing.md`
-- [ ] Review and improve mobile E2E test coverage
-- [ ] Ensure all pages have proper loading states for E2E reliability
+- [ ] Create `.github/workflows/ci.yml` with full Playwright support
+- [ ] Write `docs/testing.md` contributor guide for E2E tests
+- [ ] Improve mobile viewport E2E coverage
+- [ ] Add proper loading states / hydration handling for better E2E reliability
 
 ## Documentation & Open Source Readiness
 
-- [ ] Finalise `CONTRIBUTING.md` (include cultural review process)
-- [ ] Update `README.md` badges once full E2E suite is green
-- [ ] Create `SECURITY.md` and `CODE_OF_CONDUCT.md`
-- [ ] Prepare initial GitHub release checklist
+- [ ] Finalise `CONTRIBUTING.md` (include cultural safety review process)
+- [ ] Add status badges to `README.md` once full E2E suite is green
+- [ ] Create `SECURITY.md`
+- [ ] Prepare initial GitHub release checklist and tagging strategy
 
-## Notes
+## Completed (Do Not Re-open)
 
-- Security headers and health endpoint infrastructure is complete and stable.
-- All infrastructure-related E2E tests are now passing.
-- Focus is currently on making the UI components testable and the E2E suite reliable.
+- [x] Implement `webServer` in `playwright.config.ts`
+- [x] Add security headers via middleware
+- [x] Create production-ready `/api/health` endpoint
+- [x] All infrastructure E2E tests passing
+
+_Last updated: 26 June 2026_
