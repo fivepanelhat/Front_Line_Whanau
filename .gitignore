@@ -45,3 +45,8 @@ prisma/*.db-journal
 # IDE
 .vscode/
 .idea/
+
+# Python
+*.egg-info/
+__pycache__/
+*.db
