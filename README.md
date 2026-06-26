@@ -105,29 +105,22 @@ After setup, you can use these commands:
 - **Lightweight health check** at `/api/health` (no database dependency)
 - **Privacy-by-design approach** — no PHI stored without explicit consent
 
-## 🧪 Testing & Quality Assurance
+## 🧪 Testing & Quality
 
-We maintain rigorous testing standards because this platform supports families during sensitive times.
+| Check                    | Status              | Command                          |
+|--------------------------|---------------------|----------------------------------|
+| TypeScript               | ✅ Passing          | `npm run type-check`             |
+| ESLint                   | ✅ Passing          | `npm run lint`                   |
+| Unit Tests + Coverage    | ✅ 94.95%           | `npm run test:coverage`          |
+| E2E Tests (Playwright)   | ✅ **40/40 passing**| `npm run e2e`                    |
 
-| Check                    | Status          | Command                          | Notes                          |
-|--------------------------|-----------------|----------------------------------|--------------------------------|
-| TypeScript               | ✅ Passing      | `npm run type-check`             | Strict mode                    |
-| ESLint                   | ✅ Passing      | `npm run lint`                   | -                              |
-| Unit Tests + Coverage    | ✅ Passing      | `npm run test:coverage`          | **94.95%** statements          |
-| E2E Tests                | 🟡 22/40        | `npm run e2e`                    | Security & health tests green  |
-| Security Headers         | ✅ All passing  | Playwright                       | Enforced via middleware        |
-| Health Check Endpoint    | ✅ All passing  | Playwright                       | `/api/health`                  |
-
-### Running Tests Locally
+### Running Tests
 
 ```bash
-# Recommended before every commit
-npm run type-check && npm run lint && npm run test:coverage
+# Recommended before committing
+npm run type-check && npm run lint && npm run test:coverage && npm run e2e
 
-# E2E tests (with visual debugger - recommended)
+# E2E with visual debugger
 npm run e2e:ui
-
-# Full E2E suite
-npm run e2e
 ```
 

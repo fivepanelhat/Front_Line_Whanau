@@ -1,6 +1,19 @@
 # Roadmap — Whānau Preterm Support Hub NZ
 
-## ✅ Completed (June 2026)
+## ✅ Recently Completed
+
+- [x] Stabilise full E2E test suite (**40/40 passing**)
+- [x] Resolve rebase conflicts and sync repository to remote
+- [x] Improve component semantics and mobile test reliability
+
+## 🔄 Current Priorities (in order)
+
+- [ ] Update project documentation and status (in progress)
+- [ ] Begin Aether Summit integration
+- [ ] Start development of Parent and Practitioner portals
+- [ ] Accessibility improvements and audit
+
+## ✅ Foundation (Completed Earlier)
 
 - Core Next.js 15 App Router + TypeScript + Tailwind + shadcn/ui foundation
 - Internationalisation support via `next-intl`
@@ -8,14 +21,6 @@
 - Security headers middleware (production-grade defaults)
 - Robust `/api/health` endpoint (GET + HEAD, no database dependency)
 - 94.95% unit test coverage with passing type checking and linting
-- All security header and health check E2E tests passing (16/16)
-
-## 🔄 In Progress — Current Focus
-
-- Stabilise remaining E2E UI tests (role selection buttons & language switcher)
-- Add `data-testid` attributes to key interactive components
-- Create production GitHub Actions CI workflow
-- Achieve 40/40 green E2E tests
 
 ## 📅 Next Milestones (Q3 2026)
 
