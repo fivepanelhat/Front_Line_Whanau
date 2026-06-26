@@ -105,26 +105,29 @@ After setup, you can use these commands:
 - **Lightweight health check** at `/api/health` (no database dependency)
 - **Privacy-by-design approach** — no PHI stored without explicit consent
 
-## 🧪 Testing & Quality
+## 🧪 Testing & Quality Assurance
 
-We maintain high standards for reliability because this platform supports whānau during vulnerable times.
+We maintain rigorous testing standards because this platform supports families during sensitive times.
 
-| Check              | Status     | Command                  | Coverage |
-|--------------------|------------|--------------------------|----------|
-| TypeScript         | ✅ Passing | `npm run type-check`     | -        |
-| ESLint             | ✅ Passing | `npm run lint`           | -        |
-| Unit Tests         | ✅ Passing | `npm run test:coverage`  | 94.95%   |
-| E2E Tests          | 🟡 22/40   | `npm run e2e`            | -        |
-| Security Headers   | ✅ All     | Playwright               | -        |
-| Health Endpoint    | ✅ All     | Playwright               | -        |
+| Check                    | Status          | Command                          | Notes                          |
+|--------------------------|-----------------|----------------------------------|--------------------------------|
+| TypeScript               | ✅ Passing      | `npm run type-check`             | Strict mode                    |
+| ESLint                   | ✅ Passing      | `npm run lint`                   | -                              |
+| Unit Tests + Coverage    | ✅ Passing      | `npm run test:coverage`          | **94.95%** statements          |
+| E2E Tests                | 🟡 22/40        | `npm run e2e`                    | Security & health tests green  |
+| Security Headers         | ✅ All passing  | Playwright                       | Enforced via middleware        |
+| Health Check Endpoint    | ✅ All passing  | Playwright                       | `/api/health`                  |
 
-### Running Tests
+### Running Tests Locally
 
 ```bash
-# All checks (recommended before committing)
-npm run type-check && npm run lint && npm run test:coverage && npm run e2e
+# Recommended before every commit
+npm run type-check && npm run lint && npm run test:coverage
 
-# E2E with visual debugger (best for debugging)
+# E2E tests (with visual debugger - recommended)
 npm run e2e:ui
+
+# Full E2E suite
+npm run e2e
 ```
 
