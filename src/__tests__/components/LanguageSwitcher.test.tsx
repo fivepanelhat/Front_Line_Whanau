@@ -41,10 +41,10 @@ describe('LanguageSwitcher', () => {
     render(<LanguageSwitcher />);
 
     const enButton = screen.getByRole('button', { name: 'Switch to English (NZ)' });
-    expect(enButton).toHaveAttribute('aria-current', 'true');
+    expect(enButton).toHaveAttribute('aria-pressed', 'true');
 
     const miButton = screen.getByRole('button', { name: 'Switch to Te Reo Māori' });
-    expect(miButton).not.toHaveAttribute('aria-current');
+    expect(miButton).toHaveAttribute('aria-pressed', 'false');
   });
 
   it('calls router.push with correct path when a different locale is clicked', async () => {
