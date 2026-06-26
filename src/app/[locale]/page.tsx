@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
 export default function HomePage() {
@@ -13,18 +14,18 @@ export default function HomePage() {
       </p>
 
       <div className="mt-8 flex gap-4">
-        <a
+        <Link
           href="/directory"
           className="rounded-xl bg-accent-primary px-6 py-3 text-white hover:opacity-90 transition"
         >
           {t('ctaDirectory')}
-        </a>
-        <a
+        </Link>
+        <Link
           href="/resources"
           className="rounded-xl border border-border px-6 py-3 hover:bg-bg-secondary transition"
         >
           {t('ctaResources')}
-        </a>
+        </Link>
       </div>
     </main>
   );

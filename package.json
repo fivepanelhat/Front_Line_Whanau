@@ -10,7 +10,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "analyze": "ANALYZE=true next build",
-    "start": "next start",
+    "start": "node .next/standalone/Front_Line_Whanau/server.js",
     "type-check": "tsc --noEmit",
     "lint": "eslint src",
     "test": "vitest run",

@@ -7,9 +7,9 @@ const envSchema = z.object({
   NEXT_PUBLIC_APP_URL: z.string().url().optional(),
 
   // Server-only
-  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
-  DATABASE_URL: z.string().url(),
-  JWT_SECRET: z.string().min(32),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1).optional(),
+  DATABASE_URL: z.string().url().optional(),
+  JWT_SECRET: z.string().min(32).optional(),
 
   // Optional
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),

@@ -1,8 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { agentApp } from '@/ai/graph';
 import { HumanMessage } from '@langchain/core/messages';
+import { requireAuth } from '@/lib/api-auth';
+import { RateLimiter } from '@/lib/rate-limit';
+
+const limiter = new RateLimiter(60_000, 20);
 
 export async function POST(request: NextRequest) {
+  const auth = await requireAuth(request);
+  if (auth instanceof NextResponse) return auth;
+
+  const allowed = await limiter.check(auth.user.id);
+  if (!allowed) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+  }
+
   try {
     const body = await request.json();
     const { query, userRole } = body;

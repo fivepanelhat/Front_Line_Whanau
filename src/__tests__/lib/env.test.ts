@@ -19,7 +19,7 @@ describe('env validation', () => {
     process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://example.supabase.co';
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'anon-key-value';
 
-    const { env } = await import('../../lib/env');
+    const { env } = await import('../../env');
 
     expect(env.NEXT_PUBLIC_SUPABASE_URL).toBe('https://example.supabase.co');
     expect(env.NEXT_PUBLIC_SUPABASE_ANON_KEY).toBe('anon-key-value');
@@ -30,7 +30,7 @@ describe('env validation', () => {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'anon-key-value';
     delete (process.env as any).NODE_ENV;
 
-    const { env } = await import('../../lib/env');
+    const { env } = await import('../../env');
     expect(env.NODE_ENV).toBe('development');
   });
 
@@ -38,7 +38,7 @@ describe('env validation', () => {
     delete (process.env as any).NEXT_PUBLIC_SUPABASE_URL;
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'anon-key-value';
 
-    await expect(import('../../lib/env')).rejects.toThrow(
+    await expect(import('../../env')).rejects.toThrow(
       /NEXT_PUBLIC_SUPABASE_URL/
     );
   });
@@ -47,14 +47,14 @@ describe('env validation', () => {
     process.env.NEXT_PUBLIC_SUPABASE_URL = 'not-a-url';
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'anon-key-value';
 
-    await expect(import('../../lib/env')).rejects.toThrow();
+    await expect(import('../../env')).rejects.toThrow();
   });
 
   it('throws a descriptive error when NEXT_PUBLIC_SUPABASE_ANON_KEY is missing', async () => {
     process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://example.supabase.co';
     delete (process.env as any).NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-    await expect(import('../../lib/env')).rejects.toThrow(
+    await expect(import('../../env')).rejects.toThrow(
       /NEXT_PUBLIC_SUPABASE_ANON_KEY/
     );
   });
@@ -65,7 +65,7 @@ describe('env validation', () => {
     process.env.SUPABASE_SERVICE_ROLE_KEY = 'service-role-key';
     process.env.GOOGLE_API_KEY = 'google-key';
 
-    const { env } = await import('../../lib/env');
+    const { env } = await import('../../env');
 
     expect(env.SUPABASE_SERVICE_ROLE_KEY).toBe('service-role-key');
     expect(env.GOOGLE_API_KEY).toBe('google-key');
