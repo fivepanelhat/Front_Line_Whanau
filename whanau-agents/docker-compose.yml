@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  aether-summit:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - AETHER_MODEL=llama3.1:8b
+    depends_on:
+      - ollama
+    volumes:
+      - ./checkpoints.db:/app/checkpoints.db
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+volumes:
+  ollama_data:
