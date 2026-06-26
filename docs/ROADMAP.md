@@ -1,33 +1,33 @@
-# Whānau Preterm Support Hub NZ — Roadmap
+# Roadmap — Whānau Preterm Support Hub NZ
 
 ## ✅ Completed (June 2026)
 
-- [x] Core Next.js 15 + TypeScript + Tailwind + shadcn/ui foundation
-- [x] Internationalisation with `next-intl` (Te Reo Māori + English ready)
-- [x] Playwright E2E infrastructure with automatic dev server startup
-- [x] Security headers middleware (X-Frame-Options, CSP, etc.)
-- [x] Production-ready `/api/health` endpoint (GET + HEAD)
-- [x] 94.95% unit test coverage + passing type/lint checks
-- [x] 22/40 E2E tests passing (all security + health tests green)
+- Core Next.js 15 App Router + TypeScript + Tailwind + shadcn/ui foundation
+- Internationalisation support via `next-intl`
+- Playwright E2E test infrastructure with automatic dev server startup
+- Security headers middleware (production-grade defaults)
+- Robust `/api/health` endpoint (GET + HEAD, no database dependency)
+- 94.95% unit test coverage with passing type checking and linting
+- All security header and health check E2E tests passing (16/16)
 
-## 🔄 In Progress (Current Sprint)
+## 🔄 In Progress — Current Focus
 
-- [ ] Stabilise remaining E2E UI tests (role selection buttons + language switcher)
-- [ ] Add `data-testid` attributes to key interactive components for stable testing
-- [ ] Create GitHub Actions CI workflow (`.github/workflows/ci.yml`)
-- [ ] Full E2E test suite green (target: 40/40)
+- Stabilise remaining E2E UI tests (role selection buttons & language switcher)
+- Add `data-testid` attributes to key interactive components
+- Create production GitHub Actions CI workflow
+- Achieve 40/40 green E2E tests
 
-## 📅 Next Priorities (Q3 2026)
+## 📅 Next Milestones (Q3 2026)
 
-- [ ] Role-based portals (`/parent` and `/practitioner`) with proper navigation
-- [ ] Resource directory & peer support matching features (MVP)
-- [ ] Culturally safe design system aligned with Te Tiriti o Waitangi
-- [ ] Accessibility audit (WCAG 2.2 AA)
-- [ ] Open-source repository launch + contribution guidelines
+- Role-based portals (`/parent` and `/practitioner`) with full navigation flows
+- Resource directory and culturally safe peer support features (MVP)
+- WCAG 2.2 AA accessibility audit and improvements
+- Open-source repository public launch with contribution guidelines
+- Initial community and iwi engagement documentation
 
-## 🧭 Long-term Vision
+## 🧭 Long-term Vision (2026–2027)
 
-- National platform for preterm twin / whānau support across Aotearoa
-- Sovereign data principles and Māori data sovereignty alignment
-- Integration with Mana Kai and community resilience initiatives
-- Scalable, accessible, family-centred digital support
+- National platform for preterm twin and whānau support across Aotearoa New Zealand
+- Strong alignment with Māori data sovereignty (Te Mana Raraunga) and Te Tiriti o Waitangi
+- Integration pathways with Mana Kai and community resilience initiatives
+- Scalable, accessible, family-centred digital support infrastructure
