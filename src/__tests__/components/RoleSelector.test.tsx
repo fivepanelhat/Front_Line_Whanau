@@ -3,11 +3,6 @@ import { render, screen, fireEvent } from '@testing-library/react';
 
 // ── Mocks ──────────────────────────────────────────────────────────────────
 
-const mockPush = vi.fn();
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({ push: mockPush }),
-}));
-
 const mockSetRole = vi.fn();
 vi.mock('@/context', () => ({
   useRole: () => ({ setRole: mockSetRole }),
@@ -43,43 +38,39 @@ describe('RoleSelector', () => {
     expect(screen.getByText(/supporting whānau/i)).toBeInTheDocument();
   });
 
-  it('renders Parent / Whānau button', async () => {
+  it('renders Parent / Whānau link', async () => {
     const { default: RoleSelector } = await import('../../components/RoleSelector');
     render(<RoleSelector />);
 
-    expect(
-      screen.getByText(/parent/i, { selector: 'button *' })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /parent/i })).toBeInTheDocument();
   });
 
-  it('renders Practitioner / Organisation button', async () => {
+  it('renders Practitioner / Organisation link', async () => {
     const { default: RoleSelector } = await import('../../components/RoleSelector');
     render(<RoleSelector />);
 
-    expect(
-      screen.getByText(/practitioner/i, { selector: 'button *' })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /practitioner/i })).toBeInTheDocument();
   });
 
-  it('calls setRole and router.push when Parent button is clicked', async () => {
+  it('calls setRole when Parent link is clicked', async () => {
     const { default: RoleSelector } = await import('../../components/RoleSelector');
     render(<RoleSelector />);
 
-    const parentButton = screen.getByRole('button', { name: /parent/i });
-    fireEvent.click(parentButton);
+    const parentLink = screen.getByRole('link', { name: /parent/i });
+    expect(parentLink).toHaveAttribute('href', '/en-NZ/parent');
+    fireEvent.click(parentLink);
 
     expect(mockSetRole).toHaveBeenCalledWith('parent');
-    expect(mockPush).toHaveBeenCalledWith('/en-NZ/parent');
   });
 
-  it('calls setRole and router.push when Practitioner button is clicked', async () => {
+  it('calls setRole when Practitioner link is clicked', async () => {
     const { default: RoleSelector } = await import('../../components/RoleSelector');
     render(<RoleSelector />);
 
-    const practitionerButton = screen.getByRole('button', { name: /practitioner/i });
-    fireEvent.click(practitionerButton);
+    const practitionerLink = screen.getByRole('link', { name: /practitioner/i });
+    expect(practitionerLink).toHaveAttribute('href', '/en-NZ/practitioner');
+    fireEvent.click(practitionerLink);
 
     expect(mockSetRole).toHaveBeenCalledWith('practitioner');
-    expect(mockPush).toHaveBeenCalledWith('/en-NZ/practitioner');
   });
 });

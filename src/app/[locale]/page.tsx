@@ -2,7 +2,7 @@ import RoleSelector from '@/components/RoleSelector';
 
 export default function HomePage() {
   return (
-    <main>
+    <main className="flex min-h-[80vh] flex-col items-center justify-center px-6">
       <RoleSelector />
     </main>
   );

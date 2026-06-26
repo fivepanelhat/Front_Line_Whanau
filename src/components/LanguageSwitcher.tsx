@@ -20,7 +20,11 @@ export function LanguageSwitcher() {
   };
 
   return (
-    <div id="language-switcher" className="inline-flex rounded-xl border border-border bg-bg-primary p-1 shadow-sm">
+  <div
+    id="language-switcher"
+    data-testid="language-switcher"
+    className="inline-flex rounded-xl border border-border bg-bg-primary p-1 shadow-sm"
+  >
       {locales.map((loc) => {
         const isActive = locale === loc;
         return (
@@ -33,7 +37,7 @@ export function LanguageSwitcher() {
                 ? 'bg-accent-primary text-white shadow-sm'
                 : 'text-text-secondary hover:bg-bg-secondary hover:text-text-primary'
             )}
-            aria-pressed={isActive}
+            aria-pressed={isActive ? 'true' : 'false'}
             aria-label={`Switch to ${localeNames[loc]}`}
           >
             {localeNames[loc]}

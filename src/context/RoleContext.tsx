@@ -19,25 +19,38 @@ export function RoleProvider({ children }: { children: React.ReactNode }) {
 
   // Persist role across sessions
   useEffect(() => {
-    const savedRole = localStorage.getItem('userRole') as UserRole;
-    if (savedRole === 'parent' || savedRole === 'practitioner') {
-      setRoleState(savedRole);
+    try {
+      const savedRole = localStorage.getItem('userRole') as UserRole;
+      if (savedRole === 'parent' || savedRole === 'practitioner') {
+        setRoleState(savedRole);
+      }
+    } catch {
+      // Ignore storage access issues and continue with in-memory role only.
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }, []);
 
   const setRole = (newRole: UserRole) => {
     setRoleState(newRole);
-    if (newRole) {
-      localStorage.setItem('userRole', newRole);
-    } else {
-      localStorage.removeItem('userRole');
+    try {
+      if (newRole) {
+        localStorage.setItem('userRole', newRole);
+      } else {
+        localStorage.removeItem('userRole');
+      }
+    } catch {
+      // Ignore storage access issues and keep role in memory.
     }
   };
 
   const clearRole = () => {
     setRoleState(null);
-    localStorage.removeItem('userRole');
+    try {
+      localStorage.removeItem('userRole');
+    } catch {
+      // Ignore storage access issues and keep role cleared in memory.
+    }
   };
 
   return (

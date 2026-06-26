@@ -15,15 +15,15 @@ test.describe('Home page', () => {
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   });
 
-  test('renders Parent / Whānau button', async ({ page }) => {
+  test('renders Parent / Whānau link', async ({ page }) => {
     await expect(
-      page.getByRole('button', { name: /parent/i })
+      page.getByRole('link', { name: /parent/i })
     ).toBeVisible();
   });
 
-  test('renders Practitioner / Organisation button', async ({ page }) => {
+  test('renders Practitioner / Organisation link', async ({ page }) => {
     await expect(
-      page.getByRole('button', { name: /practitioner/i })
+      page.getByRole('link', { name: /practitioner/i })
     ).toBeVisible();
   });
 

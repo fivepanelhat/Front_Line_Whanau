@@ -72,6 +72,7 @@ export function Header() {
 
         {/* Mobile Hamburger Button */}
         <button
+          data-testid="mobile-menu-btn"
           ref={buttonRef}
           onClick={toggleMenu}
           className="md:hidden rounded-lg p-2 hover:bg-bg-secondary transition-colors"
