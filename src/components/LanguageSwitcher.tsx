@@ -33,7 +33,7 @@ export function LanguageSwitcher() {
                 ? 'bg-accent-primary text-white shadow-sm'
                 : 'text-text-secondary hover:bg-bg-secondary hover:text-text-primary'
             )}
-            aria-pressed={isActive ? 'true' : 'false'}
+            aria-pressed={isActive}
             aria-label={`Switch to ${localeNames[loc]}`}
           >
             {localeNames[loc]}

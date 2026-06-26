@@ -1,5 +1,9 @@
 import RoleSelector from '@/components/RoleSelector';
 
 export default function HomePage() {
-  return <RoleSelector />;
+  return (
+    <main>
+      <RoleSelector />
+    </main>
+  );
 }
