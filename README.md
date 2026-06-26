@@ -98,3 +98,33 @@ After setup, you can use these commands:
 | `npm run tauri:build` | Current OS | Build for current operating system |
 | `npm run tauri:build:windows` | Any | Build Windows installer (.msi) |
 | `npm run tauri:build:linux` | Any | Build Linux AppImage + .deb |
+
+## 🔒 Security & Privacy
+
+- **Security headers** enforced on all routes via middleware (`X-Frame-Options: DENY`, `X-Content-Type-Options`, `Referrer-Policy`, baseline CSP)
+- **Lightweight health check** at `/api/health` (no database dependency)
+- **Privacy-by-design approach** — no PHI stored without explicit consent
+
+## 🧪 Testing & Quality
+
+We maintain high standards for reliability because this platform supports whānau during vulnerable times.
+
+| Check              | Status     | Command                  | Coverage |
+|--------------------|------------|--------------------------|----------|
+| TypeScript         | ✅ Passing | `npm run type-check`     | -        |
+| ESLint             | ✅ Passing | `npm run lint`           | -        |
+| Unit Tests         | ✅ Passing | `npm run test:coverage`  | 94.95%   |
+| E2E Tests          | 🟡 22/40   | `npm run e2e`            | -        |
+| Security Headers   | ✅ All     | Playwright               | -        |
+| Health Endpoint    | ✅ All     | Playwright               | -        |
+
+### Running Tests
+
+```bash
+# All checks (recommended before committing)
+npm run type-check && npm run lint && npm run test:coverage && npm run e2e
+
+# E2E with visual debugger (best for debugging)
+npm run e2e:ui
+```
+

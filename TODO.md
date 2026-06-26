@@ -1,40 +1,30 @@
-# Front_Line_Whanau - Development TODO
+# TODO & Open Tasks
 
-## Phase 1: Foundation
+## High Priority (This Week)
 
-- [x] Basic Vite + React + TypeScript setup
-- [x] Governance files (README, CONTRIBUTING, CODE_OF_CONDUCT, SECURITY, LICENSE)
-- [x] Add `TODO.md` to repository
-- [ ] Clean up tech stack (remove `next.config.ts` if not needed, currently active for Next.js)
-- [ ] Reorganize `src/` folder structure
+- [ ] Fix E2E failures for role selection buttons on home page (`e2e/home.e2e.ts`)
+- [ ] Fix language switcher visibility and active state tests
+- [ ] Add `data-testid` attributes to:
+  - Role selection buttons (Parent / Practitioner)
+  - Language switcher component
+- [ ] Update E2E tests to use more resilient selectors where needed
 
-## Phase 2: Core AI System
+## Medium Priority
 
-- [x] Build **Aether Summit** (Lead Orchestrator)
-- [x] Build **Taonga Knowledge Weaver**
-- [x] Build **Whānau Pathway Architect**
-- [x] Build **Sovereign Executor**
-- [x] Implement grounding & hallucination guardrails
+- [ ] Create `.github/workflows/ci.yml` with proper Playwright setup
+- [ ] Add E2E test documentation in `docs/testing.md`
+- [ ] Review and improve mobile E2E test coverage
+- [ ] Ensure all pages have proper loading states for E2E reliability
 
-## Phase 3: Main Features
+## Documentation & Open Source Readiness
 
-- [x] Dashboard
-- [x] Journal module
-- [x] Taonga Vault (encrypted document storage)
-- [x] Services Directory with maps and contacts
+- [ ] Finalise `CONTRIBUTING.md` (include cultural review process)
+- [ ] Update `README.md` badges once full E2E suite is green
+- [ ] Create `SECURITY.md` and `CODE_OF_CONDUCT.md`
+- [ ] Prepare initial GitHub release checklist
 
-## Phase 4: Data & Security
+## Notes
 
-- [x] Client-side encryption utilities
-- [x] Consent management system
-- [x] Secure local-first storage
-
-## Phase 5: Documentation & Launch
-
-- [x] Finalize Architecture & Policy documents
-- [ ] Accessibility improvements
-- [ ] Prepare for first release
-
----
-
-**Last Updated:** June 2026
+- Security headers and health endpoint infrastructure is complete and stable.
+- All infrastructure-related E2E tests are now passing.
+- Focus is currently on making the UI components testable and the E2E suite reliable.

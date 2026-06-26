@@ -19,7 +19,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 2 : 1,
+  workers: process.env.CI ? 1 : undefined,
 
   reporter: [
     ['list'],
@@ -28,7 +28,7 @@ export default defineConfig({
 
   use: {
     // Base URL — tests use relative paths like '/en-NZ'
-    baseURL: process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:3000',
+    baseURL: 'http://127.0.0.1:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
@@ -48,11 +48,13 @@ export default defineConfig({
     },
   ],
 
-  // Start the Next.js dev server automatically before tests run
+  // === KEY FIX: Automatically start Next.js dev server ===
   webServer: {
     command: 'npm run dev',
-    url: 'http://localhost:3000',
+    url: 'http://127.0.0.1:3000',
     reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
+    timeout: 120 * 1000,
+    stdout: 'ignore',
+    stderr: 'pipe',
   },
 });

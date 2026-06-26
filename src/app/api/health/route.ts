@@ -1,50 +1,39 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+
+/**
+ * Platform health check endpoint.
+ * Used by monitoring, load balancers, and E2E tests.
+ *
+ * Note: This reports on the technical health of the platform only.
+ * It is not medical advice. Always consult qualified healthcare professionals
+ * for preterm twin / whānau care decisions.
+ */
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const startTime = Date.now();
-
-  try {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
-
-    // Simple query to check DB connectivity
-    const { error } = await supabase.from('profiles').select('id').limit(1);
-
-    if (error) throw error;
-
-    return NextResponse.json(
-      {
-        status: 'ok',
-        timestamp: new Date().toISOString(),
-        responseTime: `${Date.now() - startTime}ms`,
-        checks: {
-          database: 'connected',
-        },
+  return NextResponse.json(
+    {
+      status: 'ok',
+      service: 'whanau-preterm-support-hub-nz',
+      timestamp: new Date().toISOString(),
+      version: process.env.npm_package_version ?? '0.0.0',
+      environment: process.env.NODE_ENV ?? 'development',
+    },
+    {
+      status: 200,
+      headers: {
+        'Cache-Control': 'no-store',
       },
-      {
-        status: 200,
-        headers: {
-          'Cache-Control': 'no-store',
-        },
-      }
-    );
-  } catch (error) {
-    return NextResponse.json(
-      {
-        status: 'unhealthy',
-        timestamp: new Date().toISOString(),
-        responseTime: `${Date.now() - startTime}ms`,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      },
-      {
-        status: 503,
-        headers: {
-          'Cache-Control': 'no-store',
-        },
-      }
-    );
-  }
+    }
+  );
+}
+
+// Lightweight HEAD support for some monitoring tools
+export async function HEAD() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Cache-Control': 'no-store',
+    },
+  });
 }

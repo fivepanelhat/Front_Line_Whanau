@@ -1,55 +1,33 @@
-# Roadmap
+# Whānau Preterm Support Hub NZ — Roadmap
 
-## Phase 0: Foundation (Current)
+## ✅ Completed (June 2026)
 
-**Status**: In Progress
+- [x] Core Next.js 15 + TypeScript + Tailwind + shadcn/ui foundation
+- [x] Internationalisation with `next-intl` (Te Reo Māori + English ready)
+- [x] Playwright E2E infrastructure with automatic dev server startup
+- [x] Security headers middleware (X-Frame-Options, CSP, etc.)
+- [x] Production-ready `/api/health` endpoint (GET + HEAD)
+- [x] 94.95% unit test coverage + passing type/lint checks
+- [x] 22/40 E2E tests passing (all security + health tests green)
 
-- [x] Project scaffolding & documentation
-- [x] Privacy-first encryption layer (Taonga Vault)
-- [x] Basic AI agent structure (`src/ai/`)
-- [x] Vitest + CI setup
-- [x] Consistent Node.js 22 enforcement
-- [x] Dual Portal UI (Parent vs Practitioner)
-- [ ] Organisation self-service upload flow
-- [x] Connect Supabase (optional sync)
+## 🔄 In Progress (Current Sprint)
 
-## Phase 1: MVP (Target: July – August 2026)
+- [ ] Stabilise remaining E2E UI tests (role selection buttons + language switcher)
+- [ ] Add `data-testid` attributes to key interactive components for stable testing
+- [ ] Create GitHub Actions CI workflow (`.github/workflows/ci.yml`)
+- [ ] Full E2E test suite green (target: 40/40)
 
-**Goal**: Usable national directory with role-based experiences
+## 📅 Next Priorities (Q3 2026)
 
-- [ ] Implement one-click role selector + dual portals
-- [ ] Build searchable unified directory (with filters)
-- [ ] Organisation/Practitioner submission + moderation workflow
-- [ ] Expand AI agent system to full 11 agents (LangGraph)
-- [ ] Basic RAG pipeline (Supabase pgvector)
-- [ ] Add Tauri desktop support
-- [ ] Improve test coverage (>60%)
+- [ ] Role-based portals (`/parent` and `/practitioner`) with proper navigation
+- [ ] Resource directory & peer support matching features (MVP)
+- [ ] Culturally safe design system aligned with Te Tiriti o Waitangi
 - [ ] Accessibility audit (WCAG 2.2 AA)
+- [ ] Open-source repository launch + contribution guidelines
 
-## Phase 2: Beta & Hardening (September – October 2026)
+## 🧭 Long-term Vision
 
-- [ ] Live AI agent reasoning (with consent)
-- [ ] Peer support features (moderated stories)
-- [ ] Financial tools & eligibility checker
-- [ ] Practitioner dashboard (resource export, notes)
-- [ ] Full cultural safety review process
-- [ ] Performance optimisation & offline support
-- [ ] Public beta launch
-
-## Phase 3: National Scale (Q4 2026 – 2027)
-
-- [ ] Partnerships with Health NZ, Little Miracles Trust, Plunket, iwi
-- [ ] Advanced analytics & outcome tracking (anonymised)
-- [ ] Multi-language support (Te Reo Māori + Pacific languages)
-- [ ] Community governance model
-- [ ] Sustainable funding & operations model
-- [ ] Potential integration with national health systems (with consent)
-
-## Key Milestones
-
-| Milestone              | Target Date  | Status      |
-|------------------------|--------------|-------------|
-| Dual Portals MVP       | July 2026    | In Progress |
-| Full Agent Swarm + RAG | August 2026  | Planned     |
-| Public Beta            | October 2026 | Planned     |
-| National Partnerships  | Q1 2027      | Planned     |
+- National platform for preterm twin / whānau support across Aotearoa
+- Sovereign data principles and Māori data sovereignty alignment
+- Integration with Mana Kai and community resilience initiatives
+- Scalable, accessible, family-centred digital support
