@@ -1,34 +1,44 @@
-from typing import Any, Callable
-from aether_summit.agents.rangatira import RangatiraAgent
-from aether_summit.agents.kaitiaki import KaitiakiAgent
-from aether_summit.agents.rangahau_hauora import RangahauHauoraAgent
-from aether_summit.agents.aroha_tohunga import ArohaTohungaAgent
-from aether_summit.agents.mana_awhina import ManaAwhinaAgent
-from aether_summit.agents.tautoko_kaiwhina import TautokoKaiwhinaAgent
-from aether_summit.agents.whanau_reo import WhanauReoAgent
-from aether_summit.agents.vault_guardian import VaultGuardianAgent
-from aether_summit.agents.te_aka import TeAkaAgent
-from aether_summit.agents.executor import ExecutorAgent
-from aether_summit.agents.pathway_planner import PathwayPlannerAgent
+"""
+Agent Registry for Aether Summit.
+Loads agent prompts from the filesystem and maps tools to specific agents.
+"""
+from pathlib import Path
+from .base_agent import create_agent_with_tools
+from aether_summit.tools import web_search, read_file, write_file, run_terminal_command, github_search
 
-# Register agent mapping
-AGENTS: dict[str, Any] = {
-    "rangatira": RangatiraAgent(),
-    "kaitiaki": KaitiakiAgent(),
-    "rangahau_hauora": RangahauHauoraAgent(),
-    "aroha_tohunga": ArohaTohungaAgent(),
-    "mana_awhina": ManaAwhinaAgent(),
-    "tautoko_kaiwhina": TautokoKaiwhinaAgent(),
-    "whanau_reo": WhanauReoAgent(),
-    "vault_guardian": VaultGuardianAgent(),
-    "te_aka": TeAkaAgent(),
-    "executor": ExecutorAgent(),
-    "pathway_planner": PathwayPlannerAgent(),
-}
+PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
+PROMPTS_DIR = PROJECT_ROOT / "prompts"
 
-def get_agent(name: str) -> Callable[[dict[str, Any]], dict[str, Any]]:
-    """Return the invoke function of a registered agent by name."""
-    normalized_name = name.lower().replace(" ", "_").replace("-", "_")
-    if normalized_name not in AGENTS:
-        raise ValueError(f"Agent '{name}' is not registered.")
-    return AGENTS[normalized_name].invoke
+AGENT_NAMES = [
+    "aether_summit", "rangatira", "kaitiaki", "whanau_voice", "hauora_safety", 
+    "forge", "korero", "edge_sovereign", "tikanga_ture", "kounga", "manaaki"
+]
+
+AGENT_PROMPTS = {}
+for name in AGENT_NAMES:
+    try:
+        with open(PROMPTS_DIR / f"{name}.md", "r", encoding="utf-8") as f:
+            AGENT_PROMPTS[name] = f.read().strip()
+    except FileNotFoundError:
+        # Fallback to an empty prompt if not yet generated
+        AGENT_PROMPTS[name] = f"You are {name}."
+
+def get_agent(name: str):
+    if name not in AGENT_PROMPTS:
+        raise ValueError(f"Unknown agent: {name}")
+    
+    # Map agents to their specific tools
+    tools = [web_search] # Default: web_search only for "Others"
+    
+    if name == "forge":
+        tools = [read_file, write_file, run_terminal_command]
+    elif name == "kounga":
+        tools = [read_file, web_search]
+    elif name == "korero":
+        tools = [web_search]
+    elif name == "edge_sovereign":
+        tools = [read_file, run_terminal_command]
+    elif name == "aether_summit":
+        tools = [web_search, read_file, write_file, run_terminal_command, github_search]
+        
+    return create_agent_with_tools(AGENT_PROMPTS[name], name, tools=tools)

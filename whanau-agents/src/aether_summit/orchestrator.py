@@ -1,85 +1,133 @@
+"""
+LangGraph Orchestrator for Aether Summit.
+Builds the StateGraph, routes between agents, and enforces HITL logic.
+"""
 from langgraph.graph import StateGraph, END
-from langgraph.checkpoint.memory import MemorySaver
-from typing import TypedDict, Any
+from langgraph.checkpoint.sqlite import SqliteSaver
+from typing import TypedDict, Any, Annotated
+from langgraph.graph.message import add_messages
 from aether_summit.agents import get_agent
+from aether_summit.hitl import hitl_manager
 
 class AgentState(TypedDict):
-    messages: list[str]
+    messages: Annotated[list, add_messages]
     current_agent: str
     hitl_required: bool
+    hitl_request_id: str | None
     audit_log: list[str]
 
-def supervisor_node(state: AgentState) -> dict[str, Any]:
-    """Orchestrates flow and logs entry points."""
+def supervisor(state: AgentState):
+    messages = state.get("messages", [])
+    last_message = str(messages[-1]).lower() if messages else ""
+    
+    if any(kw in last_message for kw in ["data", "sovereignty", "privacy", "māori"]):
+        agent = "kaitiaki"
+        hitl = True
+    elif any(kw in last_message for kw in ["medical", "clinical", "health advice", "diagnosis"]):
+        agent = "hauora_safety"
+        hitl = True
+    elif "write_file" in last_message or "run_terminal" in last_message:
+        agent = "forge"
+        hitl = True
+    elif "strategy" in last_message or "vision" in last_message:
+        agent = "rangatira"
+        hitl = False
+    elif "code" in last_message or "architecture" in last_message or "system" in last_message:
+        agent = "forge"
+        hitl = False
+    else:
+        agent = "whanau_voice"
+        hitl = False
+        
+    audit_entry = f"Supervisor routed to {agent} (HITL: {hitl})"
     return {
-        "current_agent": "supervisor",
-        "audit_log": list(state.get("audit_log", [])) + ["Supervisor initiated routing."]
+        "current_agent": agent,
+        "hitl_required": hitl,
+        "audit_log": list(state.get("audit_log", [])) + [audit_entry]
     }
 
-def route_next_agent(state: AgentState) -> str:
-    """Dynamic routing logic based on task content."""
-    messages_str = str(state.get("messages", [])).lower()
-    
-    if "data" in messages_str or "privacy" in messages_str:
-        return "kaitiaki"
-    elif "health" in messages_str or "medical" in messages_str:
-        return "rangahau_hauora"
-    elif "translate" in messages_str or "reo" in messages_str:
-        return "te_aka"
-    elif "plan" in messages_str or "checklist" in messages_str:
-        return "pathway_planner"
-    elif "action" in messages_str or "remind" in messages_str:
-        return "executor"
-    elif "support" in messages_str or "iwi" in messages_str:
-        return "mana_awhina"
-    
-    return END
+def human_review_node(state: AgentState):
+    """Pause execution and wait for human approval."""
+    req_id = hitl_manager.create_request(
+        agent=state.get("current_agent", "unknown"),
+        action="Review agent output / tool use",
+        details=str(state.get("messages", [""])[-1])[:300]
+    )
+    return {
+        "hitl_request_id": req_id,
+        "hitl_required": True
+    }
+
+from langgraph.prebuilt import ToolNode, tools_condition
+from aether_summit.tools import __all__ as all_tool_names
+from aether_summit.tools import web_search, read_file, write_file, run_terminal_command, github_search
+
+def route_from_supervisor(state: AgentState) -> str:
+    """Helper to dynamically route from supervisor based on the state."""
+    if state.get("hitl_required"):
+        return "human_review"
+    return state.get("current_agent", "whanau_voice")
+
+def route_after_human(state: AgentState) -> str:
+    """After human review, continue to the chosen agent."""
+    return state.get("current_agent", "whanau_voice")
+
+def route_after_tools(state: AgentState) -> str:
+    """Route from ToolNode back to the agent that called the tool."""
+    return state.get("current_agent", "whanau_voice")
 
 def build_graph():
-    # Construct stategraph
     graph = StateGraph(AgentState)
+    graph.add_node("supervisor", supervisor)
+    graph.add_node("human_review", human_review_node)
     
-    # Add all 11 nodes
-    graph.add_node("supervisor", supervisor_node)
-    graph.add_node("rangatira", get_agent("rangatira"))
-    graph.add_node("kaitiaki", get_agent("kaitiaki"))
-    graph.add_node("rangahau_hauora", get_agent("rangahau_hauora"))
-    graph.add_node("aroha_tohunga", get_agent("aroha_tohunga"))
-    graph.add_node("mana_awhina", get_agent("mana_awhina"))
-    graph.add_node("tautoko_kaiwhina", get_agent("tautoko_kaiwhina"))
-    graph.add_node("whanau_reo", get_agent("whanau_reo"))
-    graph.add_node("vault_guardian", get_agent("vault_guardian"))
-    graph.add_node("te_aka", get_agent("te_aka"))
-    graph.add_node("executor", get_agent("executor"))
-    graph.add_node("pathway_planner", get_agent("pathway_planner"))
-
-    # Define edges
+    agents = ["rangatira", "kaitiaki", "whanau_voice", "hauora_safety", 
+              "forge", "korero", "edge_sovereign", "tikanga_ture", "kounga", "manaaki"]
+              
+    for agent_name in agents:
+        graph.add_node(agent_name, get_agent(agent_name))
+        
+    # Setup ToolNode with all tools
+    all_tools = [web_search, read_file, write_file, run_terminal_command, github_search]
+    tool_node = ToolNode(tools=all_tools)
+    graph.add_node("tools", tool_node)
+    
     graph.set_entry_point("supervisor")
-    graph.add_edge("supervisor", "rangatira")
     
-    # Route from Rangatira dynamically
+    # Conditional edge from supervisor to human_review or agents
+    routes = {agent: agent for agent in agents}
+    routes["human_review"] = "human_review"
+    
     graph.add_conditional_edges(
-        "rangatira",
-        route_next_agent,
-        {
-            "kaitiaki": "kaitiaki",
-            "rangahau_hauora": "rangahau_hauora",
-            "te_aka": "te_aka",
-            "pathway_planner": "pathway_planner",
-            "executor": "executor",
-            "mana_awhina": "mana_awhina",
-            END: END
-        }
+        "supervisor", 
+        route_from_supervisor,
+        routes
     )
     
-    # Connect leaf agents back to Kaitiaki for final cultural review before END
-    graph.add_edge("kaitiaki", END)
-    graph.add_edge("rangahau_hauora", "kaitiaki")
-    graph.add_edge("te_aka", "kaitiaki")
-    graph.add_edge("pathway_planner", "kaitiaki")
-    graph.add_edge("executor", "kaitiaki")
-    graph.add_edge("mana_awhina", "kaitiaki")
-
-    # Add memory checkpointing
-    memory = MemorySaver()
-    return graph.compile(checkpointer=memory)
+    # Conditional edge from human_review to agents
+    graph.add_conditional_edges(
+        "human_review",
+        route_after_human,
+        {agent: agent for agent in agents}
+    )
+    
+    # Conditional edges from agents to tools or END
+    for agent_name in agents:
+        graph.add_conditional_edges(
+            agent_name,
+            tools_condition,
+            {"tools": "tools", END: END}
+        )
+        
+    # Edge from tools back to the calling agent
+    graph.add_conditional_edges(
+        "tools",
+        route_after_tools,
+        {agent: agent for agent in agents}
+    )
+    
+    import sqlite3
+    conn = sqlite3.connect("checkpoints.db", check_same_thread=False)
+    memory = SqliteSaver(conn)
+    memory.setup()
+    return graph.compile(checkpointer=memory, interrupt_after=["human_review"])

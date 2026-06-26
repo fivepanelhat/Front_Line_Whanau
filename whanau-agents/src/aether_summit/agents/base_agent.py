@@ -1,23 +1,64 @@
+"""
+Base Agent factory for Aether Summit.
+Dynamically creates LangChain runnables with tool bindings and cultural safety.
+"""
 from typing import Any
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_ollama import ChatOllama
+from aether_summit.config import settings
 from aether_summit.cultural_safety import apply_cultural_safety
+
+def create_agent_with_tools(system_prompt: str, name: str, tools: list = None):
+    llm = ChatOllama(
+        model=settings.model,
+        temperature=settings.temperature,
+        base_url=settings.ollama_base_url,
+    )
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", apply_cultural_safety(system_prompt)),
+        ("placeholder", "{messages}"),
+    ])
+    
+    if tools:
+        llm_with_tools = llm.bind_tools(tools)
+        runnable = prompt | llm_with_tools
+    else:
+        runnable = prompt | llm
+    
+    def invoke(state: dict[str, Any]) -> dict[str, Any]:
+        messages = state.get("messages", [])
+        if not messages:
+            messages = ["No task provided."]
+            
+        # Invoke the LangChain runnable with the current messages
+        response = runnable.invoke({"messages": messages})
+        
+        new_audit = list(state.get("audit_log", [])) + [f"Agent {name} executed successfully with LLM."]
+        
+        return {
+            "messages": [response],
+            "audit_log": new_audit,
+            "current_agent": name
+        }
+    
+    return invoke
 
 class BaseAgent:
     def __init__(self, name: str, role_description: str):
         self.name = name
         self.role_description = role_description
-
-    def compile_prompt(self, user_input: str) -> str:
-        base_prompt = f"Role: {self.name}\nDescription: {self.role_description}\n\nUser Task: {user_input}"
-        return apply_cultural_safety(base_prompt)
+        self.agent_runnable = create_agent(role_description, name)
 
     def invoke(self, state: dict[str, Any]) -> dict[str, Any]:
-        last_message = state.get("messages", [])[-1] if state.get("messages") else "No task provided."
-        compiled = self.compile_prompt(str(last_message))
+        messages = state.get("messages", [])
+        if not messages:
+            messages = ["No task provided."]
+            
+        # Invoke the LangChain runnable with the current messages
+        response = self.agent_runnable.invoke({"messages": messages})
         
-        response = f"[{self.name} processed task under cultural guidance]: Checked safety and aligned with Tiriti principles. Task context: {last_message}"
-        
-        new_messages = list(state.get("messages", [])) + [response]
-        new_audit = list(state.get("audit_log", [])) + [f"Agent {self.name} executed successfully."]
+        new_messages = list(state.get("messages", [])) + [response.content]
+        new_audit = list(state.get("audit_log", [])) + [f"Agent {self.name} executed successfully with LLM."]
         
         return {
             "messages": new_messages,
