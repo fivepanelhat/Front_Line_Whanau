@@ -12,7 +12,7 @@
 ## Medium Priority
 
 - [ ] Create `.github/workflows/ci.yml` with full Playwright support
-- [ ] Write `docs/testing.md` contributor guide for E2E tests
+- [x] Write `docs/testing.md` contributor guide for E2E tests
 - [ ] Improve mobile viewport E2E coverage
 - [ ] Add proper loading states / hydration handling for better E2E reliability
 
@@ -20,7 +20,7 @@
 
 - [ ] Finalise `CONTRIBUTING.md` (include cultural safety review process)
 - [ ] Add status badges to `README.md` once full E2E suite is green
-- [ ] Create `SECURITY.md`
+- [x] Create `SECURITY.md`
 - [ ] Prepare initial GitHub release checklist and tagging strategy
 
 ## Completed (Do Not Re-open)
