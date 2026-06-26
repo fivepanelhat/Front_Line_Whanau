@@ -11,7 +11,7 @@
 
 ## Medium Priority
 
-- [ ] Create `.github/workflows/ci.yml` with full Playwright support
+- [x] Create `.github/workflows/ci.yml` with full Playwright support
 - [x] Write `docs/testing.md` contributor guide for E2E tests
 - [ ] Improve mobile viewport E2E coverage
 - [ ] Add proper loading states / hydration handling for better E2E reliability

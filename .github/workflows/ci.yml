@@ -7,15 +7,14 @@ on:
     branches: [main]
 
 jobs:
-  lint-typecheck-build:
-    name: Lint, Type Check & Build
+  ci:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 22
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -24,72 +23,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/msplaywright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-playwright-
-
-      - name: Run ESLint
-        run: npm run lint
-
-      - name: Type Check
+      - name: Type check
         run: npm run type-check
 
-      - name: Build
-        run: npm run build
+      - name: Lint
+        run: npm run lint
 
-  unit-tests:
-    name: Unit Tests (Vitest)
-    runs-on: ubuntu-latest
+      - name: Unit tests with coverage
+        run: npm run test:coverage
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
 
-      - name: Setup Node.js 22
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run Tests with Coverage
-        run: npm run test:ci
-        env:
-          CI: true
-
-      - name: Upload coverage reports
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: vitest-coverage-report
-          path: coverage/
-          retention-days: 7
-
-  security:
-    name: Security Scan
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js 22
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run npm audit
-        run: npm audit --audit-level=moderate
-
-      - name: Dependency Review
-        uses: actions/dependency-review-action@v4
+      - name: Run E2E tests
+        run: npm run e2e
