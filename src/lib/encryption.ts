@@ -47,7 +47,7 @@ const cache = new Map<string, VaultKey>(); // namespace -> key (cleared on lock/
  */
 export async function deriveKey(
   passphrase: string,
-  salt: Uint8Array<ArrayBuffer>,
+  salt: Uint8Array,
 ): Promise<CryptoKey> {
   const encoder = new TextEncoder();
   const keyMaterial = await crypto.subtle.importKey(
@@ -61,7 +61,7 @@ export async function deriveKey(
   return crypto.subtle.deriveKey(
     {
       name: 'PBKDF2',
-      salt: salt,
+      salt: toCryptoBuffer(salt),
       iterations: PBKDF2_ITERATIONS,
       hash: 'SHA-256',
     },
@@ -77,7 +77,7 @@ export async function deriveKey(
  */
 export async function deriveHmacKey(
   passphrase: string,
-  salt: Uint8Array<ArrayBuffer>,
+  salt: Uint8Array,
 ): Promise<CryptoKey> {
   const encoder = new TextEncoder();
   const keyMaterial = await crypto.subtle.importKey(
@@ -91,7 +91,7 @@ export async function deriveHmacKey(
   return crypto.subtle.deriveKey(
     {
       name: 'PBKDF2',
-      salt: salt,
+      salt: toCryptoBuffer(salt),
       iterations: PBKDF2_ITERATIONS,
       hash: 'SHA-256',
     },
@@ -153,9 +153,9 @@ export async function encryptWithKey(data: string, vault: VaultKey): Promise<Ent
 
 export async function decryptWithKey(payload: EntryPayload, vault: VaultKey): Promise<string> {
   const pt = await crypto.subtle.decrypt(
-    { name: 'AES-GCM', iv: base64ToBuffer(payload.iv) },
+    { name: 'AES-GCM', iv: toCryptoBuffer(base64ToBuffer(payload.iv)) },
     vault.key,
-    base64ToBuffer(payload.ciphertext),
+    toCryptoBuffer(base64ToBuffer(payload.ciphertext)),
   );
   return new TextDecoder().decode(pt);
 }
@@ -204,8 +204,8 @@ export async function decrypt(
 ): Promise<string> {
   const decoder = new TextDecoder();
   const salt = base64ToBuffer(payload.salt);
-  const iv = base64ToBuffer(payload.iv);
-  const ciphertext = base64ToBuffer(payload.ciphertext);
+  const iv = toCryptoBuffer(base64ToBuffer(payload.iv));
+  const ciphertext = toCryptoBuffer(base64ToBuffer(payload.ciphertext));
   const key = await deriveKey(passphrase, salt);
 
   const plaintextBuffer = await crypto.subtle.decrypt(
@@ -256,6 +256,12 @@ export function bufferToHex(buffer: ArrayBuffer): string {
     .join('');
 }
 
+function toCryptoBuffer(buffer: Uint8Array): ArrayBuffer {
+  const bytes = new Uint8Array(buffer.byteLength);
+  bytes.set(buffer);
+  return bytes.buffer;
+}
+
 // ── Added Encryption Helpers ─────────────────────────────────
 
 export async function encryptData(data: string, key: CryptoKey): Promise<string> {
@@ -301,4 +307,3 @@ export async function generateKey(): Promise<CryptoKey> {
     ['encrypt', 'decrypt']
   )
 }
-
