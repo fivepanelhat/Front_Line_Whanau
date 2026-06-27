@@ -257,6 +257,14 @@ export function bufferToHex(buffer: ArrayBuffer): string {
 }
 
 function toCryptoBuffer(buffer: Uint8Array): ArrayBuffer {
+  if (
+    buffer.buffer instanceof ArrayBuffer &&
+    buffer.byteOffset === 0 &&
+    buffer.byteLength === buffer.buffer.byteLength
+  ) {
+    return buffer.buffer;
+  }
+
   const bytes = new Uint8Array(buffer.byteLength);
   bytes.set(buffer);
   return bytes.buffer;
