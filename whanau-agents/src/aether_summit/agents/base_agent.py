@@ -8,11 +8,12 @@ from langchain_ollama import ChatOllama
 from aether_summit.config import settings
 from aether_summit.cultural_safety import apply_cultural_safety
 
-def create_agent_with_tools(system_prompt: str, name: str, tools: list = None):
+def create_agent(system_prompt: str, name: str, tools: list = None):
     llm = ChatOllama(
         model=settings.model,
         temperature=settings.temperature,
         base_url=settings.ollama_base_url,
+        num_ctx=4096,
     )
     prompt = ChatPromptTemplate.from_messages([
         ("system", apply_cultural_safety(system_prompt)),
@@ -20,10 +21,11 @@ def create_agent_with_tools(system_prompt: str, name: str, tools: list = None):
     ])
     
     if tools:
-        llm_with_tools = llm.bind_tools(tools)
-        runnable = prompt | llm_with_tools
-    else:
-        runnable = prompt | llm
+        return prompt | llm.bind_tools(tools)
+    return prompt | llm
+
+def create_agent_with_tools(system_prompt: str, name: str, tools: list = None):
+    runnable = create_agent(system_prompt, name, tools)
     
     def invoke(state: dict[str, Any]) -> dict[str, Any]:
         messages = state.get("messages", [])
