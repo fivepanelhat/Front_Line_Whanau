@@ -3,7 +3,8 @@
   "version": "0.2.0",
   "private": true,
   "engines": {
-    "node": ">=24"
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
   },
   "description": "A sovereign, privacy-first digital platform supporting whānau of preterm twins navigating complex frontline services in Aotearoa New Zealand. Built with client-side encryption (Taonga Vault), Te Tiriti alignment, and LangGraph-powered AI orchestration.",
   "scripts": {
@@ -12,14 +13,17 @@
     "analyze": "ANALYZE=true next build",
     "start": "node .next/standalone/Front_Line_Whanau/server.js",
     "type-check": "tsc --noEmit",
-    "lint": "eslint src",
+    "lint": "eslint src --max-warnings=0",
+    "lint:fix": "eslint src --fix",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "e2e:install": "playwright install --with-deps chromium",
     "e2e": "playwright test",
+    "test:e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
     "e2e:report": "playwright show-report",
+    "validate": "npm run type-check && npm run lint && npm run test:coverage",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",
     "tauri:build:windows": "tauri build --target x86_64-pc-windows-msvc",
@@ -60,6 +64,8 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.39.1",
     "@playwright/test": "^1.61.1",
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/postcss": "^4.3.1",
@@ -74,8 +80,8 @@
     "@vitejs/plugin-react": "^6.0.3",
     "@vitest/coverage-v8": "^4.1.9",
     "autoprefixer": "^10.5.2",
-    "eslint": "^8.57.1",
-    "eslint-config-next": "^15.3.0",
+    "eslint": "^9.39.1",
+    "eslint-config-next": "^16.2.9",
     "jsdom": "^29.1.1",
     "postcss": "^8.5.15",
     "prettier": "^3.8.4",

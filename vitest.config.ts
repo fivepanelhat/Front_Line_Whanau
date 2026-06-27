@@ -11,8 +11,16 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      reporter: ['text', 'json', 'html', 'lcov'],
+      exclude: ['node_modules/', 'src/__tests__/', '**/*.d.ts', '**/*.config.*'],
+      thresholds: {
+        lines: 80,
+        functions: 80,
+        branches: 80,
+        statements: 80,
+      },
     },
+    testTimeout: 10000,
   },
   resolve: {
     alias: {

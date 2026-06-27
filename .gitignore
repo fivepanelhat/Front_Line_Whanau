@@ -17,6 +17,7 @@ node_modules/
 # Production
 /build
 /dist
+src-tauri/target/
 
 # Misc
 *.pem
@@ -50,3 +51,5 @@ prisma/*.db-journal
 *.egg-info/
 __pycache__/
 *.db
+whanau-agents/checkpoints.db-shm
+whanau-agents/checkpoints.db-wal
