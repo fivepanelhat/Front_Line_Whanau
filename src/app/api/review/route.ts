@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
   const result = await agentApp.invoke(
     new Command({ resume: { approved, feedback } }),
     { configurable: { thread_id: threadId } }
-  ) as any;
+  ) as { messages: Array<{ content?: string }> };
 
   return NextResponse.json({
     status: "complete",

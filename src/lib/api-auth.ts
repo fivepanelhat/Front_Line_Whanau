@@ -9,6 +9,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function requireAuth(
   _req: NextRequest
 ): Promise<{ user: { id: string } } | NextResponse> {
+  void _req;
   const { createClient } = await import('@/lib/supabase/server');
   const supabase = await createClient();
   const {

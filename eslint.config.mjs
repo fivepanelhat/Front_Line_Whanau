@@ -14,4 +14,17 @@ export default defineConfig([
       'react/react-in-jsx-scope': 'off',
     },
   },
+  {
+    files: ['src/__tests__/**/*.{ts,tsx}'],
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'off',
+    },
+  },
+  {
+    files: ['src/ai/**/*.ts', 'src/components/Dashboard.tsx'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+    },
+  },
 ]);

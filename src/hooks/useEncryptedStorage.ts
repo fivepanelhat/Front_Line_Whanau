@@ -10,7 +10,7 @@
  *   const { entries, save, load, remove } = useEncryptedStorage('journal', passphrase);
  */
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { openVault, encryptWithKey, decryptWithKey, type EncryptedPayload, type EntryPayload } from '@/lib/encryption';
 
 export interface StoredEntry {
@@ -24,25 +24,24 @@ export interface StoredEntry {
   };
 }
 
+function parseStoredEntries(raw: string | null): StoredEntry[] {
+  if (!raw) return [];
+
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    return Array.isArray(parsed) ? (parsed as StoredEntry[]) : [];
+  } catch {
+    return [];
+  }
+}
+
 export function useEncryptedStorage(namespace: string, passphrase: string | null) {
-  const [entries, setEntries] = useState<StoredEntry[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const storageKey = `flw-${namespace}`;
-
-  // Load entries from localStorage on mount
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    try {
-      const stored = localStorage.getItem(storageKey);
-      if (stored) {
-        setEntries(JSON.parse(stored));
-      }
-    } catch {
-      // Corrupted data — start fresh
-    }
-    setIsLoading(false);
-  }, [storageKey]);
+  const [entries, setEntries] = useState<StoredEntry[]>(() => {
+    if (typeof window === 'undefined') return [];
+    return parseStoredEntries(localStorage.getItem(storageKey));
+  });
+  const [isLoading] = useState(false);
 
   // Persist entries to localStorage
   const persistEntries = useCallback(
@@ -57,7 +56,7 @@ export function useEncryptedStorage(namespace: string, passphrase: string | null
     [storageKey],
   );
 
-  const getVault = useCallback(async (): Promise<any> => {
+  const getVault = useCallback(async (): Promise<Awaited<ReturnType<typeof openVault>> | null> => {
     if (!passphrase) return null;
     const saltKey = `flw-${namespace}-salt`;
     const existingSalt = localStorage.getItem(saltKey) ?? undefined;

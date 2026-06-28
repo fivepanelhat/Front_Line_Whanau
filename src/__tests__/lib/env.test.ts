@@ -28,14 +28,14 @@ describe('env validation', () => {
   it('defaults NODE_ENV to development when unset', async () => {
     process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://example.supabase.co';
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'anon-key-value';
-    delete (process.env as any).NODE_ENV;
+    Reflect.deleteProperty(process.env, 'NODE_ENV');
 
     const { env } = await import('../../env');
     expect(env.NODE_ENV).toBe('development');
   });
 
   it('throws a descriptive error when NEXT_PUBLIC_SUPABASE_URL is missing', async () => {
-    delete (process.env as any).NEXT_PUBLIC_SUPABASE_URL;
+    Reflect.deleteProperty(process.env, 'NEXT_PUBLIC_SUPABASE_URL');
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'anon-key-value';
 
     await expect(import('../../env')).rejects.toThrow(
@@ -52,7 +52,7 @@ describe('env validation', () => {
 
   it('throws a descriptive error when NEXT_PUBLIC_SUPABASE_ANON_KEY is missing', async () => {
     process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://example.supabase.co';
-    delete (process.env as any).NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    Reflect.deleteProperty(process.env, 'NEXT_PUBLIC_SUPABASE_ANON_KEY');
 
     await expect(import('../../env')).rejects.toThrow(
       /NEXT_PUBLIC_SUPABASE_ANON_KEY/

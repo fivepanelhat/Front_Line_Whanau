@@ -32,7 +32,7 @@ export async function askAgentWithHITL(
     configurable: { thread_id: "user-session-123" } // Unique per user/session
   };
 
-  let result = (await agentApp.invoke(
+  const result = (await agentApp.invoke(
     {
       messages: [new HumanMessage(query)],
       userRole,

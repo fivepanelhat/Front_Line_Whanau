@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useEncryptedStorage, type StoredEntry } from './useEncryptedStorage';
+import { useEncryptedStorage } from './useEncryptedStorage';
 
 export interface DecryptedJournalEntry {
   id: string;

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 export type UserRole = 'parent' | 'practitioner' | null;
 
@@ -14,22 +14,21 @@ interface RoleContextType {
 const RoleContext = createContext<RoleContextType | undefined>(undefined);
 
 export function RoleProvider({ children }: { children: React.ReactNode }) {
-  const [role, setRoleState] = useState<UserRole>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [role, setRoleState] = useState<UserRole>(() => {
+    if (typeof window === 'undefined') return null;
 
-  // Persist role across sessions
-  useEffect(() => {
     try {
       const savedRole = localStorage.getItem('userRole') as UserRole;
       if (savedRole === 'parent' || savedRole === 'practitioner') {
-        setRoleState(savedRole);
+        return savedRole;
       }
     } catch {
       // Ignore storage access issues and continue with in-memory role only.
-    } finally {
-      setIsLoading(false);
     }
-  }, []);
+
+    return null;
+  });
+  const isLoading = false;
 
   const setRole = (newRole: UserRole) => {
     setRoleState(newRole);

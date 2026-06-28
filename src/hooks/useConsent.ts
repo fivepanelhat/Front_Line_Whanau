@@ -7,7 +7,7 @@
  *   const { hasConsent, grantConsent, revokeConsent } = useConsent('journal.write');
  */
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { ConsentManager, type ConsentScope } from '@/lib/consent';
 
 // Singleton instance (shared across all hook users)
@@ -22,22 +22,18 @@ function getManager(): ConsentManager {
 
 export function useConsent(scope: ConsentScope) {
   const manager = getManager();
-  const [granted, setGranted] = useState<boolean>(manager.hasConsent(scope));
-
-  // Re-check on mount (handles SSR → client hydration)
-  useEffect(() => {
-    setGranted(manager.hasConsent(scope));
-  }, [scope, manager]);
+  const [, setVersion] = useState(0);
+  const granted = manager.hasConsent(scope);
 
   const grantConsent = useCallback(async () => {
     await manager.grantConsent(scope);
-    setGranted(true);
-  }, [scope, manager]);
+    setVersion((v) => v + 1);
+  }, [scope, manager, setVersion]);
 
   const revokeConsent = useCallback(async () => {
     await manager.revokeConsent(scope);
-    setGranted(false);
-  }, [scope, manager]);
+    setVersion((v) => v + 1);
+  }, [scope, manager, setVersion]);
 
   return {
     hasConsent: granted,

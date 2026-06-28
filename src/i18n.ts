@@ -1,6 +1,5 @@
 import { getRequestConfig } from 'next-intl/server';
 import { getUserLocale } from './lib/locale';
-import { locales, defaultLocale } from './lib/locale-config';
 
 export { locales, defaultLocale, localeNames } from './lib/locale-config';
 export type { Locale } from './lib/locale-config';
