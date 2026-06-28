@@ -63,6 +63,9 @@
     "server-only": "^0.0.1",
     "zod": "^3.23.8"
   },
+  "overrides": {
+    "@hono/node-server": ">=1.19.13"
+  },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.39.1",
