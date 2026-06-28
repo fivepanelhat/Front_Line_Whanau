@@ -1,0 +1,37 @@
+{
+  "directory": {
+    "title": "Rārangi ā-Motu",
+    "subtitle": "Ngā ratonga me te tautoko puta noa i Aotearoa",
+    "searchPlaceholder": "Rapua ngā ratonga, ngā whakahaere rānei...",
+    "filterRegion": "Tātari mā te rohe",
+    "filterType": "Tātari mā te momo ratonga",
+    "allRegions": "Ngā rohe katoa",
+    "allTypes": "Ngā momo ratonga katoa",
+    "noResults": "Kāore he hua i kitea. Whakamātauria te whakawhānui i tō rapunga.",
+    "noResultsSuggestion": "Ngana ki te whakawhanui i tō rapu, tīpakohia rānei he rohe kē atu.",
+    "verifiedBadge": "Ratonga whakamana",
+    "verified": "Kua manatoko",
+    "contact": "Whakapā",
+    "contactOrganisation": "Whakapā ki te whakahaere",
+    "viewDetails": "Tirohia ngā taipitopito",
+    "addListing": "Tāpirihia tō ratonga",
+    "regions": {
+      "northland": "Te Tai Tokerau / Northland",
+      "auckland": "Tāmaki Makaurau / Auckland",
+      "waikato": "Waikato",
+      "bayOfPlenty": "Te Moana-a-Toi / Bay of Plenty",
+      "gisborne": "Tairāwhiti / Gisborne",
+      "hawkesBay": "Te Matau-a-Māui / Hawke's Bay",
+      "taranaki": "Taranaki",
+      "manawatuWhanganui": "Manawatū-Whanganui",
+      "wellington": "Te Whanganui-a-Tara / Wellington",
+      "nelson": "Te Tauihu-o-te-waka / Nelson Tasman",
+      "marlborough": "Te Tauihu / Marlborough",
+      "westCoast": "Te Tai Poutini / West Coast",
+      "canterbury": "Waitaha / Canterbury",
+      "timaru": "Arowhenua / Timaru",
+      "otago": "Ōtākou / Otago",
+      "southland": "Murihiku / Southland"
+    }
+  }
+}

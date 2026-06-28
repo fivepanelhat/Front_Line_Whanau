@@ -1,0 +1,63 @@
+{
+  "common": {
+    "welcome": "Nau mai, whānau",
+    "loading": "E tātai ana...",
+    "search": "Rapua",
+    "submit": "Tukuna",
+    "cancel": "Whakakore",
+    "save": "Tiaki",
+    "close": "Katia",
+    "back": "Hoki",
+    "next": "Panuku",
+    "privacy": "Kei te tiakina tō tūmataiti",
+    "notMedicalAdvice": "Ehara tēnei i te whakakapi mō te tohutohu hauora ngaio. Tēnā koa kōrero ki tō tīma hauora.",
+    "privacyFirst": "Tūmataiti Tuatahi",
+    "sovereignData": "Ka noho tō raraunga ki Aotearoa",
+    "error": "He hapa kē tēnei. Ngana anō.",
+    "errorContact": "Mēnā ka haere tonu tēnei, whakapā atu ki tō rōpū tiaki hauora.",
+    "culturalSafety": "Kua hangaia tēnei papaaho i runga i ngā mātāpono o Te Tiriti o Waitangi me te haumaru ahurea."
+  },
+  "navigation": {
+    "home": "Kāinga",
+    "directory": "Rārangi",
+    "resources": "Ngā Rauemi",
+    "support": "Tautoko",
+    "about": "Mō mātou",
+    "features": "Ngā Āhuatanga",
+    "values": "Ō Mātou Uara",
+    "launchHub": "Whakaekea te Puna",
+    "skipToContent": "Tere atu ki ngā ihirangi matua",
+    "login": "Takiuru",
+    "logout": "Takiputa"
+  },
+  "languageSwitcher": {
+    "label": "Huri reo",
+    "current": "Reo",
+    "english": "Ingarihi (AO)",
+    "maori": "Te Reo Māori",
+    "choosingMaori": "Huri ki Te Reo Māori",
+    "choosingEnglish": "Huri ki te Reo Ingarihi"
+  },
+  "errors": {
+    "somethingWrong": "I puta he hapa. Tēnā koa ngana anō.",
+    "notFound": "Kāore i kitea te whārangi",
+    "unauthorized": "Kāore i a koe te mana ki te uru ki tēnei.",
+    "pageTitle": "He hapa kē tēnei",
+    "pageDescription": "Kua rēhia mātou i te take, ka titiro ake.",
+    "tryAgain": "Ngana anō",
+    "goHome": "Hoki ki te kāinga",
+    "notFoundTitle": "Kāore i kitea te whārangi",
+    "notFoundDescription": "Pea kua neke, kua tangohia rānei tēnei whārangi. Ki te hiahia āwhina, whakapā atu ki tō rōpū tiaki tūturu.",
+    "serverTitle": "Kāore e waatea ana te ratonga",
+    "serverDescription": "He raruraru āpōpō tōna roa. Ngana anō ā tōna wā."
+  },
+  "footer": {
+    "tagline": "Tautoko i ngā whānau puta noa i Aotearoa",
+    "notMedicalAdvice": "Ehara tēnei papatono i te whakakapi mō te tohutohu hauora ngaio.",
+    "privacyPolicy": "Kaupeka tūmataiti",
+    "terms": "Ngā Ture Whakamahi",
+    "contact": "Whakapā mai",
+    "acknowledgement": "E mihi ana mātou ki ngā tangata whenua o Aotearoa, ā, e ū tonu ana ki ngā mātāpono o Te Tiriti o Waitangi.",
+    "copyright": "Front Line Whānau. I hangaia me te aroha i Aotearoa."
+  }
+}

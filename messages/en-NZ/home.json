@@ -1,0 +1,48 @@
+{
+  "home": {
+    "heroTitle": "Support for whānau of preterm twins",
+    "heroSubtitle": "Private. Culturally safe. Built for Aotearoa.",
+    "heroDescription": "A sovereign, privacy-first platform connecting whānau of preterm twins with services, information, and each other — across Aotearoa New Zealand.",
+    "ctaDirectory": "Browse Directory",
+    "ctaResources": "View Resources & Guides",
+    "ctaLaunchHub": "Enter your portal",
+    "intro": "A sovereign platform to help families navigate support, services, and information with dignity and care."
+  },
+  "roleSelector": {
+    "title": "Nau mai, haere mai — Welcome",
+    "subtitle": "Supporting whānau of preterm twins across Aotearoa New Zealand",
+    "parentTitle": "I am a Parent / Whānau",
+    "parentDescription": "Get support, information, and guidance for your journey",
+    "practitionerTitle": "I am a Practitioner / Organisation",
+    "practitionerDescription": "Access tools, resources, and directory management",
+    "choosePortal": "Choose your portal to continue"
+  },
+  "features": {
+    "title": "Built for whānau, by whānau",
+    "subtitle": "Every feature designed with cultural safety and privacy at its heart.",
+    "privacyTitle": "Sovereign Privacy",
+    "privacyDescription": "Your data never leaves Aotearoa. End-to-end encrypted and under your control.",
+    "directoryTitle": "National Directory",
+    "directoryDescription": "Find services, support groups, and specialists across all regions of Aotearoa.",
+    "culturalTitle": "Culturally Safe",
+    "culturalDescription": "Designed with and for Māori whānau. Te Tiriti o Waitangi-aligned practices throughout.",
+    "supportTitle": "Peer Support",
+    "supportDescription": "Connect with other whānau who understand the journey of premature twins.",
+    "guidesTitle": "Resources & Guides",
+    "guidesDescription": "Curated information in plain language, reviewed by clinicians and whānau.",
+    "aiTitle": "Guided AI Assistant",
+    "aiDescription": "A gentle AI guide to help navigate information — always transparent, never a replacement for your care team."
+  },
+  "values": {
+    "title": "What we stand for",
+    "subtitle": "Our kaupapa guides every decision we make.",
+    "manaTitle": "Mana Motuhake",
+    "manaDescription": "Upholding the sovereignty and self-determination of whānau in every interaction.",
+    "whanauTitle": "Whānau-Centred",
+    "whanauDescription": "The whole whānau is supported — not just the patient. Siblings, partners, grandparents included.",
+    "tikaTitle": "Tika me Pono",
+    "tikaDescription": "Honest, accurate, and culturally appropriate information — always.",
+    "manaakiTitle": "Manaakitanga",
+    "manaakiDescription": "Genuine care and hospitality in every feature, every word, every interaction."
+  }
+}

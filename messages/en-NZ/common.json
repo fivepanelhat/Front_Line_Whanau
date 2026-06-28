@@ -1,0 +1,64 @@
+{
+  "common": {
+    "welcome": "Welcome, whānau",
+    "loading": "Loading...",
+    "search": "Search",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "back": "Back",
+    "close": "Close",
+    "next": "Next",
+    "learnMore": "Learn more",
+    "privacy": "Your privacy is protected",
+    "notMedicalAdvice": "This is not a substitute for professional medical advice. Please consult your healthcare team.",
+    "privacyFirst": "Privacy-First",
+    "sovereignData": "Your data stays in Aotearoa",
+    "error": "Something went wrong. Please try again.",
+    "errorContact": "If this continues, contact your care team directly.",
+    "culturalSafety": "This platform is designed with cultural safety and Te Tiriti o Waitangi principles in mind."
+  },
+  "navigation": {
+    "home": "Home",
+    "directory": "Directory",
+    "resources": "Resources & Guides",
+    "support": "Support",
+    "about": "About",
+    "features": "Features",
+    "values": "Our Values",
+    "launchHub": "Launch Hub",
+    "skipToContent": "Skip to main content",
+    "login": "Log in",
+    "logout": "Log out"
+  },
+  "languageSwitcher": {
+    "label": "Change language",
+    "current": "Language",
+    "english": "English (NZ)",
+    "maori": "Te Reo Māori",
+    "choosingMaori": "Switch to Te Reo Māori",
+    "choosingEnglish": "Switch to English"
+  },
+  "errors": {
+    "somethingWrong": "Something went wrong. Please try again.",
+    "notFound": "Page not found",
+    "unauthorized": "You don't have permission to access this.",
+    "pageTitle": "Something went wrong",
+    "pageDescription": "We've logged the issue and will look into it.",
+    "tryAgain": "Try again",
+    "goHome": "Return home",
+    "notFoundTitle": "Page not found",
+    "notFoundDescription": "This page may have moved or been removed. If you need help, contact your care team directly.",
+    "serverTitle": "Service unavailable",
+    "serverDescription": "We're experiencing a temporary issue. Please try again shortly."
+  },
+  "footer": {
+    "tagline": "Supporting whānau across Aotearoa",
+    "notMedicalAdvice": "This platform is not a substitute for professional medical advice.",
+    "privacyPolicy": "Privacy policy",
+    "terms": "Terms of use",
+    "contact": "Contact",
+    "acknowledgement": "We acknowledge the tangata whenua of Aotearoa and are committed to the principles of Te Tiriti o Waitangi.",
+    "copyright": "Front Line Whānau. Built with aroha in Aotearoa."
+  }
+}

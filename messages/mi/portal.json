@@ -1,0 +1,46 @@
+{
+  "resources": {
+    "title": "Ngā Rauemi me ngā Arataki",
+    "searchPlaceholder": "Rapua ngā arataki me ngā rauemi...",
+    "categories": "Ngā kāwai"
+  },
+  "portal": {
+    "parent": {
+      "welcome": "Nau mai ki tō whatunga whānau",
+      "subtitle": "Tō wāhi mataora mō te tautoko, mō ngā mōhiotanga, me te hono.",
+      "quickLinks": "Ngā hononga tere",
+      "recentResources": "Ngā rauemi hou",
+      "myDocuments": "Ōku tuhinga",
+      "myConsent": "Ngā tautuhinga tūmataiti"
+    },
+    "practitioner": {
+      "welcome": "Whatunga kaimahi hauora",
+      "subtitle": "Ngā taputapu me ngā rauemi mō ngā kaimahi hauora ngaio me ngā whakahaere tautoko.",
+      "manageListings": "Whakahaere ngā rārangi",
+      "resources": "Ngā rauemi haumaru",
+      "guidelines": "Ngā aratohu me ngā tikanga"
+    }
+  },
+  "privacy": {
+    "title": "Tūmataiti me te Rangatiratanga o ngā Raraunga",
+    "description": "Kei a koe te mana o ō raraunga. E whai ana mātou i ngā mātāpono o Te Mana Raraunga me te Ture Tūmataiti o Aotearoa.",
+    "yourData": "Ō Raraunga, Tō Mana",
+    "encryption": "Kei te whakamuna ngā tuhinga, ā, kei te tiakina pai."
+  },
+  "consent": {
+    "title": "Whakaae me te Tiri",
+    "subtitle": "Kei a koe te mana o ō mōhiohio. Arotakehia, hurihia hoki ō hiahia i ngā wā katoa.",
+    "manage": "Whakahaerehia ko wai ka āhei ki te kite i ō mōhiohio",
+    "records": "Ngā Tuhinga Whakaae",
+    "analyticsTitle": "Tātaritanga whakamahi",
+    "analyticsDescription": "Āwhina mai i a mātou ki te whakapai ake i te papatono mā te tohatoha raraunga whakamahi kore-ingoa. Kāore he mōhiohio whaiaro e kohia ana.",
+    "supportTitle": "Tūhono tautoko ā-hoa",
+    "supportDescription": "Tukua mātou ki te tūtohu i ngā hononga ki ētahi atu whānau i ngā āhuatanga ōrite.",
+    "grant": "Kei te pai",
+    "revoke": "Kāore e pai",
+    "granted": "Kei te whakaae ana",
+    "revoked": "Kei te whakakahore ana",
+    "savedAt": "I whakahou whakamutunga",
+    "disclaimer": "Ka taea e koe te huri i tō āheitanga i ngā wā katoa. Ko te huri i tō āheitanga kāore e pā ana ki ngā ratonga kua riro ke."
+  }
+}

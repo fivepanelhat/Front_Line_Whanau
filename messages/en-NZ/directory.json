@@ -1,0 +1,37 @@
+{
+  "directory": {
+    "title": "National Directory",
+    "subtitle": "Services and support across Aotearoa",
+    "searchPlaceholder": "Search services, organisations, or support types...",
+    "filterRegion": "Filter by region",
+    "filterType": "Filter by service type",
+    "allRegions": "All regions",
+    "allTypes": "All service types",
+    "noResults": "No results found. Try broadening your search.",
+    "noResultsSuggestion": "Try broadening your search or selecting a different region.",
+    "verifiedBadge": "Verified service",
+    "verified": "Verified",
+    "contact": "Contact",
+    "contactOrganisation": "Contact organisation",
+    "viewDetails": "View details",
+    "addListing": "Add your service",
+    "regions": {
+      "northland": "Northland / Te Tai Tokerau",
+      "auckland": "Tāmaki Makaurau / Auckland",
+      "waikato": "Waikato",
+      "bayOfPlenty": "Bay of Plenty / Te Moana-a-Toi",
+      "gisborne": "Tairāwhiti / Gisborne",
+      "hawkesBay": "Hawke's Bay / Te Matau-a-Māui",
+      "taranaki": "Taranaki",
+      "manawatuWhanganui": "Manawatū-Whanganui",
+      "wellington": "Te Whanganui-a-Tara / Wellington",
+      "nelson": "Nelson Tasman / Te Tauihu-o-te-waka",
+      "marlborough": "Marlborough / Te Tauihu",
+      "westCoast": "West Coast / Te Tai Poutini",
+      "canterbury": "Waitaha / Canterbury",
+      "timaru": "Timaru / Arowhenua",
+      "otago": "Ōtākou / Otago",
+      "southland": "Murihiku / Southland"
+    }
+  }
+}
