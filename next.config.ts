@@ -2,8 +2,6 @@ import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 import bundleAnalyzer from '@next/bundle-analyzer';
 
-// Note: createNextIntlPlugin only accepts one argument in next-intl v4+
-// The experimental.precompile option has been removed from the plugin API.
 const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
 
 const withBundleAnalyzer = bundleAnalyzer({
@@ -40,8 +38,14 @@ const nextConfig: NextConfig = {
 
   experimental: {
     serverActions: { bodySizeLimit: '2mb' },
-    // Note: 'optimizePackageImports' must be inside 'experimental' (not top-level)
-    optimizePackageImports: ['lucide-react', '@radix-ui/react-*', 'date-fns'],
+    optimizePackageImports: [
+      'lucide-react',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-select',
+      'date-fns',
+      'zod',
+    ],
   },
 
   async headers() {
@@ -54,6 +58,7 @@ const nextConfig: NextConfig = {
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
           { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+          { key: 'X-DNS-Prefetch-Control', value: 'on' },
         ],
       },
     ];

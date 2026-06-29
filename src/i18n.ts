@@ -6,16 +6,7 @@ export { locales, defaultLocale, localeNames } from './lib/locale-config';
 export type { Locale } from './lib/locale-config';
 
 /**
- * Namespace loaders — each returns only the message slice needed by a route.
- *
- * Usage in a Server Component or layout:
- *
- *   import { loadMessages } from '@/i18n';
- *   const messages = await loadMessages(locale, ['common', 'directory']);
- *
- * The root locale layout loads 'common' for every page (shared UI strings,
- * navigation, language switcher, errors, footer). Route-specific namespaces
- * (home, directory, portal) are loaded only where needed.
+ * Namespace-first loading keeps messages split and easy to evolve.
  */
 export const NAMESPACES = ['common', 'home', 'directory', 'portal'] as const;
 export type MessageNamespace = (typeof NAMESPACES)[number];
@@ -46,6 +37,9 @@ export async function loadMessages(
 export default getRequestConfig(async () => {
   const requestedLocale = await getUserLocale();
   const locale: Locale = isLocale(requestedLocale) ? requestedLocale : defaultLocale;
+
+  // Load baseline namespaces used across shared layouts and portal/home routes.
+  // As route-level message loading matures, this can be narrowed further.
   const messages = await loadMessages(locale, [...NAMESPACES]);
   return { locale, messages };
 });
