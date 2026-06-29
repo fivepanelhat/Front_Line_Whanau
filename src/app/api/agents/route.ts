@@ -2,8 +2,6 @@ import { NextRequest } from 'next/server';
 import { agentGraph } from '@/ai/graph';
 import { HumanMessage, AIMessage } from '@langchain/core/messages';
 
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
 
 type ChatHistoryMessage = {
   role: 'user' | 'assistant';
