@@ -14,6 +14,17 @@ A clear and concise description of what the problem is. Ex. "It's difficult for 
 
 A clear and concise description of what you want to happen.
 
+## Request Visibility & Contribution Mode
+
+Choose how you want to contribute or make this request:
+
+- [ ] Public request in GitHub issue (visible to all contributors)
+- [ ] Private request (maintainer follow-up required)
+- [ ] I want to contribute code publicly
+- [ ] I want to contribute privately (non-public coordination)
+
+If you selected private, share a safe contact route (for example: project email or secure form) without posting sensitive data.
+
 ## How Does This Help Whānau?
 
 Explain how this feature would benefit front line families, practitioners, or the community.
@@ -34,6 +45,12 @@ Which project values does this feature support? (Check all that apply)
 - Does this feature involve personal data? If so, how is consent handled?
 - Does data stay client-side, or does it require server processing?
 - Are there any child protection implications?
+
+## Data Use Notice
+
+We do not keep or use submitted data for profiling, marketing, or model training.
+Any details shared through this request are used only to acknowledge receipt and verify a human request/contribution.
+Please do not include personal, health, or identifying information.
 
 ## Alternatives Considered
 
