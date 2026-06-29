@@ -1,9 +1,9 @@
-import { ChatInterface } from '@/components/ChatInterface';
+import RoleSelector from '@/components/RoleSelector';
 
 export default function HomePage() {
   return (
-    <main className="px-6 py-6">
-      <ChatInterface />
+    <main className="flex min-h-[80vh] flex-col items-center justify-center px-6">
+      <RoleSelector />
     </main>
   );
 }
