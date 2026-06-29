@@ -1,6 +1,10 @@
 import 'server-only';
 import { BaseAgent } from './base';
-import { searchDirectoryTool, getCulturalResourcesTool } from '../tools';
+import {
+  searchDirectoryTool,
+  getCulturalResourcesTool,
+  knowledgeDatabaseLookupTool,
+} from '../tools';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { createReactAgent } from '@langchain/langgraph/prebuilt';
 import { AgentConfig, AgentState } from '@/ai/types';
@@ -12,7 +16,7 @@ export class ResourceNavigator extends BaseAgent {
 
   private agent = createReactAgent({
     llm: new ChatGoogleGenerativeAI({ model: 'gemini-1.5-flash', temperature: 0.2 }),
-    tools: [searchDirectoryTool, getCulturalResourcesTool],
+    tools: [knowledgeDatabaseLookupTool, searchDirectoryTool, getCulturalResourcesTool],
     prompt: PROMPTS.resourceNavigator,
   });
 

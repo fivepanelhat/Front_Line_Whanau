@@ -1,6 +1,10 @@
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { createReactAgent } from '@langchain/langgraph/prebuilt';
-import { getPretermCareInfoTool, getRegionalSupportTool } from './tools';
+import {
+  getPretermCareInfoTool,
+  getRegionalSupportTool,
+  knowledgeDatabaseLookupTool,
+} from './tools';
 import { PROMPTS } from './prompts';
 import { LegacyBaseAgent, AgentResponse, OrchestrationContext } from './types';
 
@@ -10,7 +14,7 @@ export class TaongaKnowledgeWeaver implements LegacyBaseAgent {
 
   private agent = createReactAgent({
     llm: new ChatGoogleGenerativeAI({ model: 'gemini-1.5-flash', temperature: 0.2 }),
-    tools: [getPretermCareInfoTool, getRegionalSupportTool],
+    tools: [knowledgeDatabaseLookupTool, getPretermCareInfoTool, getRegionalSupportTool],
     prompt: PROMPTS.knowledgeWeaver,
   });
 

@@ -1,6 +1,6 @@
 import 'server-only';
 import { BaseAgent } from './base';
-import { getFundingInfoTool } from '../tools';
+import { getFundingInfoTool, knowledgeDatabaseLookupTool } from '../tools';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { createReactAgent } from '@langchain/langgraph/prebuilt';
 import { AgentConfig, AgentState } from '@/ai/types';
@@ -12,7 +12,7 @@ export class FundingEligibilityChecker extends BaseAgent {
 
   private agent = createReactAgent({
     llm: new ChatGoogleGenerativeAI({ model: 'gemini-1.5-flash', temperature: 0.1 }),
-    tools: [getFundingInfoTool],
+    tools: [knowledgeDatabaseLookupTool, getFundingInfoTool],
     prompt: PROMPTS.fundingEligibilityChecker,
   });
 

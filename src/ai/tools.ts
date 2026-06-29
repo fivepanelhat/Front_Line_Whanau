@@ -1,6 +1,33 @@
 import { tool } from "@langchain/core/tools";
 import { retrieveRelevantContext } from "./rag";
+import { lookupKnowledgeContext } from "./knowledge-db";
 import { z } from "zod";
+
+export const knowledgeDatabaseLookupTool = tool(
+  async ({ query, domain }: { query: string; domain?: string }) => {
+    const enrichedQuery = domain ? `${domain} ${query}` : query;
+    const result = await lookupKnowledgeContext(enrichedQuery, { limit: 6 });
+
+    return {
+      content: result.context,
+      sources: result.sources,
+      retrievalMode: result.retrievalMode,
+      query: enrichedQuery,
+    };
+  },
+  {
+    name: "knowledge_database_lookup",
+    description:
+      "Retrieve grounded contextual knowledge from vector database with curated fallback, including source metadata.",
+    schema: z.object({
+      query: z.string().min(3).describe("User query or topic to search"),
+      domain: z
+        .enum(["general", "preterm_care", "funding", "cultural", "regional", "emotional"])
+        .optional()
+        .describe("Optional domain hint for retrieval focus"),
+    }),
+  }
+);
 
 export const documentSearchTool = tool(
   async (query: string) => {
@@ -48,6 +75,8 @@ export const getFundingInfoTool = tool(
 
 export const getPretermCareInfoTool = tool(
   async ({ topic }: { topic: "feeding" | "breathing" | "skin_to_skin" | "discharge" }) => {
+    const knowledge = await lookupKnowledgeContext(`preterm care ${topic}`, { limit: 4 });
+
     const safeTopics: Record<string, string> = {
       feeding:
         "Preterm babies often need support with feeding. Your neonatal team will guide you on tube feeding, breastfeeding support, and when your baby is ready for oral feeds.",
@@ -63,9 +92,12 @@ export const getPretermCareInfoTool = tool(
       content:
         safeTopics[topic.toLowerCase()] ||
         "This is general information. Please speak with your baby's neonatal team for advice specific to your situation.",
-      sources: ["Ministry of Health Neonatal Guidelines", "Neonatal Care Team"],
+      sources: Array.from(
+        new Set(["Ministry of Health Neonatal Guidelines", "Neonatal Care Team", ...knowledge.sources])
+      ),
       disclaimer:
         "This is general information only and not a substitute for professional medical advice.",
+      retrievalMode: knowledge.retrievalMode,
     };
   },
   {
@@ -82,6 +114,10 @@ export const getPretermCareInfoTool = tool(
 
 export const getEmotionalSupportResourcesTool = tool(
   async ({ focus }: { focus?: string }) => {
+    const knowledge = await lookupKnowledgeContext(`emotional support ${focus || "general"}`, {
+      limit: 4,
+    });
+
     return {
       resources: [
         "Little Miracles Trust - Peer support for preterm whanau",
@@ -93,6 +129,8 @@ export const getEmotionalSupportResourcesTool = tool(
       message:
         "It's okay to not be okay. Reaching out for support is a sign of strength for your whanau.",
       focus: focus || "general",
+      sources: knowledge.sources,
+      retrievalMode: knowledge.retrievalMode,
     };
   },
   {
@@ -106,6 +144,10 @@ export const getEmotionalSupportResourcesTool = tool(
 
 export const getRegionalSupportTool = tool(
   async ({ region }: { region?: string }) => {
+    const knowledge = await lookupKnowledgeContext(`regional support ${region || "Aotearoa"}`, {
+      limit: 4,
+    });
+
     return {
       services: [
         `${region || "Your region"} - Neonatal Follow-up Clinic`,
@@ -115,6 +157,8 @@ export const getRegionalSupportTool = tool(
       ],
       note:
         "Services vary by region. We recommend confirming current details with your midwife or social worker.",
+      sources: knowledge.sources,
+      retrievalMode: knowledge.retrievalMode,
     };
   },
   {
