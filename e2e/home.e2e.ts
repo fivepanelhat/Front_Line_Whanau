@@ -27,7 +27,7 @@ test.describe('Home page', () => {
     ).toBeVisible();
   });
 
-  test('page title contains Front Line Whānau', async ({ page }) => {
-    await expect(page).toHaveTitle(/Front Line Whānau/i);
+  test('page title contains Whānau Preterm Support Hub', async ({ page }) => {
+    await expect(page).toHaveTitle(/Whānau Preterm Support Hub/i);
   });
 });
