@@ -1,6 +1,6 @@
 import { BaseMessage, SystemMessage, HumanMessage } from "@langchain/core/messages";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
-import { AgentConfig, AgentState } from "../types";
+import { AgentConfig, AgentState } from "@/ai/types";
 import { getRoleAwareSystemPrompt } from "../utils/prompts";
 import { ResponseStyleGuide } from "../tools/response-style-guide";
 

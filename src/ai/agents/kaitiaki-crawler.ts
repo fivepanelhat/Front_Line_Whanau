@@ -1,5 +1,5 @@
 import { BaseAgent } from "./base";
-import { AgentState } from "../types";
+import { AgentState } from "@/ai/types";
 
 export class KaitiakiCrawler extends BaseAgent {
   constructor() {
