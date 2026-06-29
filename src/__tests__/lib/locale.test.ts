@@ -1,8 +1,10 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { isValidLocale, getLocaleFromPath } from '../../lib/locale';
+import { describe, it, expect, vi } from 'vitest';
+import { isValidLocale, getLocaleFromPath, getUserLocale, setUserLocale } from '../../lib/locale';
 
-// Note: getUserLocale and setUserLocale use next/headers (server-only).
-// We test only the pure utility functions here.
+// Mock next/headers for server-side cookie functions
+vi.mock('next/headers', () => ({
+  cookies: vi.fn(),
+}));
 
 describe('locale utilities', () => {
   describe('isValidLocale', () => {
@@ -46,6 +48,44 @@ describe('locale utilities', () => {
 
     it('returns defaultLocale for path with no locale segment', () => {
       expect(getLocaleFromPath('/api/health')).toBe('en-NZ');
+    });
+  });
+
+  describe('getUserLocale', () => {
+    it('returns the stored locale from cookie when present', async () => {
+      const { cookies } = await import('next/headers');
+      vi.mocked(cookies).mockResolvedValue({
+        get: vi.fn().mockReturnValue({ value: 'mi' }),
+        set: vi.fn(),
+      } as any);
+
+      const locale = await getUserLocale();
+      expect(locale).toBe('mi');
+    });
+
+    it('returns defaultLocale when no cookie is set', async () => {
+      const { cookies } = await import('next/headers');
+      vi.mocked(cookies).mockResolvedValue({
+        get: vi.fn().mockReturnValue(undefined),
+        set: vi.fn(),
+      } as any);
+
+      const locale = await getUserLocale();
+      expect(locale).toBe('en-NZ');
+    });
+  });
+
+  describe('setUserLocale', () => {
+    it('sets the locale cookie', async () => {
+      const mockSet = vi.fn();
+      const { cookies } = await import('next/headers');
+      vi.mocked(cookies).mockResolvedValue({
+        get: vi.fn(),
+        set: mockSet,
+      } as any);
+
+      await setUserLocale('mi');
+      expect(mockSet).toHaveBeenCalledWith('NEXT_LOCALE', 'mi');
     });
   });
 });

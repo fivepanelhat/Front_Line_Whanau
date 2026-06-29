@@ -15,6 +15,7 @@ import {
   encryptData,
   decryptData,
   generateKey,
+  deriveKey,
 } from '../../lib/encryption';
 
 describe('Encryption Library', () => {
@@ -141,6 +142,19 @@ describe('Encryption Library', () => {
     it('should throw error with invalid key', async () => {
       const invalidKey = {} as CryptoKey;
       await expect(encryptData('test', invalidKey)).rejects.toThrow();
+    });
+  });
+
+  describe('toCryptoBuffer fallback path', () => {
+    it('should derive key using a Uint8Array view with non-zero offset (triggers copy branch)', async () => {
+      // Create a larger buffer and take a subarray with non-zero byteOffset.
+      // This Uint8Array has byteOffset=8, so it doesn't satisfy the fast-path
+      // condition in toCryptoBuffer, exercising the copy branch (lines 268-270).
+      const largeBuf = new ArrayBuffer(32);
+      const offsetSalt = new Uint8Array(largeBuf, 8, 16);
+      const derivedKey = await deriveKey('passphrase', offsetSalt);
+      expect(derivedKey).toBeDefined();
+      expect(derivedKey.type).toBe('secret');
     });
   });
 });
