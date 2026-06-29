@@ -1,15 +1,7 @@
 'use client';
 
-import { Dashboard } from '@/components/Dashboard';
-import { useRouter } from 'next/navigation';
+import { ChatInterface } from '@/components/ChatInterface';
 
 export default function SupportPage() {
-  const router = useRouter();
-
-  return (
-    <Dashboard 
-      initialTab="ai" 
-      onClose={() => router.push('/')} 
-    />
-  );
+  return <ChatInterface />;
 }
