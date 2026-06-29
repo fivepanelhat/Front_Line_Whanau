@@ -1,11 +1,20 @@
 import 'server-only';
 import { BaseAgent } from './base';
+import { getEmotionalSupportResourcesTool } from '../tools';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+import { createReactAgent } from '@langchain/langgraph/prebuilt';
 import { AgentConfig, AgentState } from '@/ai/types';
 import { AgentResponse, OrchestrationContext } from '@/ai/types';
 import { PROMPTS } from '@/ai/prompts';
 
 export class TraumaInformedCompanion extends BaseAgent {
   name = 'trauma_informed_companion';
+
+  private agent = createReactAgent({
+    llm: new ChatGoogleGenerativeAI({ model: 'gemini-1.5-flash', temperature: 0.3 }),
+    tools: [getEmotionalSupportResourcesTool],
+    prompt: PROMPTS.traumaInformedCompanion,
+  });
 
   constructor() {
     const config: AgentConfig = {
@@ -20,10 +29,19 @@ export class TraumaInformedCompanion extends BaseAgent {
     return this.config.systemPrompt;
   }
 
-  async process(_query: string, _state?: OrchestrationContext): Promise<AgentResponse> {
+  async process(query: string, _state?: OrchestrationContext): Promise<AgentResponse> {
+    const result = await this.agent.invoke({
+      messages: [{ role: 'user', content: query }],
+    });
+
+    const lastMessage = result.messages[result.messages.length - 1];
+    const content =
+      typeof lastMessage.content === 'string'
+        ? lastMessage.content
+        : JSON.stringify(lastMessage.content);
+
     return {
-      content:
-        "I hear this is a really difficult time for your whanau. You're not alone. Would you like me to help you find emotional support options alongside the practical information?",
+      content,
       confidence: 0.9,
       agentUsed: this.name,
       requiresHumanReview: false,

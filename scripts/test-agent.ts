@@ -36,6 +36,21 @@ interface TestCase {
   expectHumanReview?: boolean;
 }
 
+const additionalTestCases: TestCase[] = [
+  {
+    query: 'How do I do skin-to-skin with my 32-week baby?',
+    description: 'Preterm care topic',
+  },
+  {
+    query: "I'm feeling really anxious and overwhelmed since my baby was born early",
+    description: 'Emotional support',
+  },
+  {
+    query: 'What support services are available in Taranaki for preterm families?',
+    description: 'Regional services',
+  },
+];
+
 const testCases: TestCase[] = [
   {
     query: 'What financial support is available for parents of preterm twins in New Zealand?',
@@ -54,6 +69,7 @@ const testCases: TestCase[] = [
     query: "My baby was born at 28 weeks. I'm feeling overwhelmed and don't know where to start.",
     description: 'High emotional load - trauma-informed path expected',
   },
+  ...additionalTestCases,
 ];
 
 async function runTest(testCase: TestCase) {

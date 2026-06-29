@@ -1,41 +1,36 @@
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+import { createReactAgent } from '@langchain/langgraph/prebuilt';
+import { getPretermCareInfoTool, getRegionalSupportTool } from './tools';
+import { PROMPTS } from './prompts';
 import { LegacyBaseAgent, AgentResponse, OrchestrationContext } from './types';
-import { getEntitlement, describeEntitlement } from '@/data/entitlements';
 
 export class TaongaKnowledgeWeaver implements LegacyBaseAgent {
-  name = 'Taonga Knowledge Weaver';
-  description = 'Surfaces dated, officially-sourced entitlement information';
+  name = 'knowledge_weaver';
+  description = 'Provides grounded support information for preterm whanau pathways';
 
-  async process(query: string, context?: OrchestrationContext): Promise<AgentResponse> {
-    const q = query.toLowerCase();
+  private agent = createReactAgent({
+    llm: new ChatGoogleGenerativeAI({ model: 'gemini-1.5-flash', temperature: 0.2 }),
+    tools: [getPretermCareInfoTool, getRegionalSupportTool],
+    prompt: PROMPTS.knowledgeWeaver,
+  });
 
-    const match =
-      q.includes('preterm') ? 'ppl-preterm-cap'
-      : q.includes('best start') ? 'best-start'
-      : q.includes('home help') ? 'winz-home-help'
-      : null;
+  async process(query: string, _state?: OrchestrationContext): Promise<AgentResponse> {
+    const result = await this.agent.invoke({
+      messages: [{ role: 'user', content: query }],
+    });
 
-    if (match) {
-      const status = getEntitlement(match);
-      if (status) {
-        const { text, confident } = describeEntitlement(status);
-        return {
-          content: text,
-          // confidence reflects *data freshness*, not a guess about correctness
-          confidence: confident ? 0.9 : 0.4,
-          sources: [status.entitlement.source],
-          requiresHumanReview: !confident,
-          agentUsed: this.name,
-        };
-      }
-    }
+    const lastMessage = result.messages[result.messages.length - 1];
+    const content =
+      typeof lastMessage.content === 'string'
+        ? lastMessage.content
+        : JSON.stringify(lastMessage.content);
 
     return {
-      content:
-        '🔍 I can point you to official information on Preterm Baby Payment 💰, Best Start 👶, ' +
-        'and WINZ Home Help 🏠. For your exact entitlement, a neonatal social worker can confirm. 🩺',
-      confidence: 0.5,
-      requiresHumanReview: true,
+      content,
+      confidence: 0.82,
       agentUsed: this.name,
+      sources: [],
+      requiresHumanReview: false,
     };
   }
 }

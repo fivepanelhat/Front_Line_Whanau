@@ -88,15 +88,14 @@ const fundingChecker = new FundingEligibilityChecker();
 
 // === NODES ===
 async function supervisorNode(state: AgentStateType) {
-  const query = state.query.toLowerCase();
+  const q = state.query.toLowerCase();
 
-  // Fast keyword-based routing (high-confidence paths)
+  // High-confidence routing
   if (
-    query.includes('funding') ||
-    query.includes('best start') ||
-    query.includes('winz') ||
-    query.includes('financial') ||
-    query.includes('allowance')
+    q.includes('funding') ||
+    q.includes('best start') ||
+    q.includes('winz') ||
+    q.includes('allowance')
   ) {
     return {
       intent: 'EXECUTION' as const,
@@ -106,11 +105,10 @@ async function supervisorNode(state: AgentStateType) {
   }
 
   if (
-    query.includes('cultural') ||
-    query.includes('marae') ||
-    query.includes('iwi') ||
-    query.includes('kaumātua') ||
-    query.includes('whakapapa')
+    q.includes('cultural') ||
+    q.includes('marae') ||
+    q.includes('iwi') ||
+    q.includes('kaumātua')
   ) {
     return {
       intent: 'RESEARCH' as const,
@@ -120,11 +118,10 @@ async function supervisorNode(state: AgentStateType) {
   }
 
   if (
-    query.includes('overwhelm') ||
-    query.includes('scared') ||
-    query.includes('emotional') ||
-    query.includes('support') ||
-    query.includes('feeling')
+    q.includes('overwhelm') ||
+    q.includes('emotional') ||
+    q.includes('scared') ||
+    q.includes('grief')
   ) {
     return {
       intent: 'PLANNING' as const,
@@ -134,11 +131,9 @@ async function supervisorNode(state: AgentStateType) {
   }
 
   if (
-    query.includes('service') ||
-    query.includes('directory') ||
-    query.includes('provider') ||
-    query.includes('taranaki') ||
-    query.includes('near me')
+    q.includes('service') ||
+    q.includes('support near') ||
+    q.includes('where can i find')
   ) {
     return {
       intent: 'RESEARCH' as const,
@@ -147,7 +142,20 @@ async function supervisorNode(state: AgentStateType) {
     };
   }
 
-  // Fallback to classifier-based routing
+  if (
+    q.includes('feeding') ||
+    q.includes('breathing') ||
+    q.includes('skin to skin') ||
+    q.includes('discharge')
+  ) {
+    return {
+      intent: 'RESEARCH' as const,
+      currentAgent: 'knowledge_weaver',
+      messages: [...state.messages, new HumanMessage(state.query)],
+    };
+  }
+
+  // Fallback to LLM
   const intent = await aetherSummit.classifyIntent(state.query);
 
   let nextAgent = 'knowledge_weaver';
