@@ -66,6 +66,15 @@ To enforce approval before production releases, configure GitHub Environments:
 The workflow file `.github/workflows/deploy.yml` targets these environments directly.
 Once `production` reviewers are configured, production deployments pause until approved.
 
+### Deployment Trigger Notes
+
+- `staging` deploys automatically on push to `dev`
+- `preview` deploys on PRs to `main` from non-fork branches
+- `production` deploys on push to `main`
+- Manual deployments are available via GitHub Actions (`workflow_dispatch`) for `staging` and `production`
+
+If required Vercel secrets are missing, the workflow now fails fast with an explicit message instead of silently skipping jobs.
+
 ---
 
 ## Task 17 — Environment Variable Checklist
