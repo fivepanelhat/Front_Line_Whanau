@@ -1,11 +1,20 @@
 import 'server-only';
 import { BaseAgent } from './base';
+import { getFundingInfoTool } from '../tools';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+import { createReactAgent } from '@langchain/langgraph/prebuilt';
 import { AgentConfig, AgentState } from '@/ai/types';
 import { AgentResponse, OrchestrationContext } from '@/ai/types';
 import { PROMPTS } from '@/ai/prompts';
 
 export class FundingEligibilityChecker extends BaseAgent {
   name = 'funding_eligibility_checker';
+
+  private agent = createReactAgent({
+    llm: new ChatGoogleGenerativeAI({ model: 'gemini-1.5-flash', temperature: 0.1 }),
+    tools: [getFundingInfoTool],
+    prompt: PROMPTS.fundingEligibilityChecker,
+  });
 
   constructor() {
     const config: AgentConfig = {
@@ -20,14 +29,22 @@ export class FundingEligibilityChecker extends BaseAgent {
     return this.config.systemPrompt;
   }
 
-  async process(_query: string, _state?: OrchestrationContext): Promise<AgentResponse> {
+  async process(query: string, _state?: OrchestrationContext): Promise<AgentResponse> {
+    const result = await this.agent.invoke({
+      messages: [{ role: 'user', content: query }],
+    });
+
+    const lastMessage = result.messages[result.messages.length - 1];
+    const content = typeof lastMessage.content === 'string'
+      ? lastMessage.content
+      : JSON.stringify(lastMessage.content);
+
     return {
-      content:
-        'There are several supports available including Best Start, Disability Allowance, and WINZ assistance. The exact amount depends on your situation. I strongly recommend we connect you with a support worker to confirm eligibility.',
-      confidence: 0.75,
+      content,
+      confidence: 0.8,
       agentUsed: this.name,
       requiresHumanReview: true,
-      sources: ['Work and Income NZ', 'Ministry of Health'],
+      sources: ['Funding Info Tool'],
     };
   }
 }

@@ -1,5 +1,5 @@
 import 'server-only';
-import { StateGraph, END, START, MemorySaver } from '@langchain/langgraph';
+import { StateGraph, END, START } from '@langchain/langgraph';
 import { BaseMessage, HumanMessage } from '@langchain/core/messages';
 import { Annotation } from '@langchain/langgraph';
 
@@ -16,6 +16,7 @@ import { CulturalSafetyGuardian } from './agents/CulturalSafetyGuardian';
 import { ResourceNavigator } from './agents/ResourceNavigator';
 import { TraumaInformedCompanion } from './agents/TraumaInformedCompanion';
 import { FundingEligibilityChecker } from './agents/FundingEligibilityChecker';
+import { createCheckpointSaver } from './checkpointer';
 
 const AgentState = Annotation.Root({
   messages: Annotation<BaseMessage[]>({
@@ -234,7 +235,7 @@ graph.addConditionalEdges('guardrails', (state) =>
 
 graph.addEdge('human_review', END);
 
-const checkpointer = new MemorySaver();
+export const checkpointer = await createCheckpointSaver();
 
 export const agentGraph = graph.compile({ checkpointer });
 
