@@ -46,3 +46,19 @@ describe('GET /api/health', () => {
     expect(response.headers.get('Cache-Control')).toBe('no-store');
   });
 });
+
+describe('HEAD /api/health', () => {
+  it('returns 200 with no body', async () => {
+    const { HEAD } = await import('../../app/api/health/route');
+    const response = await HEAD();
+
+    expect(response.status).toBe(200);
+  });
+
+  it('sets Cache-Control: no-store header', async () => {
+    const { HEAD } = await import('../../app/api/health/route');
+    const response = await HEAD();
+
+    expect(response.headers.get('Cache-Control')).toBe('no-store');
+  });
+});

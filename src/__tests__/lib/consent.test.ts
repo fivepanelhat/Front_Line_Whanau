@@ -81,6 +81,17 @@ describe('Consent Manager', () => {
     expect(parsed.auditTrail).toBeDefined();
   });
 
+  it('should load persisted consent state from localStorage', async () => {
+    // Pre-populate localStorage with a modified consent state
+    const manager = new ConsentManager();
+    await manager.grantConsent('ai.process');
+    // At this point the state is saved to localStorage
+
+    // Create a new manager — it should load from localStorage (covers loadState line 243)
+    const manager2 = new ConsentManager();
+    expect(manager2.hasConsent('ai.process')).toBe(true);
+  });
+
   describe('Cryptographic Audit Trail Validation', () => {
     let hmacKey: CryptoKey;
 
