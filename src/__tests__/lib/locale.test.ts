@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 const { mockGet, mockSet, mockCookies } = vi.hoisted(() => {
   const mockGet = vi.fn();
   const mockSet = vi.fn();
-  const mockCookies = vi.fn(async () => ({
+  const mockCookies = vi.fn(() => ({
     get: mockGet,
     set: mockSet,
   }));

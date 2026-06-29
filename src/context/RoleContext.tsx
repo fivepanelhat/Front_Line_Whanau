@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useSyncExternalStore } from 'react';
+import React, { createContext, useContext, useSyncExternalStore } from 'react';
 
 export type UserRole = 'parent' | 'practitioner' | null;
 
@@ -13,6 +13,7 @@ interface RoleContextType {
 
 const RoleContext = createContext<RoleContextType | undefined>(undefined);
 const STORAGE_KEY = 'userRole';
+const STORAGE_EVENT = 'role-storage-change';
 
 function getStoredRole(): UserRole {
   if (typeof window === 'undefined') {
@@ -41,39 +42,53 @@ function subscribeToRole(onStoreChange: () => void) {
       onStoreChange();
     }
   };
+  const handleRoleChange = () => onStoreChange();
 
   window.addEventListener('storage', handleStorage);
-  return () => window.removeEventListener('storage', handleStorage);
+  window.addEventListener(STORAGE_EVENT, handleRoleChange);
+  return () => {
+    window.removeEventListener('storage', handleStorage);
+    window.removeEventListener(STORAGE_EVENT, handleRoleChange);
+  };
 }
 
-function subscribeToHydration() {
+function subscribeToHydration(onStoreChange: () => void) {
+  if (typeof window !== 'undefined') {
+    queueMicrotask(onStoreChange);
+  }
+
   return () => {};
+}
+
+function notifyRoleChange() {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event(STORAGE_EVENT));
+  }
 }
 
 export function RoleProvider({ children }: { children: React.ReactNode }) {
   const persistedRole = useSyncExternalStore(subscribeToRole, getStoredRole, () => null);
   const isHydrated = useSyncExternalStore(subscribeToHydration, () => true, () => false);
-  const [roleOverride, setRoleState] = useState<UserRole | undefined>(undefined);
-  const role = roleOverride ?? persistedRole;
+  const role = persistedRole;
   const isLoading = !isHydrated;
 
   const setRole = (newRole: UserRole) => {
-    setRoleState(newRole);
     try {
       if (newRole) {
         localStorage.setItem(STORAGE_KEY, newRole);
       } else {
         localStorage.removeItem(STORAGE_KEY);
       }
+      notifyRoleChange();
     } catch {
       // Ignore storage access issues and keep role in memory.
     }
   };
 
   const clearRole = () => {
-    setRoleState(null);
     try {
       localStorage.removeItem(STORAGE_KEY);
+      notifyRoleChange();
     } catch {
       // Ignore storage access issues and keep role cleared in memory.
     }

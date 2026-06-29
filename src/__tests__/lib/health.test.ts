@@ -21,22 +21,26 @@ vi.mock('@supabase/supabase-js', () => ({
 }));
 
 describe('GET /api/health', () => {
-  const env = process.env as Record<string, string | undefined>;
-  const originalPackageVersion = env.npm_package_version;
-  const originalNodeEnv = env.NODE_ENV;
+  const originalPackageVersion = process.env.npm_package_version;
+  const originalNodeEnv = process.env.NODE_ENV;
+
+  const setEnvVar = (name: 'npm_package_version' | 'NODE_ENV', value?: string) => {
+    if (value === undefined) {
+      Reflect.deleteProperty(process.env, name);
+      return;
+    }
+
+    Object.defineProperty(process.env, name, {
+      value,
+      configurable: true,
+      enumerable: true,
+      writable: true,
+    });
+  };
 
   afterEach(() => {
-    if (originalPackageVersion === undefined) {
-      delete env.npm_package_version;
-    } else {
-      env.npm_package_version = originalPackageVersion;
-    }
-
-    if (originalNodeEnv === undefined) {
-      delete env.NODE_ENV;
-    } else {
-      env.NODE_ENV = originalNodeEnv;
-    }
+    setEnvVar('npm_package_version', originalPackageVersion);
+    setEnvVar('NODE_ENV', originalNodeEnv);
   });
 
   it('returns 200 with status ok', async () => {
@@ -64,8 +68,8 @@ describe('GET /api/health', () => {
   });
 
   it('returns version and environment from process.env when present', async () => {
-    env.npm_package_version = '1.2.3';
-    env.NODE_ENV = 'production';
+    setEnvVar('npm_package_version', '1.2.3');
+    setEnvVar('NODE_ENV', 'production');
 
     const { GET } = await import('../../app/api/health/route');
     const response = await GET();
@@ -76,8 +80,8 @@ describe('GET /api/health', () => {
   });
 
   it('falls back when version or environment are missing', async () => {
-    delete env.npm_package_version;
-    delete env.NODE_ENV;
+    setEnvVar('npm_package_version');
+    setEnvVar('NODE_ENV');
 
     const { GET } = await import('../../app/api/health/route');
     const response = await GET();
