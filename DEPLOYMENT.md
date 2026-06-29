@@ -54,6 +54,18 @@ PR branches ──→ Preview     (front-line-whanau-pr-{N}.vercel.app)
 | `GOOGLE_API_KEY` | ✅ set | ✅ set (quota limited) | optional |
 | `NEXT_PUBLIC_APP_URL` | `https://yourdomain.nz` | preview URL | `http://localhost:3000` |
 
+### GitHub Deployments Protection (required)
+
+To enforce approval before production releases, configure GitHub Environments:
+
+1. Repo Settings → Environments → create `production`, `staging`, `preview`
+2. For `production`, enable **Required reviewers** (at least 1)
+3. Optionally add deployment branch restriction for `main` only
+4. Store `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID` in environment secrets
+
+The workflow file `.github/workflows/deploy.yml` targets these environments directly.
+Once `production` reviewers are configured, production deployments pause until approved.
+
 ---
 
 ## Task 17 — Environment Variable Checklist

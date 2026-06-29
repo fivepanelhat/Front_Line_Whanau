@@ -5,6 +5,15 @@ on:
     branches: [main, dev]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Deployment target
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
 
 permissions:
   contents: read
@@ -17,8 +26,9 @@ concurrency:
 jobs:
   staging:
     name: Staging Deployment
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/dev' && secrets.VERCEL_TOKEN != '' && secrets.VERCEL_ORG_ID != '' && secrets.VERCEL_PROJECT_ID != '' }}
+    if: ${{ ((github.event_name == 'push' && github.ref == 'refs/heads/dev') || (github.event_name == 'workflow_dispatch' && inputs.target == 'staging')) && secrets.VERCEL_TOKEN != '' && secrets.VERCEL_ORG_ID != '' && secrets.VERCEL_PROJECT_ID != '' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     environment:
       name: staging
       url: ${{ steps.deploy.outputs.url }}
@@ -64,6 +74,7 @@ jobs:
     name: Preview Deployment
     if: ${{ github.event_name == 'pull_request' && secrets.VERCEL_TOKEN != '' && secrets.VERCEL_ORG_ID != '' && secrets.VERCEL_PROJECT_ID != '' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     environment:
       name: preview
       url: ${{ steps.deploy.outputs.url }}
@@ -107,8 +118,9 @@ jobs:
 
   production:
     name: Production Deployment
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.VERCEL_TOKEN != '' && secrets.VERCEL_ORG_ID != '' && secrets.VERCEL_PROJECT_ID != '' }}
+    if: ${{ ((github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.target == 'production')) && secrets.VERCEL_TOKEN != '' && secrets.VERCEL_ORG_ID != '' && secrets.VERCEL_PROJECT_ID != '' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     environment:
       name: production
       url: ${{ steps.deploy.outputs.url }}
