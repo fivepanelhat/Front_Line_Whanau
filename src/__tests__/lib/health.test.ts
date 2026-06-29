@@ -21,20 +21,21 @@ vi.mock('@supabase/supabase-js', () => ({
 }));
 
 describe('GET /api/health', () => {
-  const originalPackageVersion = process.env.npm_package_version;
-  const originalNodeEnv = process.env.NODE_ENV;
+  const env = process.env as Record<string, string | undefined>;
+  const originalPackageVersion = env.npm_package_version;
+  const originalNodeEnv = env.NODE_ENV;
 
   afterEach(() => {
     if (originalPackageVersion === undefined) {
-      delete process.env.npm_package_version;
+      delete env.npm_package_version;
     } else {
-      process.env.npm_package_version = originalPackageVersion;
+      env.npm_package_version = originalPackageVersion;
     }
 
     if (originalNodeEnv === undefined) {
-      delete process.env.NODE_ENV;
+      delete env.NODE_ENV;
     } else {
-      process.env.NODE_ENV = originalNodeEnv;
+      env.NODE_ENV = originalNodeEnv;
     }
   });
 
@@ -63,8 +64,8 @@ describe('GET /api/health', () => {
   });
 
   it('returns version and environment from process.env when present', async () => {
-    process.env.npm_package_version = '1.2.3';
-    process.env.NODE_ENV = 'production';
+    env.npm_package_version = '1.2.3';
+    env.NODE_ENV = 'production';
 
     const { GET } = await import('../../app/api/health/route');
     const response = await GET();
@@ -75,8 +76,8 @@ describe('GET /api/health', () => {
   });
 
   it('falls back when version or environment are missing', async () => {
-    delete process.env.npm_package_version;
-    delete process.env.NODE_ENV;
+    delete env.npm_package_version;
+    delete env.NODE_ENV;
 
     const { GET } = await import('../../app/api/health/route');
     const response = await GET();

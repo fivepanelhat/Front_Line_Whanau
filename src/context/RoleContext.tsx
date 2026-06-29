@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useSyncExternalStore } from 'react';
 
 export type UserRole = 'parent' | 'practitioner' | null;
 
@@ -12,31 +12,58 @@ interface RoleContextType {
 }
 
 const RoleContext = createContext<RoleContextType | undefined>(undefined);
+const STORAGE_KEY = 'userRole';
+
+function getStoredRole(): UserRole {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  try {
+    const savedRole = localStorage.getItem(STORAGE_KEY) as UserRole;
+    if (savedRole === 'parent' || savedRole === 'practitioner') {
+      return savedRole;
+    }
+  } catch {
+    // Ignore storage access issues and continue with in-memory role only.
+  }
+
+  return null;
+}
+
+function subscribeToRole(onStoreChange: () => void) {
+  if (typeof window === 'undefined') {
+    return () => {};
+  }
+
+  const handleStorage = (event: StorageEvent) => {
+    if (!event.key || event.key === STORAGE_KEY) {
+      onStoreChange();
+    }
+  };
+
+  window.addEventListener('storage', handleStorage);
+  return () => window.removeEventListener('storage', handleStorage);
+}
+
+function subscribeToHydration() {
+  return () => {};
+}
 
 export function RoleProvider({ children }: { children: React.ReactNode }) {
-  const [role, setRoleState] = useState<UserRole>(() => {
-    if (typeof window === 'undefined') return null;
-
-    try {
-      const savedRole = localStorage.getItem('userRole') as UserRole;
-      if (savedRole === 'parent' || savedRole === 'practitioner') {
-        return savedRole;
-      }
-    } catch {
-      // Ignore storage access issues and continue with in-memory role only.
-    }
-
-    return null;
-  });
-  const isLoading = false;
+  const persistedRole = useSyncExternalStore(subscribeToRole, getStoredRole, () => null);
+  const isHydrated = useSyncExternalStore(subscribeToHydration, () => true, () => false);
+  const [roleOverride, setRoleState] = useState<UserRole | undefined>(undefined);
+  const role = roleOverride ?? persistedRole;
+  const isLoading = !isHydrated;
 
   const setRole = (newRole: UserRole) => {
     setRoleState(newRole);
     try {
       if (newRole) {
-        localStorage.setItem('userRole', newRole);
+        localStorage.setItem(STORAGE_KEY, newRole);
       } else {
-        localStorage.removeItem('userRole');
+        localStorage.removeItem(STORAGE_KEY);
       }
     } catch {
       // Ignore storage access issues and keep role in memory.
@@ -46,7 +73,7 @@ export function RoleProvider({ children }: { children: React.ReactNode }) {
   const clearRole = () => {
     setRoleState(null);
     try {
-      localStorage.removeItem('userRole');
+      localStorage.removeItem(STORAGE_KEY);
     } catch {
       // Ignore storage access issues and keep role cleared in memory.
     }

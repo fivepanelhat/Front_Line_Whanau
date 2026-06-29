@@ -8,7 +8,6 @@ import { NextResponse } from 'next/server';
  * It is not medical advice. Always consult qualified healthcare professionals
  * for preterm twin / whānau care decisions.
  */
-export const dynamic = 'force-dynamic';
 
 export async function GET() {
   return NextResponse.json(
