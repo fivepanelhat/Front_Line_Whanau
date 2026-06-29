@@ -88,22 +88,72 @@ const fundingChecker = new FundingEligibilityChecker();
 
 // === NODES ===
 async function supervisorNode(state: AgentStateType) {
+  const query = state.query.toLowerCase();
+
+  // Fast keyword-based routing (high-confidence paths)
+  if (
+    query.includes('funding') ||
+    query.includes('best start') ||
+    query.includes('winz') ||
+    query.includes('financial') ||
+    query.includes('allowance')
+  ) {
+    return {
+      intent: 'EXECUTION' as const,
+      currentAgent: 'funding_eligibility_checker',
+      messages: [...state.messages, new HumanMessage(state.query)],
+    };
+  }
+
+  if (
+    query.includes('cultural') ||
+    query.includes('marae') ||
+    query.includes('iwi') ||
+    query.includes('kaumātua') ||
+    query.includes('whakapapa')
+  ) {
+    return {
+      intent: 'RESEARCH' as const,
+      currentAgent: 'cultural_safety_guardian',
+      messages: [...state.messages, new HumanMessage(state.query)],
+    };
+  }
+
+  if (
+    query.includes('overwhelm') ||
+    query.includes('scared') ||
+    query.includes('emotional') ||
+    query.includes('support') ||
+    query.includes('feeling')
+  ) {
+    return {
+      intent: 'PLANNING' as const,
+      currentAgent: 'trauma_informed_companion',
+      messages: [...state.messages, new HumanMessage(state.query)],
+    };
+  }
+
+  if (
+    query.includes('service') ||
+    query.includes('directory') ||
+    query.includes('provider') ||
+    query.includes('taranaki') ||
+    query.includes('near me')
+  ) {
+    return {
+      intent: 'RESEARCH' as const,
+      currentAgent: 'resource_navigator',
+      messages: [...state.messages, new HumanMessage(state.query)],
+    };
+  }
+
+  // Fallback to classifier-based routing
   const intent = await aetherSummit.classifyIntent(state.query);
 
   let nextAgent = 'knowledge_weaver';
 
-  if (intent === 'RESEARCH') nextAgent = 'knowledge_weaver';
   if (intent === 'PLANNING') nextAgent = 'pathway_architect';
   if (intent === 'EXECUTION') nextAgent = 'sovereign_executor';
-
-  // Cultural safety check runs early for sensitive topics
-  if (
-    state.query.toLowerCase().includes('cultural') ||
-    state.query.toLowerCase().includes('marae') ||
-    state.query.toLowerCase().includes('iwi')
-  ) {
-    nextAgent = 'cultural_safety_guardian';
-  }
 
   return {
     intent,

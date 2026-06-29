@@ -1,17 +1,38 @@
 import { NextRequest } from 'next/server';
 import { HumanMessage } from '@langchain/core/messages';
 import { agentGraph } from '@/ai/graph';
+import { validateAgentInput, sanitizeAgentOutput, createAuditLog } from '@/ai/security';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   try {
-    const { query, consentGiven = true, threadId = `thread_${Date.now()}` } = await req.json();
+    const body = await req.json();
+    const validated = validateAgentInput(body);
 
-    if (!query || typeof query !== 'string') {
+    createAuditLog('agent_request_received', {
+      threadId: validated.threadId,
+      hasConsent: validated.consentGiven,
+      queryLength: validated.query.length,
+    });
+
+    const { query, consentGiven, threadId } = validated;
+    const effectiveThreadId = threadId ?? `thread_${Date.now()}`;
+
+    if (!query) {
       return new Response(JSON.stringify({ error: 'Query is required' }), {
         status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    if (!consentGiven) {
+      createAuditLog('agent_request_blocked_no_consent', {
+        threadId: effectiveThreadId,
+      });
+      return new Response(JSON.stringify({ error: 'Consent is required to use the agent' }), {
+        status: 403,
         headers: { 'Content-Type': 'application/json' },
       });
     }
@@ -34,7 +55,7 @@ export async function POST(req: NextRequest) {
             },
             {
               version: 'v2',
-              configurable: { thread_id: threadId },
+              configurable: { thread_id: effectiveThreadId },
             }
           );
 
@@ -59,14 +80,24 @@ export async function POST(req: NextRequest) {
                 | undefined;
 
               if (finalState?.finalResponse || finalState?.currentAgent) {
+                const sanitizedContent = sanitizeAgentOutput(finalState?.finalResponse || '');
+
                 sendSse({
                   type: 'final',
-                  response: finalState?.finalResponse,
+                  response: sanitizedContent,
                   agent: finalState?.currentAgent,
                   requiresHumanReview: finalState?.requiresHumanReview,
                   showUrgentHelp: finalState?.showUrgentHelp,
                   sources: finalState?.sources || [],
                 });
+
+                createAuditLog('agent_response_finalized', {
+                  threadId: effectiveThreadId,
+                  agent: finalState?.currentAgent,
+                  requiresHumanReview: finalState?.requiresHumanReview,
+                  sourceCount: finalState?.sources?.length || 0,
+                });
+
                 finalSent = true;
               }
             }
@@ -86,6 +117,10 @@ export async function POST(req: NextRequest) {
           controller.enqueue(encoder.encode('data: [DONE]\n\n'));
           controller.close();
         } catch (error) {
+          createAuditLog('agent_stream_error', {
+            threadId: effectiveThreadId,
+            error: error instanceof Error ? error.message : 'Unknown stream error',
+          });
           console.error('Streaming error:', error);
           sendSse({ type: 'error', message: 'Agent processing failed' });
           controller.enqueue(encoder.encode('data: [DONE]\n\n'));
@@ -102,6 +137,9 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (error) {
+    createAuditLog('agent_request_error', {
+      error: error instanceof Error ? error.message : 'Unknown request error',
+    });
     console.error('Request parsing error:', error);
     return new Response(JSON.stringify({ error: 'Invalid request body' }), {
       status: 400,
