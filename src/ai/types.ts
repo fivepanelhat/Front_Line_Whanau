@@ -7,6 +7,7 @@ export interface AgentResponse {
   sources?: string[];
   requiresHumanReview?: boolean;
   showUrgentHelp?: boolean;
+  metadata?: Record<string, any>;
 }
 
 export interface OrchestrationContext {
