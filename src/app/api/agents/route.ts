@@ -1,129 +1,99 @@
 import { NextRequest } from 'next/server';
-import { HumanMessage } from '@langchain/core/messages';
 import { agentGraph } from '@/ai/graph';
-import { validateAgentInput, sanitizeAgentOutput, createAuditLog } from '@/ai/security';
+import { HumanMessage, AIMessage } from '@langchain/core/messages';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+type ChatHistoryMessage = {
+  role: 'user' | 'assistant';
+  content: string;
+};
+
+function isChatHistoryMessage(value: unknown): value is ChatHistoryMessage {
+  if (!value || typeof value !== 'object') return false;
+  const candidate = value as Record<string, unknown>;
+  return (
+    (candidate.role === 'user' || candidate.role === 'assistant') &&
+    typeof candidate.content === 'string'
+  );
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const validated = validateAgentInput(body);
+    const {
+      query,
+      consentGiven = true,
+      threadId = `thread_${Date.now()}`,
+      history = [], // Array of previous messages: [{role: 'user' | 'assistant', content: string}]
+    } = await req.json();
 
-    createAuditLog('agent_request_received', {
-      threadId: validated.threadId,
-      hasConsent: validated.consentGiven,
-      queryLength: validated.query.length,
-    });
-
-    const { query, consentGiven, threadId } = validated;
-    const effectiveThreadId = threadId ?? `thread_${Date.now()}`;
-
-    if (!query) {
-      return new Response(JSON.stringify({ error: 'Query is required' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+    if (!query || typeof query !== 'string') {
+      return new Response(JSON.stringify({ error: 'Query is required' }), { status: 400 });
     }
 
-    if (!consentGiven) {
-      createAuditLog('agent_request_blocked_no_consent', {
-        threadId: effectiveThreadId,
-      });
-      return new Response(JSON.stringify({ error: 'Consent is required to use the agent' }), {
-        status: 403,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
+    // Convert history into LangChain messages
+    const safeHistory = Array.isArray(history) ? history.filter(isChatHistoryMessage) : [];
+
+    const previousMessages = safeHistory.map((msg) =>
+      msg.role === 'user'
+        ? new HumanMessage(msg.content)
+        : new AIMessage(msg.content)
+    );
 
     const stream = new ReadableStream({
       async start(controller) {
         const encoder = new TextEncoder();
-        let finalSent = false;
-
-        const sendSse = (payload: unknown) => {
-          controller.enqueue(encoder.encode(`data: ${JSON.stringify(payload)}\n\n`));
-        };
 
         try {
           const eventStream = await agentGraph.streamEvents(
             {
               query,
               consentGiven,
-              messages: [new HumanMessage(query)],
+              messages: [...previousMessages, new HumanMessage(query)],
             },
             {
               version: 'v2',
-              configurable: { thread_id: effectiveThreadId },
+              configurable: { thread_id: threadId },
             }
           );
 
           for await (const event of eventStream) {
             if (event.event === 'on_chat_model_stream') {
               const content = event.data?.chunk?.content;
-
-              if (typeof content === 'string' && content.length > 0) {
-                sendSse({ type: 'token', content });
+              if (content) {
+                controller.enqueue(
+                  encoder.encode(`data: ${JSON.stringify({ type: 'token', content })}\n\n`)
+                );
               }
             }
 
-            if (event.event === 'on_chain_end') {
-              const finalState = event.data?.output as
-                | {
-                    finalResponse?: string;
-                    currentAgent?: string;
-                    requiresHumanReview?: boolean;
-                    showUrgentHelp?: boolean;
-                    sources?: string[];
-                  }
-                | undefined;
-
-              if (finalState?.finalResponse || finalState?.currentAgent) {
-                const sanitizedContent = sanitizeAgentOutput(finalState?.finalResponse || '');
-
-                sendSse({
-                  type: 'final',
-                  response: sanitizedContent,
-                  agent: finalState?.currentAgent,
-                  requiresHumanReview: finalState?.requiresHumanReview,
-                  showUrgentHelp: finalState?.showUrgentHelp,
-                  sources: finalState?.sources || [],
-                });
-
-                createAuditLog('agent_response_finalized', {
-                  threadId: effectiveThreadId,
-                  agent: finalState?.currentAgent,
-                  requiresHumanReview: finalState?.requiresHumanReview,
-                  sourceCount: finalState?.sources?.length || 0,
-                });
-
-                finalSent = true;
-              }
+            if (event.event === 'on_chain_end' && event.name === 'agentGraph') {
+              const finalState = event.data?.output;
+              controller.enqueue(
+                encoder.encode(
+                  `data: ${JSON.stringify({
+                    type: 'final',
+                    agent: finalState?.currentAgent,
+                    requiresHumanReview: finalState?.requiresHumanReview,
+                    showUrgentHelp: finalState?.showUrgentHelp,
+                    sources: finalState?.sources,
+                  })}\n\n`
+                )
+              );
             }
-          }
-
-          if (!finalSent) {
-            sendSse({
-              type: 'final',
-              response: null,
-              agent: null,
-              requiresHumanReview: false,
-              showUrgentHelp: false,
-              sources: [],
-            });
           }
 
           controller.enqueue(encoder.encode('data: [DONE]\n\n'));
           controller.close();
         } catch (error) {
-          createAuditLog('agent_stream_error', {
-            threadId: effectiveThreadId,
-            error: error instanceof Error ? error.message : 'Unknown stream error',
-          });
           console.error('Streaming error:', error);
-          sendSse({ type: 'error', message: 'Agent processing failed' });
-          controller.enqueue(encoder.encode('data: [DONE]\n\n'));
+          controller.enqueue(
+            encoder.encode(`data: ${JSON.stringify({
+              type: 'error',
+              message: 'Something went wrong while processing your request.',
+            })}\n\n`)
+          );
           controller.close();
         }
       },
@@ -131,19 +101,13 @@ export async function POST(req: NextRequest) {
 
     return new Response(stream, {
       headers: {
-        'Content-Type': 'text/event-stream; charset=utf-8',
-        'Cache-Control': 'no-cache, no-transform',
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
         Connection: 'keep-alive',
       },
     });
   } catch (error) {
-    createAuditLog('agent_request_error', {
-      error: error instanceof Error ? error.message : 'Unknown request error',
-    });
-    console.error('Request parsing error:', error);
-    return new Response(JSON.stringify({ error: 'Invalid request body' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    console.error('API error:', error);
+    return new Response(JSON.stringify({ error: 'Internal server error' }), { status: 500 });
   }
 }

@@ -75,6 +75,16 @@ const AgentState = Annotation.Root({
 
 export type AgentStateType = typeof AgentState.State;
 
+function logAgentEvent(event: string, data: Record<string, any>) {
+  console.log(
+    JSON.stringify({
+      timestamp: new Date().toISOString(),
+      event,
+      ...data,
+    })
+  );
+}
+
 // === AGENT INSTANCES ===
 const aetherSummit = new AetherSummit();
 const knowledgeWeaver = new TaongaKnowledgeWeaver();
@@ -88,80 +98,145 @@ const fundingChecker = new FundingEligibilityChecker();
 
 // === NODES ===
 async function supervisorNode(state: AgentStateType) {
-  const q = state.query.toLowerCase();
+  const q = state.query.toLowerCase().trim();
 
-  // High-confidence routing
+  // === HIGH-CONFIDENCE ROUTING (checked in priority order) ===
+
+  // 1. Funding / Financial / Best Start / WINZ
   if (
     q.includes('funding') ||
+    q.includes('financial') ||
     q.includes('best start') ||
     q.includes('winz') ||
-    q.includes('allowance')
+    q.includes('allowance') ||
+    q.includes('payment')
   ) {
+    logAgentEvent('supervisor_routed', {
+      query: state.query,
+      intent: 'EXECUTION',
+      agent: 'funding_eligibility_checker',
+    });
     return {
-      intent: 'EXECUTION' as const,
+      intent: 'EXECUTION',
       currentAgent: 'funding_eligibility_checker',
       messages: [...state.messages, new HumanMessage(state.query)],
     };
   }
 
+  // 2. Cultural Safety (Maori / Iwi)
   if (
     q.includes('cultural') ||
     q.includes('marae') ||
     q.includes('iwi') ||
-    q.includes('kaumātua')
+    q.includes('kaumātua') ||
+    q.includes('whakapapa') ||
+    q.includes('māori')
   ) {
+    logAgentEvent('supervisor_routed', {
+      query: state.query,
+      intent: 'RESEARCH',
+      agent: 'cultural_safety_guardian',
+    });
     return {
-      intent: 'RESEARCH' as const,
+      intent: 'RESEARCH',
       currentAgent: 'cultural_safety_guardian',
       messages: [...state.messages, new HumanMessage(state.query)],
     };
   }
 
+  // 3. Emotional / Trauma / Overwhelm
   if (
     q.includes('overwhelm') ||
     q.includes('emotional') ||
     q.includes('scared') ||
-    q.includes('grief')
+    q.includes('anxious') ||
+    q.includes('grief') ||
+    q.includes('feeling')
   ) {
+    logAgentEvent('supervisor_routed', {
+      query: state.query,
+      intent: 'PLANNING',
+      agent: 'trauma_informed_companion',
+    });
     return {
-      intent: 'PLANNING' as const,
+      intent: 'PLANNING',
       currentAgent: 'trauma_informed_companion',
       messages: [...state.messages, new HumanMessage(state.query)],
     };
   }
 
+  // 4. Regional / Local Support Services
   if (
-    q.includes('service') ||
-    q.includes('support near') ||
-    q.includes('where can i find')
+    (q.includes('support') || q.includes('service')) &&
+    (q.includes('taranaki') || q.includes('region') || q.includes('local') || q.includes('near'))
   ) {
+    logAgentEvent('supervisor_routed', {
+      query: state.query,
+      intent: 'RESEARCH',
+      agent: 'resource_navigator',
+    });
     return {
-      intent: 'RESEARCH' as const,
+      intent: 'RESEARCH',
       currentAgent: 'resource_navigator',
       messages: [...state.messages, new HumanMessage(state.query)],
     };
   }
 
+  // 5. Preterm Care Topics (skin-to-skin, feeding, breathing, discharge, etc.)
   if (
-    q.includes('feeding') ||
-    q.includes('breathing') ||
     q.includes('skin to skin') ||
-    q.includes('discharge')
+    q.includes('skin-to-skin') ||
+    q.includes('kangaroo care') ||
+    q.includes('feeding') ||
+    q.includes('breastfeed') ||
+    q.includes('breathing') ||
+    q.includes('discharge') ||
+    q.includes('preterm care')
   ) {
+    logAgentEvent('supervisor_routed', {
+      query: state.query,
+      intent: 'RESEARCH',
+      agent: 'knowledge_weaver',
+    });
     return {
-      intent: 'RESEARCH' as const,
+      intent: 'RESEARCH',
       currentAgent: 'knowledge_weaver',
       messages: [...state.messages, new HumanMessage(state.query)],
     };
   }
 
-  // Fallback to LLM
+  // 6. General Service / Directory queries
+  if (
+    q.includes('support service') ||
+    q.includes('where can i') ||
+    q.includes('find support') ||
+    q.includes('directory')
+  ) {
+    logAgentEvent('supervisor_routed', {
+      query: state.query,
+      intent: 'RESEARCH',
+      agent: 'resource_navigator',
+    });
+    return {
+      intent: 'RESEARCH',
+      currentAgent: 'resource_navigator',
+      messages: [...state.messages, new HumanMessage(state.query)],
+    };
+  }
+
+  // === FALLBACK: Use LLM classification ===
   const intent = await aetherSummit.classifyIntent(state.query);
 
   let nextAgent = 'knowledge_weaver';
 
   if (intent === 'PLANNING') nextAgent = 'pathway_architect';
   if (intent === 'EXECUTION') nextAgent = 'sovereign_executor';
+
+  logAgentEvent('supervisor_routed', {
+    query: state.query,
+    intent,
+    agent: nextAgent,
+  });
 
   return {
     intent,
@@ -227,13 +302,29 @@ async function fundingEligibilityCheckerNode(state: AgentStateType) {
   };
 }
 
-async function guardrailNode(state: AgentStateType) {
-  if (!state.finalResponse) return {};
-  const gate = checkGuardrails({ content: state.finalResponse, agentUsed: state.currentAgent });
+async function guardrailNode(state: AgentStateType): Promise<Partial<AgentStateType>> {
+  if (!state.finalResponse) {
+    return {};
+  }
+
+  const gate = checkGuardrails({
+    content: state.finalResponse,
+    agentUsed: state.currentAgent,
+  });
+
+  if (!gate.passed) {
+    logAgentEvent('guardrail_intervened', {
+      agent: state.currentAgent,
+      reason: gate.reason,
+    });
+  }
+
   return {
     finalResponse: gate.modifiedResponse ?? state.finalResponse,
     showUrgentHelp: gate.showUrgentHelp,
     requiresHumanReview: !gate.passed || state.requiresHumanReview,
+    // Optional: store reason in state for debugging/observability
+    // context: { ...state.context, guardrailReason: gate.reason }
   };
 }
 
@@ -293,9 +384,20 @@ graph.addConditionalEdges('guardrails', (state) =>
 
 graph.addEdge('human_review', END);
 
-export const checkpointer = await createCheckpointSaver();
+export let checkpointer: Awaited<ReturnType<typeof createCheckpointSaver>> | null = null;
 
-export const agentGraph = graph.compile({ checkpointer });
+// Provide an immediately usable graph, then upgrade to persistent checkpointing when available.
+export let agentGraph = graph.compile();
 
 // Backward compatibility for existing imports
-export const agentApp = agentGraph;
+export let agentApp = agentGraph;
+
+void createCheckpointSaver()
+  .then((cp) => {
+    checkpointer = cp;
+    agentGraph = graph.compile({ checkpointer: cp });
+    agentApp = agentGraph;
+  })
+  .catch((error) => {
+    console.warn('Checkpointed graph initialization failed; continuing without persistence.', error);
+  });
