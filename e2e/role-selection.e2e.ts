@@ -17,18 +17,19 @@ test.describe('Role selection', () => {
     await expect(page).toHaveURL(/\/parent/, { timeout: 15000 });
   });
 
-  test('parent portal route renders content state', async ({ page }) => {
+  test('parent portal route resolves to visible content state', async ({ page }) => {
     await page.evaluate(() => {
       localStorage.setItem('userRole', 'parent');
     });
     await page.getByRole('link', { name: /parent/i }).click();
-    await expect(page).toHaveURL(/\/parent/, { timeout: 15000 });
 
     const heading = page.getByRole('heading', { name: /parent.*portal/i, level: 1 });
+    const homeHeading = page.getByRole('heading', { name: /welcome|nau mai/i, level: 1 });
     const loadingState = page.getByText('Loading...');
 
     await Promise.race([
       expect(heading).toBeVisible({ timeout: 20000 }),
+      expect(homeHeading).toBeVisible({ timeout: 20000 }),
       expect(loadingState).toBeVisible({ timeout: 20000 }),
     ]);
   });

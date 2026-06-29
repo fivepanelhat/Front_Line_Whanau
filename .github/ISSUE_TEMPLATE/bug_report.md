@@ -42,3 +42,27 @@ If applicable, add screenshots to help explain your problem.
 ## Additional Context
 
 Add any other context about the problem here.
+
+## Patch Applied (If Any)
+
+Describe the exact patch applied to fix or mitigate the bug.
+
+- **Files changed**:
+- **Summary of code changes**:
+- **Risk level**: [Low / Medium / High]
+
+## Verification Checklist
+
+Mark what was rerun after the patch:
+
+- [ ] `npm run validate`
+- [ ] `npm run analyze`
+- [ ] `npm run e2e -- --reporter=line`
+
+## Verification Results
+
+Capture concise outcomes from reruns.
+
+- **Validate**:
+- **Analyze**:
+- **E2E**:

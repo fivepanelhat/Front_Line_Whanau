@@ -1,5 +1,5 @@
 import { BaseAgent } from "./base";
-import { AgentState } from "../types";
+import { AgentState } from "@/ai/types";
 import { KaitiakiCrawler } from "./kaitiaki-crawler";
 import { RangahauHauora } from "./rangahau-hauora";
 import { ManaAwhina } from "./mana-awhina";

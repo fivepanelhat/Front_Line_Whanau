@@ -1,5 +1,4 @@
 import { describe, it, expect, vi } from 'vitest';
-import { NextRequest } from 'next/server';
 
 // Mock env so the health route doesn't need real Supabase keys
 vi.mock('@/lib/env', () => ({
@@ -43,6 +42,42 @@ describe('GET /api/health', () => {
     const { GET } = await import('../../app/api/health/route');
     const response = await GET();
 
+    expect(response.headers.get('Cache-Control')).toBe('no-store');
+  });
+
+  it('uses fallback version/environment when env vars are missing', async () => {
+    const { GET } = await import('../../app/api/health/route');
+    const env = process.env as Record<string, string | undefined>;
+    const previousVersion = process.env.npm_package_version;
+    const previousNodeEnv = process.env.NODE_ENV;
+
+    delete env.npm_package_version;
+    delete env.NODE_ENV;
+
+    const response = await GET();
+    const body = await response.json();
+
+    expect(body.version).toBe('0.0.0');
+    expect(body.environment).toBe('development');
+
+    if (previousVersion === undefined) {
+      delete env.npm_package_version;
+    } else {
+      env.npm_package_version = previousVersion;
+    }
+
+    if (previousNodeEnv === undefined) {
+      delete env.NODE_ENV;
+    } else {
+      env.NODE_ENV = previousNodeEnv;
+    }
+  });
+
+  it('HEAD returns 200 with no-store cache header', async () => {
+    const { HEAD } = await import('../../app/api/health/route');
+    const response = await HEAD();
+
+    expect(response.status).toBe(200);
     expect(response.headers.get('Cache-Control')).toBe('no-store');
   });
 });

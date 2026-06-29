@@ -5,6 +5,7 @@ import { SovereignExecutor } from "./executor";
 import { AgentResponse, OrchestrationContext } from "./types";
 import { checkGuardrails } from "./guardrails";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { buildSupervisorClassificationPrompt } from "./prompts";
 
 export class AetherSummit {
   private knowledgeWeaver = new TaongaKnowledgeWeaver();
@@ -26,14 +27,7 @@ export class AetherSummit {
         temperature: 0,
       });
       
-      const prompt = `Classify the following query from a family seeking support. 
-Return ONLY one of the following exact strings:
-RESEARCH (if asking for information, facts, amounts, eligibility)
-PLANNING (if asking for steps, pathways, advice, what to do)
-EXECUTION (if asking to fill a form, generate a template, or apply)
-COMPLEX (if it involves multiple of the above or is general)
-
-Query: "${query}"`;
+      const prompt = buildSupervisorClassificationPrompt(query);
       
       const response = await llm.invoke(prompt);
       const text = (response.content as string).trim().toUpperCase();

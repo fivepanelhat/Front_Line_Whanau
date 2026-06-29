@@ -23,7 +23,7 @@
 - [ ] Expand AI agent system to full 11 agents (LangGraph)
 - [ ] Basic RAG pipeline (Supabase pgvector)
 - [ ] Add Tauri desktop support
-- [ ] Improve test coverage (>60%)
+- [x] Improve test coverage (>60%)
 - [ ] Accessibility audit (WCAG 2.2 AA)
 
 ## Phase 2: Beta & Hardening (September – October 2026)

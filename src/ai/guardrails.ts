@@ -1,128 +1,119 @@
-import type { AgentResponse } from './types';
-
-export interface GuardrailFailure {
-  guardrail: 'grounding' | 'unsourced-claim' | 'child-safety' | 'trauma-informed' | 'cultural-safety';
-  reason: string;
-  severity: 'warning' | 'block';
+interface GuardrailInput {
+  content: string;
+  agentUsed: string;
 }
 
-export interface GuardrailResult {
-  passed: boolean;                 // false if ANY block-level failure
-  failures: GuardrailFailure[];
+interface GuardrailResult {
+  passed: boolean;
   modifiedResponse?: string;
-  showUrgentHelp?: boolean;        // gentle, opt-in — NOT injected into AI prose
+  showUrgentHelp: boolean;
+  reason?: string;
 }
 
-// Word-boundary triage. This is a heuristic prompt to offer help, NOT detection,
-// and MUST be reviewed by a qualified practitioner before production use.
-const CHILD_SAFETY_TERMS = [
-  'being hurt', 'being hit', 'beaten', 'shaken', 'not safe at home',
-  'scared of (?:my|their) (?:partner|parent)', 'someone is hurting',
-];
+export function checkGuardrails(input: GuardrailInput): GuardrailResult {
+  const { content, agentUsed } = input;
+  const lowerContent = content.toLowerCase();
 
-// Asserting money/law without a source is a BLOCK — never ship an unsourced figure.
-const FACTUAL_CLAIM = /\$\s?\d|per week|per fortnight|\bAct \d{4}\b|\bsection \d+/i;
-
-const PRESSURING: Record<string, string> = {
-  'you must': 'you may want to consider',
-  'you need to immediately': 'when you feel ready, you might',
-  'failure to': 'if this step is not completed',
-  'you are required': 'it would be helpful to',
-  'you have no choice': 'one option you could consider',
-  'this is mandatory': 'this is usually expected',
-  'you are obligated': 'you may be expected',
-  'it is your duty': 'it may help to',
-};
-
-const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
-export function checkGuardrails(response: AgentResponse): GuardrailResult {
-  const failures: GuardrailFailure[] = [];
-  const content = response.content;
-  let modified = content;
-
-  // 1. Unsourced factual claim → BLOCK (this is the real anti-hallucination gate)
-  const hasClaim = FACTUAL_CLAIM.test(content);
-  const hasSource = (response.sources ?? []).length > 0;
-  if (hasClaim && !hasSource) {
-    failures.push({
-      guardrail: 'unsourced-claim',
-      severity: 'block',
-      reason: 'States a monetary/legal figure with no official source. Do not deliver.',
-    });
-  }
-
-  // 2. Grounding — softer warning when confident but uncited
-  if (!hasSource && response.confidence > 0.3 && !hasClaim) {
-    failures.push({
-      guardrail: 'grounding',
-      severity: 'warning',
-      reason: 'No source cited for a confident response.',
-    });
-  }
-
-  // 3. Child-safety triage — word-boundary, never auto-injects contacts into prose
-  const lower = content.toLowerCase();
-  const triggered = CHILD_SAFETY_TERMS.some((t) =>
-    new RegExp(`\\b${t}\\b`, 'i').test(lower),
-  );
-
-  if (triggered) {
-    failures.push({
-      guardrail: 'child-safety',
-      severity: 'warning',
-      reason: 'Response content relates to potential child safety concerns.',
-    });
-  }
-
-  // 4. Trauma-informed rewrite (all phrases covered, regex-escaped, word-bounded)
-  for (const [phrase, alt] of Object.entries(PRESSURING)) {
-    const re = new RegExp(`\\b${escapeRe(phrase)}\\b`, 'gi');
-    if (re.test(modified)) {
-      failures.push({
-        guardrail: 'trauma-informed',
-        severity: 'warning',
-        reason: `Softened pressuring phrase: "${phrase}".`,
-      });
-      modified = modified.replace(re, alt);
-    }
-  }
-
-  // 5. Cultural-safety — advisory only, punctuation-tolerant, no dead rules
-  const macron: Array<[RegExp, string]> = [
-    [/\bwhanau\b/g, 'whānau'],
-    [/\bmaori\b/gi, 'Māori'],
-    [/\baotearoa\b/g, 'Aotearoa'],
+  // === 1. Crisis / Self-harm Detection (Highest Priority) ===
+  const crisisKeywords = [
+    'suicide',
+    'kill myself',
+    'end my life',
+    'self-harm',
+    'hurt myself',
+    'want to die',
+    'no reason to live',
   ];
-  for (const [re, correct] of macron) {
-    if (re.test(modified)) {
-      failures.push({
-        guardrail: 'cultural-safety',
-        severity: 'warning',
-        reason: `Use "${correct}" (macron/capitalisation).`,
-      });
-      modified = modified.replace(re, correct);
-    }
+
+  if (crisisKeywords.some((kw) => lowerContent.includes(kw))) {
+    return {
+      passed: false,
+      modifiedResponse:
+        "I'm very concerned about what you've shared. Please reach out for immediate support:\n\n" +
+        '• Call or text 1737 (free, 24/7 in NZ)\n' +
+        '• Lifeline: 0800 543 354\n' +
+        '• Your midwife, GP, or hospital social worker',
+      showUrgentHelp: true,
+      reason: 'Crisis language detected',
+    };
   }
 
-  return {
-    passed: failures.every((f) => f.severity !== 'block'),
-    failures,
-    modifiedResponse: modified !== content ? modified : undefined,
-    showUrgentHelp: triggered, // UI decides how to offer this, gently and opt-in
-  };
-}
+  // === 2. Medical Advice Guard (Very Conservative) ===
+  const medicalAdvicePatterns = [
+    'should i',
+    'is it safe',
+    'will my baby',
+    'how much oxygen',
+    'is this normal',
+    'what does it mean',
+    'can i give',
+    'should we',
+  ];
 
-export function checkUserContentForChildSafety(content: string): {
-  triggered: boolean;
-  resources: string | null;
-} {
-  const lower = content.toLowerCase();
-  const triggered = CHILD_SAFETY_TERMS.some((t) =>
-    new RegExp(`\\b${t}\\b`, 'i').test(lower)
-  );
+  const medicalTopics = [
+    'breathing',
+    'oxygen',
+    'cpap',
+    'ventilator',
+    'heart',
+    'infection',
+    'jaundice',
+    'weight',
+    'feeding tube',
+    'discharge',
+    'apnea',
+  ];
+
+  const isAskingMedicalAdvice =
+    medicalAdvicePatterns.some((p) => lowerContent.includes(p)) &&
+    medicalTopics.some((t) => lowerContent.includes(t));
+
+  if (isAskingMedicalAdvice) {
+    return {
+      passed: false,
+      modifiedResponse:
+        "I cannot give medical advice about your baby. Please speak directly with your neonatal team, midwife, or doctor. " +
+        'They know your baby’s specific situation and can give you accurate guidance.',
+      showUrgentHelp: false,
+      reason: 'Medical advice request detected',
+    };
+  }
+
+  // === 3. Financial / Eligibility Advice Guard ===
+  const financialPatterns = [
+    'how much will i get',
+    'am i eligible',
+    'will i qualify',
+    'how much money',
+    'can i get',
+    'what am i entitled to',
+  ];
+
+  if (financialPatterns.some((p) => lowerContent.includes(p))) {
+    return {
+      passed: false,
+      modifiedResponse:
+        'I cannot determine your eligibility or calculate exact amounts. ' +
+        'Please contact Work and Income (WINZ), your midwife, or a support worker who can assess your specific situation. ' +
+        'Rules and amounts can vary significantly between families.',
+      showUrgentHelp: false,
+      reason: 'Financial eligibility advice request detected',
+    };
+  }
+
+  // === 4. High-Risk Agent + Sensitive Topic Combination ===
+  const highRiskAgents = ['sovereign_executor', 'funding_eligibility_checker'];
+  if (highRiskAgents.includes(agentUsed) && lowerContent.length > 300) {
+    return {
+      passed: false,
+      showUrgentHelp: false,
+      reason: 'High-risk agent producing long response',
+    };
+  }
+
+  // === Default: Pass with light sanitization ===
   return {
-    triggered,
-    resources: triggered ? "Oranga Tamariki: 0508 326 459" : null,
+    passed: true,
+    showUrgentHelp: false,
   };
 }
