@@ -1,0 +1,22 @@
+<testsuites id="" name="" tests="8" failures="0" skipped="0" errors="0" time="14.016305000000001">
+<testsuite name="role-selection.e2e.ts" timestamp="2026-06-29T06:41:40.739Z" hostname="chromium" tests="4" failures="0" skipped="0" time="20.744" errors="0">
+<testcase name="Role selection › clicking Parent navigates to /parent portal" classname="role-selection.e2e.ts" time="4.974">
+</testcase>
+<testcase name="Role selection › parent portal route renders content state" classname="role-selection.e2e.ts" time="4.974">
+</testcase>
+<testcase name="Role selection › clicking Practitioner navigates to /practitioner portal" classname="role-selection.e2e.ts" time="5.428">
+</testcase>
+<testcase name="Role selection › navigating back from portal returns to home" classname="role-selection.e2e.ts" time="5.368">
+</testcase>
+</testsuite>
+<testsuite name="role-selection.e2e.ts" timestamp="2026-06-29T06:41:40.739Z" hostname="mobile-chrome" tests="4" failures="0" skipped="0" time="19.34" errors="0">
+<testcase name="Role selection › clicking Parent navigates to /parent portal" classname="role-selection.e2e.ts" time="4.566">
+</testcase>
+<testcase name="Role selection › parent portal route renders content state" classname="role-selection.e2e.ts" time="4.857">
+</testcase>
+<testcase name="Role selection › clicking Practitioner navigates to /practitioner portal" classname="role-selection.e2e.ts" time="4.368">
+</testcase>
+<testcase name="Role selection › navigating back from portal returns to home" classname="role-selection.e2e.ts" time="5.549">
+</testcase>
+</testsuite>
+</testsuites>
