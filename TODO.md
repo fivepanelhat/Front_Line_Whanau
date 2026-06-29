@@ -2,24 +2,25 @@
 
 ## High Priority (This Week)
 
-- [ ] Stabilise E2E tests for role selection buttons on home page
-- [ ] Stabilise language switcher E2E tests (visibility + active state)
+- [x] Stabilise E2E tests for role selection buttons on home page
+- [x] Stabilise language switcher E2E tests (visibility + active state)
 - [ ] Add `data-testid` attributes to:
   - Parent / Practitioner role buttons
   - Language switcher component
 - [ ] Update E2E selectors to be more resilient
+- [ ] Rename `middleware.ts` to `proxy.ts` for Next.js 16 convention compliance
 
 ## Medium Priority
 
 - [x] Create `.github/workflows/ci.yml` with full Playwright support
 - [x] Write `docs/testing.md` contributor guide for E2E tests
-- [ ] Improve mobile viewport E2E coverage
+- [x] Improve mobile viewport E2E coverage
 - [ ] Add proper loading states / hydration handling for better E2E reliability
 
 ## Documentation & Open Source Readiness
 
 - [ ] Finalise `CONTRIBUTING.md` (include cultural safety review process)
-- [ ] Add status badges to `README.md` once full E2E suite is green
+- [ ] Add status badges to `README.md` (E2E suite is now green)
 - [x] Create `SECURITY.md`
 - [ ] Prepare initial GitHub release checklist and tagging strategy
 
@@ -30,4 +31,4 @@
 - [x] Create production-ready `/api/health` endpoint
 - [x] All infrastructure E2E tests passing
 
-_Last updated: 26 June 2026_
+_Last updated: 29 June 2026_

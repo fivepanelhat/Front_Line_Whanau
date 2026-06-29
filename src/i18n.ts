@@ -1,6 +1,6 @@
 import { getRequestConfig } from 'next-intl/server';
 import { getUserLocale } from './lib/locale';
-import type { Locale } from './lib/locale-config';
+import { locales, defaultLocale, type Locale } from './lib/locale-config';
 
 export { locales, defaultLocale, localeNames } from './lib/locale-config';
 export type { Locale } from './lib/locale-config';
@@ -19,6 +19,10 @@ export type { Locale } from './lib/locale-config';
  */
 export const NAMESPACES = ['common', 'home', 'directory', 'portal'] as const;
 export type MessageNamespace = (typeof NAMESPACES)[number];
+
+function isLocale(value: string): value is Locale {
+  return (locales as readonly string[]).includes(value);
+}
 
 export async function loadMessages(
   locale: Locale,
@@ -40,7 +44,8 @@ export async function loadMessages(
  * want to be leaner can call loadMessages() directly instead of getMessages().
  */
 export default getRequestConfig(async () => {
-  const locale = await getUserLocale();
-  const messages = await loadMessages(locale as Locale, [...NAMESPACES]);
+  const requestedLocale = await getUserLocale();
+  const locale: Locale = isLocale(requestedLocale) ? requestedLocale : defaultLocale;
+  const messages = await loadMessages(locale, [...NAMESPACES]);
   return { locale, messages };
 });

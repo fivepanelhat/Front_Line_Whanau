@@ -2,6 +2,8 @@ import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 import bundleAnalyzer from '@next/bundle-analyzer';
 
+// Note: createNextIntlPlugin only accepts one argument in next-intl v4+
+// The experimental.precompile option has been removed from the plugin API.
 const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
 
 const withBundleAnalyzer = bundleAnalyzer({
@@ -15,11 +17,16 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
 
+  // Fix workspace-root inference when parent dir has a package-lock.json
   turbopack: {
     root: process.cwd(),
   },
 
+  // Note: 'cacheComponents' replaces 'experimental.ppr' in Next.js 16+
   cacheComponents: true,
+
+  // Prevent blocked HMR requests in Playwright/dev runs using 127.0.0.1
+  allowedDevOrigins: ['127.0.0.1'],
 
   images: {
     remotePatterns: [
@@ -33,6 +40,7 @@ const nextConfig: NextConfig = {
 
   experimental: {
     serverActions: { bodySizeLimit: '2mb' },
+    // Note: 'optimizePackageImports' must be inside 'experimental' (not top-level)
     optimizePackageImports: ['lucide-react', '@radix-ui/react-*', 'date-fns'],
   },
 
