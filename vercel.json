@@ -1,6 +1,3 @@
-# Front Line Whānau — Vercel Configuration
-# Docs: https://vercel.com/docs/projects/project-configuration
-
 {
   "version": 2,
   "framework": "nextjs",
