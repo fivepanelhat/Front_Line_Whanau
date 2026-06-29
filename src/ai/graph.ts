@@ -135,6 +135,9 @@ async function sovereignExecutorNode(state: AgentStateType) {
     finalResponse: result.content,
     sources: result.sources || [],
     requiresHumanReview: result.requiresHumanReview ?? true,
+    context: {
+      toolCalls: result.metadata?.toolCalls || [],
+    },
   };
 }
 
