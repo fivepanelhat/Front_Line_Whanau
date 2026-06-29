@@ -4,6 +4,14 @@
 
 **Status**: In Progress
 
+### Completed Today (2026-06-29)
+
+- [x] Merged multi-turn AI orchestration and chat interface improvements into `main`
+- [x] Added deployment workflow for `preview`, `staging`, and `production` environments
+- [x] Hardened deployment workflow with manual dispatch and fail-fast secret validation
+- [x] Added deployment protection and trigger guidance to deployment documentation
+- [x] Published v0.3 release notes and validated full CI checks locally (type-check, lint, tests)
+
 - [x] Project scaffolding & documentation
 - [x] Privacy-first encryption layer (Taonga Vault)
 - [x] Basic AI agent structure (`src/ai/`)

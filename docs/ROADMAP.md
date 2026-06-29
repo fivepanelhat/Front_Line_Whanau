@@ -5,6 +5,10 @@
 - [x] Stabilise full E2E test suite (**40/40 passing**)
 - [x] Resolve rebase conflicts and sync repository to remote
 - [x] Improve component semantics and mobile test reliability
+- [x] Merge multi-turn AI orchestration and chat interface improvements into `main`
+- [x] Add GitHub deployment workflow for `preview`, `staging`, and `production`
+- [x] Harden deployment workflow with manual dispatch and fail-fast secret validation
+- [x] Publish v0.3 release notes and deployment protection guidance
 
 ## 🔄 Current Priorities (in order)
 
