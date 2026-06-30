@@ -10,12 +10,15 @@ export function ChatInterface() {
 
   const handleSelectConversation = (threadId: string) => {
     setCurrentThreadId(threadId);
-    setRefreshKey((prev) => prev + 1);
+    // Don't change refreshKey here, just change the active thread
   };
 
   const handleNewConversation = () => {
     const newThreadId = `thread_${Date.now()}`;
     setCurrentThreadId(newThreadId);
+  };
+
+  const handleConversationUpdated = () => {
     setRefreshKey((prev) => prev + 1);
   };
 
@@ -23,12 +26,17 @@ export function ChatInterface() {
     <div className="flex h-[calc(100vh-2rem)] overflow-hidden rounded-xl border bg-white">
       <ConversationSidebar
         currentThreadId={currentThreadId}
+        refreshTrigger={refreshKey}
         onSelectConversation={handleSelectConversation}
         onNewConversation={handleNewConversation}
       />
 
       <div className="flex flex-1 flex-col">
-        <AgentTestPanel key={refreshKey} initialThreadId={currentThreadId} />
+        <AgentTestPanel 
+          key={currentThreadId} 
+          initialThreadId={currentThreadId} 
+          onConversationUpdated={handleConversationUpdated}
+        />
       </div>
     </div>
   );

@@ -14,7 +14,13 @@ interface InterruptData {
   message?: string;
 }
 
-export function AgentTestPanel({ initialThreadId }: { initialThreadId?: string }) {
+export function AgentTestPanel({ 
+  initialThreadId,
+  onConversationUpdated 
+}: { 
+  initialThreadId?: string;
+  onConversationUpdated?: () => void;
+}) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +60,9 @@ export function AgentTestPanel({ initialThreadId }: { initialThreadId?: string }
       content: m.content,
     }));
     await saveConversation(threadId, inputs);
+    if (onConversationUpdated) {
+      onConversationUpdated();
+    }
   };
 
   const sendMessage = async () => {
@@ -139,39 +148,10 @@ export function AgentTestPanel({ initialThreadId }: { initialThreadId?: string }
     }
   };
 
-  const handleReview = async (approved: boolean) => {
-    if (!interruptData) return;
-
-    setShowReview(false);
-    setIsLoading(true);
-
-    try {
-      const res = await fetch('/api/agents/resume', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          threadId: interruptData.threadId,
-          approved,
-          modifiedResponse: approved ? interruptData.proposedResponse : null,
-        }),
-      });
-
-      const result = await res.json();
-
-      if (result.success && result.finalResponse) {
-        const finalMessages: Message[] = [
-          ...messages,
-          { role: 'assistant' as const, content: result.finalResponse },
-        ];
-        setMessages(finalMessages);
-        await saveConversationToDb(finalMessages);
-      }
-    } catch (err) {
-      setError('Failed to process review. Please try again.');
-    } finally {
-      setIsLoading(false);
-      setInterruptData(null);
-    }
+  const checkReviewStatus = async () => {
+    // This could poll /api/review/status?threadId=... in the future
+    // For now, the user can just refresh or check their history
+    window.location.reload();
   };
 
   const startNewConversation = () => {
@@ -251,29 +231,21 @@ export function AgentTestPanel({ initialThreadId }: { initialThreadId?: string }
         </button>
       </div>
 
-      {/* Human Review Modal */}
+      {/* Human Review Modal (Read-Only) */}
       {showReview && interruptData && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl p-6 w-full max-w-lg">
-            <h3 className="font-semibold text-lg mb-4">Human Review Required</h3>
-
-            <div className="mb-4 p-4 bg-gray-50 rounded text-sm">
-              <strong>Proposed Response:</strong>
-              <p className="mt-2 whitespace-pre-wrap">{interruptData.proposedResponse}</p>
-            </div>
+            <h3 className="font-semibold text-lg mb-4 text-purple-700">Pending Practitioner Review</h3>
+            <p className="text-sm text-gray-600 mb-4">
+              To ensure cultural safety and accurate information, this response requires review by a practitioner before it can be provided to you.
+            </p>
 
             <div className="flex gap-3">
               <button
-                onClick={() => handleReview(true)}
-                className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700"
+                onClick={() => setShowReview(false)}
+                className="flex-1 bg-black text-white py-2 rounded-lg hover:bg-gray-800"
               >
-                Approve & Send
-              </button>
-              <button
-                onClick={() => handleReview(false)}
-                className="flex-1 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700"
-              >
-                Reject
+                Close (I'll check back later)
               </button>
             </div>
           </div>

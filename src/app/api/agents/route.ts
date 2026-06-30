@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { agentGraph } from '@/ai/graph';
 import { HumanMessage, AIMessage } from '@langchain/core/messages';
+import { createClient } from '@/lib/supabase/server';
 
 
 
@@ -90,8 +91,20 @@ export async function POST(req: NextRequest) {
           // Handle LangGraph Interrupt
           if (error && (error.name === 'Interrupt' || error.name === 'GraphInterrupt')) {
             // Extract the proposed response from the interrupt value
-            // Depending on the langgraph version, the payload might be in error.value or error.interrupt
             const interruptValue = error.value || error.interrupt || {};
+            const proposedResponse = interruptValue.proposedResponse || '';
+
+            // Insert pending review into Supabase
+            try {
+              const supabase = await createClient();
+              await supabase.from('ai_reviews').insert({
+                thread_id: threadId,
+                proposed_response: proposedResponse,
+                status: 'pending',
+              });
+            } catch (dbErr) {
+              console.error('Failed to save ai_review:', dbErr);
+            }
             
             controller.enqueue(
               encoder.encode(
@@ -100,7 +113,7 @@ export async function POST(req: NextRequest) {
                   message: 'This response requires human review before being sent.',
                   threadId,
                   requiresHumanReview: true,
-                  proposedResponse: interruptValue.proposedResponse || '',
+                  proposedResponse,
                 })}\n\n`
               )
             );
