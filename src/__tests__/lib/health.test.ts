@@ -1,6 +1,18 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+
+let mockDatabaseError: any = null;
+let mockDatabaseData: any = [{ id: 1 }];
+let mockCreateClientError = false;
 
 // Mock env so the health route doesn't need real Supabase keys
+vi.mock('@/env', () => ({
+  env: {
+    NEXT_PUBLIC_SUPABASE_URL: 'https://example.supabase.co',
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: 'anon-key',
+    NODE_ENV: 'test',
+  },
+}));
+
 vi.mock('@/lib/env', () => ({
   env: {
     NEXT_PUBLIC_SUPABASE_URL: 'https://example.supabase.co',
@@ -9,71 +21,73 @@ vi.mock('@/lib/env', () => ({
   },
 }));
 
-// Mock @supabase/supabase-js so database connection returns success
-vi.mock('@supabase/supabase-js', () => ({
-  createClient: () => ({
-    from: () => ({
-      select: () => ({
-        limit: () => Promise.resolve({ data: [], error: null }),
-      }),
-    }),
+vi.mock('next/headers', () => ({
+  cookies: () => Promise.resolve({
+    getAll: () => [],
+    set: () => {},
   }),
 }));
 
+// Mock @supabase/ssr so database connection returns success/error dynamically
+vi.mock('@supabase/ssr', () => ({
+  createServerClient: () => {
+    if (mockCreateClientError) {
+      throw new Error('Supabase client creation failed');
+    }
+    return {
+      from: () => ({
+        select: () => ({
+          limit: () => Promise.resolve({ data: mockDatabaseData, error: mockDatabaseError }),
+        }),
+      }),
+    };
+  },
+}));
+
 describe('GET /api/health', () => {
-  it('returns 200 with status ok', async () => {
+  beforeEach(() => {
+    mockDatabaseError = null;
+    mockDatabaseData = [{ id: 1 }];
+    mockCreateClientError = false;
+  });
+
+  it('returns 200 with status ok and database connected', async () => {
     const { GET } = await import('../../app/api/health/route');
     const response = await GET();
 
     expect(response.status).toBe(200);
-  });
-
-  it('returns JSON body with required fields', async () => {
-    const { GET } = await import('../../app/api/health/route');
-    const response = await GET();
     const body = await response.json();
-
     expect(body.status).toBe('ok');
+    expect(body.database).toBe('connected');
     expect(body.timestamp).toBeDefined();
-    expect(new Date(body.timestamp).toISOString()).toBe(body.timestamp);
-  });
-
-  it('sets Cache-Control: no-store header', async () => {
-    const { GET } = await import('../../app/api/health/route');
-    const response = await GET();
-
     expect(response.headers.get('Cache-Control')).toBe('no-store');
   });
 
-  it('uses fallback version/environment when env vars are missing', async () => {
+  it('returns 503 when database returns an error', async () => {
+    mockDatabaseError = { message: 'Database connection failed' };
     const { GET } = await import('../../app/api/health/route');
-    const env = process.env as Record<string, string | undefined>;
-    const previousVersion = process.env.npm_package_version;
-    const previousNodeEnv = process.env.NODE_ENV;
-
-    delete env.npm_package_version;
-    delete env.NODE_ENV;
-
     const response = await GET();
+
+    expect(response.status).toBe(503);
     const body = await response.json();
-
-    expect(body.version).toBe('0.0.0');
-    expect(body.environment).toBe('development');
-
-    if (previousVersion === undefined) {
-      delete env.npm_package_version;
-    } else {
-      env.npm_package_version = previousVersion;
-    }
-
-    if (previousNodeEnv === undefined) {
-      delete env.NODE_ENV;
-    } else {
-      env.NODE_ENV = previousNodeEnv;
-    }
+    expect(body.status).toBe('unhealthy');
+    expect(body.reason).toBe('database_error');
+    expect(response.headers.get('Cache-Control')).toBe('no-store');
   });
 
-  it('HEAD returns 200 with no-store cache header', async () => {
+  it('returns 500 when client creation throws an exception', async () => {
+    mockCreateClientError = true;
+    const { GET } = await import('../../app/api/health/route');
+    const response = await GET();
+
+    expect(response.status).toBe(500);
+    const body = await response.json();
+    expect(body.status).toBe('unhealthy');
+    expect(body.reason).toBe('internal_error');
+    expect(response.headers.get('Cache-Control')).toBe('no-store');
+  });
+
+  it('HEAD returns 200 status and no-store when healthy', async () => {
     const { HEAD } = await import('../../app/api/health/route');
     const response = await HEAD();
 

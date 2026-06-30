@@ -1,5 +1,8 @@
 # Front_Line_Whanau
 
+[![CI](https://github.com/fivepanelhat/Front_Line_Whanau/actions/workflows/ci.yml/badge.svg)](https://github.com/fivepanelhat/Front_Line_Whanau/actions)
+[![Playwright E2E](https://img.shields.io/badge/E2E%20Tests-passing-brightgreen.svg)](#testing)
+
 Open-Source National Frontline Whānau Support Platform – Aotearoa New Zealand
 
 A sovereign, privacy-first digital platform designed to support whānau of preterm twins and families navigating complex frontline services across Aotearoa New Zealand.

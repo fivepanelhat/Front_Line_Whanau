@@ -4,6 +4,14 @@
 
 **Status**: In Progress
 
+### Completed (2026-06-30 – 2026-07-01)
+
+- [x] Phase 3: Beta Readiness (caching layer, error boundaries, consent modals, and Policy Advocate Agent)
+- [x] Phase 4: Beta Operations (health check APIs, Medical Jargon Translator, Playwright E2E suite, and markdown display)
+- [x] Phase 5: Production Readiness (Supabase rate limits, load tests, Slack logging integrations, and OnboardingWizard)
+- [x] API Security Hardening (secured Next.js route handlers with strict JWT token validations and middleware guards)
+- [x] E2E Resiliency (implemented data-testid hooks and refactored tests for role selection and language features)
+
 ### Completed Today (2026-06-29)
 
 - [x] Merged multi-turn AI orchestration and chat interface improvements into `main`

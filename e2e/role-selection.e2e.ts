@@ -13,7 +13,7 @@ test.describe('Role selection', () => {
   });
 
   test('clicking Parent navigates to /parent portal', async ({ page }) => {
-    await page.getByRole('link', { name: /parent/i }).click();
+    await page.getByTestId('parent-role-btn').click();
     await expect(page).toHaveURL(/\/parent/, { timeout: 15000 });
   });
 
@@ -21,7 +21,7 @@ test.describe('Role selection', () => {
     await page.evaluate(() => {
       localStorage.setItem('userRole', 'parent');
     });
-    await page.getByRole('link', { name: /parent/i }).click();
+    await page.getByTestId('parent-role-btn').click();
 
     const heading = page.getByRole('heading', { name: /parent.*portal/i, level: 1 });
     const homeHeading = page.getByRole('heading', { name: /welcome|nau mai/i, level: 1 });
@@ -35,17 +35,17 @@ test.describe('Role selection', () => {
   });
 
   test('clicking Practitioner navigates to /practitioner portal', async ({ page }) => {
-    await page.getByRole('link', { name: /practitioner/i }).click();
+    await page.getByTestId('practitioner-role-btn').click();
     await expect(page).toHaveURL(/\/practitioner/, { timeout: 15000 });
   });
 
   test('navigating back from portal returns to home', async ({ page }) => {
-    await page.getByRole('link', { name: /parent/i }).click();
+    await page.getByTestId('parent-role-btn').click();
     await expect(page).toHaveURL(/\/parent/, { timeout: 15000 });
     await page.goBack();
     // Should return to role selector
     await expect(
-      page.getByRole('link', { name: /parent/i })
+      page.getByTestId('parent-role-btn')
     ).toBeVisible({ timeout: 15000 });
   });
 });

@@ -82,6 +82,19 @@ When contributing content or copy:
 
 ---
 
+## Cultural Safety Review Process
+
+To protect the integrity of our communities, all pull requests undergo a mandatory **Cultural Safety & Accessibility Review** before merging. Reviewers will evaluate contributions using the following criteria:
+
+1. **Te Tiriti o Waitangi & Data Sovereignty** — Checking that data flow respects Māori data sovereignty principles (Te Mana Raraunga) and ensures clear consent patterns.
+2. **Language and Respect** — Verifying correct syntax and appropriate usage of te reo Māori and tohutō (macrons).
+3. **Accessibility (WCAG 2.2 AA)** — Ensuring that layouts, forms, and tools are inclusive and navigable for all whānau.
+4. **Trauma-Informed & Family-Centred Design** — Confirming that responses, messaging, and components are safe, calm, and supportive for families in high-stress situations.
+
+If issues are flagged during this review, you will receive constructive recommendations to adjust copy, layout, or data storage patterns before final approval.
+
+---
+
 ## Development Setup
 
 ```bash

@@ -58,5 +58,8 @@ export default defineConfig({
     timeout: 120 * 1000,
     stdout: 'ignore',
     stderr: 'pipe',
+    env: {
+      PORTAL_E2E: 'true',
+    },
   },
 });

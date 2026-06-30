@@ -17,13 +17,13 @@ test.describe('Home page', () => {
 
   test('renders Parent / Whānau link', async ({ page }) => {
     await expect(
-      page.getByRole('link', { name: /parent/i })
+      page.getByTestId('parent-role-btn')
     ).toBeVisible();
   });
 
   test('renders Practitioner / Organisation link', async ({ page }) => {
     await expect(
-      page.getByRole('link', { name: /practitioner/i })
+      page.getByTestId('practitioner-role-btn')
     ).toBeVisible();
   });
 

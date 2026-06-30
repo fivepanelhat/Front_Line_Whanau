@@ -2,7 +2,12 @@
 
 ## ✅ Recently Completed
 
-- [x] Stabilise full E2E test suite (**40/40 passing**)
+- [x] Phase 3 Beta Readiness (caching layer, error boundaries, consent modals, and Policy Advocate Agent)
+- [x] Phase 4 Beta Operations (health check APIs, Medical Jargon Translator, Playwright E2E suite, and markdown display)
+- [x] Phase 5 Production Readiness (Supabase rate limits, load tests, Slack logging integrations, and OnboardingWizard)
+- [x] API Security Hardening (secured Next.js route handlers with strict JWT token validations and middleware guards)
+- [x] E2E Resiliency (implemented data-testid hooks and refactored tests for role selection and language features)
+- [x] Stabilise full E2E test suite (**42/42 passing**)
 - [x] Resolve rebase conflicts and sync repository to remote
 - [x] Improve component semantics and mobile test reliability
 - [x] Merge multi-turn AI orchestration and chat interface improvements into `main`

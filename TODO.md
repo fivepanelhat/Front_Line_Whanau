@@ -4,10 +4,10 @@
 
 - [x] Stabilise E2E tests for role selection buttons on home page
 - [x] Stabilise language switcher E2E tests (visibility + active state)
-- [ ] Add `data-testid` attributes to:
+- [x] Add `data-testid` attributes to:
   - Parent / Practitioner role buttons
   - Language switcher component
-- [ ] Update E2E selectors to be more resilient
+- [x] Update E2E selectors to be more resilient
 - [ ] Rename `middleware.ts` to `proxy.ts` for Next.js 16 convention compliance
 
 ## Medium Priority
@@ -19,8 +19,8 @@
 
 ## Documentation & Open Source Readiness
 
-- [ ] Finalise `CONTRIBUTING.md` (include cultural safety review process)
-- [ ] Add status badges to `README.md` (E2E suite is now green)
+- [x] Finalise `CONTRIBUTING.md` (include cultural safety review process)
+- [x] Add status badges to `README.md` (E2E suite is now green)
 - [x] Create `SECURITY.md`
 - [ ] Prepare initial GitHub release checklist and tagging strategy
 

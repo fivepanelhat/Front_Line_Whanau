@@ -22,6 +22,15 @@ test.describe('HITL Review Queue', () => {
     // 2. Navigate to the agent testing panel
     await page.goto('/en-NZ/support'); // Direct to the support chat interface
     
+    // Set localStorage to bypass onboarding wizard and welcome modals
+    await page.evaluate(() => {
+      localStorage.setItem('front_line_onboarded', 'true');
+      localStorage.setItem('hasSeenBetaWelcome', 'true');
+    });
+    
+    // Reload to apply bypass
+    await page.reload();
+    
     // The main chat interface is rendered
     await expect(page.getByPlaceholder(/Ask the agent anything/i)).toBeVisible();
 
