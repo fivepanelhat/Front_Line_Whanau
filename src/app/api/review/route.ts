@@ -7,10 +7,10 @@ export async function POST(request: NextRequest) {
   const auth = await requireAuth(request);
   if (auth instanceof NextResponse) return auth;
 
-  const { threadId, approved, feedback } = await request.json();
+  const { threadId, approved, modifiedResponse } = await request.json();
 
   const result = await agentApp.invoke(
-    new Command({ resume: { approved, feedback } }),
+    new Command({ resume: { approved, modifiedResponse } }),
     { configurable: { thread_id: threadId } }
   ) as { messages: Array<{ content?: string }> };
 

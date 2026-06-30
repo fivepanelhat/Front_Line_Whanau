@@ -1,62 +1,42 @@
 import 'server-only';
-import { BaseAgent } from './base';
-import { AgentStateType } from '../graph';
-import { AgentConfig, AgentState } from '@/ai/types';
-import { PROMPTS } from '@/ai/prompts';
+import { createReactAgent } from "@langchain/langgraph/prebuilt";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { PROMPTS } from "../prompts";
+import { getCulturalResourcesTool } from "../tools";
 
-interface CulturalFlags {
-  requiresReview: boolean;
-  riskScore: number;
-}
+const culturalLLM = new ChatGoogleGenerativeAI({
+  model: "gemini-2.5-flash",
+  temperature: 0.2,
+});
 
-interface CulturalSafetyResult {
-  content: string;
-  confidence: number;
-  agentUsed: string;
-  requiresHumanReview: boolean;
-  metadata: { culturalFlags: CulturalFlags };
-}
+const culturalReactAgent = createReactAgent({
+  llm: culturalLLM,
+  tools: [getCulturalResourcesTool],
+  prompt: PROMPTS.culturalSafetyGuardian,
+});
 
-export class CulturalSafetyGuardian extends BaseAgent {
-  name = 'cultural_safety_guardian';
+export class CulturalSafetyGuardian {
+  name = "cultural_safety_guardian";
 
-  constructor() {
-    const config: AgentConfig = {
-      name: 'cultural_safety_guardian',
-      description: 'Detects cultural safety risks and escalates when needed',
-      systemPrompt: PROMPTS.culturalSafetyGuardian,
-    };
-    super(config);
-  }
+  async process(query: string, state: any) {
+    const result = await culturalReactAgent.invoke({
+      messages: [{ role: "user", content: query }],
+    });
 
-  getSystemPrompt(_state: AgentState): string {
-    return this.config.systemPrompt;
-  }
-
-  async process(query: string, state: AgentStateType): Promise<CulturalSafetyResult> {
-    const culturalFlags = this.detectCulturalRisks(query, state.context);
+    const finalMessage = result.messages[result.messages.length - 1];
+    
+    // Safety check for multi-modal list content from Gemini
+    let content = finalMessage.content;
+    if (Array.isArray(content)) {
+      content = content.map((c: any) => c.text || JSON.stringify(c)).join(" ");
+    } else if (typeof content !== 'string') {
+      content = String(content);
+    }
 
     return {
-      content: '',
-      confidence: culturalFlags.riskScore > 0.7 ? 0.4 : 0.95,
+      content,
       agentUsed: this.name,
-      requiresHumanReview: culturalFlags.requiresReview,
-      metadata: { culturalFlags },
-    };
-  }
-
-  private detectCulturalRisks(query: string, _context: Record<string, any>): CulturalFlags {
-    const lower = query.toLowerCase();
-
-    const highRiskTerms = ['whakapapa', 'tapu', 'tikanga'];
-    const reviewTerms = ['marae', 'iwi', 'hapu', 'whanau', 'whanau ora'];
-
-    const hasHighRisk = highRiskTerms.some((term) => lower.includes(term));
-    const requiresReview = hasHighRisk || reviewTerms.some((term) => lower.includes(term));
-
-    return {
-      requiresReview,
-      riskScore: hasHighRisk ? 0.8 : requiresReview ? 0.6 : 0.1,
+      requiresHumanReview: true,
     };
   }
 }

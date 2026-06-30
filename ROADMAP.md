@@ -11,7 +11,9 @@
 - [x] Hardened deployment workflow with manual dispatch and fail-fast secret validation
 - [x] Added deployment protection and trigger guidance to deployment documentation
 - [x] Published v0.3 release notes and validated full CI checks locally (type-check, lint, tests)
-
+- [x] Integrated specialist LangGraph agents (Funding, Cultural Safety, Trauma-Informed)
+- [x] Implemented end-to-end Human-in-the-Loop (HITL) review system with SSE streaming
+- [x] Optimised Next.js bundle size with per-route message loading (next-intl)
 - [x] Project scaffolding & documentation
 - [x] Privacy-first encryption layer (Taonga Vault)
 - [x] Basic AI agent structure (`src/ai/`)

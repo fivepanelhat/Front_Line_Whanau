@@ -1,7 +1,8 @@
 import 'server-only';
-import { StateGraph, END, START } from '@langchain/langgraph';
-import { BaseMessage, HumanMessage } from '@langchain/core/messages';
+import { StateGraph, END, START, interrupt } from '@langchain/langgraph';
+import { BaseMessage, HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { Annotation } from '@langchain/langgraph';
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 
 import { AetherSummit } from './aether-summit';
 import { checkGuardrails } from './guardrails';
@@ -97,140 +98,55 @@ const traumaCompanion = new TraumaInformedCompanion();
 const fundingChecker = new FundingEligibilityChecker();
 
 // === NODES ===
-async function supervisorNode(state: AgentStateType) {
-  const q = state.query.toLowerCase().trim();
+const intentClassifier = new ChatGoogleGenerativeAI({
+  model: "gemini-2.5-flash",
+  temperature: 0,
+});
 
-  // === HIGH-CONFIDENCE ROUTING (checked in priority order) ===
+async function classifyIntent(query: string): Promise<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'COMPLEX'> {
+  const systemPrompt = `You are an intent classifier for a preterm whānau support system in Aotearoa New Zealand.
 
-  // 1. Funding / Financial / Best Start / WINZ
-  if (
-    q.includes('funding') ||
-    q.includes('financial') ||
-    q.includes('best start') ||
-    q.includes('winz') ||
-    q.includes('allowance') ||
-    q.includes('payment')
-  ) {
-    logAgentEvent('supervisor_routed', {
-      query: state.query,
-      intent: 'EXECUTION',
-      agent: 'funding_eligibility_checker',
-    });
-    return {
-      intent: 'EXECUTION',
-      currentAgent: 'funding_eligibility_checker',
-      messages: [...state.messages, new HumanMessage(state.query)],
-    };
+Classify the user's query into exactly one of these categories:
+- RESEARCH: Questions about information, eligibility, definitions, or facts.
+- PLANNING: Questions about steps, pathways, advice, or "how do I".
+- EXECUTION: Requests to generate something, apply, or take concrete action.
+- COMPLEX: Queries that combine multiple intents or are emotionally heavy.
+
+Respond with ONLY one word: RESEARCH, PLANNING, EXECUTION, or COMPLEX.`;
+
+  const response = await intentClassifier.invoke([
+    new SystemMessage(systemPrompt),
+    new HumanMessage(query),
+  ]);
+
+  const intent = response.content.toString().trim().toUpperCase();
+
+  if (["RESEARCH", "PLANNING", "EXECUTION", "COMPLEX"].includes(intent)) {
+    return intent as any;
   }
+  return "COMPLEX";
+}
 
-  // 2. Cultural Safety (Maori / Iwi)
-  if (
-    q.includes('cultural') ||
-    q.includes('marae') ||
-    q.includes('iwi') ||
-    q.includes('kaumātua') ||
-    q.includes('whakapapa') ||
-    q.includes('māori')
-  ) {
-    logAgentEvent('supervisor_routed', {
-      query: state.query,
-      intent: 'RESEARCH',
-      agent: 'cultural_safety_guardian',
-    });
-    return {
-      intent: 'RESEARCH',
-      currentAgent: 'cultural_safety_guardian',
-      messages: [...state.messages, new HumanMessage(state.query)],
-    };
+async function supervisorNode(state: AgentStateType): Promise<Partial<AgentStateType>> {
+  const intent = await classifyIntent(state.query);
+
+  let nextAgent = "knowledge_weaver";
+
+  if (intent === "EXECUTION") {
+    nextAgent = "funding_eligibility_checker";
+  } else if (intent === "PLANNING") {
+    nextAgent = "trauma_informed_companion";
+  } else if (intent === "RESEARCH") {
+    if (
+      state.query.toLowerCase().includes("cultural") ||
+      state.query.toLowerCase().includes("marae") ||
+      state.query.toLowerCase().includes("iwi")
+    ) {
+      nextAgent = "cultural_safety_guardian";
+    } else {
+      nextAgent = "knowledge_weaver";
+    }
   }
-
-  // 3. Emotional / Trauma / Overwhelm
-  if (
-    q.includes('overwhelm') ||
-    q.includes('emotional') ||
-    q.includes('scared') ||
-    q.includes('anxious') ||
-    q.includes('grief') ||
-    q.includes('feeling')
-  ) {
-    logAgentEvent('supervisor_routed', {
-      query: state.query,
-      intent: 'PLANNING',
-      agent: 'trauma_informed_companion',
-    });
-    return {
-      intent: 'PLANNING',
-      currentAgent: 'trauma_informed_companion',
-      messages: [...state.messages, new HumanMessage(state.query)],
-    };
-  }
-
-  // 4. Regional / Local Support Services
-  if (
-    (q.includes('support') || q.includes('service')) &&
-    (q.includes('taranaki') || q.includes('region') || q.includes('local') || q.includes('near'))
-  ) {
-    logAgentEvent('supervisor_routed', {
-      query: state.query,
-      intent: 'RESEARCH',
-      agent: 'resource_navigator',
-    });
-    return {
-      intent: 'RESEARCH',
-      currentAgent: 'resource_navigator',
-      messages: [...state.messages, new HumanMessage(state.query)],
-    };
-  }
-
-  // 5. Preterm Care Topics (skin-to-skin, feeding, breathing, discharge, etc.)
-  if (
-    q.includes('skin to skin') ||
-    q.includes('skin-to-skin') ||
-    q.includes('kangaroo care') ||
-    q.includes('feeding') ||
-    q.includes('breastfeed') ||
-    q.includes('breathing') ||
-    q.includes('discharge') ||
-    q.includes('preterm care')
-  ) {
-    logAgentEvent('supervisor_routed', {
-      query: state.query,
-      intent: 'RESEARCH',
-      agent: 'knowledge_weaver',
-    });
-    return {
-      intent: 'RESEARCH',
-      currentAgent: 'knowledge_weaver',
-      messages: [...state.messages, new HumanMessage(state.query)],
-    };
-  }
-
-  // 6. General Service / Directory queries
-  if (
-    q.includes('support service') ||
-    q.includes('where can i') ||
-    q.includes('find support') ||
-    q.includes('directory')
-  ) {
-    logAgentEvent('supervisor_routed', {
-      query: state.query,
-      intent: 'RESEARCH',
-      agent: 'resource_navigator',
-    });
-    return {
-      intent: 'RESEARCH',
-      currentAgent: 'resource_navigator',
-      messages: [...state.messages, new HumanMessage(state.query)],
-    };
-  }
-
-  // === FALLBACK: Use LLM classification ===
-  const intent = await aetherSummit.classifyIntent(state.query);
-
-  let nextAgent = 'knowledge_weaver';
-
-  if (intent === 'PLANNING') nextAgent = 'pathway_architect';
-  if (intent === 'EXECUTION') nextAgent = 'sovereign_executor';
 
   logAgentEvent('supervisor_routed', {
     query: state.query,
@@ -241,7 +157,7 @@ async function supervisorNode(state: AgentStateType) {
   return {
     intent,
     currentAgent: nextAgent,
-    messages: [...state.messages, new HumanMessage(state.query)],
+    messages: [new HumanMessage(state.query)],
   };
 }
 
@@ -312,10 +228,11 @@ async function guardrailNode(state: AgentStateType): Promise<Partial<AgentStateT
     agentUsed: state.currentAgent,
   });
 
+  // Enhanced logging with agent context
   if (!gate.passed) {
-    logAgentEvent('guardrail_intervened', {
+    logAgentEvent("guardrail_intervened", {
       agent: state.currentAgent,
-      reason: gate.reason,
+      reason: gate.reason || 'Unknown',
     });
   }
 
@@ -323,14 +240,38 @@ async function guardrailNode(state: AgentStateType): Promise<Partial<AgentStateT
     finalResponse: gate.modifiedResponse ?? state.finalResponse,
     showUrgentHelp: gate.showUrgentHelp,
     requiresHumanReview: !gate.passed || state.requiresHumanReview,
-    // Optional: store reason in state for debugging/observability
-    // context: { ...state.context, guardrailReason: gate.reason }
   };
 }
 
-async function humanReviewNode(state: AgentStateType) {
-  if (state.humanApproved === true) return {};
-  return { requiresHumanReview: true };
+async function humanReviewNode(state: AgentStateType): Promise<Partial<AgentStateType>> {
+  // If already approved, continue
+  if (state.humanApproved === true) {
+    return {};
+  }
+
+  // Pause execution and wait for human input
+  const reviewResult = interrupt({
+    message: "This response requires human review before being sent to the user.",
+    agent: state.currentAgent,
+    proposedResponse: state.finalResponse,
+    query: state.query,
+  }) as any;
+
+  // When resumed, reviewResult will contain the human decision
+  if (reviewResult?.approved === true) {
+    return {
+      humanApproved: true,
+      requiresHumanReview: false,
+    };
+  } else {
+    // If rejected or modified
+    return {
+      finalResponse: reviewResult?.modifiedResponse || 
+        "This response has been reviewed and requires further clarification.",
+      requiresHumanReview: true,
+      humanApproved: false,
+    };
+  }
 }
 
 // === GRAPH ===
@@ -378,11 +319,16 @@ graph.addEdge('resource_navigator', 'guardrails');
 graph.addEdge('trauma_informed_companion', 'guardrails');
 graph.addEdge('funding_eligibility_checker', 'guardrails');
 
-graph.addConditionalEdges('guardrails', (state) =>
-  state.requiresHumanReview ? 'human_review' : END
-);
+graph.addConditionalEdges("guardrails", (state) => {
+  const highRiskAgents = ["funding_eligibility_checker", "cultural_safety_guardian"];
 
-graph.addEdge('human_review', END);
+  if (highRiskAgents.includes(state.currentAgent) && state.requiresHumanReview) {
+    return "human_review";
+  }
+  return END;
+});
+
+graph.addEdge("human_review", END);
 
 export let checkpointer: Awaited<ReturnType<typeof createCheckpointSaver>> | null = null;
 

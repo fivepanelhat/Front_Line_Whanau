@@ -1,50 +1,43 @@
 import 'server-only';
-import { BaseAgent } from './base';
-import { getFundingInfoTool, knowledgeDatabaseLookupTool } from '../tools';
-import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
-import { createReactAgent } from '@langchain/langgraph/prebuilt';
-import { AgentConfig, AgentState } from '@/ai/types';
-import { AgentResponse, OrchestrationContext } from '@/ai/types';
-import { PROMPTS } from '@/ai/prompts';
+import { createReactAgent } from "@langchain/langgraph/prebuilt";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { PROMPTS } from "../prompts";
+import { getFundingInfoTool } from "../tools";
 
-export class FundingEligibilityChecker extends BaseAgent {
-  name = 'funding_eligibility_checker';
+const fundingLLM = new ChatGoogleGenerativeAI({
+  model: "gemini-2.5-flash",
+  temperature: 0.1,
+});
 
-  private agent = createReactAgent({
-    llm: new ChatGoogleGenerativeAI({ model: 'gemini-1.5-flash', temperature: 0.1 }),
-    tools: [knowledgeDatabaseLookupTool, getFundingInfoTool],
-    prompt: PROMPTS.fundingEligibilityChecker,
-  });
+const fundingReactAgent = createReactAgent({
+  llm: fundingLLM,
+  tools: [getFundingInfoTool],
+  prompt: PROMPTS.fundingEligibilityChecker,
+});
 
-  constructor() {
-    const config: AgentConfig = {
-      name: 'funding_eligibility_checker',
-      description: 'Provides conservative funding guidance with mandatory escalation',
-      systemPrompt: PROMPTS.fundingEligibilityChecker,
-    };
-    super(config);
-  }
+export class FundingEligibilityChecker {
+  name = "funding_eligibility_checker";
 
-  getSystemPrompt(_state: AgentState): string {
-    return this.config.systemPrompt;
-  }
-
-  async process(query: string, _state?: OrchestrationContext): Promise<AgentResponse> {
-    const result = await this.agent.invoke({
-      messages: [{ role: 'user', content: query }],
+  async process(query: string, state: any) {
+    const result = await fundingReactAgent.invoke({
+      messages: [{ role: "user", content: query }],
     });
 
-    const lastMessage = result.messages[result.messages.length - 1];
-    const content = typeof lastMessage.content === 'string'
-      ? lastMessage.content
-      : JSON.stringify(lastMessage.content);
+    const finalMessage = result.messages[result.messages.length - 1];
+    
+    // Safety check for multi-modal list content from Gemini
+    let content = finalMessage.content;
+    if (Array.isArray(content)) {
+      content = content.map((c: any) => c.text || JSON.stringify(c)).join(" ");
+    } else if (typeof content !== 'string') {
+      content = String(content);
+    }
 
     return {
       content,
-      confidence: 0.8,
       agentUsed: this.name,
       requiresHumanReview: true,
-      sources: ['Funding Info Tool'],
+      sources: [], // Can be enhanced later
     };
   }
 }

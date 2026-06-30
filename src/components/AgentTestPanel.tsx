@@ -20,6 +20,8 @@ export function AgentTestPanel({ initialThreadId }: AgentTestPanelProps = {}) {
   const [error, setError] = useState<string | null>(null);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [threadId] = useState(() => initialThreadId || `thread_${Date.now()}`);
+  const [showReviewPanel, setShowReviewPanel] = useState(false);
+  const [reviewData, setReviewData] = useState<any>(null);
 
   const saveCurrentConversation = async (updatedMessages: Message[]) => {
     if (updatedMessages.length === 0) return;
@@ -51,6 +53,42 @@ export function AgentTestPanel({ initialThreadId }: AgentTestPanelProps = {}) {
     void navigator.clipboard.writeText(text);
     setCopiedIndex(index);
     setTimeout(() => setCopiedIndex(null), 1500);
+  };
+
+  const handleReviewDecision = async (approved: boolean) => {
+    setShowReviewPanel(false);
+    setIsLoading(true);
+
+    try {
+      const res = await fetch('/api/review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          threadId: reviewData.threadId,
+          approved,
+          modifiedResponse: approved ? reviewData.proposedResponse : null,
+        }),
+      });
+
+      const result = await res.json();
+
+      if (result.status === 'complete' || result.success) {
+        // Append final approved response
+        const finalContent = result.response || result.finalResponse;
+        const newMessages = [
+          ...messages.filter(m => m.content !== reviewData.proposedResponse), // remove the pending message if it was added
+          { role: 'assistant' as const, content: finalContent },
+        ];
+        
+        setMessages(newMessages);
+        await saveCurrentConversation(newMessages);
+      }
+    } catch (error) {
+      console.error('Failed to resume conversation:', error);
+    } finally {
+      setIsLoading(false);
+      setReviewData(null);
+    }
   };
 
   const sendMessage = async () => {
@@ -100,6 +138,16 @@ export function AgentTestPanel({ initialThreadId }: AgentTestPanelProps = {}) {
           try {
             const data = JSON.parse(line.replace('data: ', ''));
 
+            if (data.type === 'interrupt') {
+              setReviewData({
+                threadId: data.threadId || threadId,
+                proposedResponse: assistantResponse
+              });
+              setShowReviewPanel(true);
+              setIsLoading(false);
+              break; // breaks out of lines loop
+            }
+
             if (data.type === 'token') {
               assistantResponse += data.content;
 
@@ -133,7 +181,41 @@ export function AgentTestPanel({ initialThreadId }: AgentTestPanelProps = {}) {
   };
 
   return (
-    <div className="mx-auto max-w-3xl p-6">
+    <div className="mx-auto max-w-3xl p-6 relative">
+      {showReviewPanel && reviewData && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 w-full max-w-lg">
+            <h3 className="text-lg font-semibold mb-4">Human Review Required</h3>
+            
+            <div className="mb-4 p-4 bg-gray-50 rounded-lg text-sm max-h-64 overflow-y-auto">
+              <strong>Proposed Response:</strong>
+              <p className="mt-2 whitespace-pre-wrap">{reviewData.proposedResponse}</p>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => handleReviewDecision(true)}
+                className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition"
+              >
+                Approve & Send
+              </button>
+              <button
+                onClick={() => handleReviewDecision(false)}
+                className="flex-1 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition"
+              >
+                Reject
+              </button>
+              <button
+                onClick={() => setShowReviewPanel(false)}
+                className="px-6 py-2 border rounded-lg hover:bg-gray-50 transition"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-2xl font-semibold">Multi-Turn Agent</h2>
         <button

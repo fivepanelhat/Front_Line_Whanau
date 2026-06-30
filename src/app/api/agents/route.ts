@@ -3,6 +3,7 @@ import { agentGraph } from '@/ai/graph';
 import { HumanMessage, AIMessage } from '@langchain/core/messages';
 
 
+
 type ChatHistoryMessage = {
   role: 'user' | 'assistant';
   content: string;
@@ -19,11 +20,11 @@ function isChatHistoryMessage(value: unknown): value is ChatHistoryMessage {
 
 export async function POST(req: NextRequest) {
   try {
-    const {
-      query,
-      consentGiven = true,
+    const { 
+      query, 
+      consentGiven = true, 
       threadId = `thread_${Date.now()}`,
-      history = [], // Array of previous messages: [{role: 'user' | 'assistant', content: string}]
+      history = []
     } = await req.json();
 
     if (!query || typeof query !== 'string') {
@@ -84,12 +85,30 @@ export async function POST(req: NextRequest) {
 
           controller.enqueue(encoder.encode('data: [DONE]\n\n'));
           controller.close();
-        } catch (error) {
+
+        } catch (error: any) {
+          // Handle LangGraph Interrupt
+          if (error && (error.name === 'Interrupt' || error.name === 'GraphInterrupt')) {
+            controller.enqueue(
+              encoder.encode(
+                `data: ${JSON.stringify({
+                  type: 'interrupt',
+                  message: 'This response requires human review.',
+                  threadId,
+                  requiresHumanReview: true,
+                })}\n\n`
+              )
+            );
+            controller.close();
+            return;
+          }
+
+          // Generic error
           console.error('Streaming error:', error);
           controller.enqueue(
-            encoder.encode(`data: ${JSON.stringify({
-              type: 'error',
-              message: 'Something went wrong while processing your request.',
+            encoder.encode(`data: ${JSON.stringify({ 
+              type: 'error', 
+              message: 'Something went wrong while processing your request.' 
             })}\n\n`)
           );
           controller.close();
@@ -104,6 +123,7 @@ export async function POST(req: NextRequest) {
         Connection: 'keep-alive',
       },
     });
+
   } catch (error) {
     console.error('API error:', error);
     return new Response(JSON.stringify({ error: 'Internal server error' }), { status: 500 });
