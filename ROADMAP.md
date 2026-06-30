@@ -54,10 +54,10 @@
 
 **Status**: Completed
 
-- [x] Partnerships with Health NZ, Little Miracles Trust, Plunket, iwi
+- [ ] Partnerships with Health NZ, Little Miracles Trust, Plunket, iwi
 - [x] Advanced analytics & outcome tracking (anonymised)
 - [x] Multi-language support (Te Reo Māori + Pacific languages)
-- [x] Community governance model
+- [ ] Community governance model
 - [x] Sustainable funding & operations model
 - [x] Potential integration with national health systems (with consent)
 
