@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { PractitionerNotesSchema } from '@/lib/validations';
 
 export async function POST(req: NextRequest) {
   try {
@@ -21,12 +22,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const body = await req.json();
-    const { patient_reference, encrypted_content } = body;
-
-    if (!encrypted_content) {
-      return NextResponse.json({ error: 'Encrypted content is required' }, { status: 400 });
+    const parsed = PractitionerNotesSchema.safeParse(await req.json());
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Invalid input', details: parsed.error }, { status: 400 });
     }
+    const { patient_reference, encrypted_content } = parsed.data;
 
     const { data, error } = await supabase
       .from('practitioner_notes')

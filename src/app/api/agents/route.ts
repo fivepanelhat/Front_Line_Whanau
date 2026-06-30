@@ -7,6 +7,7 @@ import { aiCircuitBreaker } from '@/lib/circuit-breaker';
 const log = routeLogger('/api/agents');
 import { createClient } from '@/lib/supabase/server';
 import { checkRateLimit } from '@/ai/security';
+import { AgentQuerySchema } from '@/lib/validations';
 
 
 
@@ -34,16 +35,19 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    const rawBody = await request.json();
+    const parsed = AgentQuerySchema.safeParse(rawBody);
+    
+    if (!parsed.success) {
+      return new Response(JSON.stringify({ error: 'Invalid Input', details: parsed.error }), { status: 400 });
+    }
+
     const { 
       query, 
       consentGiven = true, 
       threadId = `thread_${Date.now()}`,
       history = []
-    } = await request.json();
-
-    if (!query || typeof query !== 'string') {
-      return new Response(JSON.stringify({ error: 'Query is required' }), { status: 400 });
-    }
+    } = parsed.data;
 
     // Convert history into LangChain messages, limiting to the last 10 to save tokens
     const safeHistory = (Array.isArray(history) ? history.filter(isChatHistoryMessage) : []).slice(-10);

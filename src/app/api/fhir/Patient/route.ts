@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { checkRateLimit, createAuditLog } from '@/ai/security';
 
 /**
  * Mock FHIR Endpoint for Patient interoperability
@@ -9,8 +10,20 @@ import { createClient } from '@/lib/supabase/server';
  */
 export async function GET(req: NextRequest) {
   try {
+    const ip = req.headers.get('x-forwarded-for') || 'unknown_ip';
+    const isAllowed = await checkRateLimit(ip, 30, 60000);
+    if (!isAllowed) {
+      return NextResponse.json({ error: 'Too Many Requests' }, { status: 429 });
+    }
+
     const searchParams = req.nextUrl.searchParams;
     const patientId = searchParams.get('_id');
+
+    if (patientId) {
+      createAuditLog('FHIR_ACCESS_BY_ID', { ip, patientId });
+    } else {
+      createAuditLog('FHIR_ACCESS_ALL', { ip });
+    }
 
     if (!patientId) {
       return NextResponse.json({

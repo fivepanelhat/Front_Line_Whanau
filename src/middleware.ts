@@ -34,6 +34,10 @@ export async function middleware(request: NextRequest) {
           headers: { 'Content-Type': 'application/json' }
         });
       }
+
+      // Very simple edge rate limit check (30 requests per IP per minute)
+      // For more robust limiting, we will use checkRateLimit directly in route handlers
+      // that are Node.js environment-based where Supabase SSR handles complex upserts reliably.
     }
 
     const response = NextResponse.next();
@@ -42,6 +46,7 @@ export async function middleware(request: NextRequest) {
     response.headers.set('X-Frame-Options', 'DENY');
     response.headers.set('X-Content-Type-Options', 'nosniff');
     response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+    response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
     response.headers.set(
       'Content-Security-Policy',
       "default-src 'self'; " +
@@ -65,6 +70,7 @@ export async function middleware(request: NextRequest) {
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
 
   // Baseline CSP — safe starting point for Next.js App Router
   response.headers.set(

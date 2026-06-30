@@ -1,14 +1,15 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { logger } from '@/lib/logger';
+import { FeedbackSchema } from '@/lib/validations';
 
 export async function POST(req: Request) {
   try {
-    const { threadId, messageContent, rating, comment } = await req.json();
-
-    if (!threadId || rating === undefined) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    const parsed = FeedbackSchema.safeParse(await req.json());
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Invalid input', details: parsed.error }, { status: 400 });
     }
+    const { threadId, messageContent, rating, comment } = parsed.data;
 
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,

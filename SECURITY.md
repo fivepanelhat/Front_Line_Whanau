@@ -1,75 +1,39 @@
-# Security Policy
+# Security Runbook: Secrets & Token Management
 
-## Supported Versions
+This document outlines the standard operating procedures for managing, rotating, and securing sensitive credentials in the Front Line Whānau project.
 
-| Version | Supported          |
-|---------|--------------------|
-| 0.2.x   | ✅ Current          |
-| < 0.2   | ❌ Not supported    |
+## 1. Secrets Inventory
 
-## Reporting a Vulnerability
+| Secret Name | Location | Purpose | Rotation Frequency |
+|-------------|----------|---------|--------------------|
+| `API_SECRET_KEY` | Vercel Environment / `.env` | Secures internal backend APIs from public access. | Every 90 days or upon developer offboarding. |
+| `SUPABASE_SERVICE_ROLE_KEY` | Vercel Environment / `.env` | Server-side admin access to Supabase (bypasses RLS). | Every 180 days or upon suspect breach. |
+| `JWT_SECRET` | Vercel Environment / `.env` | Signs internal JSON Web Tokens. | Annually. |
 
-The **Front Line Families Support Hub NZ** handles sensitive personal, health, and financial data. We take security extremely seriously.
+> [!WARNING]
+> **NEVER** prefix sensitive keys with `NEXT_PUBLIC_`. The only keys that should have this prefix are `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
 
-### How to Report
+## 2. Rotation Procedure
 
-**Do NOT report security vulnerabilities through public GitHub issues.**
+### Rotating `API_SECRET_KEY` (Zero-Downtime)
+1. Generate a new high-entropy string (e.g., `openssl rand -base64 32`).
+2. Update the `API_SECRET_KEY` environment variable in Vercel to a JSON array or comma-separated string containing BOTH the old and new keys (e.g., `old_key,new_key`).
+3. Update `src/middleware.ts` to accept either key during the transition window.
+4. Deploy the application.
+5. Update all client-side or external services to use the `new_key`.
+6. Once metrics show no usage of `old_key`, remove it from Vercel and redeploy.
 
-Instead, please report them via one of the following:
+### Rotating `SUPABASE_SERVICE_ROLE_KEY`
+1. Navigate to your Supabase Project Dashboard -> Settings -> API.
+2. Click "Roll Service Role Key". This will invalidate the old key immediately.
+3. Update the `SUPABASE_SERVICE_ROLE_KEY` environment variable in Vercel.
+4. Trigger a new deployment on Vercel immediately.
+*(Note: This involves brief downtime. Schedule during low-traffic windows.)*
 
-1. **GitHub Security Advisories**: Use the [Security tab](https://github.com/fivepanelhat/Front_Line_Whanau/security/advisories) to create a private advisory.
-2. **Email**: Contact the maintainers directly (see repository profile).
+## 3. Audit Logs
+We actively log high-risk actions using `createAuditLog()` in `src/ai/security.ts`.
+- `REVIEW_DECISION`: Logged when a moderator approves/rejects an AI response.
+- `FEEDBACK_EXPORT`: Logged when the feedback CSV is downloaded.
+- `FHIR_ACCESS`: Logged when patient data is queried.
 
-### What to Include
-
-- Description of the vulnerability
-- Steps to reproduce
-- Potential impact
-- Suggested fix (if any)
-
-### Response Timeline
-
-- **Acknowledgement**: Within 48 hours
-- **Initial assessment**: Within 5 business days
-- **Fix release**: As soon as practical, with a security advisory
-
-## Security Architecture
-
-### Client-Side Encryption
-
-- All sensitive data (journal entries, vault documents) is encrypted **client-side** using the **Web Crypto API**
-- **AES-256-GCM** encryption with PBKDF2 key derivation
-- Encryption keys are derived from user passphrases — they never leave the browser
-- The server never sees plaintext sensitive data
-
-### Consent Model
-
-- **Explicit informed consent** is required before any data processing
-- Consent is **granular** — users control each data scope independently
-- Full **audit trail** of all consent decisions
-- Consent can be **revoked** at any time
-
-### Data Sovereignty
-
-- **Client-side first** architecture — data stays on the user's device by default
-- Server-side storage is opt-in with explicit consent
-- Aligned with **Te Mana Raraunga** (Māori Data Sovereignty) principles
-- Compliant with the **Privacy Act 2020** and **Health Information Privacy Code 2020**
-
-### Infrastructure
-
-- **HTTPS** enforced for all connections
-- **Content Security Policy** headers
-- **Dependency auditing** via automated CI/CD security scans
-- Regular **npm audit** checks
-- No third-party analytics or tracking without consent
-
-## Responsible Disclosure
-
-We follow a **responsible disclosure** model. Please allow us reasonable time to address vulnerabilities before public disclosure.
-
-We are grateful to security researchers who help keep whānau data safe. Contributors who report valid vulnerabilities will be acknowledged (with permission) in our security advisories.
-
----
-
-> *Kia kaha, kia māia, kia manawanui — Be strong, be brave, be steadfast.*
+*Review logs weekly via your logging provider (e.g., Vercel Logs, Datadog).*
