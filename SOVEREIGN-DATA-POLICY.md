@@ -39,7 +39,7 @@ The **Front Line Families Support Hub NZ** is designed in alignment with the pri
 ### Client-Side-First Architecture
 
 | Principle | Implementation |
-|-----------|---------------|
+| --- | --- |
 | **Data stays on device** | Journal entries and vault documents are encrypted and stored locally by default |
 | **Encryption at rest** | AES-256-GCM via Web Crypto API; keys derived from user passphrase (PBKDF2) |
 | **Server never sees plaintext** | If sync is enabled, only encrypted blobs are transmitted and stored |
@@ -47,7 +47,7 @@ The **Front Line Families Support Hub NZ** is designed in alignment with the pri
 
 ### Consent Model
 
-```
+```text
 Scope                 Description                          Default
 ──────────────────────────────────────────────────────────────────
 journal.read          Read journal entries                  Granted (local)
@@ -90,7 +90,7 @@ Under the **Privacy Act 2020** and this policy, users have the right to:
 ## Compliance
 
 | Legislation | Status |
-|------------|--------|
+| --- | --- |
 | Privacy Act 2020 (NZ) | ✅ Compliant by design |
 | Health Information Privacy Code 2020 | ✅ Health data encrypted, consent-gated |
 | Te Mana Raraunga Principles | ✅ Embedded in architecture |

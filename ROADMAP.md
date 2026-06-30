@@ -25,18 +25,22 @@
 
 ## Phase 1: MVP (Target: July – August 2026)
 
+**Status**: Completed
+
 **Goal**: Usable national directory with role-based experiences
 
-- [ ] Implement one-click role selector + dual portals
-- [ ] Build searchable unified directory (with filters)
-- [ ] Organisation/Practitioner submission + moderation workflow
-- [ ] Expand AI agent system to full 11 agents (LangGraph)
-- [ ] Basic RAG pipeline (Supabase pgvector)
-- [ ] Add Tauri desktop support
+- [x] Implement one-click role selector + dual portals
+- [x] Build searchable unified directory (with filters)
+- [x] Organisation/Practitioner submission + moderation workflow
+- [x] Expand AI agent system to full 11 agents (LangGraph)
+- [x] Basic RAG pipeline (Supabase pgvector)
+- [x] Add Tauri desktop support
 - [x] Improve test coverage (>60%)
-- [ ] Accessibility audit (WCAG 2.2 AA)
+- [x] Accessibility audit (WCAG 2.2 AA)
 
 ## Phase 2: Beta & Hardening (September – October 2026)
+
+**Status**: In Progress
 
 - [ ] Live AI agent reasoning (with consent)
 - [ ] Peer support features (moderated stories)

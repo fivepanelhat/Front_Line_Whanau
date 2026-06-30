@@ -38,14 +38,15 @@ export function OrganisationUploadForm() {
       </div>
 
       {message && (
-        <div className={`p-4 rounded-lg text-sm ${message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
+        <div role="alert" aria-live="polite" className={`p-4 rounded-lg text-sm ${message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
           {message.text}
         </div>
       )}
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Select File *</label>
+        <label htmlFor="file-upload" className="block text-sm font-medium text-gray-700 mb-1">Select File *</label>
         <input 
+          id="file-upload"
           required 
           name="file" 
           type="file" 
@@ -55,16 +56,16 @@ export function OrganisationUploadForm() {
       </div>
       
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Display Title (Optional)</label>
-        <input name="filename" type="text" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none transition" placeholder="Leave blank to use original filename" />
+        <label htmlFor="filename-input" className="block text-sm font-medium text-gray-700 mb-1">Display Title (Optional)</label>
+        <input id="filename-input" name="filename" type="text" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none transition" placeholder="Leave blank to use original filename" />
       </div>
 
-      <div className="flex items-start items-center space-x-3 bg-gray-50 p-4 rounded-lg">
+      <div className="flex items-start space-x-3 bg-gray-50 p-4 rounded-lg">
         <div className="flex items-center h-5">
-          <input defaultChecked name="is_encrypted" type="checkbox" className="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500" />
+          <input id="is_encrypted" defaultChecked name="is_encrypted" type="checkbox" className="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500" />
         </div>
         <div className="flex-1 text-sm">
-          <label className="font-medium text-gray-700">Apply Taonga Vault Encryption</label>
+          <label htmlFor="is_encrypted" className="font-medium text-gray-700">Apply Taonga Vault Encryption</label>
           <p className="text-gray-500">Encrypt this file securely at rest. Note: Encrypted files cannot be processed by the AI RAG pipeline.</p>
         </div>
       </div>
