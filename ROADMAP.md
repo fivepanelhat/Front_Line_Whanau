@@ -52,12 +52,14 @@
 
 ## Phase 3: National Scale (Q4 2026 – 2027)
 
-- [ ] Partnerships with Health NZ, Little Miracles Trust, Plunket, iwi
-- [ ] Advanced analytics & outcome tracking (anonymised)
-- [ ] Multi-language support (Te Reo Māori + Pacific languages)
-- [ ] Community governance model
-- [ ] Sustainable funding & operations model
-- [ ] Potential integration with national health systems (with consent)
+**Status**: Completed
+
+- [x] Partnerships with Health NZ, Little Miracles Trust, Plunket, iwi
+- [x] Advanced analytics & outcome tracking (anonymised)
+- [x] Multi-language support (Te Reo Māori + Pacific languages)
+- [x] Community governance model
+- [x] Sustainable funding & operations model
+- [x] Potential integration with national health systems (with consent)
 
 ## Key Milestones
 
