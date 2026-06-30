@@ -247,12 +247,19 @@ export const webSearchTool = createSafeTool(
 export const clinicalTriageTool = createSafeTool(
   {
     name: "clinical_triage_fallback",
-    description: "Use this tool to get the mandatory safe clinical advice disclaimer whenever a user asks about medical symptoms, diagnoses, or treatments.",
+    description: "Use this tool to get the mandatory safe clinical advice disclaimer based on the severity of the medical symptoms.",
     schema: z.object({
       symptom: z.string().describe("The medical symptom the user is asking about"),
+      severity: z.enum(['EMERGENCY', 'URGENT', 'INFO']).describe("Classify the symptom severity. EMERGENCY = life-threatening (e.g. chest pain, severe bleeding, unresponsive baby). URGENT = serious but not immediately life threatening (e.g. high fever). INFO = minor questions (e.g. mild rash, general questions).")
     }),
   },
-  async ({ symptom }) => {
-    return "This system cannot provide medical advice. If you or your baby are experiencing " + symptom + " or any other urgent medical symptoms, please call 111 immediately for an emergency, or contact Healthline on 0800 611 116 for free registered nurse advice 24/7. For baby-specific concerns, you can also call PlunketLine at 0800 933 922.";
+  async ({ symptom, severity }) => {
+    if (severity === 'EMERGENCY') {
+      return `WARNING: The symptom "${symptom}" may indicate a life-threatening emergency. Please immediately call 111 for an ambulance or go to your nearest hospital Emergency Department. Do not wait for an AI response.`;
+    }
+    if (severity === 'URGENT') {
+      return `This system cannot provide medical advice for "${symptom}". Please contact Healthline on 0800 611 116 for free registered nurse advice 24/7. For baby-specific concerns, call PlunketLine at 0800 933 922. If it worsens, call 111.`;
+    }
+    return `For general questions regarding "${symptom}", please consult your GP or healthcare provider. This system cannot provide clinical diagnosis.`;
   }
 );

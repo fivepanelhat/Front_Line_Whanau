@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 import { agentGraph } from '@/ai/graph';
 import { HumanMessage, AIMessage } from '@langchain/core/messages';
 import { routeLogger } from '@/lib/logger';
+import { aiCircuitBreaker } from '@/lib/circuit-breaker';
 
 const log = routeLogger('/api/agents');
 import { createClient } from '@/lib/supabase/server';
@@ -61,18 +62,27 @@ export async function POST(request: NextRequest) {
         const encoder = new TextEncoder();
 
         try {
-          const eventStream = await agentGraph.streamEvents(
-            {
-              query,
-              consentGiven,
-              messages: [...previousMessages, new HumanMessage(query)],
-            },
-            {
-              version: 'v2',
-              configurable: { thread_id: threadId },
-              signal: abortController.signal
+          const runGraph = async () => {
+            return await agentGraph.streamEvents(
+              {
+                query,
+                consentGiven,
+                messages: [...previousMessages, new HumanMessage(query)],
+              },
+              {
+                version: 'v2',
+                configurable: { thread_id: threadId },
+                signal: abortController.signal
+              }
+            );
+          };
+
+          const eventStream = await aiCircuitBreaker.fire(runGraph).catch((cbError: any) => {
+            if (cbError.message && cbError.message.includes('OPEN')) {
+              throw new Error('CIRCUIT_OPEN');
             }
-          );
+            throw cbError;
+          });
 
           for await (const event of eventStream) {
             if (event.event === 'on_chat_model_stream') {
@@ -140,6 +150,14 @@ export async function POST(request: NextRequest) {
               encoder.encode(`data: ${JSON.stringify({ 
                 type: 'error', 
                 content: 'The request timed out. Please try again.' 
+              })}\n\n`)
+            );
+          } else if (error.message === 'CIRCUIT_OPEN') {
+            log.error({ threadId }, 'Circuit Breaker Open - System under high load');
+            controller.enqueue(
+              encoder.encode(`data: ${JSON.stringify({ 
+                type: 'error', 
+                content: 'The system is experiencing high volume. Please try again later.' 
               })}\n\n`)
             );
           } else {
