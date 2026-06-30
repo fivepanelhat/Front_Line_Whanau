@@ -58,8 +58,8 @@
 - [x] Advanced analytics & outcome tracking (anonymised)
 - [x] Multi-language support (Te Reo Māori + Pacific languages)
 - [ ] Community governance model
-- [x] Sustainable funding & operations model
-- [x] Potential integration with national health systems (with consent)
+- [ ] Sustainable funding & operations model
+- [ ] Potential integration with national health systems (with consent)
 
 ## Key Milestones
 
