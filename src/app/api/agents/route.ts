@@ -5,6 +5,7 @@ import { routeLogger } from '@/lib/logger';
 
 const log = routeLogger('/api/agents');
 import { createClient } from '@/lib/supabase/server';
+import { checkRateLimit } from '@/ai/security';
 
 
 
@@ -22,14 +23,21 @@ function isChatHistoryMessage(value: unknown): value is ChatHistoryMessage {
   );
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(request: NextRequest) {
+  // 1. IP-based Rate Limiting (10 requests per minute)
+  const ip = request.headers.get('x-forwarded-for') || 'unknown_ip';
+  if (!checkRateLimit(ip, 10, 60000)) {
+    log.warn({ ip }, 'Rate limit exceeded');
+    return new Response(JSON.stringify({ error: 'Too Many Requests' }), { status: 429 });
+  }
+
   try {
     const { 
       query, 
       consentGiven = true, 
       threadId = `thread_${Date.now()}`,
       history = []
-    } = await req.json();
+    } = await request.json();
 
     if (!query || typeof query !== 'string') {
       return new Response(JSON.stringify({ error: 'Query is required' }), { status: 400 });
@@ -43,6 +51,10 @@ export async function POST(req: NextRequest) {
         ? new HumanMessage(msg.content)
         : new AIMessage(msg.content)
     );
+
+    // 2. AbortController Timeout (30 seconds)
+    const abortController = new AbortController();
+    const timeoutId = setTimeout(() => abortController.abort(), 30000);
 
     const stream = new ReadableStream({
       async start(controller) {
@@ -58,6 +70,7 @@ export async function POST(req: NextRequest) {
             {
               version: 'v2',
               configurable: { thread_id: threadId },
+              signal: abortController.signal
             }
           );
 
@@ -88,8 +101,6 @@ export async function POST(req: NextRequest) {
           }
 
           controller.enqueue(encoder.encode('data: [DONE]\n\n'));
-          controller.close();
-
         } catch (error: any) {
           // Handle LangGraph Interrupt
           if (error && (error.name === 'Interrupt' || error.name === 'GraphInterrupt')) {
@@ -122,18 +133,26 @@ export async function POST(req: NextRequest) {
                 })}\n\n`
               )
             );
-            controller.close();
-            return;
+          } else if (error.name === 'AbortError') {
+            log.error({ threadId }, 'Agent execution timed out after 30 seconds');
+            controller.enqueue(
+              encoder.encode(`data: ${JSON.stringify({ 
+                type: 'error', 
+                content: 'The request timed out. Please try again.' 
+              })}\n\n`)
+            );
+          } else {
+            // Generic error
+            log.error({ err: error, threadId }, 'Streaming error');
+            controller.enqueue(
+              encoder.encode(`data: ${JSON.stringify({ 
+                type: 'error', 
+                content: 'An error occurred during streaming.' 
+              })}\n\n`)
+            );
           }
-
-          // Generic error
-          log.error({ err: error, threadId }, 'Streaming error');
-          controller.enqueue(
-            encoder.encode(`data: ${JSON.stringify({ 
-              type: 'error', 
-              message: 'Something went wrong while processing your request.' 
-            })}\n\n`)
-          );
+        } finally {
+          clearTimeout(timeoutId);
           controller.close();
         }
       },

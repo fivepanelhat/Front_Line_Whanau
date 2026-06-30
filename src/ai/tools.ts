@@ -155,6 +155,38 @@ export const getEmotionalSupportResourcesTool = createSafeTool(
   }
 );
 
+export const findLocalFacilitiesTool = createSafeTool(
+  {
+    name: "find_local_facilities",
+    description: "Search the web for real-time practical and geographical amenities in Aotearoa New Zealand (e.g. banks, ATMs, supermarkets, doctors, pharmacies, wellness centres) near a specific location.",
+    schema: z.object({
+      query: z.string().describe("What the user is looking for (e.g., 'supermarket', 'ATM', 'doctor', 'pharmacy')"),
+      location: z.string().describe("The user's specific location, suburb, or hospital in Aotearoa New Zealand"),
+    }),
+  },
+  async ({ query, location }) => {
+    try {
+      // Use Tavily to search the live web for the specific facility in NZ
+      const searchTool = new TavilySearch({ maxResults: 4 });
+      const searchQuery = `nearest ${query} near ${location} Aotearoa New Zealand`;
+      
+      log.info({ searchQuery }, 'Executing live local facilities search via Tavily');
+      
+      const results = await searchTool.invoke({ query: searchQuery });
+      
+      return {
+        results,
+        disclaimer: "These are live web results. Please verify opening hours and availability before traveling."
+      };
+    } catch (error) {
+      log.error({ err: error }, 'Failed to search local facilities');
+      return {
+        error: "Could not retrieve live local facility data at this time."
+      };
+    }
+  }
+);
+
 export const getRegionalSupportTool = createSafeTool(
   {
     name: "get_regional_support",
