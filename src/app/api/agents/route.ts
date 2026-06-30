@@ -1,6 +1,9 @@
 import { NextRequest } from 'next/server';
 import { agentGraph } from '@/ai/graph';
 import { HumanMessage, AIMessage } from '@langchain/core/messages';
+import { routeLogger } from '@/lib/logger';
+
+const log = routeLogger('/api/agents');
 import { createClient } from '@/lib/supabase/server';
 
 
@@ -103,8 +106,10 @@ export async function POST(req: NextRequest) {
                 status: 'pending',
               });
             } catch (dbErr) {
-              console.error('Failed to save ai_review:', dbErr);
+              log.error({ err: dbErr, threadId }, 'Failed to save ai_review');
             }
+            
+            log.info({ threadId }, 'LangGraph interrupted for Human-in-the-Loop review');
             
             controller.enqueue(
               encoder.encode(
@@ -122,7 +127,7 @@ export async function POST(req: NextRequest) {
           }
 
           // Generic error
-          console.error('Streaming error:', error);
+          log.error({ err: error, threadId }, 'Streaming error');
           controller.enqueue(
             encoder.encode(`data: ${JSON.stringify({ 
               type: 'error', 
@@ -143,7 +148,7 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (error) {
-    console.error('API error:', error);
+    log.error({ err: error }, 'API error');
     return new Response(JSON.stringify({ error: 'Internal server error' }), { status: 500 });
   }
 }

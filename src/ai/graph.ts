@@ -1,8 +1,11 @@
 import 'server-only';
-import { StateGraph, END, START, interrupt } from '@langchain/langgraph';
+import { StateGraph, END, START, interrupt, MemorySaver } from '@langchain/langgraph';
 import { BaseMessage, HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { Annotation } from '@langchain/langgraph';
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { agentLogger } from '@/lib/logger';
+
+const log = agentLogger('Graph');
 
 import { AetherSummit } from './aether-summit';
 import { checkGuardrails } from './guardrails';
@@ -77,13 +80,7 @@ const AgentState = Annotation.Root({
 export type AgentStateType = typeof AgentState.State;
 
 function logAgentEvent(event: string, data: Record<string, any>) {
-  console.log(
-    JSON.stringify({
-      timestamp: new Date().toISOString(),
-      event,
-      ...data,
-    })
-  );
+  log.info({ event, ...data }, 'Agent event');
 }
 
 // === AGENT INSTANCES ===
@@ -353,12 +350,15 @@ export let agentGraph = graph.compile();
 // Backward compatibility for existing imports
 export let agentApp = agentGraph;
 
-void createCheckpointSaver()
-  .then((cp) => {
-    checkpointer = cp;
-    agentGraph = graph.compile({ checkpointer: cp });
+(async () => {
+  try {
+    checkpointer = await createCheckpointSaver();
+    agentGraph = graph.compile({ checkpointer });
     agentApp = agentGraph;
-  })
-  .catch((error) => {
-    console.warn('Checkpointed graph initialization failed; continuing without persistence.', error);
-  });
+  } catch (error) {
+    log.warn({ err: error }, 'Checkpointed graph initialization failed; continuing without persistence.');
+    checkpointer = new MemorySaver();
+    agentGraph = graph.compile({ checkpointer });
+    agentApp = agentGraph;
+  }
+})();

@@ -1,3 +1,7 @@
+import { agentLogger } from '@/lib/logger';
+
+const guardLogger = agentLogger('Guardrails');
+
 interface GuardrailInput {
   content: string;
   agentUsed: string;
@@ -85,6 +89,7 @@ export function checkInputGuardrails(query: string): { passed: boolean; reason?:
   ];
 
   if (jailbreakTriggers.some(t => lower.includes(t))) {
+    guardLogger.warn({ query }, 'Prompt injection or jailbreak attempt detected');
     return {
       passed: false,
       reason: 'Prompt injection or jailbreak attempt detected.'

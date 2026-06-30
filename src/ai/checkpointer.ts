@@ -2,6 +2,9 @@ import 'server-only';
 import { MemorySaver } from '@langchain/langgraph';
 import { PostgresSaver } from '@langchain/langgraph-checkpoint-postgres';
 import { Pool } from 'pg';
+import { agentLogger } from '@/lib/logger';
+
+const log = agentLogger('Checkpointer');
 
 const connectionString =
   process.env.DATABASE_URL ||
@@ -30,7 +33,7 @@ export async function createCheckpointSaver() {
   try {
     return await createPostgresCheckpointer();
   } catch (error) {
-    console.warn('Postgres checkpointer unavailable, using MemorySaver fallback.', error);
+    log.warn({ err: error }, 'Postgres checkpointer unavailable, using MemorySaver fallback.');
     return new MemorySaver();
   }
 }

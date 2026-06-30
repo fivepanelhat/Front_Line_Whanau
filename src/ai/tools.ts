@@ -2,6 +2,9 @@ import { tool } from "@langchain/core/tools";
 import { retrieveRelevantContext } from "./rag";
 import { lookupKnowledgeContext } from "./knowledge-db";
 import { z } from "zod";
+import { agentLogger } from '@/lib/logger';
+
+const log = agentLogger('Tools');
 import { TavilySearch } from "@langchain/tavily";
 
 export function createSafeTool<T extends z.ZodTypeAny>(
@@ -18,7 +21,7 @@ export function createSafeTool<T extends z.ZodTypeAny>(
         const result = await func(input);
         return typeof result === 'string' ? result : JSON.stringify(result);
       } catch (error: any) {
-        console.error(`Tool error (${config.name}):`, error);
+        log.error({ err: error, tool: config.name }, 'Tool execution error');
         return JSON.stringify({
           error: `Tool execution failed: ${error?.message || 'Unknown error'}. Please try a different approach.`
         });

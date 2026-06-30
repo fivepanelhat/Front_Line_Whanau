@@ -1,4 +1,7 @@
 import { z } from 'zod';
+import { agentLogger } from '@/lib/logger';
+
+const secLogger = agentLogger('Security');
 
 const AgentInputSchema = z.object({
   query: z
@@ -27,11 +30,10 @@ export function sanitizeAgentOutput(text: string): string {
 }
 
 export function createAuditLog(event: string, metadata: Record<string, any> = {}) {
-  // TODO: Replace with proper logger (e.g. Pino, Winston, or external service)
-  console.log(`[AGENT_SECURITY] ${event}`, {
-    timestamp: new Date().toISOString(),
+  secLogger.info({
+    event,
     ...metadata,
-  });
+  }, `Security Audit Event: ${event}`);
 }
 
 // Rate limiting helper (simple in-memory version)
