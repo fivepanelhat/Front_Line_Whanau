@@ -66,3 +66,30 @@ export function checkGuardrails(input: GuardrailInput): GuardrailResult {
 
   return { passed: true, showUrgentHelp: false };
 }
+
+export function checkInputGuardrails(query: string): { passed: boolean; reason?: string } {
+  const lower = query.toLowerCase();
+  
+  // Prompt injection / Jailbreak triggers
+  const jailbreakTriggers = [
+    'ignore previous',
+    'ignore all previous',
+    'system prompt',
+    'you are now',
+    'forget your instructions',
+    'bypassing',
+    'admin mode',
+    'developer mode',
+    'ignore above',
+    'new persona'
+  ];
+
+  if (jailbreakTriggers.some(t => lower.includes(t))) {
+    return {
+      passed: false,
+      reason: 'Prompt injection or jailbreak attempt detected.'
+    };
+  }
+
+  return { passed: true };
+}

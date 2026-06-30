@@ -19,7 +19,10 @@ export type ServiceCategory =
   | 'legal'
   | 'community'
   | 'child-protection'
-  | 'emergency';
+  | 'emergency'
+  | 'wellness'
+  | 'facilities'
+  | 'doctors';
 
 export type Region = 'Taranaki' | 'National';
 
@@ -64,4 +67,7 @@ export const CATEGORY_LABELS: Record<ServiceCategory, string> = {
   community: 'Community & Whānau',
   'child-protection': 'Child Protection & Family',
   emergency: 'Emergency',
+  wellness: 'Wellness Centres',
+  facilities: 'Local Facilities (Banks, Supermarkets, ATMs)',
+  doctors: 'Doctors & GPs',
 };

@@ -103,7 +103,7 @@ const intentClassifier = new ChatGoogleGenerativeAI({
   temperature: 0,
 });
 
-async function classifyIntent(query: string): Promise<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'COMPLEX'> {
+export async function classifyIntent(query: string): Promise<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'COMPLEX'> {
   const systemPrompt = `You are an intent classifier for a preterm whānau support system in Aotearoa New Zealand.
 
 Classify the user's query into exactly one of these categories:
@@ -127,7 +127,7 @@ Respond with ONLY one word: RESEARCH, PLANNING, EXECUTION, or COMPLEX.`;
   return "COMPLEX";
 }
 
-async function supervisorNode(state: AgentStateType): Promise<Partial<AgentStateType>> {
+export async function supervisorNode(state: AgentStateType): Promise<Partial<AgentStateType>> {
   if (!state.consentGiven) {
     return {
       intent: "RESEARCH",
@@ -180,7 +180,7 @@ async function knowledgeWeaverNode(state: AgentStateType) {
   const result = await knowledgeWeaver.process(state.query, state as any);
   return {
     finalResponse: result.content,
-    sources: result.sources || [],
+    sources: (result as any).sources || [],
     requiresHumanReview: result.requiresHumanReview ?? false,
   };
 }
@@ -189,7 +189,7 @@ async function pathwayArchitectNode(state: AgentStateType) {
   const result = await pathwayArchitect.process(state.query, state as any);
   return {
     finalResponse: result.content,
-    sources: result.sources || [],
+    sources: (result as any).sources || [],
     requiresHumanReview: result.requiresHumanReview ?? false,
   };
 }
@@ -198,7 +198,7 @@ async function sovereignExecutorNode(state: AgentStateType) {
   const result = await executor.process(state.query, state as any);
   return {
     finalResponse: result.content,
-    sources: result.sources || [],
+    sources: (result as any).sources || [],
     requiresHumanReview: result.requiresHumanReview ?? true,
     context: {
       toolCalls: result.metadata?.toolCalls || [],
@@ -229,11 +229,11 @@ async function fundingEligibilityCheckerNode(state: AgentStateType) {
   return {
     finalResponse: result.content,
     requiresHumanReview: true,
-    sources: result.sources || [],
+    sources: (result as any).sources || [],
   };
 }
 
-async function guardrailNode(state: AgentStateType): Promise<Partial<AgentStateType>> {
+export async function guardrailNode(state: AgentStateType): Promise<Partial<AgentStateType>> {
   if (!state.finalResponse) {
     return {};
   }
@@ -258,7 +258,7 @@ async function guardrailNode(state: AgentStateType): Promise<Partial<AgentStateT
   };
 }
 
-async function humanReviewNode(state: AgentStateType): Promise<Partial<AgentStateType>> {
+export async function humanReviewNode(state: AgentStateType): Promise<Partial<AgentStateType>> {
   // If already approved, continue
   if (state.humanApproved === true) {
     return {};

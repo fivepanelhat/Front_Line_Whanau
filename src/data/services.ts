@@ -281,4 +281,63 @@ export const SERVICES: Service[] = [
       'Urgent advice on poisoning or toxic exposure for children and adults.',
     lastVerified: '2026-06-21',
   },
+
+  // ── Doctors & GPs ───────────────────────────────────────────
+  {
+    id: 'carefirst-medical',
+    name: 'Carefirst Medical Centre',
+    categories: ['doctors', 'health'],
+    region: 'Taranaki',
+    contact: '(06) 753 9505',
+    url: 'https://carefirst.co.nz/',
+    address: '99 Tukapa Street, Westown, New Plymouth',
+    description: 'Local General Practice offering family medicine, immunisations, and maternal care.',
+    lastVerified: '2026-06-30',
+  },
+  {
+    id: 'taranaki-pinnacle-health',
+    name: 'Pinnacle Midlands Health Network',
+    categories: ['doctors', 'health'],
+    region: 'Taranaki',
+    contact: '(06) 759 4322',
+    description: 'Network of local GPs. Can assist whānau in finding and enrolling with a doctor in the Taranaki region.',
+    lastVerified: '2026-06-30',
+  },
+
+  // ── Wellness Centres ────────────────────────────────────────
+  {
+    id: 'taranaki-womens-centre',
+    name: "Taranaki Women's Centre",
+    categories: ['wellness', 'community'],
+    region: 'Taranaki',
+    contact: '(06) 751 1618',
+    url: 'https://taranakiwomenscentre.co.nz/',
+    address: '69 Powderham Street, New Plymouth',
+    description: 'Support network focusing on women’s holistic wellness, offering low-cost counselling, massage, and support groups.',
+    lastVerified: '2026-06-30',
+  },
+
+  // ── Local Facilities ────────────────────────────────────────
+  {
+    id: 'hospital-atm-base',
+    name: 'TSB ATM — Taranaki Base Hospital',
+    categories: ['facilities'],
+    region: 'Taranaki',
+    contact: 'On-site',
+    address: 'David Street, New Plymouth (Hospital Main Entrance)',
+    hours: '24/7',
+    description: 'Cash machine located near the main entrance of Taranaki Base Hospital. Useful for cafeteria or parking.',
+    lastVerified: '2026-06-30',
+  },
+  {
+    id: 'woolworths-np',
+    name: 'Woolworths New Plymouth',
+    categories: ['facilities'],
+    region: 'Taranaki',
+    contact: '(06) 758 0644',
+    address: 'Corner of Leach and Eliot Street, New Plymouth',
+    hours: '7:00am - 10:00pm daily',
+    description: 'Closest major supermarket to the hospital for purchasing groceries, nappies, and supplies.',
+    lastVerified: '2026-06-30',
+  },
 ];

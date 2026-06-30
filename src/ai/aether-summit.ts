@@ -3,7 +3,7 @@ import { TaongaKnowledgeWeaver } from "./knowledge-weaver";
 import { WhanauPathwayArchitect } from "./pathway-architect";
 import { SovereignExecutor } from "./executor";
 import { AgentResponse, OrchestrationContext } from "./types";
-import { checkGuardrails } from "./guardrails";
+import { checkGuardrails, checkInputGuardrails } from "./guardrails";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { buildSupervisorClassificationPrompt } from "./prompts";
 
@@ -49,11 +49,23 @@ export class AetherSummit {
         confidence: 1.0,
         requiresHumanReview: true,
         agentUsed: "Aether Summit",
+        sources: [],
       };
     }
 
     const query = userQuery.toLowerCase();
     let response: AgentResponse;
+
+    const inputGate = checkInputGuardrails(userQuery);
+    if (!inputGate.passed) {
+      return {
+        content: "I'm unable to process that request. How else can I help your whānau today?",
+        confidence: 1.0,
+        requiresHumanReview: true,
+        agentUsed: "Security Guardian",
+        sources: [],
+      };
+    }
 
     const intent = await this.classifyIntent(query);
 
@@ -93,6 +105,7 @@ export class AetherSummit {
         requiresHumanReview: true,
         agentUsed: response.agentUsed,
         showUrgentHelp: gate.showUrgentHelp,
+        sources: response.sources || [],
       };
     }
 
