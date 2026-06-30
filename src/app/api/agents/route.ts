@@ -113,6 +113,7 @@ export async function POST(request: NextRequest) {
               const supabase = await createClient();
               await supabase.from('ai_reviews').insert({
                 thread_id: threadId,
+                query: query,
                 proposed_response: proposedResponse,
                 status: 'pending',
               });

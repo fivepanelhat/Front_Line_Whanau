@@ -149,9 +149,23 @@ export function AgentTestPanel({
   };
 
   const checkReviewStatus = async () => {
-    // This could poll /api/review/status?threadId=... in the future
-    // For now, the user can just refresh or check their history
-    window.location.reload();
+    if (!interruptData?.threadId) return;
+    setIsLoading(true);
+    try {
+      const res = await fetch(`/api/review/status?threadId=${interruptData.threadId}`);
+      const data = await res.json();
+      if (data.status === 'approved' || data.status === 'rejected') {
+        setShowReview(false);
+        setInterruptData(null);
+        window.location.reload();
+      } else {
+        alert("Your request is still pending review by a practitioner. Please check back later.");
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const startNewConversation = () => {
@@ -242,10 +256,17 @@ export function AgentTestPanel({
 
             <div className="flex gap-3">
               <button
+                onClick={checkReviewStatus}
+                disabled={isLoading}
+                className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 disabled:bg-green-400"
+              >
+                {isLoading ? 'Checking...' : 'Refresh Status'}
+              </button>
+              <button
                 onClick={() => setShowReview(false)}
                 className="flex-1 bg-black text-white py-2 rounded-lg hover:bg-gray-800"
               >
-                Close (I'll check back later)
+                Close
               </button>
             </div>
           </div>

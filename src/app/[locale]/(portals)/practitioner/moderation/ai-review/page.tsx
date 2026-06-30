@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 interface AIReview {
   id: string;
   thread_id: string;
+  query: string;
   proposed_response: string;
   status: string;
   created_at: string;
@@ -85,6 +86,9 @@ export default function AIReviewQueuePage() {
               
               {editingId === review.id ? (
                 <div className="mb-4">
+                  <div className="p-4 bg-gray-100 rounded-lg text-sm text-gray-800 mb-4 font-serif italic border-l-4 border-gray-300">
+                    <strong>User Asked:</strong> {review.query || "No query recorded"}
+                  </div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Edit Proposed Response:</label>
                   <textarea
                     className="w-full border rounded-lg p-3 font-serif min-h-[150px]"
@@ -108,7 +112,11 @@ export default function AIReviewQueuePage() {
                 </div>
               ) : (
                 <>
+                  <div className="p-4 bg-gray-100 rounded-lg text-sm text-gray-800 mb-4 font-serif italic border-l-4 border-gray-300">
+                    <strong>User Asked:</strong> {review.query || "No query recorded"}
+                  </div>
                   <div className="p-4 bg-gray-50 rounded-lg text-gray-700 whitespace-pre-wrap mb-4 font-serif">
+                    <strong>Proposed AI Response:</strong><br/>
                     {review.proposed_response}
                   </div>
                   <div className="flex gap-3 border-t pt-4">
