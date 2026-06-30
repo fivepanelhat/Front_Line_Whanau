@@ -35,7 +35,7 @@ Nationwide across Aotearoa New Zealand, available as Web, Desktop (Tauri), and P
 
 - **Dual Portals**: Tailored experiences for whānau/parents and practitioners/organisations
 - **Searchable National Directory**: Filter by region, organisation, service type, and role
-- **Self-Service Uploads**: Organisations can submit and update their details (moderated)
+- **Self-Service Uploads**: Organisations can submit directory listings and securely upload resources (Taonga Vault encryption)
 - **Privacy-First Storage**: Client-side encryption (Taonga Vault) with consent-driven access
 - **Cultural Safety**: Strong alignment with Te Tiriti o Waitangi and Te Mana Raraunga
 - **AI Agent Support**: Specialised agents for research, translation, and curation

@@ -89,13 +89,18 @@ export async function POST(req: NextRequest) {
         } catch (error: any) {
           // Handle LangGraph Interrupt
           if (error && (error.name === 'Interrupt' || error.name === 'GraphInterrupt')) {
+            // Extract the proposed response from the interrupt value
+            // Depending on the langgraph version, the payload might be in error.value or error.interrupt
+            const interruptValue = error.value || error.interrupt || {};
+            
             controller.enqueue(
               encoder.encode(
                 `data: ${JSON.stringify({
                   type: 'interrupt',
-                  message: 'This response requires human review.',
+                  message: 'This response requires human review before being sent.',
                   threadId,
                   requiresHumanReview: true,
+                  proposedResponse: interruptValue.proposedResponse || '',
                 })}\n\n`
               )
             );

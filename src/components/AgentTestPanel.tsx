@@ -141,7 +141,7 @@ export function AgentTestPanel({ initialThreadId }: AgentTestPanelProps = {}) {
             if (data.type === 'interrupt') {
               setReviewData({
                 threadId: data.threadId || threadId,
-                proposedResponse: assistantResponse
+                proposedResponse: data.proposedResponse || assistantResponse
               });
               setShowReviewPanel(true);
               setIsLoading(false);

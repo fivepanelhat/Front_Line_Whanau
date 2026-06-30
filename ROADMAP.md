@@ -20,7 +20,7 @@
 - [x] Vitest + CI setup
 - [x] Consistent Node.js 22 enforcement
 - [x] Dual Portal UI (Parent vs Practitioner)
-- [ ] Organisation self-service upload flow
+- [x] Organisation self-service upload flow
 - [x] Connect Supabase (optional sync)
 
 ## Phase 1: MVP (Target: July – August 2026)
