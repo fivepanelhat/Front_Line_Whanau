@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { ConversationSidebar } from './ConversationSidebar';
-import { AgentTestPanel } from './AgentTestPanel';
-import { ErrorBoundary } from './ErrorBoundary';
-import { WelcomeModal } from './WelcomeModal';
+import { AgentTestPanel } from '@/components/AgentTestPanel';
+import { OnboardingWizard } from '@/components/OnboardingWizard';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 export function ChatInterface() {
   const [currentThreadId, setCurrentThreadId] = useState<string>(() => `thread_${Date.now()}`);
@@ -25,8 +25,8 @@ export function ChatInterface() {
   };
 
   return (
-    <>
-      <WelcomeModal />
+    <div className="flex flex-col h-full relative">
+      <OnboardingWizard onComplete={() => console.log('User onboarded')} />
       <div className="flex h-[calc(100vh-2rem)] overflow-hidden rounded-xl border bg-white">
         <ConversationSidebar
           currentThreadId={currentThreadId}
@@ -45,6 +45,6 @@ export function ChatInterface() {
           </ErrorBoundary>
         </div>
       </div>
-    </>
+    </div>
   );
 }

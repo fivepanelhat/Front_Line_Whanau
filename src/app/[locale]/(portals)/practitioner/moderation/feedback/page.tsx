@@ -1,5 +1,6 @@
 import React from 'react';
 import { createClient } from '@/lib/supabase/server';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { notFound } from 'next/navigation';
 
 export default async function FeedbackDashboard() {
@@ -36,6 +37,28 @@ export default async function FeedbackDashboard() {
           </a>
         </div>
       </div>
+
+      {feedbacks && feedbacks.length > 0 && (
+        <div className="bg-white p-6 rounded-xl border shadow-sm mb-6 h-64">
+          <h2 className="text-xl font-medium mb-4 text-gray-700">Feedback Trend</h2>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={[
+                { name: 'Helpful', count: feedbacks.filter(f => f.rating === 1).length, fill: '#16a34a' },
+                { name: 'Not Helpful', count: feedbacks.filter(f => f.rating === -1).length, fill: '#dc2626' }
+              ]}
+              layout="vertical"
+              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis type="number" />
+              <YAxis dataKey="name" type="category" width={100} />
+              <Tooltip />
+              <Bar dataKey="count" radius={[0, 4, 4, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      )}
 
       <div className="bg-white rounded-xl shadow border overflow-hidden">
         <table className="min-w-full divide-y divide-gray-200">

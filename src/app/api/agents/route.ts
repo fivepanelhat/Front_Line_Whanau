@@ -27,7 +27,8 @@ function isChatHistoryMessage(value: unknown): value is ChatHistoryMessage {
 export async function POST(request: NextRequest) {
   // 1. IP-based Rate Limiting (10 requests per minute)
   const ip = request.headers.get('x-forwarded-for') || 'unknown_ip';
-  if (!checkRateLimit(ip, 10, 60000)) {
+  const isAllowed = await checkRateLimit(ip, 10, 60000);
+  if (!isAllowed) {
     log.warn({ ip }, 'Rate limit exceeded');
     return new Response(JSON.stringify({ error: 'Too Many Requests' }), { status: 429 });
   }
