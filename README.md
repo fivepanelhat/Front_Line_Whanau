@@ -49,6 +49,18 @@ Nationwide across Aotearoa New Zealand, available as Web, Desktop (Tauri), and P
 - **Testing**: Vitest + Playwright
 - **CI/CD**: GitHub Actions
 
+## AI Architecture (LangGraph)
+
+The platform features a multi-agent orchestrated backend using **LangGraph**. A single entry point analyzes the user's intent and dynamically routes them to specialized AI companions:
+
+1. **Supervisor Node (`intentClassifier`)**: Routes queries based on intent (`RESEARCH`, `PLANNING`, `EXECUTION`, `CLINICAL`, `ADVOCACY`).
+2. **Specialized Agents**:
+   - `TraumaInformedCompanion`: Handles general research and planning with deep empathy.
+   - `FundingEligibilityChecker`: Walks users through MSD/WINZ and clinical funding logic.
+   - `ClinicalTriageCompanion`: Safely detects medical symptoms and escalates immediately based on severity (EMERGENCY/URGENT/INFO).
+   - `PolicyAdvocateCompanion`: Drafts formal letters and empowers whānau to advocate for their rights.
+3. **Guardrails & Human Review**: High-risk actions automatically hit a circuit-breaker and flag for human practitioner review before finalizing.
+
 ## Directory Structure
 
 ```text

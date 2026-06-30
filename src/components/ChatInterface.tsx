@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { ConversationSidebar } from './ConversationSidebar';
 import { AgentTestPanel } from './AgentTestPanel';
+import { ErrorBoundary } from './ErrorBoundary';
+import { WelcomeModal } from './WelcomeModal';
 
 export function ChatInterface() {
   const [currentThreadId, setCurrentThreadId] = useState<string>(() => `thread_${Date.now()}`);
@@ -23,21 +25,26 @@ export function ChatInterface() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-2rem)] overflow-hidden rounded-xl border bg-white">
-      <ConversationSidebar
-        currentThreadId={currentThreadId}
-        refreshTrigger={refreshKey}
-        onSelectConversation={handleSelectConversation}
-        onNewConversation={handleNewConversation}
-      />
-
-      <div className="flex flex-1 flex-col">
-        <AgentTestPanel 
-          key={currentThreadId} 
-          initialThreadId={currentThreadId} 
-          onConversationUpdated={handleConversationUpdated}
+    <>
+      <WelcomeModal />
+      <div className="flex h-[calc(100vh-2rem)] overflow-hidden rounded-xl border bg-white">
+        <ConversationSidebar
+          currentThreadId={currentThreadId}
+          refreshTrigger={refreshKey}
+          onSelectConversation={handleSelectConversation}
+          onNewConversation={handleNewConversation}
         />
+
+        <div className="flex flex-1 flex-col">
+          <ErrorBoundary>
+            <AgentTestPanel 
+              key={currentThreadId} 
+              initialThreadId={currentThreadId} 
+              onConversationUpdated={handleConversationUpdated}
+            />
+          </ErrorBoundary>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

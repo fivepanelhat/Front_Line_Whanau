@@ -5,6 +5,7 @@ import { z } from "zod";
 import { agentLogger } from '@/lib/logger';
 
 const log = agentLogger('Tools');
+import { aiToolCache } from "@/lib/cache";
 import { TavilySearch } from "@langchain/tavily";
 
 export function createSafeTool<T extends z.ZodTypeAny>(
@@ -167,12 +168,17 @@ export const findLocalFacilitiesTool = createSafeTool(
   async ({ query, location }) => {
     try {
       // Use Tavily to search the live web for the specific facility in NZ
-      const searchTool = new TavilySearch({ maxResults: 4 });
       const searchQuery = `nearest ${query} near ${location} Aotearoa New Zealand`;
       
-      log.info({ searchQuery }, 'Executing live local facilities search via Tavily');
-      
-      const results = await searchTool.invoke({ query: searchQuery });
+      const results = await aiToolCache.withCache(
+        `tavily_${searchQuery}`,
+        async () => {
+          const searchTool = new TavilySearch({ maxResults: 4 });
+          log.info({ searchQuery }, 'Executing live local facilities search via Tavily');
+          return await searchTool.invoke({ query: searchQuery });
+        },
+        1000 * 60 * 60 * 24 // 24-hour cache
+      );
       
       return {
         results,
