@@ -20,13 +20,20 @@ export default async function FeedbackDashboard() {
     <div className="max-w-6xl mx-auto p-6 space-y-6">
       <div className="flex justify-between items-center border-b pb-4">
         <h1 className="text-3xl font-semibold text-gray-900">AI Feedback Dashboard</h1>
-        <div className="flex space-x-4">
+        <div className="flex space-x-4 items-center">
           <div className="bg-green-100 text-green-800 px-4 py-2 rounded-lg font-medium">
             Helpful: {feedbacks?.filter(f => f.rating === 1).length || 0}
           </div>
           <div className="bg-red-100 text-red-800 px-4 py-2 rounded-lg font-medium">
             Not Helpful: {feedbacks?.filter(f => f.rating === -1).length || 0}
           </div>
+          <a 
+            href="/api/feedback/export"
+            download
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition shadow-sm"
+          >
+            Export CSV
+          </a>
         </div>
       </div>
 

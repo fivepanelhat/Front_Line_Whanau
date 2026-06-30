@@ -22,6 +22,7 @@ import { TraumaInformedCompanion } from './agents/TraumaInformedCompanion';
 import { FundingEligibilityChecker } from './agents/FundingEligibilityChecker';
 import { ClinicalTriageCompanion } from './agents/ClinicalTriageCompanion';
 import { PolicyAdvocateCompanion } from './agents/PolicyAdvocateCompanion';
+import { MedicalJargonTranslator } from './agents/MedicalJargonTranslator';
 import { createCheckpointSaver } from './checkpointer';
 
 const AgentState = Annotation.Root({
@@ -37,7 +38,7 @@ const AgentState = Annotation.Root({
     reducer: (x, y) => y ?? x,
     default: () => '',
   }),
-  intent: Annotation<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'CLINICAL' | 'ADVOCACY' | 'COMPLEX' | null>({
+  intent: Annotation<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'CLINICAL' | 'ADVOCACY' | 'TRANSLATE' | 'COMPLEX' | null>({
     reducer: (x, y) => y ?? x,
     default: () => null,
   }),
@@ -97,6 +98,7 @@ const traumaCompanion = new TraumaInformedCompanion();
 const fundingChecker = new FundingEligibilityChecker();
 const clinicalTriage = new ClinicalTriageCompanion();
 const policyAdvocate = new PolicyAdvocateCompanion();
+const medicalTranslator = new MedicalJargonTranslator();
 
 // === NODES ===
 const intentClassifier = new ChatGoogleGenerativeAI({
@@ -105,7 +107,7 @@ const intentClassifier = new ChatGoogleGenerativeAI({
   maxOutputTokens: 1024,
 });
 
-export async function classifyIntent(query: string): Promise<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'COMPLEX' | 'CLINICAL' | 'ADVOCACY'> {
+export async function classifyIntent(query: string): Promise<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'COMPLEX' | 'CLINICAL' | 'ADVOCACY' | 'TRANSLATE'> {
   const systemPrompt = `You are an intent classifier for a preterm whānau support system in Aotearoa New Zealand.
 
 Classify the user's query into exactly one of these categories:
@@ -114,9 +116,10 @@ Classify the user's query into exactly one of these categories:
 - EXECUTION: Requests to generate something, apply, or take concrete action.
 - CLINICAL: Questions about medical symptoms, diagnosis, sickness, or medical advice.
 - ADVOCACY: Requests to draft emails, challenge decisions, or learn about legal/hospital rights.
+- TRANSLATE: Requests to explain or translate complex medical jargon or reports into simple English.
 - COMPLEX: Queries that combine multiple intents or are emotionally heavy.
 
-Respond with ONLY one word: RESEARCH, PLANNING, EXECUTION, CLINICAL, ADVOCACY, or COMPLEX.`;
+Respond with ONLY one word: RESEARCH, PLANNING, EXECUTION, CLINICAL, ADVOCACY, TRANSLATE, or COMPLEX.`;
 
   const response = await intentClassifier.invoke([
     new SystemMessage(systemPrompt),
@@ -125,7 +128,7 @@ Respond with ONLY one word: RESEARCH, PLANNING, EXECUTION, CLINICAL, ADVOCACY, o
 
   const intent = response.content.toString().trim().toUpperCase();
 
-  if (["RESEARCH", "PLANNING", "EXECUTION", "COMPLEX", "CLINICAL", "ADVOCACY"].includes(intent)) {
+  if (["RESEARCH", "PLANNING", "EXECUTION", "COMPLEX", "CLINICAL", "ADVOCACY", "TRANSLATE"].includes(intent)) {
     return intent as any;
   }
   return "COMPLEX";
@@ -148,6 +151,8 @@ export async function supervisorNode(state: AgentStateType): Promise<Partial<Age
     nextAgent = "funding_eligibility_checker";
   } else if (intent === "ADVOCACY") {
     nextAgent = "policy_advocate_companion";
+  } else if (intent === "TRANSLATE") {
+    nextAgent = "medical_jargon_translator";
   } else if (intent === "CLINICAL") {
     nextAgent = "clinical_triage_companion";
   } else if (intent === "PLANNING") {
@@ -257,6 +262,13 @@ async function policyAdvocateCompanionNode(state: AgentStateType) {
   };
 }
 
+async function medicalJargonTranslatorNode(state: AgentStateType) {
+  const result = await medicalTranslator.process(state.query, state as any);
+  return {
+    finalResponse: result.content,
+  };
+}
+
 export async function guardrailNode(state: AgentStateType): Promise<Partial<AgentStateType>> {
   if (!state.finalResponse) {
     return {};
@@ -325,6 +337,7 @@ const graph = new StateGraph(AgentState)
   .addNode('funding_eligibility_checker', fundingEligibilityCheckerNode)
   .addNode('clinical_triage_companion', clinicalTriageCompanionNode)
   .addNode('policy_advocate_companion', policyAdvocateCompanionNode)
+  .addNode('medical_jargon_translator', medicalJargonTranslatorNode)
   .addNode('guardrails', guardrailNode)
   .addNode('human_review', humanReviewNode);
 
@@ -350,6 +363,8 @@ graph.addConditionalEdges('supervisor', (state) => {
       return 'clinical_triage_companion';
     case 'policy_advocate_companion':
       return 'policy_advocate_companion';
+    case 'medical_jargon_translator':
+      return 'medical_jargon_translator';
     default:
       return 'knowledge_weaver';
   }
@@ -365,6 +380,7 @@ graph.addEdge('trauma_informed_companion', 'guardrails');
 graph.addEdge('funding_eligibility_checker', 'guardrails');
 graph.addEdge('clinical_triage_companion', 'guardrails');
 graph.addEdge('policy_advocate_companion', 'guardrails');
+graph.addEdge('medical_jargon_translator', 'guardrails');
 
 graph.addConditionalEdges("guardrails", (state) => {
   const highRiskAgents = ["funding_eligibility_checker", "cultural_safety_guardian", "policy_advocate_companion"];

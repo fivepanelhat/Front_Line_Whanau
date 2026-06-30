@@ -1,37 +1,28 @@
 import { NextResponse } from 'next/server';
+import { createClient } from '@/lib/supabase/server';
 
-/**
- * Platform health check endpoint.
- * Used by monitoring, load balancers, and E2E tests.
- *
- * Note: This reports on the technical health of the platform only.
- * It is not medical advice. Always consult qualified healthcare professionals
- * for preterm twin / whānau care decisions.
- */
 export async function GET() {
-  return NextResponse.json(
-    {
-      status: 'ok',
-      service: 'whanau-preterm-support-hub-nz',
-      timestamp: new Date().toISOString(),
-      version: process.env.npm_package_version ?? '0.0.0',
-      environment: process.env.NODE_ENV ?? 'development',
-    },
-    {
-      status: 200,
-      headers: {
-        'Cache-Control': 'no-store',
-      },
+  try {
+    const supabase = await createClient();
+    
+    // Simple query to verify DB connection
+    const { data, error } = await supabase.from('organizations').select('id').limit(1);
+    
+    if (error) {
+      console.error('Health check DB error:', error);
+      return NextResponse.json({ status: 'unhealthy', reason: 'database_error' }, { status: 503 });
     }
-  );
+
+    return NextResponse.json({ 
+      status: 'healthy',
+      timestamp: new Date().toISOString(),
+      database: 'connected'
+    }, { status: 200 });
+
+  } catch (err) {
+    console.error('Health check exception:', err);
+    return NextResponse.json({ status: 'unhealthy', reason: 'internal_error' }, { status: 500 });
+  }
 }
 
-// Lightweight HEAD support for some monitoring tools
-export async function HEAD() {
-  return new NextResponse(null, {
-    status: 200,
-    headers: {
-      'Cache-Control': 'no-store',
-    },
-  });
-}
+export const HEAD = GET;

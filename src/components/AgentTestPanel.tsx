@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { saveConversation, loadConversation, MessageInput } from '@/lib/conversation';
+import ReactMarkdown from 'react-markdown';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -209,7 +210,17 @@ export function AgentTestPanel({
             <div className={`group relative max-w-[80%] px-4 py-3 rounded-2xl ${
               msg.role === 'user' ? 'bg-black text-white' : 'bg-gray-100 text-gray-800'
             }`}>
-              <div className="whitespace-pre-wrap">{msg.content}</div>
+              <div className="whitespace-pre-wrap">
+                {msg.role === 'assistant' ? (
+                  <div className="prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1">
+                    <ReactMarkdown>
+                      {msg.content}
+                    </ReactMarkdown>
+                  </div>
+                ) : (
+                  msg.content
+                )}
+              </div>
               {msg.role === 'assistant' && msg.content && (
                 <div className="absolute -top-3 -right-2 opacity-0 group-hover:opacity-100 transition flex gap-1 bg-white border rounded-full p-1 shadow-sm">
                   <button
