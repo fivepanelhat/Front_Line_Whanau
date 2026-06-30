@@ -173,6 +173,18 @@ export function AgentTestPanel({
     window.location.reload();
   };
 
+  const submitFeedback = async (messageContent: string, rating: number) => {
+    try {
+      await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ threadId: threadId || 'unknown-thread', messageContent, rating })
+      });
+    } catch (err) {
+      console.error('Failed to submit feedback', err);
+    }
+  };
+
   return (
     <div className="flex flex-col h-full max-w-4xl mx-auto p-6">
       {/* Header */}
@@ -199,12 +211,29 @@ export function AgentTestPanel({
             }`}>
               <div className="whitespace-pre-wrap">{msg.content}</div>
               {msg.role === 'assistant' && msg.content && (
-                <button
-                  onClick={() => copyToClipboard(msg.content, index)}
-                  className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition bg-white border rounded-full p-1 text-sm"
-                >
-                  {copiedIndex === index ? '✓' : '📋'}
-                </button>
+                <div className="absolute -top-3 -right-2 opacity-0 group-hover:opacity-100 transition flex gap-1 bg-white border rounded-full p-1 shadow-sm">
+                  <button
+                    onClick={() => submitFeedback(msg.content, 1)}
+                    className="hover:bg-gray-100 rounded-full p-1 text-xs"
+                    title="Helpful"
+                  >
+                    👍
+                  </button>
+                  <button
+                    onClick={() => submitFeedback(msg.content, -1)}
+                    className="hover:bg-gray-100 rounded-full p-1 text-xs"
+                    title="Not Helpful"
+                  >
+                    👎
+                  </button>
+                  <button
+                    onClick={() => copyToClipboard(msg.content, index)}
+                    className="hover:bg-gray-100 rounded-full p-1 text-xs"
+                    title="Copy"
+                  >
+                    {copiedIndex === index ? '✓' : '📋'}
+                  </button>
+                </div>
               )}
             </div>
           </div>

@@ -7,6 +7,7 @@ import { getFundingInfoTool } from "../tools";
 const fundingLLM = new ChatGoogleGenerativeAI({
   model: "gemini-2.5-flash",
   temperature: 0.1,
+  maxOutputTokens: 1024,
 });
 
 const fundingReactAgent = createReactAgent({

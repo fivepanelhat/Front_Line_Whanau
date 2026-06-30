@@ -20,6 +20,7 @@ import { CulturalSafetyGuardian } from './agents/CulturalSafetyGuardian';
 import { ResourceNavigator } from './agents/ResourceNavigator';
 import { TraumaInformedCompanion } from './agents/TraumaInformedCompanion';
 import { FundingEligibilityChecker } from './agents/FundingEligibilityChecker';
+import { ClinicalTriageCompanion } from './agents/ClinicalTriageCompanion';
 import { createCheckpointSaver } from './checkpointer';
 
 const AgentState = Annotation.Root({
@@ -35,7 +36,7 @@ const AgentState = Annotation.Root({
     reducer: (x, y) => y ?? x,
     default: () => '',
   }),
-  intent: Annotation<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'COMPLEX' | null>({
+  intent: Annotation<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'CLINICAL' | 'COMPLEX' | null>({
     reducer: (x, y) => y ?? x,
     default: () => null,
   }),
@@ -93,23 +94,26 @@ const culturalGuardian = new CulturalSafetyGuardian();
 const resourceNavigator = new ResourceNavigator();
 const traumaCompanion = new TraumaInformedCompanion();
 const fundingChecker = new FundingEligibilityChecker();
+const clinicalTriage = new ClinicalTriageCompanion();
 
 // === NODES ===
 const intentClassifier = new ChatGoogleGenerativeAI({
   model: "gemini-2.5-flash",
   temperature: 0,
+  maxOutputTokens: 1024,
 });
 
-export async function classifyIntent(query: string): Promise<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'COMPLEX'> {
+export async function classifyIntent(query: string): Promise<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'COMPLEX' | 'CLINICAL'> {
   const systemPrompt = `You are an intent classifier for a preterm whānau support system in Aotearoa New Zealand.
 
 Classify the user's query into exactly one of these categories:
 - RESEARCH: Questions about information, eligibility, definitions, or facts.
 - PLANNING: Questions about steps, pathways, advice, or "how do I".
 - EXECUTION: Requests to generate something, apply, or take concrete action.
+- CLINICAL: Questions about medical symptoms, diagnosis, sickness, or medical advice.
 - COMPLEX: Queries that combine multiple intents or are emotionally heavy.
 
-Respond with ONLY one word: RESEARCH, PLANNING, EXECUTION, or COMPLEX.`;
+Respond with ONLY one word: RESEARCH, PLANNING, EXECUTION, CLINICAL, or COMPLEX.`;
 
   const response = await intentClassifier.invoke([
     new SystemMessage(systemPrompt),
@@ -118,7 +122,7 @@ Respond with ONLY one word: RESEARCH, PLANNING, EXECUTION, or COMPLEX.`;
 
   const intent = response.content.toString().trim().toUpperCase();
 
-  if (["RESEARCH", "PLANNING", "EXECUTION", "COMPLEX"].includes(intent)) {
+  if (["RESEARCH", "PLANNING", "EXECUTION", "COMPLEX", "CLINICAL"].includes(intent)) {
     return intent as any;
   }
   return "COMPLEX";
@@ -139,6 +143,8 @@ export async function supervisorNode(state: AgentStateType): Promise<Partial<Age
 
   if (intent === "EXECUTION") {
     nextAgent = "funding_eligibility_checker";
+  } else if (intent === "CLINICAL") {
+    nextAgent = "clinical_triage_companion";
   } else if (intent === "PLANNING") {
     nextAgent = "trauma_informed_companion";
   } else if (intent === "RESEARCH") {
@@ -230,6 +236,14 @@ async function fundingEligibilityCheckerNode(state: AgentStateType) {
   };
 }
 
+async function clinicalTriageCompanionNode(state: AgentStateType) {
+  const result = await clinicalTriage.process(state.query, state as any);
+  return {
+    finalResponse: result.content,
+    showUrgentHelp: true,
+  };
+}
+
 export async function guardrailNode(state: AgentStateType): Promise<Partial<AgentStateType>> {
   if (!state.finalResponse) {
     return {};
@@ -296,6 +310,7 @@ const graph = new StateGraph(AgentState)
   .addNode('resource_navigator', resourceNavigatorNode)
   .addNode('trauma_informed_companion', traumaInformedCompanionNode)
   .addNode('funding_eligibility_checker', fundingEligibilityCheckerNode)
+  .addNode('clinical_triage_companion', clinicalTriageCompanionNode)
   .addNode('guardrails', guardrailNode)
   .addNode('human_review', humanReviewNode);
 
@@ -317,6 +332,8 @@ graph.addConditionalEdges('supervisor', (state) => {
       return 'trauma_informed_companion';
     case 'funding_eligibility_checker':
       return 'funding_eligibility_checker';
+    case 'clinical_triage_companion':
+      return 'clinical_triage_companion';
     default:
       return 'knowledge_weaver';
   }
@@ -330,6 +347,7 @@ graph.addEdge('cultural_safety_guardian', 'guardrails');
 graph.addEdge('resource_navigator', 'guardrails');
 graph.addEdge('trauma_informed_companion', 'guardrails');
 graph.addEdge('funding_eligibility_checker', 'guardrails');
+graph.addEdge('clinical_triage_companion', 'guardrails');
 
 graph.addConditionalEdges("guardrails", (state) => {
   const highRiskAgents = ["funding_eligibility_checker", "cultural_safety_guardian"];

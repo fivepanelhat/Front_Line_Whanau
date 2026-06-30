@@ -16,7 +16,7 @@ export class ResourceNavigator extends BaseAgent {
   name = 'resource_navigator';
 
   private agent = createReactAgent({
-    llm: new ChatGoogleGenerativeAI({ model: 'gemini-1.5-flash', temperature: 0.2 }),
+    llm: new ChatGoogleGenerativeAI({ model: 'gemini-1.5-flash', temperature: 0.2, maxOutputTokens: 1024 }),
     tools: [knowledgeDatabaseLookupTool, searchDirectoryTool, getCulturalResourcesTool, findLocalFacilitiesTool],
     prompt: `You are a Resource Navigator for preterm whānau in Aotearoa New Zealand.
 Your job is to connect families with practical, emotional, cultural, and geographical support.

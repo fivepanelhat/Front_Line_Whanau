@@ -43,8 +43,8 @@ export async function POST(request: NextRequest) {
       return new Response(JSON.stringify({ error: 'Query is required' }), { status: 400 });
     }
 
-    // Convert history into LangChain messages
-    const safeHistory = Array.isArray(history) ? history.filter(isChatHistoryMessage) : [];
+    // Convert history into LangChain messages, limiting to the last 10 to save tokens
+    const safeHistory = (Array.isArray(history) ? history.filter(isChatHistoryMessage) : []).slice(-10);
 
     const previousMessages = safeHistory.map((msg) =>
       msg.role === 'user'
