@@ -128,6 +128,14 @@ Respond with ONLY one word: RESEARCH, PLANNING, EXECUTION, or COMPLEX.`;
 }
 
 async function supervisorNode(state: AgentStateType): Promise<Partial<AgentStateType>> {
+  if (!state.consentGiven) {
+    return {
+      intent: "RESEARCH",
+      currentAgent: "knowledge_weaver", // Fallback, won't actually invoke LLM if we guard it
+      messages: [new HumanMessage(state.query)],
+    };
+  }
+
   const intent = await classifyIntent(state.query);
 
   let nextAgent = "knowledge_weaver";
@@ -162,6 +170,13 @@ async function supervisorNode(state: AgentStateType): Promise<Partial<AgentState
 }
 
 async function knowledgeWeaverNode(state: AgentStateType) {
+  if (!state.consentGiven) {
+    return {
+      finalResponse: "AI processing requires your explicit consent. Please enable AI processing in your settings or consent banner.",
+      sources: [],
+      requiresHumanReview: false,
+    };
+  }
   const result = await knowledgeWeaver.process(state.query, state as any);
   return {
     finalResponse: result.content,

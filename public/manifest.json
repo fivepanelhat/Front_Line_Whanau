@@ -1,0 +1,16 @@
+{
+  "name": "Front Line Whānau",
+  "short_name": "Whānau",
+  "description": "National directory and support pathways for preterm whānau in Aotearoa",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ]
+}

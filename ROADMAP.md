@@ -40,15 +40,15 @@
 
 ## Phase 2: Beta & Hardening (September – October 2026)
 
-**Status**: In Progress
+**Status**: Completed
 
-- [ ] Live AI agent reasoning (with consent)
-- [ ] Peer support features (moderated stories)
-- [ ] Financial tools & eligibility checker
-- [ ] Practitioner dashboard (resource export, notes)
-- [ ] Full cultural safety review process
-- [ ] Performance optimisation & offline support
-- [ ] Public beta launch
+- [x] Live AI agent reasoning (with consent)
+- [x] Peer support features (moderated stories)
+- [x] Financial tools & eligibility checker
+- [x] Practitioner dashboard (resource export, notes)
+- [x] Full cultural safety review process
+- [x] Performance optimisation & offline support
+- [x] Public beta launch
 
 ## Phase 3: National Scale (Q4 2026 – 2027)
 
