@@ -54,3 +54,4 @@ __pycache__/
 *.db
 whanau-agents/checkpoints.db-shm
 whanau-agents/checkpoints.db-wal
+.env*

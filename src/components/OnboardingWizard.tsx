@@ -6,6 +6,8 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [agreed, setAgreed] = useState(false);
+  const [gestationalAge, setGestationalAge] = useState('');
+  const [hospital, setHospital] = useState('');
 
   useEffect(() => {
     const hasOnboarded = localStorage.getItem('front_line_onboarded');
@@ -16,10 +18,29 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
 
   if (!isOpen) return null;
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
     if (!agreed) return;
     localStorage.setItem('front_line_onboarded', 'true');
     setIsOpen(false);
+    
+    try {
+      await fetch('/api/analytics/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event_type: 'beta_consent_given',
+          path: window.location.pathname,
+          metadata: { 
+            agreed: true,
+            gestationalAge,
+            hospital
+          }
+        })
+      });
+    } catch (e) {
+      console.error('Failed to log beta consent', e);
+    }
+    
     onComplete();
   };
 
@@ -30,7 +51,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
         <div className="absolute top-0 left-0 w-full h-2 bg-gray-100">
           <div 
             className="h-full bg-blue-600 transition-all duration-300" 
-            style={{ width: `${(step / 3) * 100}%` }}
+            style={{ width: `${(step / 4) * 100}%` }}
           />
         </div>
 
@@ -76,13 +97,71 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
                 onClick={() => setStep(3)}
                 className="w-2/3 bg-black text-white py-4 rounded-xl font-bold hover:bg-gray-800 transition shadow-lg"
               >
-                Next: Data & Privacy
+                Next: Your Context
               </button>
             </div>
           </div>
         )}
 
         {step === 3 && (
+          <div className="space-y-4 mt-4 animate-in slide-in-from-right duration-300">
+            <h2 className="text-3xl font-bold text-gray-900">Your Context (Optional) 🍼</h2>
+            <p className="text-gray-600">
+              Sharing a bit about your journey helps our AI agents give you more relevant and localized advice.
+            </p>
+            <div className="space-y-4 mt-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Baby's Gestational Age</label>
+                <select 
+                  value={gestationalAge}
+                  onChange={(e) => setGestationalAge(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+                >
+                  <option value="" disabled>Select Gestational Age...</option>
+                  <option value="< 24 weeks">Under 24 weeks (Extremely Preterm)</option>
+                  <option value="24-27 weeks">24 - 27 weeks (Extremely Preterm)</option>
+                  <option value="28-31 weeks">28 - 31 weeks (Very Preterm)</option>
+                  <option value="32-36 weeks">32 - 36 weeks (Moderate to Late Preterm)</option>
+                  <option value="37+ weeks">37+ weeks (Term)</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Hospital / NICU Location</label>
+                <select 
+                  value={hospital}
+                  onChange={(e) => setHospital(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+                >
+                  <option value="" disabled>Select Hospital...</option>
+                  <option value="Auckland City Hospital (ACH)">Auckland City Hospital (ACH)</option>
+                  <option value="Middlemore Hospital">Middlemore Hospital</option>
+                  <option value="Waitakere Hospital">Waitakere Hospital</option>
+                  <option value="Waikato Hospital">Waikato Hospital</option>
+                  <option value="Wellington Regional Hospital">Wellington Regional Hospital</option>
+                  <option value="Christchurch Women's Hospital">Christchurch Women's Hospital</option>
+                  <option value="Dunedin Hospital">Dunedin Hospital</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div className="flex gap-3 mt-6">
+              <button 
+                onClick={() => setStep(2)}
+                className="w-1/3 bg-gray-100 text-gray-700 py-4 rounded-xl font-bold hover:bg-gray-200 transition"
+              >
+                Back
+              </button>
+              <button 
+                onClick={() => setStep(4)}
+                className="w-2/3 bg-black text-white py-4 rounded-xl font-bold hover:bg-gray-800 transition shadow-lg"
+              >
+                Next: Data & Privacy
+              </button>
+            </div>
+          </div>
+        )}
+
+        {step === 4 && (
           <div className="space-y-4 mt-4 animate-in slide-in-from-right duration-300">
             <h2 className="text-3xl font-bold text-gray-900">Data & Consent 🔒</h2>
             <p className="text-gray-600">
@@ -103,7 +182,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
             </div>
             <div className="flex gap-3">
               <button 
-                onClick={() => setStep(2)}
+                onClick={() => setStep(3)}
                 className="w-1/3 bg-gray-100 text-gray-700 py-4 rounded-xl font-bold hover:bg-gray-200 transition"
               >
                 Back

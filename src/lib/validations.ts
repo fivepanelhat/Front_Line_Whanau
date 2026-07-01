@@ -11,6 +11,7 @@ export const FeedbackSchema = z.object({
   messageContent: z.string().optional(),
   rating: z.number(),
   comment: z.string().optional(),
+  agent: z.string().optional(),
 });
 
 export const PractitionerNotesSchema = z.object({

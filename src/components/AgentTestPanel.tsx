@@ -7,6 +7,7 @@ import ReactMarkdown from 'react-markdown';
 interface Message {
   role: 'user' | 'assistant';
   content: string;
+  agent?: string;
 }
 
 interface InterruptData {
@@ -89,7 +90,7 @@ export function AgentTestPanel({
         }),
       });
 
-      if (!res.ok || !res.body) throw new Error('Failed to connect');
+      if (!res.ok || !res.body) throw new Error('connection_failed');
 
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -133,6 +134,12 @@ export function AgentTestPanel({
 
             if (data.type === 'final') {
               // Final metadata received
+              setMessages((prev) => {
+                const updated = [...prev];
+                const lastIdx = updated.length - 1;
+                updated[lastIdx] = { ...updated[lastIdx], agent: data.agent };
+                return updated;
+              });
             }
           } catch {}
         }
@@ -143,7 +150,7 @@ export function AgentTestPanel({
       await saveConversationToDb(finalMessages);
     } catch (err) {
       console.error(err);
-      setError('Failed to get a response. Please try again.');
+      setError('I am currently experiencing connection issues. Please try again in a moment.');
     } finally {
       setIsLoading(false);
     }
@@ -174,13 +181,14 @@ export function AgentTestPanel({
     window.location.reload();
   };
 
-  const submitFeedback = async (messageContent: string, rating: number) => {
+  const submitFeedback = async (messageContent: string, rating: number, agent?: string) => {
     try {
       await fetch('/api/feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ threadId: threadId || 'unknown-thread', messageContent, rating })
+        body: JSON.stringify({ threadId: threadId || 'unknown-thread', messageContent, rating, agent })
       });
+      alert('Thank you for your feedback!');
     } catch (err) {
       console.error('Failed to submit feedback', err);
     }
@@ -191,12 +199,20 @@ export function AgentTestPanel({
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-semibold">Multi-Turn Agent</h2>
-        <button
-          onClick={startNewConversation}
-          className="text-sm px-4 py-2 border rounded-lg hover:bg-gray-50"
-        >
-          + New Conversation
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => alert("Support Team Contact: support@frontlinewhanau.co.nz\nPhone: 0800 123 456")}
+            className="text-sm px-4 py-2 border rounded-lg hover:bg-gray-50 flex items-center gap-2"
+          >
+            <span>🆘</span> Need Human Support?
+          </button>
+          <button
+            onClick={startNewConversation}
+            className="text-sm px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
+          >
+            + New Conversation
+          </button>
+        </div>
       </div>
 
       {/* Chat Area */}
@@ -206,9 +222,9 @@ export function AgentTestPanel({
         )}
 
         {messages.map((msg, index) => (
-          <div key={index} className={`mb-4 flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`group relative max-w-[80%] px-4 py-3 rounded-2xl ${
-              msg.role === 'user' ? 'bg-black text-white' : 'bg-gray-100 text-gray-800'
+          <div key={index} className={`mb-4 flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-4 duration-300`}>
+            <div className={`group relative max-w-[80%] px-5 py-4 rounded-3xl shadow-sm ${
+              msg.role === 'user' ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-br-sm' : 'bg-white border border-gray-100 text-gray-800 rounded-bl-sm'
             }`}>
               <div className="whitespace-pre-wrap">
                 {msg.role === 'assistant' ? (
@@ -224,14 +240,14 @@ export function AgentTestPanel({
               {msg.role === 'assistant' && msg.content && (
                 <div className="absolute -top-3 -right-2 opacity-0 group-hover:opacity-100 transition flex gap-1 bg-white border rounded-full p-1 shadow-sm">
                   <button
-                    onClick={() => submitFeedback(msg.content, 1)}
+                    onClick={() => submitFeedback(msg.content, 1, msg.agent)}
                     className="hover:bg-gray-100 rounded-full p-1 text-xs"
                     title="Helpful"
                   >
                     👍
                   </button>
                   <button
-                    onClick={() => submitFeedback(msg.content, -1)}
+                    onClick={() => submitFeedback(msg.content, -1, msg.agent)}
                     className="hover:bg-gray-100 rounded-full p-1 text-xs"
                     title="Not Helpful"
                   >
@@ -251,16 +267,23 @@ export function AgentTestPanel({
         ))}
 
         {isLoading && (
-          <div className="flex items-center gap-2 text-gray-500 pl-2">
-            <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse" />
-            <span>Thinking...</span>
+          <div className="flex items-center gap-2 text-gray-500 pl-4 py-2 animate-in fade-in duration-300">
+            <div className="flex gap-1">
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+            </div>
+            <span className="text-sm font-medium">Gathering thoughts...</span>
           </div>
         )}
 
         {error && (
-          <div className="mt-4 p-3 bg-red-50 text-red-700 rounded-lg text-sm flex justify-between">
-            {error}
-            <button onClick={() => setError(null)} className="font-medium">Dismiss</button>
+          <div className="mt-4 p-4 bg-red-50 border border-red-100 text-red-700 rounded-2xl text-sm flex justify-between items-center animate-in fade-in slide-in-from-top-2 duration-300">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">⚠️</span>
+              {error}
+            </div>
+            <button onClick={() => setError(null)} className="font-semibold px-3 py-1 bg-red-100 hover:bg-red-200 rounded-lg transition-colors">Dismiss</button>
           </div>
         )}
       </div>
@@ -273,13 +296,13 @@ export function AgentTestPanel({
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
           placeholder="Ask the agent anything..."
-          className="flex-1 border rounded-lg px-4 py-3"
+          className="flex-1 border border-gray-200 rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all shadow-sm"
           disabled={isLoading}
         />
         <button
           onClick={sendMessage}
           disabled={isLoading || !input.trim()}
-          className="bg-black text-white px-8 rounded-lg disabled:opacity-50"
+          className="bg-black hover:bg-gray-800 text-white px-8 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:hover:bg-black shadow-md active:scale-95"
         >
           Send
         </button>

@@ -23,6 +23,8 @@ import { FundingEligibilityChecker } from './agents/FundingEligibilityChecker';
 import { ClinicalTriageCompanion } from './agents/ClinicalTriageCompanion';
 import { PolicyAdvocateCompanion } from './agents/PolicyAdvocateCompanion';
 import { MedicalJargonTranslator } from './agents/MedicalJargonTranslator';
+import { FeedingNavigator } from './agents/FeedingNavigator';
+import { CulturalNavigator } from './agents/CulturalNavigator';
 import { createCheckpointSaver } from './checkpointer';
 
 const AgentState = Annotation.Root({
@@ -38,7 +40,7 @@ const AgentState = Annotation.Root({
     reducer: (x, y) => y ?? x,
     default: () => '',
   }),
-  intent: Annotation<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'CLINICAL' | 'ADVOCACY' | 'TRANSLATE' | 'COMPLEX' | null>({
+  intent: Annotation<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'CLINICAL' | 'ADVOCACY' | 'TRANSLATE' | 'NUTRITION' | 'CULTURAL' | 'COMPLEX' | null>({
     reducer: (x, y) => y ?? x,
     default: () => null,
   }),
@@ -99,6 +101,8 @@ const fundingChecker = new FundingEligibilityChecker();
 const clinicalTriage = new ClinicalTriageCompanion();
 const policyAdvocate = new PolicyAdvocateCompanion();
 const medicalTranslator = new MedicalJargonTranslator();
+const feedingNavigator = new FeedingNavigator();
+const culturalNavigator = new CulturalNavigator();
 
 // === NODES ===
 const intentClassifier = new ChatGoogleGenerativeAI({
@@ -107,7 +111,7 @@ const intentClassifier = new ChatGoogleGenerativeAI({
   maxOutputTokens: 1024,
 });
 
-export async function classifyIntent(query: string): Promise<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'COMPLEX' | 'CLINICAL' | 'ADVOCACY' | 'TRANSLATE'> {
+export async function classifyIntent(query: string): Promise<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'COMPLEX' | 'CLINICAL' | 'ADVOCACY' | 'TRANSLATE' | 'NUTRITION' | 'CULTURAL'> {
   const systemPrompt = `You are an intent classifier for a preterm whānau support system in Aotearoa New Zealand.
 
 Classify the user's query into exactly one of these categories:
@@ -117,9 +121,11 @@ Classify the user's query into exactly one of these categories:
 - CLINICAL: Questions about medical symptoms, diagnosis, sickness, or medical advice.
 - ADVOCACY: Requests to draft emails, challenge decisions, or learn about legal/hospital rights.
 - TRANSLATE: Requests to explain or translate complex medical jargon or reports into simple English.
+- NUTRITION: Questions specifically about feeding, tube feeding, breastfeeding, breastmilk, expressing, or solids.
+- CULTURAL: Questions specifically about tikanga, karakia, marae, iwi, whenua, or Māori cultural practices.
 - COMPLEX: Queries that combine multiple intents or are emotionally heavy.
 
-Respond with ONLY one word: RESEARCH, PLANNING, EXECUTION, CLINICAL, ADVOCACY, TRANSLATE, or COMPLEX.`;
+Respond with ONLY one word: RESEARCH, PLANNING, EXECUTION, CLINICAL, ADVOCACY, TRANSLATE, NUTRITION, CULTURAL, or COMPLEX.`;
 
   const response = await intentClassifier.invoke([
     new SystemMessage(systemPrompt),
@@ -128,7 +134,7 @@ Respond with ONLY one word: RESEARCH, PLANNING, EXECUTION, CLINICAL, ADVOCACY, T
 
   const intent = response.content.toString().trim().toUpperCase();
 
-  if (["RESEARCH", "PLANNING", "EXECUTION", "COMPLEX", "CLINICAL", "ADVOCACY", "TRANSLATE"].includes(intent)) {
+  if (["RESEARCH", "PLANNING", "EXECUTION", "COMPLEX", "CLINICAL", "ADVOCACY", "TRANSLATE", "NUTRITION", "CULTURAL"].includes(intent)) {
     return intent as any;
   }
   return "COMPLEX";
@@ -138,7 +144,7 @@ export async function supervisorNode(state: AgentStateType): Promise<Partial<Age
   if (!state.consentGiven) {
     return {
       intent: "RESEARCH",
-      currentAgent: "knowledge_weaver", // Fallback, won't actually invoke LLM if we guard it
+      currentAgent: "knowledge_weaver",
       messages: [new HumanMessage(state.query)],
     };
   }
@@ -155,6 +161,10 @@ export async function supervisorNode(state: AgentStateType): Promise<Partial<Age
     nextAgent = "medical_jargon_translator";
   } else if (intent === "CLINICAL") {
     nextAgent = "clinical_triage_companion";
+  } else if (intent === "NUTRITION") {
+    nextAgent = "feeding_navigator";
+  } else if (intent === "CULTURAL") {
+    nextAgent = "cultural_navigator";
   } else if (intent === "PLANNING") {
     nextAgent = "trauma_informed_companion";
   } else if (intent === "RESEARCH") {
@@ -190,21 +200,31 @@ async function knowledgeWeaverNode(state: AgentStateType) {
       requiresHumanReview: false,
     };
   }
-  const result = await knowledgeWeaver.process(state.query, state as any);
-  return {
-    finalResponse: result.content,
-    sources: (result as any).sources || [],
-    requiresHumanReview: result.requiresHumanReview ?? false,
-  };
+  try {
+    const result = await knowledgeWeaver.process(state.query, state as any);
+    return {
+      finalResponse: result.content,
+      sources: (result as any).sources || [],
+      requiresHumanReview: result.requiresHumanReview ?? false,
+    };
+  } catch (error) {
+    log.error({ error }, 'knowledgeWeaverNode failed');
+    return { finalResponse: "I'm currently experiencing high demand and cannot answer your query right now. Please try again shortly." };
+  }
 }
 
 async function pathwayArchitectNode(state: AgentStateType) {
-  const result = await pathwayArchitect.process(state.query, state as any);
-  return {
-    finalResponse: result.content,
-    sources: (result as any).sources || [],
-    requiresHumanReview: result.requiresHumanReview ?? false,
-  };
+  try {
+    const result = await pathwayArchitect.process(state.query, state as any);
+    return {
+      finalResponse: result.content,
+      sources: (result as any).sources || [],
+      requiresHumanReview: result.requiresHumanReview ?? false,
+    };
+  } catch (error) {
+    log.error({ error }, 'pathwayArchitectNode failed');
+    return { finalResponse: "I encountered an error planning this pathway. Please try again or rephrase your request." };
+  }
 }
 
 async function sovereignExecutorNode(state: AgentStateType) {
@@ -220,11 +240,16 @@ async function sovereignExecutorNode(state: AgentStateType) {
 }
 
 async function culturalSafetyGuardianNode(state: AgentStateType) {
-  const result = await culturalGuardian.process(state.query, state);
-  return {
-    finalResponse: result.content,
-    requiresHumanReview: result.requiresHumanReview ?? false,
-  };
+  try {
+    const result = await culturalGuardian.process(state.query, state);
+    return {
+      finalResponse: result.content,
+      requiresHumanReview: result.requiresHumanReview ?? false,
+    };
+  } catch (error) {
+    log.error({ error }, 'culturalSafetyGuardianNode failed');
+    return { finalResponse: "Kia ora, I am having trouble connecting to my cultural safety systems right now. Please try again soon." };
+  }
 }
 
 async function resourceNavigatorNode(state: AgentStateType) {
@@ -247,11 +272,19 @@ async function fundingEligibilityCheckerNode(state: AgentStateType) {
 }
 
 async function clinicalTriageCompanionNode(state: AgentStateType) {
-  const result = await clinicalTriage.process(state.query, state as any);
-  return {
-    finalResponse: result.content,
-    showUrgentHelp: true,
-  };
+  try {
+    const result = await clinicalTriage.process(state.query, state as any);
+    return {
+      finalResponse: result.content,
+      showUrgentHelp: true,
+    };
+  } catch (error) {
+    log.error({ error }, 'clinicalTriageCompanionNode failed');
+    return { 
+      finalResponse: "I am having technical issues processing this medical query. If this is an emergency, please call 111 or seek immediate medical attention.",
+      showUrgentHelp: true 
+    };
+  }
 }
 
 async function policyAdvocateCompanionNode(state: AgentStateType) {
@@ -264,6 +297,20 @@ async function policyAdvocateCompanionNode(state: AgentStateType) {
 
 async function medicalJargonTranslatorNode(state: AgentStateType) {
   const result = await medicalTranslator.process(state.query, state as any);
+  return {
+    finalResponse: result.content,
+  };
+}
+
+async function feedingNavigatorNode(state: AgentStateType) {
+  const result = await feedingNavigator.process(state.query, state as any);
+  return {
+    finalResponse: result.content,
+  };
+}
+
+async function culturalNavigatorNode(state: AgentStateType) {
+  const result = await culturalNavigator.process(state.query, state as any);
   return {
     finalResponse: result.content,
   };
@@ -338,6 +385,8 @@ const graph = new StateGraph(AgentState)
   .addNode('clinical_triage_companion', clinicalTriageCompanionNode)
   .addNode('policy_advocate_companion', policyAdvocateCompanionNode)
   .addNode('medical_jargon_translator', medicalJargonTranslatorNode)
+  .addNode('feeding_navigator', feedingNavigatorNode)
+  .addNode('cultural_navigator', culturalNavigatorNode)
   .addNode('guardrails', guardrailNode)
   .addNode('human_review', humanReviewNode);
 
@@ -365,6 +414,10 @@ graph.addConditionalEdges('supervisor', (state) => {
       return 'policy_advocate_companion';
     case 'medical_jargon_translator':
       return 'medical_jargon_translator';
+    case 'feeding_navigator':
+      return 'feeding_navigator';
+    case 'cultural_navigator':
+      return 'cultural_navigator';
     default:
       return 'knowledge_weaver';
   }
@@ -381,6 +434,8 @@ graph.addEdge('funding_eligibility_checker', 'guardrails');
 graph.addEdge('clinical_triage_companion', 'guardrails');
 graph.addEdge('policy_advocate_companion', 'guardrails');
 graph.addEdge('medical_jargon_translator', 'guardrails');
+graph.addEdge('feeding_navigator', 'guardrails');
+graph.addEdge('cultural_navigator', 'guardrails');
 
 graph.addConditionalEdges("guardrails", (state) => {
   const highRiskAgents = ["funding_eligibility_checker", "cultural_safety_guardian", "policy_advocate_companion"];

@@ -3,6 +3,7 @@ import { agentGraph } from '@/ai/graph';
 import { HumanMessage, AIMessage } from '@langchain/core/messages';
 import { routeLogger } from '@/lib/logger';
 import { aiCircuitBreaker } from '@/lib/circuit-breaker';
+import * as Sentry from '@sentry/nextjs';
 
 const log = routeLogger('/api/agents');
 import { createClient } from '@/lib/supabase/server';
@@ -168,6 +169,9 @@ export async function POST(request: NextRequest) {
           } else {
             // Generic error
             log.error({ err: error, threadId }, 'Streaming error');
+            Sentry.captureException(error, {
+              tags: { component: 'agent_graph', threadId }
+            });
             controller.enqueue(
               encoder.encode(`data: ${JSON.stringify({ 
                 type: 'error', 
@@ -192,6 +196,7 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     log.error({ err: error }, 'API error');
+    Sentry.captureException(error, { tags: { route: '/api/agents' } });
     return new Response(JSON.stringify({ error: 'Internal server error' }), { status: 500 });
   }
 }

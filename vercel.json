@@ -50,7 +50,7 @@
   "crons": [
     {
       "path": "/api/health",
-      "schedule": "*/5 * * * *"
+      "schedule": "0 0 * * *"
     }
   ]
 }

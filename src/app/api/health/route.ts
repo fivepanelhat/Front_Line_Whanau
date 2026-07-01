@@ -1,7 +1,16 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { RateLimiter } from '@/lib/rate-limit';
 
-export async function GET() {
+const rateLimiter = new RateLimiter(60000, 30); // 30 health checks per minute
+
+export async function GET(req: Request) {
+  const ip = req.headers.get('x-forwarded-for') || 'anonymous';
+  const isAllowed = await rateLimiter.check(`health_${ip}`);
+  if (!isAllowed) {
+    return NextResponse.json({ status: 'rate_limited' }, { status: 429 });
+  }
+
   const isE2E = process.env.PORTAL_E2E === 'true' || process.env.NEXT_PUBLIC_PORTAL_E2E === 'true';
 
   try {

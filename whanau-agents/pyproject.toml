@@ -19,6 +19,7 @@ dependencies = [
     "ddgs>=9.14.4",
     "fastapi>=0.138.1",
     "uvicorn>=0.49.0",
+    "langchain-google-genai>=4.2.6",
 ]
 
 [project.scripts]

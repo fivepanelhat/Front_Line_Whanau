@@ -36,6 +36,7 @@ const nextConfig: NextConfig = {
   },
 
   experimental: {
+    instrumentationHook: true,
     serverActions: { bodySizeLimit: '2mb' },
     optimizePackageImports: [
       'lucide-react',
@@ -64,9 +65,21 @@ const nextConfig: NextConfig = {
   },
 };
 
+import { withSentryConfig } from '@sentry/nextjs';
+
 const withPWA = require('@ducanh2912/next-pwa').default({
   dest: 'public',
   disable: process.env.NODE_ENV === 'development',
 });
 
-export default withBundleAnalyzer(withNextIntl(withPWA(nextConfig)));
+const finalConfig = withBundleAnalyzer(withNextIntl(withPWA(nextConfig)));
+
+export default withSentryConfig(finalConfig, {
+  // For all available options, see:
+  // https://github.com/getsentry/sentry-webpack-plugin#options
+
+  // Suppresses source map uploading logs during build
+  silent: true,
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+});
