@@ -13,7 +13,10 @@ const StatsQuerySchema = z.object({
   agent: z.string().optional(),
 });
 
+import { connection } from 'next/server';
+
 export async function GET(req: NextRequest) {
+  await connection();
   try {
     const { searchParams } = new URL(req.url);
     const query = StatsQuerySchema.parse({

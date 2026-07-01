@@ -8,7 +8,10 @@ import { checkRateLimit, createAuditLog } from '@/ai/security';
  * 
  * IMPORTANT: This endpoint enforces strict consent checks.
  */
+import { connection } from 'next/server';
+
 export async function GET(req: NextRequest) {
+  await connection();
   try {
     const ip = req.headers.get('x-forwarded-for') || 'unknown_ip';
     const isAllowed = await checkRateLimit(ip, 30, 60000);

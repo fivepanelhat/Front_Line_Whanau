@@ -4,8 +4,8 @@ import { logger } from '@/lib/logger';
 import { connection } from 'next/server';
 
 export async function GET() {
+  await connection();
   try {
-    await connection();
 
     // We use the admin client because we want to fetch all global feedback for the beta dashboard
     const supabase = await createAdminClient();
