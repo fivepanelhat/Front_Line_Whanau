@@ -69,7 +69,9 @@ const nextConfig: NextConfig = {
 
 import { withSentryConfig } from '@sentry/nextjs';
 
-const withPWA = require('@ducanh2912/next-pwa').default({
+import withPWAInit from '@ducanh2912/next-pwa';
+
+const withPWA = withPWAInit({
   dest: 'public',
   disable: process.env.NODE_ENV === 'development',
 });

@@ -49,7 +49,7 @@ export async function GET(req: NextRequest) {
       data.reduce((acc: any, item) => {
         const key = item.agent || 'unknown';
         if (!acc[key]) acc[key] = { agent: key, up: 0, down: 0, total: 0 };
-        
+
         const isPositive = item.rating === 'positive' || item.rating === 'up' || item.rating === 1;
         acc[key][isPositive ? 'up' : 'down']++;
         acc[key].total++;
@@ -62,7 +62,7 @@ export async function GET(req: NextRequest) {
     data.forEach((item) => {
       const date = item.created_at.split('T')[0];
       if (!trendMap[date]) trendMap[date] = { date, up: 0, down: 0 };
-      
+
       const isPositive = item.rating === 'positive' || item.rating === 'up' || item.rating === 1;
       trendMap[date][isPositive ? 'up' : 'down']++;
     });
