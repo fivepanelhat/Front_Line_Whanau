@@ -35,6 +35,11 @@ export function AgentTestPanel({
   const [showReview, setShowReview] = useState(false);
   const [interruptData, setInterruptData] = useState<InterruptData | null>(null);
 
+  // Summary State
+  const [showSummary, setShowSummary] = useState(false);
+  const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
+  const [summaryMarkdown, setSummaryMarkdown] = useState<string | null>(null);
+
   // Load previous conversation
   useEffect(() => {
     const loadPrevious = async () => {
@@ -194,23 +199,53 @@ export function AgentTestPanel({
     }
   };
 
+  const generateSummary = async () => {
+    setIsGeneratingSummary(true);
+    setShowSummary(true);
+    setSummaryMarkdown(null);
+    try {
+      const res = await fetch('/api/chat/summary', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ history: messages }),
+      });
+      const data = await res.json();
+      if (res.ok && data.summary) {
+        setSummaryMarkdown(data.summary);
+      } else {
+        setSummaryMarkdown("Error generating summary: " + (data.error || "Unknown error"));
+      }
+    } catch (err) {
+      setSummaryMarkdown("Network error while generating summary.");
+    } finally {
+      setIsGeneratingSummary(false);
+    }
+  };
+
   return (
     <div className="flex flex-col h-full max-w-4xl mx-auto p-6">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-semibold">Multi-Turn Agent</h2>
-        <div className="flex gap-2">
+        <div className="flex gap-2 print:hidden">
+          <button
+            onClick={generateSummary}
+            disabled={messages.length === 0}
+            className="text-sm px-4 py-2 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg hover:bg-indigo-100 disabled:opacity-50 transition-colors"
+          >
+            🩺 Summary for Doctor
+          </button>
           <button
             onClick={() => alert("Support Team Contact: support@frontlinewhanau.co.nz\nPhone: 0800 123 456")}
             className="text-sm px-4 py-2 border rounded-lg hover:bg-gray-50 flex items-center gap-2"
           >
-            <span>🆘</span> Need Human Support?
+            <span>🆘</span> Support
           </button>
           <button
             onClick={startNewConversation}
             className="text-sm px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
           >
-            + New Conversation
+            + New
           </button>
         </div>
       </div>
@@ -310,7 +345,7 @@ export function AgentTestPanel({
 
       {/* Human Review Modal (Read-Only) */}
       {showReview && interruptData && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 print:hidden">
           <div className="bg-white rounded-xl p-6 w-full max-w-lg">
             <h3 className="font-semibold text-lg mb-4 text-purple-700">Pending Practitioner Review</h3>
             <p className="text-sm text-gray-600 mb-4">
@@ -330,6 +365,51 @@ export function AgentTestPanel({
                 className="flex-1 bg-black text-white py-2 rounded-lg hover:bg-gray-800"
               >
                 Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Summary Modal */}
+      {showSummary && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 print:bg-white print:p-0">
+          <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] flex flex-col print:max-w-full print:shadow-none print:max-h-none print:h-auto">
+            <div className="flex justify-between items-center mb-4 print:hidden">
+              <h3 className="font-semibold text-xl text-indigo-700">🩺 Clinical Summary</h3>
+              <button onClick={() => setShowSummary(false)} className="text-gray-500 hover:bg-gray-100 p-2 rounded-lg">✕</button>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto p-4 bg-gray-50 border rounded-lg print:border-none print:bg-white print:p-0">
+              {isGeneratingSummary ? (
+                <div className="flex items-center justify-center h-40 text-gray-500">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mr-3"></div>
+                  Synthesizing conversation...
+                </div>
+              ) : (
+                <div className="prose prose-sm sm:prose-base max-w-none text-gray-800">
+                  <ReactMarkdown>{summaryMarkdown || ""}</ReactMarkdown>
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-end gap-3 mt-4 print:hidden">
+              <button
+                onClick={() => {
+                  if (summaryMarkdown) navigator.clipboard.writeText(summaryMarkdown);
+                  alert("Copied to clipboard!");
+                }}
+                disabled={isGeneratingSummary}
+                className="px-4 py-2 border rounded-lg hover:bg-gray-50 font-medium"
+              >
+                📋 Copy
+              </button>
+              <button
+                onClick={() => window.print()}
+                disabled={isGeneratingSummary}
+                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium transition shadow"
+              >
+                🖨️ Print
               </button>
             </div>
           </div>

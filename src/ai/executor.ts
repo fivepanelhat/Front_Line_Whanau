@@ -23,7 +23,7 @@ export class SovereignExecutor {
     });
 
     const lastMessage = result.messages[result.messages.length - 1];
-    let content = typeof lastMessage.content === 'string'
+    const content = typeof lastMessage.content === 'string'
       ? lastMessage.content
       : JSON.stringify(lastMessage.content);
 

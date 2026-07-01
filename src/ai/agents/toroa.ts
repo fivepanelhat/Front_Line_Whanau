@@ -1,14 +1,13 @@
-import 'server-only';
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { createAgentLLM } from '../llm';
 
-export class CulturalNavigator {
-  name = 'cultural_navigator';
+export class Toroa {
+  name = 'toroa';
 
   private agent = createReactAgent({
-    llm: new ChatGoogleGenerativeAI({ model: 'gemini-1.5-flash', temperature: 0.1, maxOutputTokens: 1024 }),
+    llm: createAgentLLM({ model: 'gemini-1.5-flash', temperature: 0.1, maxOutputTokens: 1024 }),
     tools: [], 
-    prompt: `You are the CulturalNavigator, an agent dedicated to providing deep, culturally safe guidance for Māori whānau navigating the neonatal intensive care system in Aotearoa New Zealand.
+    prompt: `You are the Toroa, an agent dedicated to providing deep, culturally safe guidance for Māori whānau navigating the neonatal intensive care system in Aotearoa New Zealand.
 Your goal is to ensure that tikanga (cultural customs) and te reo Māori are respected and integrated into the family's journey.
 
 Focus areas:

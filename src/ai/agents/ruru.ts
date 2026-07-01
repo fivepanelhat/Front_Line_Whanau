@@ -1,14 +1,13 @@
-import 'server-only';
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { createAgentLLM } from '../llm';
 import { PROMPTS } from "../prompts";
 import { clinicalTriageTool } from "../tools";
 
-export class ClinicalTriageCompanion {
-  name = 'clinical_triage_companion';
+export class Ruru {
+  name = 'ruru';
 
   private agent = createReactAgent({
-    llm: new ChatGoogleGenerativeAI({ model: 'gemini-1.5-flash', temperature: 0.1, maxOutputTokens: 1024 }),
+    llm: createAgentLLM(),
     tools: [clinicalTriageTool],
     prompt: `You are the Clinical Triage Companion for preterm whānau in Aotearoa New Zealand.
 Your ONLY job is to detect medical inquiries, symptoms, or requests for diagnosis/treatment.

@@ -1,13 +1,12 @@
-import 'server-only';
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { createAgentLLM } from '../llm';
 import { PROMPTS } from "../prompts";
 
-export class PolicyAdvocateCompanion {
-  name = 'policy_advocate_companion';
+export class Kahu {
+  name = 'kahu';
 
   private agent = createReactAgent({
-    llm: new ChatGoogleGenerativeAI({ model: 'gemini-1.5-pro', temperature: 0.3, maxOutputTokens: 2048 }),
+    llm: createAgentLLM({ model: 'gemini-1.5-pro', temperature: 0.3, maxOutputTokens: 2048 }),
     tools: [],
     prompt: `You are the Policy Advocate Companion for preterm whānau in Aotearoa New Zealand.
 Your job is to empower whānau to advocate for their rights within the hospital system or with government agencies (like WINZ/MSD).

@@ -1,5 +1,4 @@
-import 'server-only';
-import { TaongaKnowledgeWeaver } from "./knowledge-weaver";
+import { Riroriro } from "./agents/riroriro";
 import { WhanauPathwayArchitect } from "./pathway-architect";
 import { SovereignExecutor } from "./executor";
 import { AgentResponse, OrchestrationContext } from "./types";
@@ -8,7 +7,7 @@ import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { buildSupervisorClassificationPrompt } from "./prompts";
 
 export class AetherSummit {
-  private knowledgeWeaver = new TaongaKnowledgeWeaver();
+  private knowledgeWeaver = new Riroriro();
   private pathwayArchitect = new WhanauPathwayArchitect();
   private executor = new SovereignExecutor();
 
@@ -23,7 +22,7 @@ export class AetherSummit {
 
     try {
       const llm = new ChatGoogleGenerativeAI({
-        model: "gemini-1.5-flash",
+        model: "gemini-2.5-flash",
         temperature: 0,
       });
       
@@ -117,15 +116,16 @@ export class AetherSummit {
   /**
    * Backward-compatible process method for components
    */
-  async process(query: string, grantedScopes: any[] = []): Promise<any> {
+  async process(query: string, grantedScopes: any[] = [], locale?: string): Promise<any> {
     const consentGiven = grantedScopes.includes('ai.process') || grantedScopes.includes('ai.execute') || grantedScopes.length > 0;
     const response = await this.orchestrate({
       userQuery: query,
-      consentGiven
+      consentGiven,
+      locale
     });
     let cleanedContent = response.content;
+    // Standardize bullet points, but DO NOT strip all asterisks as that breaks bold formatting
     cleanedContent = cleanedContent.replace(/^(\s*)\*\s+/gm, '$1- ');
-    cleanedContent = cleanedContent.replace(/\*/g, '');
 
     return {
       agent: response.agentUsed || 'aether-summit',
@@ -139,15 +139,15 @@ export class AetherSummit {
   }
 
   private isResearchQuery(q: string): boolean {
-    return q.includes("what is") || q.includes("how much") || q.includes("eligibility") || q.includes("amount") || q.includes("preterm") || q.includes("best start") || q.includes("home help");
+    return q.includes("what is") || q.includes("how much") || q.includes("eligibility") || q.includes("amount") || q.includes("preterm") || q.includes("best start") || q.includes("home help") || q.includes("where") || q.includes("facilities") || q.includes("social worker");
   }
 
   private isPlanningQuery(q: string): boolean {
-    return q.includes("plan") || q.includes("how do i") || q.includes("steps") || q.includes("advice");
+    return q.includes("plan") || q.includes("how do i") || q.includes("steps") || q.includes("advice") || q.includes("support");
   }
 
   private isExecutionQuery(q: string): boolean {
-    return q.includes("apply") || q.includes("generate") || q.includes("template") || q.includes("fill");
+    return q.includes("apply") || q.includes("generate") || q.includes("template") || q.includes("fill") || q.includes("draft") || q.includes("write");
   }
 
   private synthesize(research: string, plan: string): string {

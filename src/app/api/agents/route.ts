@@ -66,6 +66,7 @@ export async function POST(request: NextRequest) {
     const stream = new ReadableStream({
       async start(controller) {
         const encoder = new TextEncoder();
+        const startTime = Date.now();
 
         try {
           const runGraph = async () => {
@@ -113,6 +114,16 @@ export async function POST(request: NextRequest) {
                   })}\n\n`
                 )
               );
+
+              const durationMs = Date.now() - startTime;
+              createClient().then(supabase => {
+                supabase.from('analytics_events').insert({
+                  event_type: 'agent_latency',
+                  path: '/api/agents',
+                  session_hash: threadId,
+                  metadata: { agent: finalState?.currentAgent, durationMs }
+                }).then(() => {});
+              });
             }
           }
 
@@ -171,6 +182,14 @@ export async function POST(request: NextRequest) {
             log.error({ err: error, threadId }, 'Streaming error');
             Sentry.captureException(error, {
               tags: { component: 'agent_graph', threadId }
+            });
+            createClient().then(supabase => {
+              supabase.from('analytics_events').insert({
+                event_type: 'agent_error',
+                path: '/api/agents',
+                session_hash: threadId,
+                metadata: { error: error.message || 'Generic error' }
+              }).then(() => {});
             });
             controller.enqueue(
               encoder.encode(`data: ${JSON.stringify({ 

@@ -74,7 +74,8 @@
   },
   "overrides": {
     "@hono/node-server": ">=1.19.13",
-    "postcss": "^8.5.15"
+    "postcss": "^8.5.15",
+    "serialize-javascript": "^7.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",

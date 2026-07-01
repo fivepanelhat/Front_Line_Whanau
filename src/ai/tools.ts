@@ -23,9 +23,7 @@ export function createSafeTool<T extends z.ZodTypeAny>(
         return typeof result === 'string' ? result : JSON.stringify(result);
       } catch (error: any) {
         log.error({ err: error, tool: config.name }, 'Tool execution error');
-        return JSON.stringify({
-          error: `Tool execution failed: ${error?.message || 'Unknown error'}. Please try a different approach.`
-        });
+        return `Tool execution failed: ${error?.message || 'Unknown error'}. Please try a different approach or let the user know you cannot fulfill this part of the request.`;
       }
     },
     config
@@ -159,9 +157,9 @@ export const getEmotionalSupportResourcesTool = createSafeTool(
 export const findLocalFacilitiesTool = createSafeTool(
   {
     name: "find_local_facilities",
-    description: "Search the web for real-time practical and geographical amenities in Aotearoa New Zealand (e.g. banks, ATMs, supermarkets, doctors, pharmacies, wellness centres) near a specific location.",
+    description: "Search the web for real-time practical, geographical, and wellness amenities in Aotearoa New Zealand (e.g. Citizens Advice Bureau / CAB, local taxi companies, local bus companies, doctors, GPs, practitioners, banks, ATMs, supermarkets, pharmacies, naturopaths, wellness centres) near a specific location.",
     schema: z.object({
-      query: z.string().describe("What the user is looking for (e.g., 'supermarket', 'ATM', 'doctor', 'pharmacy')"),
+      query: z.string().describe("What the user is looking for (e.g., 'Citizens Advice Bureau', 'taxi', 'bus stop', 'doctor', 'GP', 'supermarket', 'ATM', 'pharmacy', 'naturopath')"),
       location: z.string().describe("The user's specific location, suburb, or hospital in Aotearoa New Zealand"),
     }),
   },
@@ -267,5 +265,79 @@ export const clinicalTriageTool = createSafeTool(
       return `This system cannot provide medical advice for "${symptom}". Please contact Healthline on 0800 611 116 for free registered nurse advice 24/7. For baby-specific concerns, call PlunketLine at 0800 933 922. If it worsens, call 111.`;
     }
     return `For general questions regarding "${symptom}", please consult your GP or healthcare provider. This system cannot provide clinical diagnosis.`;
+  }
+);
+
+// === Hospital Social Worker Tool ===
+export const getHospitalSocialWorkerInfoTool = createSafeTool(
+  {
+    name: "get_hospital_social_worker_info",
+    description: "Provides information about hospital social worker services, what they help with (WINZ forms, accommodation, transport, emotional support), and how to request a referral.",
+    schema: z.object({
+      topic: z.enum(["referral", "services", "contact"]).optional().describe("Specific aspect of social worker services"),
+    }),
+  },
+  async ({ topic }) => {
+    const servicesMap: Record<string, string> = {
+      referral: "How to Request: You can request a hospital social worker at any time. Simply ask your bedside nurse, the charge nurse, or your baby's doctor to make a referral for you.",
+      services: "Services include: 1. Financial Support (WINZ, Preterm Baby Payment). 2. Transport & Accommodation (NTA, Ronald McDonald House). 3. Emotional Support. 4. Practical Help (food banks, charities).",
+      contact: "Social worker availability may vary by hospital. Ask your bedside nurse to contact the on-duty social worker."
+    };
+
+    if (topic && servicesMap[topic]) {
+      return {
+        overview: "Hospital Social Workers are free, confidential, and specialized in supporting whānau.",
+        detail: servicesMap[topic],
+        disclaimer: "Services are free and confidential."
+      };
+    }
+
+    return {
+      overview: "Hospital Social Workers are free, confidential, and specialized in supporting whānau during their hospital stay.",
+      services: [
+        "Financial Support: Help navigating WINZ, filling out forms, and applying for the Preterm Baby Payment.",
+        "Transport & Accommodation: Assisting with National Travel Assistance (NTA) registrations and referrals to Ronald McDonald House or hospital family flats.",
+        "Emotional Support: Providing a safe space to talk, crisis intervention, and connecting you with community counseling.",
+        "Practical Help: Connecting with local charities, food banks, and support groups like The Little Miracles Trust."
+      ],
+      howToRequest: "You can request a hospital social worker at any time. Simply ask your bedside nurse, the charge nurse, or your baby's doctor to make a referral for you.",
+      disclaimer: "Social worker availability may vary depending on the specific hospital and current caseload. Services are free and confidential."
+    };
+  }
+);
+
+// === Hospital Facilities Tool ===
+export const getHospitalFacilitiesInfoTool = createSafeTool(
+  {
+    name: "get_hospital_facilities_info",
+    description: "Provides information about common hospital facilities, such as the cafeteria, front desk reception, booking accommodation (whānau rooms), parent lounges, showers, food options, and transport (drop-off zones, Ubers, taxis, buses).",
+    schema: z.object({
+      topic: z.enum(["cafeteria", "reception", "accommodation", "facilities", "showers", "food", "transport"]).optional().describe("Specific facility to inquire about"),
+    }),
+  },
+  async ({ topic }) => {
+    const facilitiesMap: Record<string, string> = {
+      cafeteria: "Most major hospitals have a cafeteria or cafe usually located near the main entrance/foyer or ground floor. They provide hot meals, coffee, and snacks. Hours vary, but many operate during standard daytime hours, with vending machines available 24/7.",
+      reception: "The front desk reception is located at the main entrance. They can provide hospital maps, visitor passes, direct you to the NICU/SCBU, and give information about parking validation.",
+      accommodation: "To book a room or hospital accommodation (such as a Ronald McDonald House, whānau room, or hospital flat), you usually cannot book directly at reception. You must speak to a Hospital Social Worker or the NICU Charge Nurse who will submit a referral based on availability and criteria (like how far you live from the hospital).",
+      facilities: "Hospitals typically have dedicated parent lounges (with tea/coffee making facilities), breast milk expressing rooms, and multi-faith prayer rooms or chapels. Ask your bedside nurse or ward clerk where these are located on your ward.",
+      showers: "Whānau showers are usually available in or near the NICU or maternity ward. Ask your bedside nurse where they are located. You may need to bring your own toiletries, though some wards can provide towels.",
+      food: "Hospital supplied kai (meals) are typically provided for the admitted patient (e.g., the mother if she is on a postnatal ward), but usually not for partners or whānau staying in the NICU. You are welcome to bring your own food. Parent lounges usually have a fridge and microwave—make sure to clearly label your food with your name and date. For food deliveries like Uber Eats or Delivereasy, drivers cannot enter the wards; you must meet them at the main hospital entrance or designated drop-off zone.",
+      transport: "Major hospitals have designated P5 or P10 drop-off/pick-up zones right outside the main entrance. This is where Ubers, Ola, and family members should drop you off. Taxi ranks are usually located immediately next to these main doors. For public transport, most hospitals have local bus stops either directly within the hospital grounds or just outside the main gates. Check your local council transport app for exact routes."
+    };
+
+    if (topic && facilitiesMap[topic]) {
+      return {
+        overview: "Hospitals in Aotearoa provide various facilities to support whānau during their stay.",
+        facilityDetail: facilitiesMap[topic],
+        disclaimer: "Specific facilities and opening hours vary by hospital. Please ask the ward clerk or front reception."
+      };
+    }
+
+    return {
+      overview: "Hospitals in Aotearoa provide various facilities to support whānau during their stay.",
+      facilities: facilitiesMap,
+      disclaimer: "Specific facilities and opening hours vary by hospital. Please ask the ward clerk or front reception for a hospital map or specific details for your location."
+    };
   }
 );

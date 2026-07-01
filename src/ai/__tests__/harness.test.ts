@@ -11,7 +11,7 @@ import {
   AgentStateType 
 } from '../graph';
 import { checkGuardrails } from '../guardrails';
-import { TaongaKnowledgeWeaver, knowledgeWeaverAgent } from '../knowledge-weaver';
+import { Riroriro, riroriroReactAgent } from '../agents/riroriro';
 
 // Mock the core LLM component globally so we don't make real API calls
 vi.mock('@langchain/google-genai', () => {
@@ -61,7 +61,7 @@ describe('Agent Harness: Routing & Workflows', () => {
     it('routes financial questions to RESEARCH -> knowledge_weaver', async () => {
       const state: AgentStateType = {
         query: 'What financial support is available?',
-        consentGiven: true,
+        consentGiven: true, locale: 'en-NZ',
         messages: [],
         userRole: 'parent',
         intent: null,
@@ -77,13 +77,13 @@ describe('Agent Harness: Routing & Workflows', () => {
 
       const result = await supervisorNode(state);
       expect(result.intent).toBe('RESEARCH');
-      expect(result.currentAgent).toBe('knowledge_weaver');
+      expect(result.currentAgent).toBe('riroriro');
     });
 
     it('routes cultural questions to RESEARCH -> cultural_safety_guardian', async () => {
       const state: AgentStateType = {
         query: 'How do I find cultural support from my iwi?',
-        consentGiven: true,
+        consentGiven: true, locale: 'en-NZ',
         messages: [],
         userRole: 'parent',
         intent: null,
@@ -99,13 +99,13 @@ describe('Agent Harness: Routing & Workflows', () => {
 
       const result = await supervisorNode(state);
       expect(result.intent).toBe('RESEARCH');
-      expect(result.currentAgent).toBe('cultural_safety_guardian');
+      expect(result.currentAgent).toBe('tuatara');
     });
 
     it('routes application questions to EXECUTION -> funding_eligibility_checker', async () => {
       const state: AgentStateType = {
         query: 'How do I apply for the Best Start payment?',
-        consentGiven: true,
+        consentGiven: true, locale: 'en-NZ',
         messages: [],
         userRole: 'parent',
         intent: null,
@@ -121,13 +121,13 @@ describe('Agent Harness: Routing & Workflows', () => {
 
       const result = await supervisorNode(state);
       expect(result.intent).toBe('EXECUTION');
-      expect(result.currentAgent).toBe('funding_eligibility_checker');
+      expect(result.currentAgent).toBe('kea');
     });
 
     it('falls back to RESEARCH -> knowledge_weaver if no consent is given', async () => {
       const state: AgentStateType = {
         query: 'apply for funding',
-        consentGiven: false,
+        consentGiven: false, locale: 'en-NZ',
         messages: [],
         userRole: 'parent',
         intent: null,
@@ -143,21 +143,21 @@ describe('Agent Harness: Routing & Workflows', () => {
 
       const result = await supervisorNode(state);
       expect(result.intent).toBe('RESEARCH');
-      expect(result.currentAgent).toBe('knowledge_weaver');
+      expect(result.currentAgent).toBe('riroriro');
     });
   });
 
   describe('Citation Quality (Knowledge Weaver)', () => {
-    let weaver: TaongaKnowledgeWeaver;
+    let weaver: Riroriro;
 
     beforeEach(() => {
-      weaver = new TaongaKnowledgeWeaver();
+      weaver = new Riroriro();
     });
 
     it('formats tool outputs into strict [1] inline citations and Sources block', async () => {
       // We mock the inner agent to return a response WITHOUT sources,
       // forcing our custom process method to append the formatted tool_outputs.
-      (knowledgeWeaverAgent.invoke as any).mockResolvedValue({
+      (riroriroReactAgent.invoke as any).mockResolvedValue({
         messages: [
           new ToolMessage({
             content: JSON.stringify([
@@ -180,7 +180,7 @@ describe('Agent Harness: Routing & Workflows', () => {
     });
 
     it('does not double-append sources if LLM already provided them', async () => {
-      (knowledgeWeaverAgent.invoke as any).mockResolvedValue({
+      (riroriroReactAgent.invoke as any).mockResolvedValue({
         messages: [
           new ToolMessage({
             content: JSON.stringify([
@@ -224,7 +224,7 @@ describe('Agent Harness: Routing & Workflows', () => {
     it('guardrail node correctly modifies state', async () => {
       const state: AgentStateType = {
         query: 'how much funding',
-        consentGiven: true,
+        consentGiven: true, locale: 'en-NZ',
         messages: [],
         userRole: 'parent',
         intent: 'EXECUTION',

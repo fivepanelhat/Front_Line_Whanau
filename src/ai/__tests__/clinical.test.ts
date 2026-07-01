@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import { ClinicalTriageCompanion } from '../agents/ClinicalTriageCompanion';
+import { Ruru } from '../agents/ruru';
 
 beforeAll(() => {
   process.env.TAVILY_API_KEY = 'test_key';

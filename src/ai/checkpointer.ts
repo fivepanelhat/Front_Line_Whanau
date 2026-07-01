@@ -1,4 +1,3 @@
-import 'server-only';
 import { MemorySaver } from '@langchain/langgraph';
 import { PostgresSaver } from '@langchain/langgraph-checkpoint-postgres';
 import { Pool } from 'pg';

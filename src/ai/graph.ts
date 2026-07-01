@@ -1,4 +1,3 @@
-import 'server-only';
 import { StateGraph, END, START, interrupt, MemorySaver } from '@langchain/langgraph';
 import { BaseMessage, HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { Annotation } from '@langchain/langgraph';
@@ -11,20 +10,20 @@ import { AetherSummit } from './aether-summit';
 import { checkGuardrails } from './guardrails';
 
 // Existing agents
-import { TaongaKnowledgeWeaver } from './knowledge-weaver';
 import { WhanauPathwayArchitect } from './pathway-architect';
 import { SovereignExecutor } from './executor';
 
 // New specialist agents
-import { CulturalSafetyGuardian } from './agents/CulturalSafetyGuardian';
-import { ResourceNavigator } from './agents/ResourceNavigator';
-import { TraumaInformedCompanion } from './agents/TraumaInformedCompanion';
-import { FundingEligibilityChecker } from './agents/FundingEligibilityChecker';
-import { ClinicalTriageCompanion } from './agents/ClinicalTriageCompanion';
-import { PolicyAdvocateCompanion } from './agents/PolicyAdvocateCompanion';
-import { MedicalJargonTranslator } from './agents/MedicalJargonTranslator';
-import { FeedingNavigator } from './agents/FeedingNavigator';
-import { CulturalNavigator } from './agents/CulturalNavigator';
+import { Tuatara } from './agents/tuatara';
+import { Tiwaiwaka } from './agents/tiwaiwaka';
+import { Kiwi } from './agents/kiwi';
+import { Kea } from './agents/kea';
+import { Ruru } from './agents/ruru';
+import { Kahu } from './agents/kahu';
+import { Tui } from './agents/tui';
+import { Takahe } from './agents/takahe';
+import { Toroa } from './agents/toroa';
+import { Riroriro } from './agents/riroriro';
 import { createCheckpointSaver } from './checkpointer';
 
 const AgentState = Annotation.Root({
@@ -60,6 +59,10 @@ const AgentState = Annotation.Root({
     reducer: (x, y) => y ?? x,
     default: () => null,
   }),
+  locale: Annotation<string | undefined>({
+    reducer: (x, y) => y ?? x,
+    default: () => undefined,
+  }),
   requiresHumanReview: Annotation<boolean>({
     reducer: (x, y) => y ?? x,
     default: () => false,
@@ -90,19 +93,19 @@ function logAgentEvent(event: string, data: Record<string, any>) {
 
 // === AGENT INSTANCES ===
 const aetherSummit = new AetherSummit();
-const knowledgeWeaver = new TaongaKnowledgeWeaver();
+const riroriro = new Riroriro();
 const pathwayArchitect = new WhanauPathwayArchitect();
 const executor = new SovereignExecutor();
 
-const culturalGuardian = new CulturalSafetyGuardian();
-const resourceNavigator = new ResourceNavigator();
-const traumaCompanion = new TraumaInformedCompanion();
-const fundingChecker = new FundingEligibilityChecker();
-const clinicalTriage = new ClinicalTriageCompanion();
-const policyAdvocate = new PolicyAdvocateCompanion();
-const medicalTranslator = new MedicalJargonTranslator();
-const feedingNavigator = new FeedingNavigator();
-const culturalNavigator = new CulturalNavigator();
+const tuatara = new Tuatara();
+const tiwaiwaka = new Tiwaiwaka();
+const kiwi = new Kiwi();
+const kea = new Kea();
+const ruru = new Ruru();
+const kahu = new Kahu();
+const tui = new Tui();
+const takahe = new Takahe();
+const toroa = new Toroa();
 
 // === NODES ===
 const intentClassifier = new ChatGoogleGenerativeAI({
@@ -144,38 +147,38 @@ export async function supervisorNode(state: AgentStateType): Promise<Partial<Age
   if (!state.consentGiven) {
     return {
       intent: "RESEARCH",
-      currentAgent: "knowledge_weaver",
+      currentAgent: "riroriro",
       messages: [new HumanMessage(state.query)],
     };
   }
 
   const intent = await classifyIntent(state.query);
 
-  let nextAgent = "knowledge_weaver";
+  let nextAgent = "riroriro";
 
   if (intent === "EXECUTION") {
-    nextAgent = "funding_eligibility_checker";
+    nextAgent = "kea";
   } else if (intent === "ADVOCACY") {
-    nextAgent = "policy_advocate_companion";
+    nextAgent = "kahu";
   } else if (intent === "TRANSLATE") {
-    nextAgent = "medical_jargon_translator";
+    nextAgent = "tui";
   } else if (intent === "CLINICAL") {
-    nextAgent = "clinical_triage_companion";
+    nextAgent = "ruru";
   } else if (intent === "NUTRITION") {
-    nextAgent = "feeding_navigator";
+    nextAgent = "takahe";
   } else if (intent === "CULTURAL") {
-    nextAgent = "cultural_navigator";
+    nextAgent = "toroa";
   } else if (intent === "PLANNING") {
-    nextAgent = "trauma_informed_companion";
+    nextAgent = "kiwi";
   } else if (intent === "RESEARCH") {
     if (
       state.query.toLowerCase().includes("cultural") ||
       state.query.toLowerCase().includes("marae") ||
       state.query.toLowerCase().includes("iwi")
     ) {
-      nextAgent = "cultural_safety_guardian";
+      nextAgent = "tuatara";
     } else {
-      nextAgent = "knowledge_weaver";
+      nextAgent = "riroriro";
     }
   }
 
@@ -192,7 +195,7 @@ export async function supervisorNode(state: AgentStateType): Promise<Partial<Age
   };
 }
 
-async function knowledgeWeaverNode(state: AgentStateType) {
+async function riroriroNode(state: AgentStateType) {
   if (!state.consentGiven) {
     return {
       finalResponse: "AI processing requires your explicit consent. Please enable AI processing in your settings or consent banner.",
@@ -201,14 +204,14 @@ async function knowledgeWeaverNode(state: AgentStateType) {
     };
   }
   try {
-    const result = await knowledgeWeaver.process(state.query, state as any);
+    const result = await riroriro.process(state.query, state as any);
     return {
       finalResponse: result.content,
       sources: (result as any).sources || [],
       requiresHumanReview: result.requiresHumanReview ?? false,
     };
   } catch (error) {
-    log.error({ error }, 'knowledgeWeaverNode failed');
+    log.error({ error }, 'riroriroNode failed');
     return { finalResponse: "I'm currently experiencing high demand and cannot answer your query right now. Please try again shortly." };
   }
 }
@@ -239,31 +242,31 @@ async function sovereignExecutorNode(state: AgentStateType) {
   };
 }
 
-async function culturalSafetyGuardianNode(state: AgentStateType) {
+async function tuataraNode(state: AgentStateType) {
   try {
-    const result = await culturalGuardian.process(state.query, state);
+    const result = await tuatara.process(state.query, state);
     return {
       finalResponse: result.content,
       requiresHumanReview: result.requiresHumanReview ?? false,
     };
   } catch (error) {
-    log.error({ error }, 'culturalSafetyGuardianNode failed');
+    log.error({ error }, 'tuataraNode failed');
     return { finalResponse: "Kia ora, I am having trouble connecting to my cultural safety systems right now. Please try again soon." };
   }
 }
 
-async function resourceNavigatorNode(state: AgentStateType) {
-  const result = await resourceNavigator.process(state.query, state as any);
+async function tiwaiwakaNode(state: AgentStateType) {
+  const result = await tiwaiwaka.process(state.query, state as any);
   return { finalResponse: result.content, sources: result.sources || [] };
 }
 
 async function traumaInformedCompanionNode(state: AgentStateType) {
-  const result = await traumaCompanion.process(state.query, state as any);
+  const result = await kiwi.process(state.query, state as any);
   return { finalResponse: result.content };
 }
 
 async function fundingEligibilityCheckerNode(state: AgentStateType) {
-  const result = await fundingChecker.process(state.query, state as any);
+  const result = await kea.process(state.query, state as any);
   return {
     finalResponse: result.content,
     requiresHumanReview: true,
@@ -273,7 +276,7 @@ async function fundingEligibilityCheckerNode(state: AgentStateType) {
 
 async function clinicalTriageCompanionNode(state: AgentStateType) {
   try {
-    const result = await clinicalTriage.process(state.query, state as any);
+    const result = await ruru.process(state.query, state as any);
     return {
       finalResponse: result.content,
       showUrgentHelp: true,
@@ -288,29 +291,29 @@ async function clinicalTriageCompanionNode(state: AgentStateType) {
 }
 
 async function policyAdvocateCompanionNode(state: AgentStateType) {
-  const result = await policyAdvocate.process(state.query, state as any);
+  const result = await kahu.process(state.query, state as any);
   return {
     finalResponse: result.content,
     requiresHumanReview: true,
   };
 }
 
-async function medicalJargonTranslatorNode(state: AgentStateType) {
-  const result = await medicalTranslator.process(state.query, state as any);
+async function tuiNode(state: AgentStateType) {
+  const result = await tui.process(state.query, state as any);
   return {
     finalResponse: result.content,
   };
 }
 
-async function feedingNavigatorNode(state: AgentStateType) {
-  const result = await feedingNavigator.process(state.query, state as any);
+async function takaheNode(state: AgentStateType) {
+  const result = await takahe.process(state.query, state as any);
   return {
     finalResponse: result.content,
   };
 }
 
-async function culturalNavigatorNode(state: AgentStateType) {
-  const result = await culturalNavigator.process(state.query, state as any);
+async function toroaNode(state: AgentStateType) {
+  const result = await toroa.process(state.query, state as any);
   return {
     finalResponse: result.content,
   };
@@ -334,8 +337,28 @@ export async function guardrailNode(state: AgentStateType): Promise<Partial<Agen
     });
   }
 
+  let finalResponse = gate.modifiedResponse ?? state.finalResponse;
+
+  // Universally append medical disclaimer for clinical/knowledge agents
+  const disclaimerAgents = [
+    'ruru',
+    'tui', 
+    'takahe',
+    'riroriro',
+    'kiwi'
+  ];
+
+  if (disclaimerAgents.includes(state.currentAgent) && !finalResponse.includes('medical advice')) {
+    finalResponse += "\n\n> [!CAUTION]\n> **Disclaimer:** Whilst our AI is a trained guidance tool that navigates this space to tautoko whānau, remember to practice discernment and due diligence. It is **not a registered medical, financial or cultural advisor**. Always consult a registered practitioner for professional advice.";
+  }
+
+  // Multilingual dialect disclaimer
+  if (state.locale && state.locale !== 'en' && !finalResponse.includes('cultural dialect')) {
+    finalResponse += "\n\n> [!NOTE]\n> **Translation Disclaimer:** Please accept that as an AI, not all cultural dialect and translation is absolutely perfect, and we tautoko that.";
+  }
+
   return {
-    finalResponse: gate.modifiedResponse ?? state.finalResponse,
+    finalResponse,
     showUrgentHelp: gate.showUrgentHelp,
     requiresHumanReview: !gate.passed || state.requiresHumanReview,
   };
@@ -375,18 +398,18 @@ export async function humanReviewNode(state: AgentStateType): Promise<Partial<Ag
 // === GRAPH ===
 const graph = new StateGraph(AgentState)
   .addNode('supervisor', supervisorNode)
-  .addNode('knowledge_weaver', knowledgeWeaverNode)
+  .addNode('riroriro', riroriroNode)
   .addNode('pathway_architect', pathwayArchitectNode)
   .addNode('sovereign_executor', sovereignExecutorNode)
-  .addNode('cultural_safety_guardian', culturalSafetyGuardianNode)
-  .addNode('resource_navigator', resourceNavigatorNode)
-  .addNode('trauma_informed_companion', traumaInformedCompanionNode)
-  .addNode('funding_eligibility_checker', fundingEligibilityCheckerNode)
-  .addNode('clinical_triage_companion', clinicalTriageCompanionNode)
-  .addNode('policy_advocate_companion', policyAdvocateCompanionNode)
-  .addNode('medical_jargon_translator', medicalJargonTranslatorNode)
-  .addNode('feeding_navigator', feedingNavigatorNode)
-  .addNode('cultural_navigator', culturalNavigatorNode)
+  .addNode('tuatara', tuataraNode)
+  .addNode('resource_navigator', tiwaiwakaNode)
+  .addNode('kiwi', traumaInformedCompanionNode)
+  .addNode('kea', fundingEligibilityCheckerNode)
+  .addNode('ruru', clinicalTriageCompanionNode)
+  .addNode('kahu', policyAdvocateCompanionNode)
+  .addNode('tui', tuiNode)
+  .addNode('takahe', takaheNode)
+  .addNode('toroa', toroaNode)
   .addNode('guardrails', guardrailNode)
   .addNode('human_review', humanReviewNode);
 
@@ -394,51 +417,51 @@ graph.addEdge(START, 'supervisor');
 
 graph.addConditionalEdges('supervisor', (state) => {
   switch (state.currentAgent) {
-    case 'knowledge_weaver':
-      return 'knowledge_weaver';
+    case 'riroriro':
+      return 'riroriro';
     case 'pathway_architect':
       return 'pathway_architect';
     case 'sovereign_executor':
       return 'sovereign_executor';
-    case 'cultural_safety_guardian':
-      return 'cultural_safety_guardian';
+    case 'tuatara':
+      return 'tuatara';
     case 'resource_navigator':
       return 'resource_navigator';
-    case 'trauma_informed_companion':
-      return 'trauma_informed_companion';
-    case 'funding_eligibility_checker':
-      return 'funding_eligibility_checker';
-    case 'clinical_triage_companion':
-      return 'clinical_triage_companion';
-    case 'policy_advocate_companion':
-      return 'policy_advocate_companion';
-    case 'medical_jargon_translator':
-      return 'medical_jargon_translator';
-    case 'feeding_navigator':
-      return 'feeding_navigator';
-    case 'cultural_navigator':
-      return 'cultural_navigator';
+    case 'kiwi':
+      return 'kiwi';
+    case 'kea':
+      return 'kea';
+    case 'ruru':
+      return 'ruru';
+    case 'kahu':
+      return 'kahu';
+    case 'tui':
+      return 'tui';
+    case 'takahe':
+      return 'takahe';
+    case 'toroa':
+      return 'toroa';
     default:
-      return 'knowledge_weaver';
+      return 'riroriro';
   }
 });
 
 // All agents flow through guardrails
-graph.addEdge('knowledge_weaver', 'guardrails');
+graph.addEdge('riroriro', 'guardrails');
 graph.addEdge('pathway_architect', 'guardrails');
 graph.addEdge('sovereign_executor', 'guardrails');
-graph.addEdge('cultural_safety_guardian', 'guardrails');
+graph.addEdge('tuatara', 'guardrails');
 graph.addEdge('resource_navigator', 'guardrails');
-graph.addEdge('trauma_informed_companion', 'guardrails');
-graph.addEdge('funding_eligibility_checker', 'guardrails');
-graph.addEdge('clinical_triage_companion', 'guardrails');
-graph.addEdge('policy_advocate_companion', 'guardrails');
-graph.addEdge('medical_jargon_translator', 'guardrails');
-graph.addEdge('feeding_navigator', 'guardrails');
-graph.addEdge('cultural_navigator', 'guardrails');
+graph.addEdge('kiwi', 'guardrails');
+graph.addEdge('kea', 'guardrails');
+graph.addEdge('ruru', 'guardrails');
+graph.addEdge('kahu', 'guardrails');
+graph.addEdge('tui', 'guardrails');
+graph.addEdge('takahe', 'guardrails');
+graph.addEdge('toroa', 'guardrails');
 
 graph.addConditionalEdges("guardrails", (state) => {
-  const highRiskAgents = ["funding_eligibility_checker", "cultural_safety_guardian", "policy_advocate_companion"];
+  const highRiskAgents = ["kea", "tuatara", "kahu"];
 
   if (highRiskAgents.includes(state.currentAgent) && state.requiresHumanReview) {
     return "human_review";

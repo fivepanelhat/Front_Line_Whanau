@@ -33,6 +33,15 @@ export async function POST(request: NextRequest) {
     .eq('thread_id', threadId)
     .eq('status', 'pending');
 
+  if (!approved) {
+    await supabase.from('analytics_events').insert({
+      event_type: 'review_denied',
+      path: '/api/review',
+      session_hash: threadId,
+      metadata: { reason: 'Practitioner modified or rejected response' }
+    });
+  }
+
   const result = await agentApp.invoke(
     new Command({ resume: { approved, modifiedResponse } }),
     { configurable: { thread_id: threadId } }

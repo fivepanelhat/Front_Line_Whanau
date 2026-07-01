@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { TaongaKnowledgeWeaver } from '@/ai/knowledge-weaver';
+import { Riroriro } from '@/ai/agents/riroriro';
 
 export async function POST(request: NextRequest) {
   try {
     const { query } = await request.json();
-    const weaver = new TaongaKnowledgeWeaver();
+    const weaver = new Riroriro();
     const result = await weaver.process(query, {});
     return NextResponse.json(result);
   } catch (error: any) {

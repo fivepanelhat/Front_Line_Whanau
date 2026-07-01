@@ -8,6 +8,8 @@ import { ConsentScope } from '@/lib/consent';
 import { assessPassphrase } from '@/lib/passphrase';
 import { SERVICES } from '@/data/directory';
 import { CATEGORY_LABELS } from '@/data/types';
+import { CareTimers } from './CareTimers';
+import { useLocale } from 'next-intl';
 
 // Static directory data imported directly from the markdown spec
 // Active pathway template checklists
@@ -50,10 +52,11 @@ function cleanAsterisks(text: string): string {
   return cleaned;
 }
 
-export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void; initialTab?: 'ai' | 'pathways' | 'vault' | 'journal' | 'directory' }) {
-  const [activeTab, setActiveTab] = useState<'ai' | 'pathways' | 'vault' | 'journal' | 'directory'>(initialTab);
+export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void; initialTab?: 'ai' | 'pathways' | 'vault' | 'journal' | 'directory' | 'timers' }) {
+  const [activeTab, setActiveTab] = useState<'ai' | 'pathways' | 'vault' | 'journal' | 'directory' | 'timers'>(initialTab);
   const [hasVaultSalt, setHasVaultSalt] = useState(false);
   const [hasJournalSalt, setHasJournalSalt] = useState(false);
+  const locale = useLocale();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -109,6 +112,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
         body: JSON.stringify({
           query: queryText,
           scopes,
+          locale,
         }),
       });
       if (!response.ok) throw new Error('API call failed');
@@ -357,6 +361,14 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
             >
               🗺️ Services Directory
             </button>
+            <button
+              onClick={() => setActiveTab('timers')}
+              className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
+                activeTab === 'timers' ? 'bg-accent-primary text-white' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
+              }`}
+            >
+              ⏱️ Care Timers
+            </button>
           </div>
 
           {/* Privacy status & Consent overview */}
@@ -504,6 +516,9 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
                     Send
                   </button>
                 </form>
+                <p className="mt-3 text-center text-[11px] text-text-muted/80">
+                  <span className="font-semibold text-accent-warm">Disclaimer:</span> Whilst our AI is a trained guidance tool that navigates this space to tautoko whānau, remember to practice discernment and due diligence. It is <strong>not a registered medical, financial or cultural advisor</strong>. Always consult a registered practitioner for professional advice.
+                </p>
               </div>
             </div>
           )}
@@ -933,6 +948,13 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* TAB 6: Care Timers */}
+          {activeTab === 'timers' && (
+            <div className="mx-auto max-w-4xl space-y-6">
+              <CareTimers />
             </div>
           )}
 

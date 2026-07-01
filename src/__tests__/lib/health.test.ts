@@ -53,7 +53,7 @@ describe('GET /api/health', () => {
 
   it('returns 200 with status ok and database connected', async () => {
     const { GET } = await import('../../app/api/health/route');
-    const response = await GET();
+    const response = await GET(new Request('http://localhost'));
 
     expect(response.status).toBe(200);
     const body = await response.json();
@@ -66,7 +66,7 @@ describe('GET /api/health', () => {
   it('returns 503 when database returns an error', async () => {
     mockDatabaseError = { message: 'Database connection failed' };
     const { GET } = await import('../../app/api/health/route');
-    const response = await GET();
+    const response = await GET(new Request('http://localhost'));
 
     expect(response.status).toBe(503);
     const body = await response.json();
@@ -78,7 +78,7 @@ describe('GET /api/health', () => {
   it('returns 500 when client creation throws an exception', async () => {
     mockCreateClientError = true;
     const { GET } = await import('../../app/api/health/route');
-    const response = await GET();
+    const response = await GET(new Request('http://localhost'));
 
     expect(response.status).toBe(500);
     const body = await response.json();
@@ -89,7 +89,7 @@ describe('GET /api/health', () => {
 
   it('HEAD returns 200 status and no-store when healthy', async () => {
     const { HEAD } = await import('../../app/api/health/route');
-    const response = await HEAD();
+    const response = await HEAD(new Request('http://localhost'));
 
     expect(response.status).toBe(200);
     expect(response.headers.get('Cache-Control')).toBe('no-store');

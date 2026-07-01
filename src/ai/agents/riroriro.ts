@@ -1,26 +1,31 @@
 // src/ai/knowledge-weaver.ts
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
-import { PROMPTS } from "./prompts";
-import { webSearchTool } from "./tools";
+import { createAgentLLM } from '../llm';
+import { PROMPTS } from "../prompts";
+import { webSearchTool } from "../tools";
 
-const knowledgeLLM = new ChatGoogleGenerativeAI({
-  model: "gemini-2.5-flash",
-  temperature: 0.2,
-});
+const knowledgeLLM = createAgentLLM();
 
-export const knowledgeWeaverAgent = createReactAgent({
+export const riroriroReactAgent = createReactAgent({
   llm: knowledgeLLM,
   tools: [webSearchTool],
   prompt: PROMPTS.knowledgeWeaver,
 });
 
-export class TaongaKnowledgeWeaver {
-  name = "knowledge_weaver";
+export class Riroriro {
+  name = 'riroriro';
 
   async process(query: string, state: any) {
-    const result = await knowledgeWeaverAgent.invoke({
-      messages: [{ role: 'user', content: query }],
+    const messages: any[] = [];
+    if (state?.locale) {
+      if (state.locale === 'mi') messages.push({ role: 'system', content: "CRITICAL: The user has selected 'mi' (Te Reo Māori). You MUST respond entirely in Te Reo Māori." });
+      else if (state.locale === 'sm') messages.push({ role: 'system', content: "CRITICAL: The user has selected 'sm' (Gagana Samoa). You MUST respond entirely in Gagana Samoa." });
+      else if (state.locale === 'to') messages.push({ role: 'system', content: "CRITICAL: The user has selected 'to' (Lea Faka-Tonga). You MUST respond entirely in Lea Faka-Tonga." });
+    }
+    messages.push({ role: 'user', content: query });
+
+    const result = await riroriroReactAgent.invoke({
+      messages,
     });
 
     const lastMessage = result.messages[result.messages.length - 1];

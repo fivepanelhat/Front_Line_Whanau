@@ -1,24 +1,23 @@
-import 'server-only';
 import { BaseAgent } from './base';
 import { getEmotionalSupportResourcesTool } from '../tools';
-import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+import { createAgentLLM } from '../llm';
 import { createReactAgent } from '@langchain/langgraph/prebuilt';
 import { AgentConfig, AgentState } from '@/ai/types';
 import { AgentResponse, OrchestrationContext } from '@/ai/types';
 import { PROMPTS } from '@/ai/prompts';
 
-export class TraumaInformedCompanion extends BaseAgent {
-  name = 'trauma_informed_companion';
+export class Kiwi extends BaseAgent {
+  name = 'kiwi';
 
   private agent = createReactAgent({
-    llm: new ChatGoogleGenerativeAI({ model: 'gemini-1.5-flash', temperature: 0.3 }),
+    llm: createAgentLLM({ temperature: 0.3 }),
     tools: [getEmotionalSupportResourcesTool],
     prompt: PROMPTS.traumaInformedCompanion,
   });
 
   constructor() {
     const config: AgentConfig = {
-      name: 'trauma_informed_companion',
+      name: 'kiwi',
       description: 'Provides emotional validation and trauma-informed support language',
       systemPrompt: PROMPTS.traumaInformedCompanion,
     };

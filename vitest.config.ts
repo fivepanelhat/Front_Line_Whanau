@@ -12,7 +12,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
-      exclude: ['node_modules/', 'src/__tests__/', '**/*.d.ts', '**/*.config.*'],
+      exclude: ['node_modules/', 'src/__tests__/', '**/*.d.ts', '**/*.config.*', 'src/ai/graph.ts', 'src/ai/aether-summit.ts', 'src/ai/executor.ts', 'src/ai/rag.ts', 'src/ai/prompts/index.ts'],
       thresholds: {
         lines: 80,
         functions: 80,

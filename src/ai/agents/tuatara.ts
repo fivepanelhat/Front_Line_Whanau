@@ -1,26 +1,21 @@
-import 'server-only';
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { createAgentLLM } from '../llm';
 import { PROMPTS } from "../prompts";
-import { getFundingInfoTool } from "../tools";
+import { getCulturalResourcesTool } from "../tools";
 
-const fundingLLM = new ChatGoogleGenerativeAI({
-  model: "gemini-2.5-flash",
-  temperature: 0.1,
-  maxOutputTokens: 1024,
+const culturalLLM = createAgentLLM();
+
+const culturalReactAgent = createReactAgent({
+  llm: culturalLLM,
+  tools: [getCulturalResourcesTool],
+  prompt: PROMPTS.culturalSafetyGuardian,
 });
 
-const fundingReactAgent = createReactAgent({
-  llm: fundingLLM,
-  tools: [getFundingInfoTool],
-  prompt: PROMPTS.fundingEligibilityChecker,
-});
-
-export class FundingEligibilityChecker {
-  name = "funding_eligibility_checker";
+export class Tuatara {
+  name = 'tuatara';
 
   async process(query: string, state: any) {
-    const result = await fundingReactAgent.invoke({
+    const result = await culturalReactAgent.invoke({
       messages: [{ role: "user", content: query }],
     });
 
@@ -38,7 +33,6 @@ export class FundingEligibilityChecker {
       content,
       agentUsed: this.name,
       requiresHumanReview: true,
-      sources: [], // Can be enhanced later
     };
   }
 }

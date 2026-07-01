@@ -22,7 +22,6 @@ export async function POST(req: NextRequest) {
 
     // Generate a daily anonymised session hash based on IP
     // This allows us to track unique sessions per day without storing PII
-    const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || '127.0.0.1';
     const dateSalt = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
     const sessionHash = crypto.createHash('sha256').update(`${ip}-${dateSalt}`).digest('hex');
 
