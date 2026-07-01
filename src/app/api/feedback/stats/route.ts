@@ -2,11 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 const StatsQuerySchema = z.object({
   from: z.string().optional(),
   to: z.string().optional(),
@@ -24,6 +19,11 @@ export async function GET(req: NextRequest) {
       to: searchParams.get('to') || undefined,
       agent: searchParams.get('agent') || undefined,
     });
+
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
 
     let dbQuery = supabase
       .from('ai_feedback')
