@@ -4,16 +4,15 @@ Dynamically creates LangChain runnables with tool bindings and cultural safety.
 """
 from typing import Any
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_ollama import ChatOllama
+from langchain_google_genai import ChatGoogleGenerativeAI
 from aether_summit.config import settings
 from aether_summit.cultural_safety import apply_cultural_safety
 
 def create_agent(system_prompt: str, name: str, tools: list = None):
-    llm = ChatOllama(
-        model=settings.model,
-        temperature=settings.temperature,
-        base_url=settings.ollama_base_url,
-        num_ctx=4096,
+    llm = ChatGoogleGenerativeAI(
+        model="gemini-2.5-flash",
+        temperature=0.1,
+        max_output_tokens=1024,
     )
     prompt = ChatPromptTemplate.from_messages([
         ("system", apply_cultural_safety(system_prompt)),

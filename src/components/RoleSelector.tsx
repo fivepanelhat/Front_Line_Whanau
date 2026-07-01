@@ -21,6 +21,7 @@ export default function RoleSelector() {
         <Link
           href={`/${locale}/parent`}
           onClick={() => setRole('parent')}
+          data-testid="parent-role-btn"
           className="flex-1 p-8 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl transition-all duration-200 shadow-lg text-left block"
         >
           <div className="text-2xl font-semibold mb-2">{t('parentTitle')}</div>
@@ -31,6 +32,7 @@ export default function RoleSelector() {
         <Link
           href={`/${locale}/practitioner`}
           onClick={() => setRole('practitioner')}
+          data-testid="practitioner-role-btn"
           className="flex-1 p-8 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl transition-all duration-200 shadow-lg text-left block"
         >
           <div className="text-2xl font-semibold mb-2">{t('practitionerTitle')}</div>

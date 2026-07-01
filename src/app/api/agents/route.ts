@@ -1,9 +1,16 @@
 import { NextRequest } from 'next/server';
 import { agentGraph } from '@/ai/graph';
 import { HumanMessage, AIMessage } from '@langchain/core/messages';
+import { routeLogger } from '@/lib/logger';
+import { aiCircuitBreaker } from '@/lib/circuit-breaker';
+import * as Sentry from '@sentry/nextjs';
 
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
+const log = routeLogger('/api/agents');
+import { createClient } from '@/lib/supabase/server';
+import { checkRateLimit } from '@/ai/security';
+import { AgentQuerySchema } from '@/lib/validations';
+
+
 
 type ChatHistoryMessage = {
   role: 'user' | 'assistant';
@@ -19,21 +26,32 @@ function isChatHistoryMessage(value: unknown): value is ChatHistoryMessage {
   );
 }
 
-export async function POST(req: NextRequest) {
-  try {
-    const {
-      query,
-      consentGiven = true,
-      threadId = `thread_${Date.now()}`,
-      history = [], // Array of previous messages: [{role: 'user' | 'assistant', content: string}]
-    } = await req.json();
+export async function POST(request: NextRequest) {
+  // 1. IP-based Rate Limiting (10 requests per minute)
+  const ip = request.headers.get('x-forwarded-for') || 'unknown_ip';
+  const isAllowed = await checkRateLimit(ip, 10, 60000);
+  if (!isAllowed) {
+    log.warn({ ip }, 'Rate limit exceeded');
+    return new Response(JSON.stringify({ error: 'Too Many Requests' }), { status: 429 });
+  }
 
-    if (!query || typeof query !== 'string') {
-      return new Response(JSON.stringify({ error: 'Query is required' }), { status: 400 });
+  try {
+    const rawBody = await request.json();
+    const parsed = AgentQuerySchema.safeParse(rawBody);
+    
+    if (!parsed.success) {
+      return new Response(JSON.stringify({ error: 'Invalid Input', details: parsed.error }), { status: 400 });
     }
 
-    // Convert history into LangChain messages
-    const safeHistory = Array.isArray(history) ? history.filter(isChatHistoryMessage) : [];
+    const { 
+      query, 
+      consentGiven = true, 
+      threadId = `thread_${Date.now()}`,
+      history = []
+    } = parsed.data;
+
+    // Convert history into LangChain messages, limiting to the last 10 to save tokens
+    const safeHistory = (Array.isArray(history) ? history.filter(isChatHistoryMessage) : []).slice(-10);
 
     const previousMessages = safeHistory.map((msg) =>
       msg.role === 'user'
@@ -41,22 +59,37 @@ export async function POST(req: NextRequest) {
         : new AIMessage(msg.content)
     );
 
+    // 2. AbortController Timeout (30 seconds)
+    const abortController = new AbortController();
+    const timeoutId = setTimeout(() => abortController.abort(), 30000);
+
     const stream = new ReadableStream({
       async start(controller) {
         const encoder = new TextEncoder();
+        const startTime = Date.now();
 
         try {
-          const eventStream = await agentGraph.streamEvents(
-            {
-              query,
-              consentGiven,
-              messages: [...previousMessages, new HumanMessage(query)],
-            },
-            {
-              version: 'v2',
-              configurable: { thread_id: threadId },
+          const runGraph = async () => {
+            return await agentGraph.streamEvents(
+              {
+                query,
+                consentGiven,
+                messages: [...previousMessages, new HumanMessage(query)],
+              },
+              {
+                version: 'v2',
+                configurable: { thread_id: threadId },
+                signal: abortController.signal
+              }
+            );
+          };
+
+          const eventStream = await aiCircuitBreaker.fire(runGraph).catch((cbError: any) => {
+            if (cbError.message && cbError.message.includes('OPEN')) {
+              throw new Error('CIRCUIT_OPEN');
             }
-          );
+            throw cbError;
+          });
 
           for await (const event of eventStream) {
             if (event.event === 'on_chat_model_stream') {
@@ -81,19 +114,92 @@ export async function POST(req: NextRequest) {
                   })}\n\n`
                 )
               );
+
+              const durationMs = Date.now() - startTime;
+              createClient().then(supabase => {
+                supabase.from('analytics_events').insert({
+                  event_type: 'agent_latency',
+                  path: '/api/agents',
+                  session_hash: threadId,
+                  metadata: { agent: finalState?.currentAgent, durationMs }
+                }).then(() => {});
+              });
             }
           }
 
           controller.enqueue(encoder.encode('data: [DONE]\n\n'));
-          controller.close();
-        } catch (error) {
-          console.error('Streaming error:', error);
-          controller.enqueue(
-            encoder.encode(`data: ${JSON.stringify({
-              type: 'error',
-              message: 'Something went wrong while processing your request.',
-            })}\n\n`)
-          );
+        } catch (error: any) {
+          // Handle LangGraph Interrupt
+          if (error && (error.name === 'Interrupt' || error.name === 'GraphInterrupt')) {
+            // Extract the proposed response from the interrupt value
+            const interruptValue = error.value || error.interrupt || {};
+            const proposedResponse = interruptValue.proposedResponse || '';
+
+            // Insert pending review into Supabase
+            try {
+              const supabase = await createClient();
+              await supabase.from('ai_reviews').insert({
+                thread_id: threadId,
+                query: query,
+                proposed_response: proposedResponse,
+                status: 'pending',
+              });
+            } catch (dbErr) {
+              log.error({ err: dbErr, threadId }, 'Failed to save ai_review');
+            }
+            
+            log.info({ threadId }, 'LangGraph interrupted for Human-in-the-Loop review');
+            
+            controller.enqueue(
+              encoder.encode(
+                `data: ${JSON.stringify({
+                  type: 'interrupt',
+                  message: 'This response requires human review before being sent.',
+                  threadId,
+                  requiresHumanReview: true,
+                  proposedResponse,
+                })}\n\n`
+              )
+            );
+          } else if (error.name === 'AbortError') {
+            log.error({ threadId }, 'Agent execution timed out after 30 seconds');
+            controller.enqueue(
+              encoder.encode(`data: ${JSON.stringify({ 
+                type: 'error', 
+                content: 'The request timed out. Please try again.' 
+              })}\n\n`)
+            );
+          } else if (error.message === 'CIRCUIT_OPEN') {
+            log.error({ threadId }, 'Circuit Breaker Open - System under high load');
+            controller.enqueue(
+              encoder.encode(`data: ${JSON.stringify({ 
+                type: 'error', 
+                content: 'The system is experiencing high volume. Please try again later.' 
+              })}\n\n`)
+            );
+          } else {
+            // Generic error
+            log.error({ err: error, threadId }, 'Streaming error');
+            Sentry.captureException(error, {
+              tags: { component: 'agent_graph', threadId }
+            });
+            createClient().then(supabase => {
+              supabase.from('analytics_events').insert({
+                event_type: 'agent_error',
+                path: '/api/agents',
+                session_hash: threadId,
+                metadata: { error: error.message || 'Generic error' }
+              }).then(() => {});
+            });
+            controller.enqueue(
+              encoder.encode(`data: ${JSON.stringify({ 
+                type: 'error', 
+                content: 'An error occurred during streaming.' 
+              })}\n\n`)
+            );
+          }
+        } finally {
+          clearTimeout(timeoutId);
           controller.close();
         }
       },
@@ -106,8 +212,10 @@ export async function POST(req: NextRequest) {
         Connection: 'keep-alive',
       },
     });
+
   } catch (error) {
-    console.error('API error:', error);
+    log.error({ err: error }, 'API error');
+    Sentry.captureException(error, { tags: { route: '/api/agents' } });
     return new Response(JSON.stringify({ error: 'Internal server error' }), { status: 500 });
   }
 }

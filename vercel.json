@@ -1,6 +1,3 @@
-# Front Line Whānau — Vercel Configuration
-# Docs: https://vercel.com/docs/projects/project-configuration
-
 {
   "version": 2,
   "framework": "nextjs",
@@ -53,7 +50,7 @@
   "crons": [
     {
       "path": "/api/health",
-      "schedule": "*/5 * * * *"
+      "schedule": "0 0 * * *"
     }
   ]
 }

@@ -1,6 +1,7 @@
 {
   "name": "front-line-whanau",
   "version": "0.2.0",
+  "type": "module",
   "private": true,
   "engines": {
     "node": ">=22.0.0",
@@ -44,17 +45,21 @@
   "author": "fivepanelhat",
   "license": "MIT",
   "dependencies": {
+    "@ducanh2912/next-pwa": "^10.2.6",
     "@langchain/community": "^1.1.29",
     "@langchain/core": "^1.2.1",
     "@langchain/google-genai": "^2.2.0",
     "@langchain/langgraph": "^1.4.5",
     "@langchain/langgraph-checkpoint-postgres": "^1.0.4",
-    "@langchain/openai": "^1.5.3",
+    "@langchain/tavily": "^1.2.0",
     "@next/bundle-analyzer": "^16.2.9",
     "@prisma/client": "^7.8.0",
+    "@sentry/nextjs": "^10.62.0",
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.108.2",
     "@tauri-apps/api": "^2.11.1",
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.38.0",
     "next": "^16.2.9",
     "next-intl": "^4.13.0",
     "pg": "^8.22.0",
@@ -62,11 +67,15 @@
     "pino-pretty": "^13.1.3",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "react-markdown": "^10.1.0",
+    "recharts": "^3.9.1",
     "server-only": "^0.0.1",
     "zod": "^3.23.8"
   },
   "overrides": {
-    "@hono/node-server": ">=1.19.13"
+    "@hono/node-server": ">=1.19.13",
+    "postcss": "^8.5.15",
+    "serialize-javascript": "^7.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",

@@ -1,37 +1,64 @@
 import { NextResponse } from 'next/server';
+import { createClient } from '@/lib/supabase/server';
+import { RateLimiter } from '@/lib/rate-limit';
 
-/**
- * Platform health check endpoint.
- * Used by monitoring, load balancers, and E2E tests.
- *
- * Note: This reports on the technical health of the platform only.
- * It is not medical advice. Always consult qualified healthcare professionals
- * for preterm twin / whānau care decisions.
- */
-export async function GET() {
-  return NextResponse.json(
-    {
-      status: 'ok',
-      service: 'whanau-preterm-support-hub-nz',
-      timestamp: new Date().toISOString(),
-      version: process.env.npm_package_version ?? '0.0.0',
-      environment: process.env.NODE_ENV ?? 'development',
-    },
-    {
-      status: 200,
-      headers: {
-        'Cache-Control': 'no-store',
-      },
+const rateLimiter = new RateLimiter(60000, 30); // 30 health checks per minute
+
+export async function GET(req: Request) {
+  const ip = req.headers.get('x-forwarded-for') || 'anonymous';
+  const isAllowed = await rateLimiter.check(`health_${ip}`);
+  if (!isAllowed) {
+    return NextResponse.json({ status: 'rate_limited' }, { status: 429 });
+  }
+
+  const isE2E = process.env.PORTAL_E2E === 'true' || process.env.NEXT_PUBLIC_PORTAL_E2E === 'true';
+
+  try {
+    if (!isE2E) {
+      const supabase = await createClient();
+      // Simple query to verify DB connection
+      const { error } = await supabase.from('organizations').select('id').limit(1);
+      
+      if (error) {
+        console.error('Health check DB error:', error);
+        return NextResponse.json(
+          { status: 'unhealthy', reason: 'database_error' },
+          { 
+            status: 503,
+            headers: {
+              'Cache-Control': 'no-store',
+            }
+          }
+        );
+      }
     }
-  );
+
+    return NextResponse.json(
+      { 
+        status: 'ok',
+        timestamp: new Date().toISOString(),
+        database: isE2E ? 'mocked' : 'connected'
+      },
+      { 
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store',
+        }
+      }
+    );
+
+  } catch (err) {
+    console.error('Health check exception:', err);
+    return NextResponse.json(
+      { status: 'unhealthy', reason: 'internal_error' },
+      { 
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store',
+        }
+      }
+    );
+  }
 }
 
-// Lightweight HEAD support for some monitoring tools
-export async function HEAD() {
-  return new NextResponse(null, {
-    status: 200,
-    headers: {
-      'Cache-Control': 'no-store',
-    },
-  });
-}
+export const HEAD = GET;

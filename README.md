@@ -1,5 +1,8 @@
 # Front_Line_Whanau
 
+[![CI](https://github.com/fivepanelhat/Front_Line_Whanau/actions/workflows/ci.yml/badge.svg)](https://github.com/fivepanelhat/Front_Line_Whanau/actions)
+[![Playwright E2E](https://img.shields.io/badge/E2E%20Tests-passing-brightgreen.svg)](#testing)
+
 Open-Source National Frontline Whānau Support Platform – Aotearoa New Zealand
 
 A sovereign, privacy-first digital platform designed to support whānau of preterm twins and families navigating complex frontline services across Aotearoa New Zealand.
@@ -35,7 +38,7 @@ Nationwide across Aotearoa New Zealand, available as Web, Desktop (Tauri), and P
 
 - **Dual Portals**: Tailored experiences for whānau/parents and practitioners/organisations
 - **Searchable National Directory**: Filter by region, organisation, service type, and role
-- **Self-Service Uploads**: Organisations can submit and update their details (moderated)
+- **Self-Service Uploads**: Organisations can submit directory listings and securely upload resources (Taonga Vault encryption)
 - **Privacy-First Storage**: Client-side encryption (Taonga Vault) with consent-driven access
 - **Cultural Safety**: Strong alignment with Te Tiriti o Waitangi and Te Mana Raraunga
 - **AI Agent Support**: Specialised agents for research, translation, and curation
@@ -48,6 +51,18 @@ Nationwide across Aotearoa New Zealand, available as Web, Desktop (Tauri), and P
 - **AI Agents**: LangGraph-powered multi-agent system
 - **Testing**: Vitest + Playwright
 - **CI/CD**: GitHub Actions
+
+## AI Architecture (LangGraph)
+
+The platform features a multi-agent orchestrated backend using **LangGraph**. A single entry point analyzes the user's intent and dynamically routes them to specialized AI companions:
+
+1. **Supervisor Node (`intentClassifier`)**: Routes queries based on intent (`RESEARCH`, `PLANNING`, `EXECUTION`, `CLINICAL`, `ADVOCACY`).
+2. **Specialized Agents**:
+   - `TraumaInformedCompanion`: Handles general research and planning with deep empathy.
+   - `FundingEligibilityChecker`: Walks users through MSD/WINZ and clinical funding logic.
+   - `ClinicalTriageCompanion`: Safely detects medical symptoms and escalates immediately based on severity (EMERGENCY/URGENT/INFO).
+   - `PolicyAdvocateCompanion`: Drafts formal letters and empowers whānau to advocate for their rights.
+3. **Guardrails & Human Review**: High-risk actions automatically hit a circuit-breaker and flag for human practitioner review before finalizing.
 
 ## Directory Structure
 

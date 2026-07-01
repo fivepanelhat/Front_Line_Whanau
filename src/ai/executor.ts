@@ -1,43 +1,44 @@
-import { LegacyBaseAgent, AgentResponse, OrchestrationContext } from './types';
-import { runToolLayer } from './tool-calling';
+import { createReactAgent } from "@langchain/langgraph/prebuilt";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { PROMPTS } from "./prompts";
+import { documentSearchTool, getFundingInfoTool } from "./tools";
 
-export class SovereignExecutor implements LegacyBaseAgent {
-  name = "Sovereign Executor";
-  description = "Generates templates and supports execution of actions";
+const executorLLM = new ChatGoogleGenerativeAI({
+  model: "gemini-2.5-flash",
+  temperature: 0.1,
+});
 
-  async process(query: string, context?: OrchestrationContext): Promise<AgentResponse> {
-    const toolLayer = await runToolLayer(query);
+const executorAgent = createReactAgent({
+  llm: executorLLM,
+  tools: [documentSearchTool, getFundingInfoTool],
+  prompt: PROMPTS.executor,
+});
 
-    if (toolLayer.calls.length) {
-      const toolSummary = toolLayer.calls
-        .map((call, index) => `${index + 1}. ${call.tool}: ${call.output}`)
-        .join('\n');
+export class SovereignExecutor {
+  name = "sovereign_executor";
 
-      return {
-        content:
-          `Tool-assisted execution plan:\n\n${toolSummary}\n\n` +
-          `I can draft the next action if you share which pathway you want to proceed with.`,
-        confidence: 0.74,
-        agentUsed: this.name,
-        requiresHumanReview: toolLayer.requiresHumanReview,
-        sources: toolLayer.sources,
-        metadata: {
-          toolCalls: toolLayer.calls,
-        },
-      };
-    }
+  async process(query: string, state: any) {
+    const result = await executorAgent.invoke({
+      messages: [{ role: "user", content: query }],
+    });
+
+    const lastMessage = result.messages[result.messages.length - 1];
+    const content = typeof lastMessage.content === 'string'
+      ? lastMessage.content
+      : JSON.stringify(lastMessage.content);
+
+    // Extract tool calls to flag for review if templates are generated
+    const toolMessages = result.messages.filter((m: any) => m._getType && m._getType() === 'tool');
 
     return {
-      content: `📝 Execution Support\n\n` +
-               `I can help with the following (in future versions) ⚙️:\n\n` +
-               `- Pre-filled WINZ application templates 📋\n` +
-               `- IRD Preterm Baby Payment request letters ✉️\n` +
-               `- Tenancy repair notice templates 🏠\n` +
-               `- Consent recording templates for the Documentor 🛡️\n\n` +
-               `What specific document or action would you like help with? ✨`,
-      confidence: 0.68,
+      content,
       agentUsed: this.name,
-      requiresHumanReview: true,
+      requiresHumanReview: true, // We always flag execution for human review to ensure templates are safe
+      confidence: 0.85,
+      sources: [],
+      metadata: {
+        toolCalls: toolMessages.length > 0 ? toolMessages : [],
+      },
     };
   }
 }

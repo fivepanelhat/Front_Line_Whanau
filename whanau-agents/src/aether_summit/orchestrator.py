@@ -20,10 +20,30 @@ def supervisor(state: AgentState):
     messages = state.get("messages", [])
     last_message = str(messages[-1]).lower() if messages else ""
     
-    if any(kw in last_message for kw in ["data", "sovereignty", "privacy", "māori"]):
+    # 1. New Specialist Agents
+    if any(kw in last_message for kw in ["feeding", "tube", "breastmilk", "breastfeed", "nutrition", "solids", "hungry"]):
+        agent = "feeding_navigator"
+        hitl = False
+    elif any(kw in last_message for kw in ["discharge", "home", "leave hospital", "car seat", "rooming"]):
+        agent = "discharge_companion"
+        hitl = False
+    elif any(kw in last_message for kw in ["sibling", "partner", "grandparent", "family support", "husband", "wife"]):
+        agent = "whanau_wellbeing_companion"
+        hitl = False
+    elif any(kw in last_message for kw in ["tikanga", "karakia", "whenua", "tapu", "noa", "custom"]):
+        agent = "cultural_navigator"
+        hitl = False
+    elif any(kw in last_message for kw in ["mental health", "depression", "anxiety", "guilty", "trauma", "overwhelmed", "ptsd"]):
+        agent = "wellbeing_companion"
+        hitl = True
+    elif any(kw in last_message for kw in ["peer", "support group", "community", "others", "connect"]):
+        agent = "peer_connector"
+        hitl = False
+    # 2. Existing Agents
+    elif any(kw in last_message for kw in ["data", "sovereignty", "privacy", "māori"]):
         agent = "kaitiaki"
         hitl = True
-    elif any(kw in last_message for kw in ["medical", "clinical", "health advice", "diagnosis"]):
+    elif any(kw in last_message for kw in ["medical", "clinical", "health advice", "diagnosis", "symptom"]):
         agent = "hauora_safety"
         hitl = True
     elif "write_file" in last_message or "run_terminal" in last_message:
@@ -81,8 +101,8 @@ def build_graph():
     graph.add_node("supervisor", supervisor)
     graph.add_node("human_review", human_review_node)
     
-    agents = ["rangatira", "kaitiaki", "whanau_voice", "hauora_safety", 
-              "forge", "korero", "edge_sovereign", "tikanga_ture", "kounga", "manaaki"]
+    from aether_summit.agents import AGENT_NAMES
+    agents = AGENT_NAMES
               
     for agent_name in agents:
         graph.add_node(agent_name, get_agent(agent_name))

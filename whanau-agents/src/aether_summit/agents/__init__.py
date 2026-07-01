@@ -11,7 +11,9 @@ PROMPTS_DIR = PROJECT_ROOT / "prompts"
 
 AGENT_NAMES = [
     "aether_summit", "rangatira", "kaitiaki", "whanau_voice", "hauora_safety", 
-    "forge", "korero", "edge_sovereign", "tikanga_ture", "kounga", "manaaki"
+    "forge", "korero", "edge_sovereign", "tikanga_ture", "kounga", "manaaki",
+    "feeding_navigator", "discharge_companion", "whanau_wellbeing_companion",
+    "cultural_navigator", "wellbeing_companion", "peer_connector"
 ]
 
 AGENT_PROMPTS = {}

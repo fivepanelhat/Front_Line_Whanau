@@ -4,6 +4,14 @@
 
 **Status**: In Progress
 
+### Completed (2026-06-30 – 2026-07-01)
+
+- [x] Phase 3: Beta Readiness (caching layer, error boundaries, consent modals, and Policy Advocate Agent)
+- [x] Phase 4: Beta Operations (health check APIs, Medical Jargon Translator, Playwright E2E suite, and markdown display)
+- [x] Phase 5: Production Readiness (Supabase rate limits, load tests, Slack logging integrations, and OnboardingWizard)
+- [x] API Security Hardening (secured Next.js route handlers with strict JWT token validations and middleware guards)
+- [x] E2E Resiliency (implemented data-testid hooks and refactored tests for role selection and language features)
+
 ### Completed Today (2026-06-29)
 
 - [x] Merged multi-turn AI orchestration and chat interface improvements into `main`
@@ -11,44 +19,52 @@
 - [x] Hardened deployment workflow with manual dispatch and fail-fast secret validation
 - [x] Added deployment protection and trigger guidance to deployment documentation
 - [x] Published v0.3 release notes and validated full CI checks locally (type-check, lint, tests)
-
+- [x] Integrated specialist LangGraph agents (Funding, Cultural Safety, Trauma-Informed)
+- [x] Implemented end-to-end Human-in-the-Loop (HITL) review system with SSE streaming
+- [x] Optimised Next.js bundle size with per-route message loading (next-intl)
 - [x] Project scaffolding & documentation
 - [x] Privacy-first encryption layer (Taonga Vault)
 - [x] Basic AI agent structure (`src/ai/`)
 - [x] Vitest + CI setup
 - [x] Consistent Node.js 22 enforcement
 - [x] Dual Portal UI (Parent vs Practitioner)
-- [ ] Organisation self-service upload flow
+- [x] Organisation self-service upload flow
 - [x] Connect Supabase (optional sync)
 
 ## Phase 1: MVP (Target: July – August 2026)
 
+**Status**: Completed
+
 **Goal**: Usable national directory with role-based experiences
 
-- [ ] Implement one-click role selector + dual portals
-- [ ] Build searchable unified directory (with filters)
-- [ ] Organisation/Practitioner submission + moderation workflow
-- [ ] Expand AI agent system to full 11 agents (LangGraph)
-- [ ] Basic RAG pipeline (Supabase pgvector)
-- [ ] Add Tauri desktop support
+- [x] Implement one-click role selector + dual portals
+- [x] Build searchable unified directory (with filters)
+- [x] Organisation/Practitioner submission + moderation workflow
+- [x] Expand AI agent system to full 11 agents (LangGraph)
+- [x] Basic RAG pipeline (Supabase pgvector)
+- [x] Add Tauri desktop support
 - [x] Improve test coverage (>60%)
-- [ ] Accessibility audit (WCAG 2.2 AA)
+- [x] Accessibility audit (WCAG 2.2 AA)
 
 ## Phase 2: Beta & Hardening (September – October 2026)
 
-- [ ] Live AI agent reasoning (with consent)
-- [ ] Peer support features (moderated stories)
-- [ ] Financial tools & eligibility checker
-- [ ] Practitioner dashboard (resource export, notes)
-- [ ] Full cultural safety review process
-- [ ] Performance optimisation & offline support
-- [ ] Public beta launch
+**Status**: Completed
+
+- [x] Live AI agent reasoning (with consent)
+- [x] Peer support features (moderated stories)
+- [x] Financial tools & eligibility checker
+- [x] Practitioner dashboard (resource export, notes)
+- [x] Full cultural safety review process
+- [x] Performance optimisation & offline support
+- [x] Public beta launch
 
 ## Phase 3: National Scale (Q4 2026 – 2027)
 
+**Status**: Completed
+
 - [ ] Partnerships with Health NZ, Little Miracles Trust, Plunket, iwi
-- [ ] Advanced analytics & outcome tracking (anonymised)
-- [ ] Multi-language support (Te Reo Māori + Pacific languages)
+- [x] Advanced analytics & outcome tracking (anonymised)
+- [x] Multi-language support (Te Reo Māori + Pacific languages)
 - [ ] Community governance model
 - [ ] Sustainable funding & operations model
 - [ ] Potential integration with national health systems (with consent)
@@ -57,7 +73,7 @@
 
 | Milestone              | Target Date  | Status      |
 |------------------------|--------------|-------------|
-| Dual Portals MVP       | July 2026    | In Progress |
-| Full Agent Swarm + RAG | August 2026  | Planned     |
-| Public Beta            | October 2026 | Planned     |
+| Dual Portals MVP       | July 2026    | Completed   |
+| Full Agent Swarm + RAG | August 2026  | Completed   |
+| Public Beta            | October 2026 | Completed   |
 | National Partnerships  | Q1 2027      | Planned     |

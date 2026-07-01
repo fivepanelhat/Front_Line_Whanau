@@ -23,11 +23,14 @@ export function getVectorStore(): SupabaseVectorStore {
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
     const supabase = createClient(supabaseUrl, supabaseKey);
-    vectorStoreInstance = new SupabaseVectorStore(new GoogleGenerativeAIEmbeddings({ model: "gemini-embedding-2" }), {
-      client: supabase,
-      tableName: "documents",
-      queryName: "match_documents",
-    });
+    vectorStoreInstance = new SupabaseVectorStore(
+      new GoogleGenerativeAIEmbeddings({ model: "text-embedding-004" }), 
+      {
+        client: supabase,
+        tableName: "document_embeddings",
+        queryName: "match_documents",
+      }
+    );
   }
   return vectorStoreInstance;
 }

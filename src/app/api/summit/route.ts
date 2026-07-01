@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { query, scopes } = body;
+    const { query, scopes, locale } = body;
 
     if (!query) {
       return NextResponse.json(
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     }
 
     const summitInstance = new AetherSummit();
-    const res = await summitInstance.process(query, scopes || []);
+    const res = await summitInstance.process(query, scopes || [], locale);
 
     return NextResponse.json(res);
   } catch (error) {

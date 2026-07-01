@@ -15,6 +15,24 @@
 
 import pino from 'pino';
 
+// Fire-and-forget webhook alert for catastrophic failures
+const FIRE_WEBHOOK_ALERT = async (msg: string, obj: any) => {
+  const webhookUrl = process.env.SLACK_WEBHOOK_URL || process.env.DISCORD_WEBHOOK_URL;
+  if (!webhookUrl) return;
+
+  try {
+    await fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text: `🚨 *CRITICAL ALERT* 🚨\n${msg}\n\`\`\`json\n${JSON.stringify(obj, null, 2)}\n\`\`\``
+      })
+    });
+  } catch (e) {
+    console.error("Failed to fire alert webhook", e);
+  }
+};
+
 const isDev = process.env.NODE_ENV !== 'production';
 
 export const logger = pino({
@@ -25,6 +43,26 @@ export const logger = pino({
   transport: isDev
     ? { target: 'pino-pretty', options: { colorize: true, translateTime: 'HH:MM:ss' } }
     : undefined,
+
+  hooks: {
+    logMethod(inputArgs, method, level) {
+      if (level === 50) { // Error level
+        const [obj, msg] = inputArgs.length >= 2 ? [inputArgs[0], inputArgs[1]] : [{}, inputArgs[0]];
+        if (typeof obj === 'object') {
+          if (msg) console.error(msg, obj);
+          else console.error(obj);
+        } else {
+          console.error(obj, msg);
+        }
+        
+        // Trigger webhook on fatal errors or circuit breaker trips
+        if (typeof msg === 'string' && (msg.toLowerCase().includes('fatal') || msg.toLowerCase().includes('circuit breaker'))) {
+          FIRE_WEBHOOK_ALERT(msg, obj).catch(() => {});
+        }
+      }
+      return method.apply(this, inputArgs as any);
+    }
+  },
 
   // Redact fields that must never appear in logs
   redact: {

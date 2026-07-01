@@ -6,12 +6,14 @@ import type { Conversation } from '@/lib/conversation';
 
 interface ConversationSidebarProps {
   currentThreadId: string;
+  refreshTrigger: number;
   onSelectConversation: (threadId: string) => void;
   onNewConversation: () => void;
 }
 
 export function ConversationSidebar({
   currentThreadId,
+  refreshTrigger,
   onSelectConversation,
   onNewConversation,
 }: ConversationSidebarProps) {
@@ -30,7 +32,7 @@ export function ConversationSidebar({
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [refreshTrigger]);
 
   return (
     <div className="flex w-72 flex-col border-r bg-gray-50 p-4">
