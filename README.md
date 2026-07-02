@@ -100,8 +100,22 @@ nvm use
 git clone https://github.com/fivepanelhat/Front_Line_Whanau.git
 cd Front_Line_Whanau
 npm install
+
+# 1. Configure environment — copy the template and fill in your Supabase keys
+#    (Supabase Dashboard → Project Settings → API). GOOGLE_API_KEY is optional;
+#    without it the AI agents run in stub mode.
+cp .env.example .env.local
+
+# 2. Apply database migrations to your Supabase project
+npx supabase login
+npx supabase link --project-ref <your-project-ref>
+npx supabase db push
+
+# 3. Run
 npm run dev
 ```
+
+The app starts at `http://localhost:3000`. Verify your database connection at `http://localhost:3000/api/health` — it should return `{"status":"ok","database":"connected"}`.
 
 ### Tauri Desktop Commands
 
@@ -117,7 +131,7 @@ After setup, you can use these commands:
 ## 🔒 Security & Privacy
 
 - **Security headers** enforced on all routes via middleware (`X-Frame-Options: DENY`, `X-Content-Type-Options`, `Referrer-Policy`, baseline CSP)
-- **Lightweight health check** at `/api/health` (no database dependency)
+- **Health check** at `/api/health` (verifies live database connectivity)
 - **Privacy-by-design approach** — no PHI stored without explicit consent
 
 ## 🧪 Testing & Quality
