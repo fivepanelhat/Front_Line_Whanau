@@ -1,14 +1,20 @@
 import { createClient } from "@/lib/supabase/server";
-import { SystemMetricsCharts } from "@/components/SystemMetricsCharts";
+import { SystemMetricsCharts } from "@/components/SystemMetricsChartsLazy";
 
 export default async function SystemHealthDashboard() {
   const supabase = await createClient();
 
-  const { data: events } = await supabase
-    .from("analytics_events")
-    .select("*")
-    .order("created_at", { ascending: false })
-    .limit(500);
+  const [{ data: events }, { count: totalReviews }] = await Promise.all([
+    supabase
+      .from("analytics_events")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(500),
+    supabase
+      .from("ai_reviews")
+      .select("*", { count: 'exact', head: true })
+      .neq('status', 'pending'),
+  ]);
 
   const safeEvents = events || [];
 
@@ -19,11 +25,6 @@ export default async function SystemHealthDashboard() {
 
   // Calculate Failed Reviews
   const reviewDecisions = safeEvents.filter(e => e.event_type === 'review_denied').length;
-  // Let's assume we can get total reviews from the DB
-  const { count: totalReviews } = await supabase
-    .from("ai_reviews")
-    .select("*", { count: 'exact', head: true })
-    .neq('status', 'pending');
 
   const rejectionRate = (totalReviews && totalReviews > 0) ? ((reviewDecisions / totalReviews) * 100).toFixed(1) : "0.0";
 

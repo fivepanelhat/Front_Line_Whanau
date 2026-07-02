@@ -237,19 +237,23 @@ export const webSearchTool = createSafeTool(
   },
   async ({ query }) => {
     const enhancedQuery = `${query} (New Zealand OR Aotearoa OR NZ)`;
-    const results = await getWebSearchTavily().invoke({
-      query: enhancedQuery,
-      includeDomains: [
-        "govt.nz",
-        "org.nz",
-        "health.govt.nz",
-        "plunket.org.nz",
-        "cab.org.nz",
-        "littlemiraclestrust.org.nz",
-        "whanauora.nz",
-      ],
-    });
-    return results;
+    return aiToolCache.withCache(
+      `web_search_${enhancedQuery}`,
+      async () =>
+        getWebSearchTavily().invoke({
+          query: enhancedQuery,
+          includeDomains: [
+            "govt.nz",
+            "org.nz",
+            "health.govt.nz",
+            "plunket.org.nz",
+            "cab.org.nz",
+            "littlemiraclestrust.org.nz",
+            "whanauora.nz",
+          ],
+        }),
+      1000 * 60 * 60 * 6 // 6-hour cache: advocacy/eligibility info changes slowly
+    );
   }
 );
 

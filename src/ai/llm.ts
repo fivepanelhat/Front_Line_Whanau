@@ -14,7 +14,7 @@ export interface AgentLLMOptions {
  */
 export function createAgentLLM(options: AgentLLMOptions = {}) {
   return new ChatGoogleGenerativeAI({
-    model: options.model || 'gemini-1.5-flash',
+    model: options.model || 'gemini-2.5-flash',
     temperature: options.temperature ?? 0.2,
     maxOutputTokens: options.maxOutputTokens || 1024,
     maxRetries: options.maxRetries ?? 3,

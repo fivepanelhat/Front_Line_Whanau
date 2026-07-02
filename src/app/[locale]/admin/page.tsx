@@ -1,4 +1,4 @@
-import { FeedbackAnalysisDashboard } from "@/components/FeedbackAnalysisDashboard";
+import { FeedbackAnalysisDashboard } from "@/components/FeedbackAnalysisDashboardLazy";
 
 export default async function AdminDashboard() {
   return (

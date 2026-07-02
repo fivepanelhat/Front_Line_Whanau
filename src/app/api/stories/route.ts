@@ -49,7 +49,11 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const approvedOnly = searchParams.get('approved') === 'true';
 
-    let query = supabase.from('peer_stories').select('*').order('created_at', { ascending: false });
+    let query = supabase
+      .from('peer_stories')
+      .select('id, author_id, title, content, tags, is_approved, cultural_safety_approved, created_at')
+      .order('created_at', { ascending: false })
+      .limit(100);
     
     if (approvedOnly) {
       query = query.eq('is_approved', true).eq('cultural_safety_approved', true);

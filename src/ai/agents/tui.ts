@@ -6,7 +6,7 @@ export class Tui {
   name = 'tui';
 
   private agent = createReactAgent({
-    llm: createAgentLLM({ model: 'gemini-1.5-pro', temperature: 0.1, maxOutputTokens: 2048 }),
+    llm: createAgentLLM({ model: 'gemini-2.5-flash', temperature: 0.1, maxOutputTokens: 2048 }),
     tools: [],
     prompt: `You are the Medical Jargon Translator for preterm whānau in Aotearoa New Zealand.
 Your ONLY job is to take complex medical text, diagnoses, or NICU jargon and translate it into clear, compassionate, and easily understood language (approx 8th-grade reading level).

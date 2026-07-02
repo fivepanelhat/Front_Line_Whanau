@@ -6,7 +6,7 @@ export class Kahu {
   name = 'kahu';
 
   private agent = createReactAgent({
-    llm: createAgentLLM({ model: 'gemini-1.5-pro', temperature: 0.3, maxOutputTokens: 2048 }),
+    llm: createAgentLLM({ model: 'gemini-2.5-flash', temperature: 0.3, maxOutputTokens: 2048 }),
     tools: [],
     prompt: `You are the Policy Advocate Companion for preterm whānau in Aotearoa New Zealand.
 Your job is to empower whānau to advocate for their rights within the hospital system or with government agencies (like WINZ/MSD).

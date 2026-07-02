@@ -3,6 +3,26 @@
 import { useState, useEffect } from 'react';
 import { encrypt, decrypt } from '@/lib/encryption';
 
+// Module scope, not inside the dashboard render: defining this inline created
+// a new component type every render, remounting every note card (and
+// re-running decryption) whenever any dashboard state changed.
+function DecryptedNote({ note, passphrase, isUnlocked }: { note: any; passphrase: string; isUnlocked: boolean }) {
+  const [decryptedText, setDecryptedText] = useState('Decrypting...');
+
+  useEffect(() => {
+    if (isUnlocked) {
+      try {
+        const payload = JSON.parse(note.encrypted_content);
+        decrypt(payload, passphrase).then(setDecryptedText).catch(() => setDecryptedText('Decryption failed'));
+      } catch (err) {
+        setDecryptedText('Invalid encrypted payload');
+      }
+    }
+  }, [note, isUnlocked, passphrase]);
+
+  return <p className="text-gray-700 whitespace-pre-wrap">{decryptedText}</p>;
+}
+
 export default function PractitionerDashboard() {
   const [notes, setNotes] = useState<any[]>([]);
   const [patientRef, setPatientRef] = useState('');
@@ -75,23 +95,6 @@ export default function PractitionerDashboard() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const DecryptedNote = ({ note }: { note: any }) => {
-    const [decryptedText, setDecryptedText] = useState('Decrypting...');
-    
-    useEffect(() => {
-      if (isUnlocked) {
-        try {
-          const payload = JSON.parse(note.encrypted_content);
-          decrypt(payload, passphrase).then(setDecryptedText).catch(() => setDecryptedText('Decryption failed'));
-        } catch (err) {
-          setDecryptedText('Invalid encrypted payload');
-        }
-      }
-    }, [note, isUnlocked]);
-
-    return <p className="text-gray-700 whitespace-pre-wrap">{decryptedText}</p>;
   };
 
   if (!isUnlocked) {
@@ -172,7 +175,7 @@ export default function PractitionerDashboard() {
                 <h3 className="font-bold text-gray-900">{note.patient_reference || 'Unnamed Note'}</h3>
                 <span className="text-xs text-gray-500">{new Date(note.created_at).toLocaleString()}</span>
               </div>
-              <DecryptedNote note={note} />
+              <DecryptedNote note={note} passphrase={passphrase} isUnlocked={isUnlocked} />
             </div>
           ))
         )}
