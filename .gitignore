@@ -55,3 +55,10 @@ __pycache__/
 whanau-agents/checkpoints.db-shm
 whanau-agents/checkpoints.db-wal
 .env*
+
+# Debug/report dumps
+job.json
+job_log.txt
+lint*.json
+lint_output.txt
+lint_parsed.txt
