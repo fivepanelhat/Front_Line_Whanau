@@ -48,3 +48,10 @@ jobs:
 
       - name: Run E2E tests
         run: npm run e2e
+        env:
+          # Same placeholders as the Build step: the E2E dev server needs env
+          # to boot routes; PORTAL_E2E mode stubs external calls in tests.
+          NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon-key
+          GOOGLE_API_KEY: ci-placeholder-key
+          TAVILY_API_KEY: ci-placeholder-key

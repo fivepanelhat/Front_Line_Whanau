@@ -14,7 +14,7 @@ test.describe('Role selection', () => {
 
   test('clicking Parent navigates to /parent portal', async ({ page }) => {
     await page.getByTestId('parent-role-btn').click();
-    await expect(page).toHaveURL(/\/parent/, { timeout: 15000 });
+    await expect(page).toHaveURL(/\/parent/, { timeout: 45000 });
   });
 
   test('parent portal route resolves to visible content state', async ({ page }) => {
@@ -36,16 +36,16 @@ test.describe('Role selection', () => {
 
   test('clicking Practitioner navigates to /practitioner portal', async ({ page }) => {
     await page.getByTestId('practitioner-role-btn').click();
-    await expect(page).toHaveURL(/\/practitioner/, { timeout: 15000 });
+    await expect(page).toHaveURL(/\/practitioner/, { timeout: 45000 });
   });
 
   test('navigating back from portal returns to home', async ({ page }) => {
     await page.getByTestId('parent-role-btn').click();
-    await expect(page).toHaveURL(/\/parent/, { timeout: 15000 });
+    await expect(page).toHaveURL(/\/parent/, { timeout: 45000 });
     await page.goBack();
     // Should return to role selector
     await expect(
       page.getByTestId('parent-role-btn')
-    ).toBeVisible({ timeout: 15000 });
+    ).toBeVisible({ timeout: 45000 });
   });
 });

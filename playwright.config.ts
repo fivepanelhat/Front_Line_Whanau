@@ -11,6 +11,9 @@ import { defineConfig, devices } from '@playwright/test';
  *   - Health check endpoint responds
  *   - Security headers are present
  */
+// Overridable so E2E can run when something else occupies 3000
+const PORT = process.env.E2E_PORT || '3000';
+
 export default defineConfig({
   testDir: './e2e',
   testMatch: '**/*.e2e.ts',
@@ -30,7 +33,7 @@ export default defineConfig({
 
   use: {
     // Base URL — tests use relative paths like '/en-NZ'
-    baseURL: 'http://127.0.0.1:3000',
+    baseURL: `http://127.0.0.1:${PORT}`,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
@@ -52,8 +55,8 @@ export default defineConfig({
 
   // === KEY FIX: Automatically start Next.js dev server ===
   webServer: {
-    command: 'npm run dev',
-    url: 'http://127.0.0.1:3000',
+    command: `npm run dev -- --port ${PORT}`,
+    url: `http://127.0.0.1:${PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
     stdout: 'ignore',

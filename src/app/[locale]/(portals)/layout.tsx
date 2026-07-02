@@ -1,8 +1,9 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import PortalSwitcher from '@/components/PortalSwitcher';
 import { useRole } from '@/context';
-import { redirect } from 'next/navigation';
 
 export default function PortalsLayout({
   children,
@@ -10,13 +11,20 @@ export default function PortalsLayout({
   children: React.ReactNode;
 }) {
   const { role, isLoading } = useRole();
+  const router = useRouter();
 
-  if (isLoading) {
+  // Redirect in an effect, not during render: a render-time redirect() races
+  // the RoleSelector's setRole(): the click's context update and the Link
+  // navigation land in different passes, so this layout could render with the
+  // stale null role and bounce straight back to the home page.
+  useEffect(() => {
+    if (!isLoading && !role) {
+      router.replace('/');
+    }
+  }, [role, isLoading, router]);
+
+  if (isLoading || !role) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
-  }
-
-  if (!role) {
-    redirect('/');
   }
 
   return (
