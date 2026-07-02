@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
+import { createClient as createServerClient } from '@/lib/supabase/server';
 import { z } from 'zod';
 
 const StatsQuerySchema = z.object({
@@ -13,6 +14,22 @@ import { connection } from 'next/server';
 export async function GET(req: NextRequest) {
   await connection();
   try {
+    const authClient = await createServerClient();
+    const { data: { user }, error: userError } = await authClient.auth.getUser();
+    if (userError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { data: profile } = await authClient
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+
+    if (profile?.role !== 'admin') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     const { searchParams } = new URL(req.url);
     const query = StatsQuerySchema.parse({
       from: searchParams.get('from') || undefined,
@@ -20,14 +37,15 @@ export async function GET(req: NextRequest) {
       agent: searchParams.get('agent') || undefined,
     });
 
-    const supabase = createClient(
+    const supabase = createSupabaseClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     );
 
     let dbQuery = supabase
       .from('ai_feedback')
-      .select('id, created_at, rating, agent, message_content, comment');
+      .select('id, created_at, rating, agent, message_content, comment')
+      .limit(2000);
 
     if (query.from) dbQuery = dbQuery.gte('created_at', query.from);
     if (query.to) dbQuery = dbQuery.lte('created_at', query.to);

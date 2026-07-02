@@ -215,11 +215,17 @@ export const getRegionalSupportTool = createSafeTool(
   }
 );
 
-const tavily = new TavilySearch({
-  maxResults: 8,
-  includeAnswer: true,
-  searchDepth: "advanced",
-});
+let tavily: TavilySearch | null = null;
+function getWebSearchTavily(): TavilySearch {
+  if (!tavily) {
+    tavily = new TavilySearch({
+      maxResults: 8,
+      includeAnswer: true,
+      searchDepth: "advanced",
+    });
+  }
+  return tavily;
+}
 
 export const webSearchTool = createSafeTool(
   {
@@ -231,7 +237,7 @@ export const webSearchTool = createSafeTool(
   },
   async ({ query }) => {
     const enhancedQuery = `${query} (New Zealand OR Aotearoa OR NZ)`;
-    const results = await tavily.invoke({
+    const results = await getWebSearchTavily().invoke({
       query: enhancedQuery,
       includeDomains: [
         "govt.nz",

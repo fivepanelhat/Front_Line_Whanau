@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-// Mock next/headers before importing env (env.ts calls parse at module load time)
+// Mock next/headers since other modules importing env.ts also import next/headers
 vi.mock('next/headers', () => ({ cookies: vi.fn() }));
 
 describe('env validation', () => {
@@ -34,11 +34,15 @@ describe('env validation', () => {
     expect(env.NODE_ENV).toBe('development');
   });
 
+  // env is a lazy proxy (see src/env.ts) so parsing/validation only happens
+  // on first property access, not on import — that's what lets `next build`
+  // succeed without every env var being set for modules it merely imports.
   it('throws a descriptive error when NEXT_PUBLIC_SUPABASE_URL is missing', async () => {
     Reflect.deleteProperty(process.env, 'NEXT_PUBLIC_SUPABASE_URL');
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'anon-key-value';
 
-    await expect(import('../../env')).rejects.toThrow(
+    const { env } = await import('../../env');
+    expect(() => env.NEXT_PUBLIC_SUPABASE_URL).toThrow(
       /NEXT_PUBLIC_SUPABASE_URL/
     );
   });
@@ -47,14 +51,16 @@ describe('env validation', () => {
     process.env.NEXT_PUBLIC_SUPABASE_URL = 'not-a-url';
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'anon-key-value';
 
-    await expect(import('../../env')).rejects.toThrow();
+    const { env } = await import('../../env');
+    expect(() => env.NEXT_PUBLIC_SUPABASE_URL).toThrow();
   });
 
   it('throws a descriptive error when NEXT_PUBLIC_SUPABASE_ANON_KEY is missing', async () => {
     process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://example.supabase.co';
     Reflect.deleteProperty(process.env, 'NEXT_PUBLIC_SUPABASE_ANON_KEY');
 
-    await expect(import('../../env')).rejects.toThrow(
+    const { env } = await import('../../env');
+    expect(() => env.NEXT_PUBLIC_SUPABASE_ANON_KEY).toThrow(
       /NEXT_PUBLIC_SUPABASE_ANON_KEY/
     );
   });

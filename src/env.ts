@@ -18,6 +18,24 @@ const envSchema = z.object({
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
 });
 
-export const env = envSchema.parse(process.env);
-
 export type Env = z.infer<typeof envSchema>;
+
+let cached: Env | undefined;
+
+function parseEnv(): Env {
+  if (!cached) {
+    cached = envSchema.parse(process.env);
+  }
+  return cached;
+}
+
+// Lazy proxy: defers reading/validating process.env until a property is
+// actually accessed, instead of at module-evaluation time. Next.js collects
+// page/route data at build time by importing every module, so an eager
+// `parse()` here throws during `next build` whenever an env var isn't set
+// in the build environment (e.g. CI) even though it will be at runtime.
+export const env: Env = new Proxy({} as Env, {
+  get(_target, prop: string) {
+    return parseEnv()[prop as keyof Env];
+  },
+});

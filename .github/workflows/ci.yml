@@ -29,6 +29,17 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Build
+        run: npm run build
+        env:
+          # Placeholder values so build-time module evaluation (env schema
+          # parsing, LLM/search client construction) succeeds without real
+          # secrets. Nothing at build time makes live calls with these.
+          NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon-key
+          GOOGLE_API_KEY: ci-placeholder-key
+          TAVILY_API_KEY: ci-placeholder-key
+
       - name: Unit tests with coverage
         run: npm run test:coverage
 
