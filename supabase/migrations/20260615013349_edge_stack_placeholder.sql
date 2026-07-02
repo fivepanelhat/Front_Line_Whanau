@@ -1,0 +1,3 @@
+-- Placeholder: version 20260615013349 was applied to the shared Supabase project by the
+-- coastal-alpine edge stack (ecosystem_nodes / node_fleet_health /
+-- unified_edge_telemetry). Kept as a no-op so migration history reconciles.

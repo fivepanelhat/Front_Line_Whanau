@@ -16,8 +16,9 @@ export async function GET(req: Request) {
   try {
     if (!isE2E) {
       const supabase = await createClient();
-      // Simple query to verify DB connection
-      const { error } = await supabase.from('organizations').select('id').limit(1);
+      // Probe a table that exists in the schema (001_core_rls_policies.sql);
+      // RLS returning zero rows is fine — only a connection/schema error fails.
+      const { error } = await supabase.from('profiles').select('id').limit(1);
       
       if (error) {
         console.error('Health check DB error:', error);
