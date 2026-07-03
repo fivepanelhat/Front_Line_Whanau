@@ -117,6 +117,17 @@ export function AgentTestPanel({
           try {
             const data = JSON.parse(line.replace('data: ', ''));
 
+            if (data.type === 'reset') {
+              // New model call in the graph (classifier → agent steps):
+              // discard interim output, keep only the final call's stream.
+              assistantResponse = '';
+              setMessages((prev) => {
+                const updated = [...prev];
+                updated[updated.length - 1] = { role: 'assistant', content: '' };
+                return updated;
+              });
+            }
+
             if (data.type === 'token') {
               assistantResponse += data.content;
               setMessages((prev) => {
@@ -261,17 +272,17 @@ export function AgentTestPanel({
             <div className={`group relative max-w-[80%] px-5 py-4 rounded-3xl shadow-sm ${
               msg.role === 'user' ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-br-sm' : 'bg-white border border-gray-100 text-gray-800 rounded-bl-sm'
             }`}>
-              <div className="whitespace-pre-wrap">
-                {msg.role === 'assistant' ? (
-                  <div className="prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1">
-                    <ReactMarkdown>
-                      {msg.content}
-                    </ReactMarkdown>
-                  </div>
-                ) : (
-                  msg.content
-                )}
-              </div>
+              {msg.role === 'assistant' ? (
+                // No whitespace-pre-wrap here: markdown newlines rendered as
+                // paragraphs AND preserved literally doubles the spacing.
+                <div className="prose prose-sm max-w-none break-words prose-p:my-1 prose-ul:my-1">
+                  <ReactMarkdown>
+                    {msg.content}
+                  </ReactMarkdown>
+                </div>
+              ) : (
+                <div className="whitespace-pre-wrap break-words">{msg.content}</div>
+              )}
               {msg.role === 'assistant' && msg.content && (
                 <div className="absolute -top-3 -right-2 opacity-0 group-hover:opacity-100 transition flex gap-1 bg-white border rounded-full p-1 shadow-sm">
                   <button

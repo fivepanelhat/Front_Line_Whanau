@@ -1,32 +1,40 @@
 import Link from 'next/link';
 
-export default function PractitionerPortal() {
+export default async function PractitionerPortal({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  // Locale-aware links: these were hardcoded to /en/… while the app's
+  // locales are en-NZ/mi/sm/to, so every card 404'd through the middleware.
+  const { locale } = await params;
+
   const tools = [
     {
       title: 'Directory Management',
       description: 'Update your organisation’s information in the Taranaki Directory.',
-      href: '/en/practitioner/upload',
+      href: `/${locale}/practitioner/upload`,
       icon: '📁',
       color: 'bg-blue-50 text-blue-700',
     },
     {
       title: 'Encrypted Patient Notes',
       description: 'Secure local vault for patient references and clinical notes.',
-      href: '/en/practitioner/dashboard',
+      href: `/${locale}/practitioner/dashboard`,
       icon: '🔒',
       color: 'bg-indigo-50 text-indigo-700',
     },
     {
       title: 'HITL Moderation',
       description: 'Review flagged interactions for cultural and clinical safety.',
-      href: '/en/practitioner/moderation',
+      href: `/${locale}/practitioner/moderation`,
       icon: '🛡️',
       color: 'bg-amber-50 text-amber-700',
     },
     {
       title: 'Feedback Analysis',
       description: 'Monitor AI beta performance and analyze user feedback.',
-      href: '/en/practitioner/feedback',
+      href: `/${locale}/practitioner/feedback`,
       icon: '📈',
       color: 'bg-emerald-50 text-emerald-700',
     }

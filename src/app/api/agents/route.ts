@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { agentGraph } from '@/ai/graph';
+import { telemetryHandler } from '@/ai/telemetry';
 import { HumanMessage, AIMessage } from '@langchain/core/messages';
 import { routeLogger } from '@/lib/logger';
 import { aiCircuitBreaker } from '@/lib/circuit-breaker';
@@ -79,7 +80,8 @@ export async function POST(request: NextRequest) {
               {
                 version: 'v2',
                 configurable: { thread_id: threadId },
-                signal: abortController.signal
+                signal: abortController.signal,
+                callbacks: [telemetryHandler],
               }
             );
           };
@@ -91,13 +93,42 @@ export async function POST(request: NextRequest) {
             throw cbError;
           });
 
+          // Model events from nested react-agent subgraphs arrive duplicated:
+          // the inheritable stream handler gets re-merged at each subgraph
+          // nesting level, so one model run emits N identical copies of every
+          // start/chunk (same run_id, copies strictly consecutive). Track the
+          // start count per run and forward every Nth chunk once.
+          const runStartCounts = new Map<string, number>();
+          const runChunkCounts = new Map<string, number>();
+
           for await (const event of eventStream) {
+            // The graph also runs several sequential model calls (intent
+            // classifier, then the agent). Reset the client's buffer at each
+            // new run so only the final call's answer remains — otherwise
+            // responses arrive prefixed with classifier labels.
+            if (event.event === 'on_chat_model_start') {
+              const runId = String(event.run_id);
+              const starts = (runStartCounts.get(runId) || 0) + 1;
+              runStartCounts.set(runId, starts);
+              if (starts === 1) {
+                controller.enqueue(
+                  encoder.encode(`data: ${JSON.stringify({ type: 'reset' })}\n\n`)
+                );
+              }
+            }
+
             if (event.event === 'on_chat_model_stream') {
               const content = event.data?.chunk?.content;
               if (content) {
-                controller.enqueue(
-                  encoder.encode(`data: ${JSON.stringify({ type: 'token', content })}\n\n`)
-                );
+                const runId = String(event.run_id);
+                const dupFactor = runStartCounts.get(runId) || 1;
+                const seen = runChunkCounts.get(runId) || 0;
+                runChunkCounts.set(runId, seen + 1);
+                if (seen % dupFactor === 0) {
+                  controller.enqueue(
+                    encoder.encode(`data: ${JSON.stringify({ type: 'token', content })}\n\n`)
+                  );
+                }
               }
             }
 

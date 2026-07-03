@@ -24,6 +24,10 @@
 
   html {
     scroll-behavior: smooth;
+    /* The app ships light-first; dark surfaces (Header, Whānau Hub) are
+       explicit .dark-space scopes. Without this, UA dark mode half-applies
+       to elements with no authored background. */
+    color-scheme: light;
   }
 
   h1,
@@ -32,7 +36,13 @@
   h4,
   h5,
   h6 {
-    @apply font-heading font-bold leading-tight text-text-primary;
+    @apply font-heading font-bold leading-tight text-slate-900;
+  }
+
+  /* Dark-surface scope: components rendering on bg-bg-primary/secondary
+     (Whānau Hub overlay, site header) keep light-on-dark headings. */
+  .dark-space :is(h1, h2, h3, h4, h5, h6) {
+    @apply text-text-primary;
   }
 
   a {

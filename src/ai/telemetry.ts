@@ -121,3 +121,7 @@ export class TelemetryCallbackHandler extends BaseCallbackHandler {
     }, err);
   }
 }
+
+// Shared singleton for per-invocation attachment (config.callbacks) — state
+// is keyed by runId so a single instance is safe across concurrent requests.
+export const telemetryHandler = new TelemetryCallbackHandler();

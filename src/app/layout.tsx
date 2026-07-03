@@ -53,7 +53,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={cn(inter.variable, 'antialiased')}>
-      <body className="min-h-screen bg-background font-sans text-foreground">
+      {/* bg-background/text-foreground were never defined in the Tailwind
+          config, leaving body colors to UA defaults — use real tokens. */}
+      <body className="min-h-screen bg-slate-50 font-body text-slate-900">
         {/* Skip to main content link — WCAG 2.2 AA compliance */}
         <a
           href="#main-content"

@@ -300,7 +300,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-bg-primary text-text-primary overflow-hidden">
+    <div className="dark-space fixed inset-0 z-50 flex flex-col bg-bg-primary text-text-primary overflow-hidden">
       {/* Dashboard Top bar */}
       <header className="flex h-16 items-center justify-between border-b border-white/[0.08] bg-bg-secondary px-6">
         <div className="flex items-center gap-3">
