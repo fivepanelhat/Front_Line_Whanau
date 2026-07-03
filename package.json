@@ -25,6 +25,7 @@
     "e2e:ui": "playwright test --ui",
     "e2e:report": "playwright show-report",
     "validate": "npm run type-check && npm run lint && npm run test:coverage",
+    "tauri": "tauri",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",
     "tauri:build:windows": "tauri build --target x86_64-pc-windows-msvc",
