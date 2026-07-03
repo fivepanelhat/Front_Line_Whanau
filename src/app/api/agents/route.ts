@@ -100,6 +100,7 @@ export async function POST(request: NextRequest) {
           // start count per run and forward every Nth chunk once.
           const runStartCounts = new Map<string, number>();
           const runChunkCounts = new Map<string, number>();
+          let finalState: Record<string, any> | null = null;
 
           for await (const event of eventStream) {
             // The graph also runs several sequential model calls (intent
@@ -132,30 +133,46 @@ export async function POST(request: NextRequest) {
               }
             }
 
-            if (event.event === 'on_chain_end' && event.name === 'agentGraph') {
-              const finalState = event.data?.output;
-              controller.enqueue(
-                encoder.encode(
-                  `data: ${JSON.stringify({
-                    type: 'final',
-                    agent: finalState?.currentAgent,
-                    requiresHumanReview: finalState?.requiresHumanReview,
-                    showUrgentHelp: finalState?.showUrgentHelp,
-                    sources: finalState?.sources,
-                  })}\n\n`
-                )
-              );
-
-              const durationMs = Date.now() - startTime;
-              createClient().then(supabase => {
-                supabase.from('analytics_events').insert({
-                  event_type: 'agent_latency',
-                  path: '/api/agents',
-                  session_hash: threadId,
-                  metadata: { agent: finalState?.currentAgent, durationMs }
-                }).then(() => {});
-              });
+            // Track the latest graph state seen on any chain end. The old
+            // check (event.name === 'agentGraph') matched nothing — the
+            // compiled graph streams under the name 'LangGraph' — so the
+            // 'final' event (agent name, review flag, sources) never reached
+            // the client. The root chain's end is the last one with state.
+            if (event.event === 'on_chain_end') {
+              const output = event.data?.output;
+              if (output && typeof output === 'object' && ('finalResponse' in output || 'currentAgent' in output)) {
+                finalState = { ...(finalState || {}), ...(output as Record<string, any>) };
+              }
             }
+          }
+
+          if (finalState) {
+            controller.enqueue(
+              encoder.encode(
+                `data: ${JSON.stringify({
+                  type: 'final',
+                  agent: finalState.currentAgent,
+                  requiresHumanReview: finalState.requiresHumanReview,
+                  showUrgentHelp: finalState.showUrgentHelp,
+                  sources: finalState.sources,
+                  // Fallback for nodes that produce a response without
+                  // streaming model tokens (canned/guardrail responses):
+                  // the client uses this when the streamed text is empty.
+                  finalResponse: finalState.finalResponse,
+                })}\n\n`
+              )
+            );
+
+            const durationMs = Date.now() - startTime;
+            const agentForMetrics = finalState.currentAgent;
+            createClient().then(supabase => {
+              supabase.from('analytics_events').insert({
+                event_type: 'agent_latency',
+                path: '/api/agents',
+                session_hash: threadId,
+                metadata: { agent: agentForMetrics, durationMs }
+              }).then(() => {});
+            });
           }
 
           controller.enqueue(encoder.encode('data: [DONE]\n\n'));

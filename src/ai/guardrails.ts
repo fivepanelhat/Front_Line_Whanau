@@ -32,41 +32,16 @@ export function checkGuardrails(input: GuardrailInput): GuardrailResult {
     };
   }
 
-  // Medical advice requests (very conservative)
-  const medicalTriggers = ['should i', 'is it safe', 'will my baby', 'can i give', 'is this normal'];
-  const medicalTopics = ['breathing', 'oxygen', 'feeding tube', 'heart rate', 'infection', 'discharge'];
-
-  if (medicalTriggers.some(t => lower.includes(t)) && medicalTopics.some(t => lower.includes(t))) {
-    return {
-      passed: false,
-      modifiedResponse: 
-        "I cannot provide medical advice about your baby. Please speak directly with your neonatal team or midwife.",
-      showUrgentHelp: false,
-      reason: 'Medical advice request detected',
-    };
-  }
-
-  // Financial / Eligibility advice
-  if ((lower.includes('how much') || lower.includes('am i eligible') || lower.includes('will i get')) &&
-      (lower.includes('funding') || lower.includes('allowance') || lower.includes('winz'))) {
-    return {
-      passed: false,
-      modifiedResponse: 
-        "I cannot determine your exact eligibility or payment amounts. Please contact Work and Income or a support worker for personalized advice.",
-      showUrgentHelp: false,
-      reason: 'Financial eligibility advice request detected',
-    };
-  }
-
-  // Cultural safety (especially from ReAct agents)
-  if ((agentUsed === 'cultural_safety_guardian' || lower.includes('cultural')) && 
-      lower.length > 400) {
-    return {
-      passed: false,
-      showUrgentHelp: false,
-      reason: 'Long cultural response from specialist agent — recommend human review',
-    };
-  }
+  // NOTE: this gate inspects the AGENT'S RESPONSE, not the user's query.
+  // It previously also pattern-matched medical/financial/cultural phrasing
+  // and REPLACED complete, well-grounded answers with "I cannot help"
+  // deflections (any answer containing "eligible" + "WINZ" was discarded;
+  // any cultural answer over 400 chars was held for review). Those blanket
+  // blocks contradicted the agents' entire purpose — the specialist prompts
+  // already handle triage boundaries, and the guardrailNode appends the
+  // medical disclaimer. Only the crisis gate remains, plus input-side
+  // injection checks in checkInputGuardrails.
+  void agentUsed;
 
   return { passed: true, showUrgentHelp: false };
 }

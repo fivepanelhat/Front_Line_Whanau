@@ -15,23 +15,23 @@ describe('Guardrails', () => {
       expect(res.modifiedResponse).toContain('1737');
     });
 
-    it('detects medical advice requests', () => {
+    // Medical/financial/cultural answers must PASS: the old blanket blocks
+    // replaced complete, well-grounded specialist answers with deflections
+    // (the disclaimers are appended by guardrailNode instead).
+    it('passes medical guidance through (specialists own triage boundaries)', () => {
       const res = checkGuardrails({ content: 'should i increase the oxygen', agentUsed: 'kiwi' });
-      expect(res.passed).toBe(false);
-      expect(res.reason).toBe('Medical advice request detected');
+      expect(res.passed).toBe(true);
     });
 
-    it('detects financial eligibility requests', () => {
+    it('passes financial eligibility guidance through', () => {
       const res = checkGuardrails({ content: 'am i eligible for winz funding', agentUsed: 'kea' });
-      expect(res.passed).toBe(false);
-      expect(res.reason).toBe('Financial eligibility advice request detected');
+      expect(res.passed).toBe(true);
     });
 
-    it('detects long cultural responses', () => {
+    it('passes long cultural responses through', () => {
       const longText = 'a'.repeat(401);
       const res = checkGuardrails({ content: `cultural ${longText}`, agentUsed: 'tuatara' });
-      expect(res.passed).toBe(false);
-      expect(res.reason).toContain('Long cultural response');
+      expect(res.passed).toBe(true);
     });
 
     it('passes safe output', () => {

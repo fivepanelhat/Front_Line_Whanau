@@ -1,3 +1,4 @@
+import { buildAgentMessages } from './history';
 import { BaseAgent } from './base';
 import { getEmotionalSupportResourcesTool } from '../tools';
 import { createAgentLLM } from '../llm';
@@ -28,9 +29,9 @@ export class Kiwi extends BaseAgent {
     return this.config.systemPrompt;
   }
 
-  async process(query: string, _state?: OrchestrationContext): Promise<AgentResponse> {
+  async process(query: string, state?: OrchestrationContext): Promise<AgentResponse> {
     const result = await this.agent.invoke({
-      messages: [{ role: 'user', content: query }],
+      messages: buildAgentMessages(query, state),
     });
 
     const lastMessage = result.messages[result.messages.length - 1];

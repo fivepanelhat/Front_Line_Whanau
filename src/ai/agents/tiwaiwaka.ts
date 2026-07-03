@@ -1,3 +1,4 @@
+import { buildAgentMessages } from './history';
 import { BaseAgent } from './base';
 import {
   searchDirectoryTool,
@@ -48,13 +49,7 @@ When families ask about hospital amenities like the cafeteria, front desk, booki
   }
 
   async process(query: string, context?: OrchestrationContext): Promise<AgentResponse> {
-    const messages: any[] = [];
-    if (context?.locale) {
-      if (context.locale === 'mi') messages.push({ role: 'system', content: "CRITICAL: The user has selected 'mi' (Te Reo Māori). You MUST respond entirely in Te Reo Māori." });
-      else if (context.locale === 'sm') messages.push({ role: 'system', content: "CRITICAL: The user has selected 'sm' (Gagana Samoa). You MUST respond entirely in Gagana Samoa." });
-      else if (context.locale === 'to') messages.push({ role: 'system', content: "CRITICAL: The user has selected 'to' (Lea Faka-Tonga). You MUST respond entirely in Lea Faka-Tonga." });
-    }
-    messages.push({ role: 'user', content: query });
+    const messages = buildAgentMessages(query, context);
 
     const result = await this.agent.invoke({
       messages,

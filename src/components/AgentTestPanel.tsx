@@ -149,11 +149,16 @@ export function AgentTestPanel({
             }
 
             if (data.type === 'final') {
-              // Final metadata received
+              // Some graph nodes answer without streaming model tokens; in
+              // that case the streamed buffer holds only the classifier's
+              // intent label. Prefer the authoritative finalResponse then.
+              if (data.finalResponse && assistantResponse.trim().length < 40) {
+                assistantResponse = data.finalResponse;
+              }
               setMessages((prev) => {
                 const updated = [...prev];
                 const lastIdx = updated.length - 1;
-                updated[lastIdx] = { ...updated[lastIdx], agent: data.agent };
+                updated[lastIdx] = { ...updated[lastIdx], content: assistantResponse, agent: data.agent };
                 return updated;
               });
             }
@@ -247,7 +252,7 @@ export function AgentTestPanel({
             🩺 Summary for Doctor
           </button>
           <button
-            onClick={() => alert("Support Team Contact: support@frontlinewhanau.co.nz\nPhone: 0800 123 456")}
+            onClick={() => alert("Need help now?\n\n• Emergency: 111\n• Healthline (24/7 nurses): 0800 611 116\n• PlunketLine (24/7 baby & parenting): 0800 933 922\n• Need to Talk? (24/7 counsellors): call or text 1737")}
             className="text-sm px-4 py-2 border rounded-lg hover:bg-gray-50 flex items-center gap-2"
           >
             <span>🆘</span> Support

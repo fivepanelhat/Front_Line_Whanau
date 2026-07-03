@@ -114,13 +114,24 @@ const intentClassifier = new ChatGoogleGenerativeAI({
   maxOutputTokens: 1024,
 });
 
-export async function classifyIntent(query: string): Promise<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'COMPLEX' | 'CLINICAL' | 'ADVOCACY' | 'TRANSLATE' | 'NUTRITION' | 'CULTURAL'> {
+export async function classifyIntent(query: string, history?: BaseMessage[]): Promise<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'COMPLEX' | 'CLINICAL' | 'ADVOCACY' | 'TRANSLATE' | 'NUTRITION' | 'CULTURAL'> {
+  // Follow-ups like "how much is it per week?" are unclassifiable in
+  // isolation — give the classifier a compact view of the recent turns.
+  const recent = (history || [])
+    .slice(-4, -1) // last few turns, excluding the current query itself
+    .map((m) => {
+      const role = m._getType?.() === 'human' ? 'User' : 'Assistant';
+      const text = typeof m.content === 'string' ? m.content : JSON.stringify(m.content);
+      return `${role}: ${text.slice(0, 200)}`;
+    })
+    .join('\n');
+
   const systemPrompt = `You are an intent classifier for a preterm whānau support system in Aotearoa New Zealand.
 
 Classify the user's query into exactly one of these categories:
 - RESEARCH: Questions about information, eligibility, definitions, or facts.
 - PLANNING: Questions about steps, pathways, advice, or "how do I".
-- EXECUTION: Requests to generate something, apply, or take concrete action.
+- EXECUTION: Requests to check eligibility, apply for payments/support, or take a concrete financial action. NOT email/letter drafting — that is ADVOCACY.
 - CLINICAL: Questions about medical symptoms, diagnosis, sickness, or medical advice.
 - ADVOCACY: Requests to draft emails, challenge decisions, or learn about legal/hospital rights.
 - TRANSLATE: Requests to explain or translate complex medical jargon or reports into simple English.
@@ -130,9 +141,13 @@ Classify the user's query into exactly one of these categories:
 
 Respond with ONLY one word: RESEARCH, PLANNING, EXECUTION, CLINICAL, ADVOCACY, TRANSLATE, NUTRITION, CULTURAL, or COMPLEX.`;
 
+  const userContent = recent
+    ? `Recent conversation:\n${recent}\n\nCurrent query to classify: ${query}`
+    : query;
+
   const response = await intentClassifier.invoke([
     new SystemMessage(systemPrompt),
-    new HumanMessage(query),
+    new HumanMessage(userContent),
   ]);
 
   const intent = response.content.toString().trim().toUpperCase();
@@ -144,15 +159,17 @@ Respond with ONLY one word: RESEARCH, PLANNING, EXECUTION, CLINICAL, ADVOCACY, T
 }
 
 export async function supervisorNode(state: AgentStateType): Promise<Partial<AgentStateType>> {
+  // NOTE: never return `messages` here — the messages reducer concats, and
+  // the API routes already supply [...history, query]; returning the query
+  // again duplicated it in every downstream agent's context.
   if (!state.consentGiven) {
     return {
       intent: "RESEARCH",
       currentAgent: "riroriro",
-      messages: [new HumanMessage(state.query)],
     };
   }
 
-  const intent = await classifyIntent(state.query);
+  const intent = await classifyIntent(state.query, state.messages);
 
   let nextAgent = "riroriro";
 
@@ -169,6 +186,13 @@ export async function supervisorNode(state: AgentStateType): Promise<Partial<Age
   } else if (intent === "CULTURAL") {
     nextAgent = "toroa";
   } else if (intent === "PLANNING") {
+    // How-do-I / step-by-step questions belong to the pathway planner;
+    // this previously routed to kiwi (emotional support), which answered
+    // practical questions with soft deflections instead of steps.
+    nextAgent = "pathway_architect";
+  } else if (intent === "COMPLEX") {
+    // Emotionally heavy or multi-intent queries get the trauma-informed
+    // companion (previously fell through to the research default).
     nextAgent = "kiwi";
   } else if (intent === "RESEARCH") {
     if (
@@ -191,7 +215,6 @@ export async function supervisorNode(state: AgentStateType): Promise<Partial<Age
   return {
     intent,
     currentAgent: nextAgent,
-    messages: [new HumanMessage(state.query)],
   };
 }
 

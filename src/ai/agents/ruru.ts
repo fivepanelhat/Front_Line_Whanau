@@ -1,3 +1,4 @@
+import { buildAgentMessages } from './history';
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { createAgentLLM } from '../llm';
 import { PROMPTS } from "../prompts";
@@ -25,7 +26,7 @@ Present the tool's return message gently and compassionately to the user, emphas
 
   async process(query: string, state: any) {
     const result = await this.agent.invoke({
-      messages: [{ role: 'user', content: query }],
+      messages: buildAgentMessages(query, state),
     });
 
     const finalMessage = result.messages[result.messages.length - 1];

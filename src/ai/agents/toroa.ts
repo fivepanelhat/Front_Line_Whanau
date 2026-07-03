@@ -1,12 +1,14 @@
+import { buildAgentMessages } from './history';
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { createAgentLLM } from '../llm';
+import { getCulturalResourcesTool } from '../tools';
 
 export class Toroa {
   name = 'toroa';
 
   private agent = createReactAgent({
-    llm: createAgentLLM({ model: 'gemini-1.5-flash', temperature: 0.1, maxOutputTokens: 1024 }),
-    tools: [], 
+    llm: createAgentLLM({ model: 'gemini-2.5-flash', temperature: 0.1, maxOutputTokens: 1024 }),
+    tools: [getCulturalResourcesTool],
     prompt: `You are the Toroa, an agent dedicated to providing deep, culturally safe guidance for Māori whānau navigating the neonatal intensive care system in Aotearoa New Zealand.
 Your goal is to ensure that tikanga (cultural customs) and te reo Māori are respected and integrated into the family's journey.
 
@@ -21,7 +23,7 @@ Always approach conversations with profound respect (manaakitanga). You are a gu
 
   async process(query: string, state: any) {
     const result = await this.agent.invoke({
-      messages: [{ role: 'user', content: query }],
+      messages: buildAgentMessages(query, state),
     });
 
     const finalMessage = result.messages[result.messages.length - 1];

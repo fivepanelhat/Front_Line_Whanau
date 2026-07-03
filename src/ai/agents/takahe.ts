@@ -1,12 +1,14 @@
+import { buildAgentMessages } from './history';
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { createAgentLLM } from '../llm';
+import { webSearchTool } from '../tools';
 
 export class Takahe {
   name = 'takahe';
 
   private agent = createReactAgent({
-    llm: createAgentLLM({ model: 'gemini-1.5-flash', temperature: 0.1, maxOutputTokens: 1024 }),
-    tools: [], // Add tools here if needed, like knowledge_retriever
+    llm: createAgentLLM({ model: 'gemini-2.5-flash', temperature: 0.1, maxOutputTokens: 1024 }),
+    tools: [webSearchTool],
     prompt: `You are the Takahe, a specialized agent dedicated to providing nutrition and feeding support for preterm infants.
 Your goal is to help whānau navigate the complex feeding journeys of their premature babies, including tube feeding, transition to breastfeeding or bottle feeding, and the eventual introduction of solids.
 
@@ -23,7 +25,7 @@ If a situation sounds urgent (e.g., severe reflux, failure to thrive, signs of d
 
   async process(query: string, state: any) {
     const result = await this.agent.invoke({
-      messages: [{ role: 'user', content: query }],
+      messages: buildAgentMessages(query, state),
     });
 
     const finalMessage = result.messages[result.messages.length - 1];

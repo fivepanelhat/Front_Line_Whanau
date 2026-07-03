@@ -1,12 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { SystemMessage, HumanMessage } from '@langchain/core/messages';
+import { RateLimiter } from '@/lib/rate-limit';
+
+const limiter = new RateLimiter(60_000, 5);
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get('x-forwarded-for') || 'anonymous';
+    const allowed = await limiter.check(`chat_summary_${ip}`);
+    if (!allowed) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+    }
+
     const { history } = await req.json();
 
-    if (!history || !Array.isArray(history)) {
+    if (!history || !Array.isArray(history) || history.length > 50) {
       return NextResponse.json({ error: 'Missing or invalid history' }, { status: 400 });
     }
 

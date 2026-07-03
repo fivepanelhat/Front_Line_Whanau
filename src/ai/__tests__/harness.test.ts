@@ -202,14 +202,14 @@ describe('Agent Harness: Routing & Workflows', () => {
   });
 
   describe('Guardrails', () => {
-    it('flags high-risk responses and enforces human review', () => {
+    it('flags crisis responses and enforces human review', () => {
       const gate = checkGuardrails({
-        content: 'I will tell you how much funding you can get from winz.',
+        content: 'It sounds like you may be thinking about how to end my life.',
         agentUsed: 'funding_eligibility_checker'
       });
 
       expect(gate.passed).toBe(false);
-      expect(gate.reason).toContain('Financial');
+      expect(gate.reason).toContain('Crisis');
     });
 
     it('allows benign responses through', () => {
@@ -221,18 +221,18 @@ describe('Agent Harness: Routing & Workflows', () => {
       expect(gate.passed).toBe(true);
     });
 
-    it('guardrail node correctly modifies state', async () => {
+    it('guardrail node correctly modifies state on crisis content', async () => {
       const state: AgentStateType = {
-        query: 'how much funding',
+        query: 'I am struggling',
         consentGiven: true, locale: 'en-NZ',
         messages: [],
         userRole: 'parent',
-        intent: 'EXECUTION',
-        currentAgent: 'funding_eligibility_checker',
+        intent: 'COMPLEX',
+        currentAgent: 'kiwi',
         context: {},
         humanApproved: null,
         requiresHumanReview: false,
-        finalResponse: 'how much funding from winz',
+        finalResponse: 'any thoughts of suicide should be taken seriously — support is available',
         sources: [],
         showUrgentHelp: false,
         culturalSafetyScore: 0
@@ -240,6 +240,7 @@ describe('Agent Harness: Routing & Workflows', () => {
 
       const result = await guardrailNode(state);
       expect(result.requiresHumanReview).toBe(true);
+      expect(result.showUrgentHelp).toBe(true);
     });
   });
 

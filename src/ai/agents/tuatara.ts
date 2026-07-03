@@ -1,3 +1,4 @@
+import { buildAgentMessages } from './history';
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { createAgentLLM } from '../llm';
 import { PROMPTS } from "../prompts";
@@ -16,7 +17,7 @@ export class Tuatara {
 
   async process(query: string, state: any) {
     const result = await culturalReactAgent.invoke({
-      messages: [{ role: "user", content: query }],
+      messages: buildAgentMessages(query, state),
     });
 
     const finalMessage = result.messages[result.messages.length - 1];

@@ -1,3 +1,4 @@
+import { buildAgentMessages } from './history';
 // src/ai/knowledge-weaver.ts
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { createAgentLLM } from '../llm';
@@ -16,13 +17,7 @@ export class Riroriro {
   name = 'riroriro';
 
   async process(query: string, state: any) {
-    const messages: any[] = [];
-    if (state?.locale) {
-      if (state.locale === 'mi') messages.push({ role: 'system', content: "CRITICAL: The user has selected 'mi' (Te Reo Māori). You MUST respond entirely in Te Reo Māori." });
-      else if (state.locale === 'sm') messages.push({ role: 'system', content: "CRITICAL: The user has selected 'sm' (Gagana Samoa). You MUST respond entirely in Gagana Samoa." });
-      else if (state.locale === 'to') messages.push({ role: 'system', content: "CRITICAL: The user has selected 'to' (Lea Faka-Tonga). You MUST respond entirely in Lea Faka-Tonga." });
-    }
-    messages.push({ role: 'user', content: query });
+    const messages = buildAgentMessages(query, state);
 
     const result = await riroriroReactAgent.invoke({
       messages,
