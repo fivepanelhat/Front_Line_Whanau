@@ -317,7 +317,10 @@ async function policyAdvocateCompanionNode(state: AgentStateType) {
   const result = await kahu.process(state.query, state as any);
   return {
     finalResponse: result.content,
-    requiresHumanReview: true,
+    // Respect the agent's own flag (drafts are user-sent templates);
+    // forcing true here routed every advocacy answer to the unstaffed
+    // human-review queue via the guardrails edge.
+    requiresHumanReview: result.requiresHumanReview ?? false,
   };
 }
 
