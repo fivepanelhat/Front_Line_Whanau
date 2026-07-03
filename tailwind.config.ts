@@ -10,25 +10,28 @@ const config: Config = {
   theme: {
     extend: {
       // ── Color Palette ─────────────────────────────────
+      // Warm coastal forest palette: deep bush greens, driftwood amber,
+      // seafoam teal, warm sand neutrals. Dark surfaces (header, Whānau Hub)
+      // use these directly; page-level theming lives in globals.css vars.
       colors: {
         bg: {
-          primary: '#0f172a',
-          secondary: '#1e293b',
-          card: '#1e293b',
-          glass: 'rgba(30, 41, 59, 0.65)',
+          primary: '#101a15',
+          secondary: '#182420',
+          card: '#1b2620',
+          glass: 'rgba(27, 38, 32, 0.65)',
         },
-        surface: '#334155',
+        surface: '#2a3a31',
         text: {
-          primary: '#f1f5f9',
-          secondary: '#94a3b8',
-          muted: '#64748b',
+          primary: '#f2ede2',
+          secondary: '#a9b8ab',
+          muted: '#76867c',
         },
         accent: {
-          primary: '#6366f1',
-          secondary: '#06b6d4',
-          warm: '#f59e0b',
-          success: '#10b981',
-          danger: '#ef4444',
+          primary: '#d4a373',
+          secondary: '#58a08c',
+          warm: '#e0a458',
+          success: '#7cb385',
+          danger: '#d0645f',
         },
       },
 
@@ -106,10 +109,10 @@ const config: Config = {
 
       // ── Background Gradients ─────────────────────────
       backgroundImage: {
-        'gradient-brand': 'linear-gradient(135deg, #6366f1 0%, #06b6d4 100%)',
-        'gradient-warm': 'linear-gradient(135deg, #f59e0b 0%, #ef4444 100%)',
-        'gradient-subtle': 'linear-gradient(180deg, rgba(99,102,241,0.08) 0%, transparent 100%)',
-        'hero-radial': 'radial-gradient(ellipse at 30% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(6, 182, 212, 0.06) 0%, transparent 50%)',
+        'gradient-brand': 'linear-gradient(135deg, #35806c 0%, #d4a373 100%)',
+        'gradient-warm': 'linear-gradient(135deg, #e0a458 0%, #d0645f 100%)',
+        'gradient-subtle': 'linear-gradient(180deg, rgba(53,128,108,0.08) 0%, transparent 100%)',
+        'hero-radial': 'radial-gradient(ellipse at 30% 20%, rgba(53, 128, 108, 0.10) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(212, 163, 115, 0.08) 0%, transparent 50%)',
       },
     },
   },

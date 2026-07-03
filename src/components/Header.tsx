@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import LanguageSwitcher from './LanguageSwitcher';
+import ThemeToggle from './ThemeToggle';
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -65,12 +66,15 @@ export function Header() {
         {/* Desktop Right Side */}
         <div className="hidden md:flex items-center gap-4">
           <LanguageSwitcher />
+          <ThemeToggle />
           <button className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-bg-secondary transition-colors">
             Log in
           </button>
         </div>
 
-        {/* Mobile Hamburger Button */}
+        {/* Mobile: theme toggle + hamburger */}
+        <div className="md:hidden flex items-center gap-1">
+        <ThemeToggle />
         <button
           data-testid="mobile-menu-btn"
           ref={buttonRef}
@@ -89,6 +93,7 @@ export function Header() {
             </svg>
           )}
         </button>
+        </div>
       </div>
 
       {/* Mobile Menu Dropdown */}

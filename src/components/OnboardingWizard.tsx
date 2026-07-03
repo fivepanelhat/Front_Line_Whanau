@@ -76,7 +76,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
             </p>
             <button 
               onClick={() => setStep(2)}
-              className="mt-6 w-full bg-black text-white py-4 rounded-xl font-bold hover:bg-gray-800 transition shadow-lg"
+              className="mt-6 w-full bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition shadow-lg"
             >
               Next: How the AI Works
             </button>
@@ -113,7 +113,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
               </button>
               <button 
                 onClick={() => setStep(3)}
-                className="w-full sm:w-2/3 bg-black text-white py-4 rounded-xl font-bold hover:bg-gray-800 transition shadow-lg"
+                className="w-full sm:w-2/3 bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition shadow-lg"
               >
                 Next: What to Expect
               </button>
@@ -143,7 +143,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
               </button>
               <button 
                 onClick={() => setStep(4)}
-                className="w-full sm:w-2/3 bg-black text-white py-4 rounded-xl font-bold hover:bg-gray-800 transition shadow-lg"
+                className="w-full sm:w-2/3 bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition shadow-lg"
               >
                 Next: Your Context
               </button>
@@ -225,7 +225,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
               </button>
               <button 
                 onClick={() => setStep(5)}
-                className="w-full sm:w-2/3 bg-black text-white py-4 rounded-xl font-bold hover:bg-gray-800 transition shadow-lg"
+                className="w-full sm:w-2/3 bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition shadow-lg"
               >
                 Next: Data & Privacy
               </button>
@@ -289,7 +289,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
             </div>
             <button 
               onClick={finishOnboarding}
-              className="w-full bg-black text-white py-4 rounded-xl font-bold hover:bg-gray-800 transition shadow-lg"
+              className="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition shadow-lg"
             >
               Start Chatting
             </button>

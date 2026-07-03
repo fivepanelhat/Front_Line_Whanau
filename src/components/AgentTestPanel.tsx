@@ -254,7 +254,7 @@ export function AgentTestPanel({
           </button>
           <button
             onClick={startNewConversation}
-            className="text-sm px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
+            className="text-sm px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
           >
             + New
           </button>
@@ -348,7 +348,7 @@ export function AgentTestPanel({
         <button
           onClick={sendMessage}
           disabled={isLoading || !input.trim()}
-          className="bg-black hover:bg-gray-800 text-white px-8 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:hover:bg-black shadow-md active:scale-95"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:hover:bg-indigo-600 shadow-md active:scale-95"
         >
           Send
         </button>
@@ -373,7 +373,7 @@ export function AgentTestPanel({
               </button>
               <button
                 onClick={() => setShowReview(false)}
-                className="flex-1 bg-black text-white py-2 rounded-lg hover:bg-gray-800"
+                className="flex-1 bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700"
               >
                 Close
               </button>

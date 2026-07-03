@@ -8,6 +8,116 @@
 @import "tailwindcss";
 @config "../../tailwind.config.ts";
 
+/* ── Warm Coastal Forest theme ──────────────────────────────
+   Two-theme system (dark is the default; a ThemeToggle swaps the
+   `dark` class on <html>). Components keep using the standard
+   utilities they always used (indigo-*, cyan-*, gray-*, slate-*);
+   the @theme block below remaps those scales onto these variables,
+   so the palette changes here restyle the whole app.
+
+   indigo → forest teal (brand primary: heroes, CTAs, links)
+   cyan   → driftwood amber (practitioner accent, warm highlights)
+   gray / slate → warm sage-sand neutrals (flip direction in dark)
+   ─────────────────────────────────────────────────────────── */
+:root {
+  color-scheme: light;
+
+  /* neutrals: sand → forest ink */
+  --n-0: #f7f3ea;   /* page background (slate-50) */
+  --n-50: #f4efe6;
+  --n-100: #ece5d8;
+  --n-200: #ddd5c6;
+  --n-300: #c6bfae;
+  --n-400: #97a099;
+  --n-500: #6b7a70;
+  --n-600: #57685d;
+  --n-700: #435449;
+  --n-800: #31423a;
+  --n-900: #22302a;
+  --n-card: #fffdf8; /* bg-white cards */
+
+  /* brand: forest teal */
+  --brand-50: #e9f1ec;
+  --brand-100: #d7e7de;
+  --brand-200: #b7d4c6;
+  --brand-400: #5da78f;
+  --brand-500: #47917c;
+  --brand-600: #2f7566;
+  --brand-700: #275f52;
+  --brand-800: #1f4c42;
+  --brand-900: #16382f;
+
+  /* warm: driftwood amber */
+  --warm-100: #f0e3cd;
+  --warm-200: #e4d2b4;
+  --warm-700: #a26b38;
+  --warm-800: #8a5a2e;
+}
+
+.dark {
+  color-scheme: dark;
+
+  /* neutrals flip: page goes deep forest, text goes warm cream */
+  --n-0: #131c17;
+  --n-50: #18231d;
+  --n-100: #202d26;
+  --n-200: #2c3b33;
+  --n-300: #3a4a41;
+  --n-400: #76867c;
+  --n-500: #9aa99e;
+  --n-600: #aebfb2;
+  --n-700: #c4d2c6;
+  --n-800: #dde6da;
+  --n-900: #f2ede2;
+  --n-card: #1b2620;
+
+  --brand-50: #223730;
+  --brand-100: #2a453a;
+  --brand-200: #35564a;
+  --brand-400: #63b39c;
+  --brand-500: #55a58e;
+  --brand-600: #35806c;
+  --brand-700: #21453a;
+  --brand-800: #183028;
+  --brand-900: #9fd3c3;
+
+  --warm-100: #3a3223;
+  --warm-200: #4a3f2c;
+  --warm-700: #9c6c39;
+  --warm-800: #b57f45;
+}
+
+@theme inline {
+  --color-slate-50: var(--n-0);
+  --color-slate-900: var(--n-900);
+
+  --color-gray-50: var(--n-50);
+  --color-gray-100: var(--n-100);
+  --color-gray-200: var(--n-200);
+  --color-gray-300: var(--n-300);
+  --color-gray-400: var(--n-400);
+  --color-gray-500: var(--n-500);
+  --color-gray-600: var(--n-600);
+  --color-gray-700: var(--n-700);
+  --color-gray-800: var(--n-800);
+  --color-gray-900: var(--n-900);
+
+  --color-indigo-50: var(--brand-50);
+  --color-indigo-100: var(--brand-100);
+  --color-indigo-200: var(--brand-200);
+  --color-indigo-400: var(--brand-400);
+  --color-indigo-500: var(--brand-500);
+  --color-indigo-600: var(--brand-600);
+  --color-indigo-700: var(--brand-700);
+  --color-indigo-800: var(--brand-800);
+  --color-indigo-900: var(--brand-900);
+
+  --color-cyan-100: var(--warm-100);
+  --color-cyan-200: var(--warm-200);
+  --color-cyan-700: var(--warm-700);
+  --color-cyan-800: var(--warm-800);
+}
+
 /* ── Base Layer ─────────────────────────────────────────────── */
 @layer base {
   @media (prefers-reduced-motion: reduce) {
@@ -24,10 +134,6 @@
 
   html {
     scroll-behavior: smooth;
-    /* The app ships light-first; dark surfaces (Header, Whānau Hub) are
-       explicit .dark-space scopes. Without this, UA dark mode half-applies
-       to elements with no authored background. */
-    color-scheme: light;
   }
 
   h1,
@@ -36,11 +142,14 @@
   h4,
   h5,
   h6 {
-    @apply font-heading font-bold leading-tight text-slate-900;
+    /* --n-900 is forest ink in light mode, warm cream in dark mode */
+    @apply font-heading font-bold leading-tight;
+    color: var(--n-900);
   }
 
   /* Dark-surface scope: components rendering on bg-bg-primary/secondary
-     (Whānau Hub overlay, site header) keep light-on-dark headings. */
+     (Whānau Hub overlay, site header) keep light-on-dark headings in
+     BOTH themes — these surfaces don't flip. */
   .dark-space :is(h1, h2, h3, h4, h5, h6) {
     @apply text-text-primary;
   }
@@ -57,6 +166,21 @@
   button {
     @apply cursor-pointer border-none bg-transparent font-body;
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary rounded-sm;
+  }
+}
+
+/* ── Dark-theme surface overrides ───────────────────────────
+   `white` stays literal (text-white on accent buttons/heroes must remain
+   light in both themes); only white-as-surface flips to the card colour. */
+@layer utilities {
+  .dark .bg-white {
+    background-color: var(--n-card);
+  }
+  .dark .prose {
+    color: var(--n-700);
+  }
+  .dark .prose :is(h1, h2, h3, h4, strong, b) {
+    color: var(--n-900);
   }
 }
 
