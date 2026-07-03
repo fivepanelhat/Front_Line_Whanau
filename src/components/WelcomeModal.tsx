@@ -41,7 +41,7 @@ export function WelcomeModal() {
 
         <button
           onClick={handleAccept}
-          className="w-full py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition shadow-sm"
+          className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition shadow-sm"
         >
           I Understand & Agree
         </button>

@@ -60,7 +60,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
         {/* Progress Bar */}
         <div className="absolute top-0 left-0 w-full h-2 bg-gray-100">
           <div 
-            className="h-full bg-blue-600 transition-all duration-300" 
+            className="h-full bg-indigo-600 transition-all duration-300" 
             style={{ width: `${(step / 6) * 100}%` }}
           />
         </div>
@@ -88,11 +88,11 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
             <h2 className="text-3xl font-bold text-gray-900">How the AI Works 🧠</h2>
             <div className="space-y-4 mt-6 text-gray-700">
               <div className="flex gap-4 items-start">
-                <div className="bg-blue-100 text-blue-600 p-2 rounded-full text-xl flex-shrink-0">🩺</div>
+                <div className="bg-indigo-100 text-indigo-600 p-2 rounded-full text-xl flex-shrink-0">🩺</div>
                 <p><strong>Clinical Support Tool:</strong> The AI is a support tool to help you navigate information, but it is <em>not</em> a replacement for your doctors, midwives, or clinical advice.</p>
               </div>
               <div className="flex gap-4 items-start">
-                <div className="bg-purple-100 text-purple-600 p-2 rounded-full text-xl flex-shrink-0">🧑‍⚕️</div>
+                <div className="bg-indigo-100 text-indigo-600 p-2 rounded-full text-xl flex-shrink-0">🧑‍⚕️</div>
                 <p><strong>Human Review:</strong> Some responses (especially sensitive or complex clinical questions) may be securely reviewed by a human expert before being sent to you.</p>
               </div>
               <div className="flex gap-4 items-start">
@@ -125,7 +125,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
           <div className="space-y-4 mt-4 animate-in slide-in-from-right duration-300">
             <h2 className="text-3xl font-bold text-gray-900">Setting Expectations ⚖️</h2>
             <div className="space-y-3 mt-4 text-gray-700">
-              <div className="flex gap-3 items-start bg-blue-50 p-4 rounded-lg">
+              <div className="flex gap-3 items-start bg-indigo-50 p-4 rounded-lg">
                 <span className="text-xl">✅</span>
                 <p><strong>It CAN</strong> help you find local resources, translate complex medical jargon into plain English, and draft emails to hospitals or MSD.</p>
               </div>
@@ -163,7 +163,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
                 <select 
                   value={gestationalAge}
                   onChange={(e) => setGestationalAge(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 outline-none bg-white"
                 >
                   <option value="" disabled>Select Gestational Age...</option>
                   <option value="< 24 weeks">Under 24 weeks (Extremely Preterm)</option>
@@ -178,7 +178,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
                 <select 
                   value={hospital}
                   onChange={(e) => setHospital(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 outline-none bg-white"
                 >
                   <option value="" disabled>Select Hospital...</option>
                   <option value="Auckland City Hospital (ACH)">Auckland City Hospital (ACH)</option>
@@ -197,7 +197,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
                   type="text" 
                   value={culturalPreference}
                   onChange={(e) => setCulturalPreference(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 outline-none bg-white"
                   placeholder="e.g. Iwi affiliation, preferred language"
                 />
               </div>
@@ -206,7 +206,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
                 <select 
                   value={supportNeed}
                   onChange={(e) => setSupportNeed(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 outline-none bg-white"
                 >
                   <option value="" disabled>Select focus area...</option>
                   <option value="Feeding & Nutrition">Feeding & Nutrition</option>
@@ -245,7 +245,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
                   type="checkbox" 
                   checked={agreed}
                   onChange={(e) => setAgreed(e.target.checked)}
-                  className="mt-1 w-5 h-5 text-blue-600 rounded"
+                  className="mt-1 w-5 h-5 text-indigo-600 rounded"
                 />
                 <span className="text-sm text-amber-900 font-medium">
                   I understand this is an experimental AI, not a doctor. I consent to my anonymized chat data being reviewed by the Front Line Whānau clinical team for safety improvements.
@@ -262,7 +262,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
               <button 
                 onClick={handleComplete}
                 disabled={!agreed}
-                className="w-full sm:w-2/3 bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition disabled:bg-gray-300 disabled:cursor-not-allowed shadow-lg"
+                className="w-full sm:w-2/3 bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition disabled:bg-gray-300 disabled:cursor-not-allowed shadow-lg"
               >
                 Enter the Beta
               </button>
@@ -277,13 +277,13 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
               Here are a few ways to get started with the Front Line Whānau assistant:
             </p>
             <div className="bg-gray-50 border border-gray-100 p-5 rounded-xl space-y-4 my-6">
-              <p className="text-gray-700 italic cursor-pointer hover:text-blue-600 transition" onClick={() => finishOnboarding()}>
+              <p className="text-gray-700 italic cursor-pointer hover:text-indigo-600 transition" onClick={() => finishOnboarding()}>
                 "What does CPAP stand for, and why does my baby need it?"
               </p>
-              <p className="text-gray-700 italic cursor-pointer hover:text-blue-600 transition" onClick={() => finishOnboarding()}>
+              <p className="text-gray-700 italic cursor-pointer hover:text-indigo-600 transition" onClick={() => finishOnboarding()}>
                 "How do I introduce breastmilk when my baby is tube-fed?"
               </p>
-              <p className="text-gray-700 italic cursor-pointer hover:text-blue-600 transition" onClick={() => finishOnboarding()}>
+              <p className="text-gray-700 italic cursor-pointer hover:text-indigo-600 transition" onClick={() => finishOnboarding()}>
                 "I'm feeling really overwhelmed today. Can you just listen?"
               </p>
             </div>

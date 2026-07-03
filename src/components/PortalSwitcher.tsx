@@ -21,14 +21,14 @@ export default function PortalSwitcher() {
       {role === 'parent' ? (
         <button
           onClick={() => switchRole('practitioner')}
-          className="text-sm px-3 py-1 bg-emerald-100 text-emerald-700 rounded-md hover:bg-emerald-200 transition"
+          className="text-sm px-3 py-1 bg-cyan-100 text-cyan-800 rounded-md hover:bg-cyan-200 transition"
         >
           Practitioner View
         </button>
       ) : (
         <button
           onClick={() => switchRole('parent')}
-          className="text-sm px-3 py-1 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition"
+          className="text-sm px-3 py-1 bg-indigo-100 text-indigo-700 rounded-md hover:bg-indigo-200 transition"
         >
           Parent View
         </button>

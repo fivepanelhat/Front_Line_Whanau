@@ -51,18 +51,18 @@ export function OrganisationUploadForm() {
           name="file" 
           type="file" 
           accept=".pdf,.doc,.docx,.txt"
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none transition file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100" 
+          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100" 
         />
       </div>
       
       <div>
         <label htmlFor="filename-input" className="block text-sm font-medium text-gray-700 mb-1">Display Title (Optional)</label>
-        <input id="filename-input" name="filename" type="text" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none transition" placeholder="Leave blank to use original filename" />
+        <input id="filename-input" name="filename" type="text" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition" placeholder="Leave blank to use original filename" />
       </div>
 
       <div className="flex items-start space-x-3 bg-gray-50 p-4 rounded-lg">
         <div className="flex items-center h-5">
-          <input id="is_encrypted" defaultChecked name="is_encrypted" type="checkbox" className="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500" />
+          <input id="is_encrypted" defaultChecked name="is_encrypted" type="checkbox" className="w-4 h-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500" />
         </div>
         <div className="flex-1 text-sm">
           <label htmlFor="is_encrypted" className="font-medium text-gray-700">Apply Taonga Vault Encryption</label>

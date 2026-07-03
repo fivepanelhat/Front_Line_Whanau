@@ -13,7 +13,7 @@ export default function ParentPortal() {
         'Plain-language answers about the NICU journey, entitlements, and local services — with a human safety net.',
       href: `/${locale}/support`,
       icon: '💬',
-      color: 'bg-blue-50 text-blue-700',
+      color: 'bg-indigo-50 text-indigo-700',
     },
     {
       title: 'Financial Support Checker',
@@ -30,14 +30,6 @@ export default function ParentPortal() {
       href: `/${locale}/directory`,
       icon: '📍',
       color: 'bg-indigo-50 text-indigo-700',
-    },
-    {
-      title: 'Whānau Stories',
-      description:
-        'Real experiences from other parents who have walked the preterm journey.',
-      href: `/${locale}/parent/stories`,
-      icon: '📖',
-      color: 'bg-amber-50 text-amber-700',
     },
     {
       title: 'Whānau Hub',
@@ -63,12 +55,12 @@ export default function ParentPortal() {
           <Link
             key={tool.title}
             href={tool.href}
-            className="group bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-blue-200 transition-all block"
+            className="group bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-indigo-200 transition-all block"
           >
             <div className={`inline-flex h-11 w-11 items-center justify-center rounded-lg text-2xl mb-4 ${tool.color}`}>
               {tool.icon}
             </div>
-            <h3 className="font-semibold text-gray-900 mb-1 group-hover:text-blue-700 transition-colors">
+            <h3 className="font-semibold text-gray-900 mb-1 group-hover:text-indigo-700 transition-colors">
               {tool.title}
             </h3>
             <p className="text-sm text-gray-600 leading-relaxed">{tool.description}</p>

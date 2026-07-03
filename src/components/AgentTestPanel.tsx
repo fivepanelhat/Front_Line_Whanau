@@ -270,7 +270,7 @@ export function AgentTestPanel({
         {messages.map((msg, index) => (
           <div key={index} className={`mb-4 flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-4 duration-300`}>
             <div className={`group relative max-w-[80%] px-5 py-4 rounded-3xl shadow-sm ${
-              msg.role === 'user' ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-br-sm' : 'bg-white border border-gray-100 text-gray-800 rounded-bl-sm'
+              msg.role === 'user' ? 'bg-gradient-to-r from-indigo-600 to-indigo-600 text-white rounded-br-sm' : 'bg-white border border-gray-100 text-gray-800 rounded-bl-sm'
             }`}>
               {msg.role === 'assistant' ? (
                 // No whitespace-pre-wrap here: markdown newlines rendered as
@@ -315,9 +315,9 @@ export function AgentTestPanel({
         {isLoading && (
           <div className="flex items-center gap-2 text-gray-500 pl-4 py-2 animate-in fade-in duration-300">
             <div className="flex gap-1">
-              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+              <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+              <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+              <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
             </div>
             <span className="text-sm font-medium">Gathering thoughts...</span>
           </div>
@@ -342,7 +342,7 @@ export function AgentTestPanel({
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
           placeholder="Ask the agent anything..."
-          className="flex-1 border border-gray-200 rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all shadow-sm"
+          className="flex-1 border border-gray-200 rounded-2xl px-5 py-4 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all shadow-sm"
           disabled={isLoading}
         />
         <button
@@ -358,7 +358,7 @@ export function AgentTestPanel({
       {showReview && interruptData && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 print:hidden">
           <div className="bg-white rounded-xl p-6 w-full max-w-lg">
-            <h3 className="font-semibold text-lg mb-4 text-purple-700">Pending Practitioner Review</h3>
+            <h3 className="font-semibold text-lg mb-4 text-indigo-700">Pending Practitioner Review</h3>
             <p className="text-sm text-gray-600 mb-4">
               To ensure cultural safety and accurate information, this response requires review by a practitioner before it can be provided to you.
             </p>

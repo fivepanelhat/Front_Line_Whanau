@@ -38,13 +38,13 @@ export default async function OnboardingPage() {
               id="firstName"
               name="firstName"
               required
-              className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2 border"
+              className="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 p-2 border"
               placeholder="e.g. Jane"
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition"
+            className="w-full bg-indigo-600 text-white font-semibold py-2 rounded hover:bg-indigo-700 transition"
           >
             Continue
           </button>

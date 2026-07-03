@@ -48,38 +48,38 @@ export function DirectoryListingForm() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label htmlFor="organisation-input" className="block text-sm font-medium text-gray-700 mb-1">Organisation Name *</label>
-          <input id="organisation-input" required name="organisation" type="text" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none transition" placeholder="e.g. Plunket" />
+          <input id="organisation-input" required name="organisation" type="text" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition" placeholder="e.g. Plunket" />
         </div>
         
         <div>
           <label htmlFor="service_type-input" className="block text-sm font-medium text-gray-700 mb-1">Service Type *</label>
-          <input id="service_type-input" required name="service_type" type="text" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none transition" placeholder="e.g. Antenatal Care" />
+          <input id="service_type-input" required name="service_type" type="text" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition" placeholder="e.g. Antenatal Care" />
         </div>
 
         <div>
           <label htmlFor="region-input" className="block text-sm font-medium text-gray-700 mb-1">Region *</label>
-          <input id="region-input" required name="region" type="text" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none transition" placeholder="e.g. Auckland" />
+          <input id="region-input" required name="region" type="text" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition" placeholder="e.g. Auckland" />
         </div>
 
         <div>
           <label htmlFor="contact_email-input" className="block text-sm font-medium text-gray-700 mb-1">Contact Email</label>
-          <input id="contact_email-input" name="contact_email" type="email" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none transition" placeholder="hello@organisation.org.nz" />
+          <input id="contact_email-input" name="contact_email" type="email" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition" placeholder="hello@organisation.org.nz" />
         </div>
 
         <div>
           <label htmlFor="contact_phone-input" className="block text-sm font-medium text-gray-700 mb-1">Contact Phone</label>
-          <input id="contact_phone-input" name="contact_phone" type="tel" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none transition" placeholder="0800 123 456" />
+          <input id="contact_phone-input" name="contact_phone" type="tel" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition" placeholder="0800 123 456" />
         </div>
 
         <div>
           <label htmlFor="website_url-input" className="block text-sm font-medium text-gray-700 mb-1">Website URL</label>
-          <input id="website_url-input" name="website_url" type="url" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none transition" placeholder="https://..." />
+          <input id="website_url-input" name="website_url" type="url" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition" placeholder="https://..." />
         </div>
       </div>
 
       <div>
         <label htmlFor="description-input" className="block text-sm font-medium text-gray-700 mb-1">Description *</label>
-        <textarea id="description-input" required name="description" rows={4} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none transition" placeholder="Describe the services your organisation provides..."></textarea>
+        <textarea id="description-input" required name="description" rows={4} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition" placeholder="Describe the services your organisation provides..."></textarea>
       </div>
 
       <button

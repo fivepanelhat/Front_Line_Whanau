@@ -15,7 +15,7 @@ export default async function PractitionerPortal({
       description: 'Update your organisation’s information in the Taranaki Directory.',
       href: `/${locale}/practitioner/upload`,
       icon: '📁',
-      color: 'bg-blue-50 text-blue-700',
+      color: 'bg-indigo-50 text-indigo-700',
     },
     {
       title: 'Encrypted Patient Notes',
@@ -59,7 +59,7 @@ export default async function PractitionerPortal({
                 {tool.icon}
               </div>
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">{tool.title}</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">{tool.title}</h3>
                 <p className="text-gray-600 leading-relaxed">{tool.description}</p>
               </div>
             </div>

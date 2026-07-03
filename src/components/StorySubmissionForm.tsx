@@ -68,7 +68,7 @@ export function StorySubmissionForm() {
           required 
           value={title} 
           onChange={e => setTitle(e.target.value)}
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" 
+          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" 
           placeholder="A brief title for your experience"
         />
       </div>
@@ -81,7 +81,7 @@ export function StorySubmissionForm() {
           rows={5}
           value={content} 
           onChange={e => setContent(e.target.value)}
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none" 
+          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none resize-none" 
           placeholder="Share your journey..."
         />
       </div>
@@ -93,7 +93,7 @@ export function StorySubmissionForm() {
           type="text" 
           value={tags} 
           onChange={e => setTags(e.target.value)}
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" 
+          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" 
           placeholder="e.g. NICU, breastfeeding, twins"
         />
       </div>
@@ -101,7 +101,7 @@ export function StorySubmissionForm() {
       <button 
         type="submit" 
         disabled={isSubmitting}
-        className="w-full bg-blue-600 text-white font-medium py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+        className="w-full bg-indigo-600 text-white font-medium py-3 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
       >
         {isSubmitting ? 'Submitting...' : 'Submit Story Anonymously'}
       </button>

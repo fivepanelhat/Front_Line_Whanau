@@ -14,7 +14,7 @@ export default async function AdminLayout(
           <div className="flex justify-between h-16">
             <div className="flex">
               <div className="flex-shrink-0 flex items-center">
-                <span className="font-bold text-xl text-purple-700">Front Line Whānau</span>
+                <span className="font-bold text-xl text-indigo-700">Front Line Whānau</span>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                 <Link href={`/${locale}/admin`} className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
@@ -29,7 +29,7 @@ export default async function AdminLayout(
               </div>
             </div>
             <div className="flex items-center">
-              <Link href={`/${locale}/chat`} className="text-sm font-medium text-blue-600 hover:text-blue-500">Back to App &rarr;</Link>
+              <Link href={`/${locale}/chat`} className="text-sm font-medium text-indigo-600 hover:text-indigo-500">Back to App &rarr;</Link>
             </div>
           </div>
         </div>

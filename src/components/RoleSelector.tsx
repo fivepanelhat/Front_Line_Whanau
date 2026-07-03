@@ -22,10 +22,10 @@ export default function RoleSelector() {
           href={`/${locale}/parent`}
           onClick={() => setRole('parent')}
           data-testid="parent-role-btn"
-          className="flex-1 p-8 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl transition-all duration-200 shadow-lg text-left block"
+          className="flex-1 p-8 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl transition-all duration-200 shadow-lg text-left block"
         >
           <div className="text-2xl font-semibold mb-2">{t('parentTitle')}</div>
-          <p className="text-blue-100">{t('parentDescription')}</p>
+          <p className="text-indigo-100">{t('parentDescription')}</p>
         </Link>
 
         {/* Practitioner Portal */}
@@ -33,10 +33,10 @@ export default function RoleSelector() {
           href={`/${locale}/practitioner`}
           onClick={() => setRole('practitioner')}
           data-testid="practitioner-role-btn"
-          className="flex-1 p-8 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl transition-all duration-200 shadow-lg text-left block"
+          className="flex-1 p-8 bg-cyan-700 hover:bg-cyan-800 text-white rounded-2xl transition-all duration-200 shadow-lg text-left block"
         >
           <div className="text-2xl font-semibold mb-2">{t('practitionerTitle')}</div>
-          <p className="text-emerald-100">{t('practitionerDescription')}</p>
+          <p className="text-cyan-100">{t('practitionerDescription')}</p>
         </Link>
       </div>
     </div>

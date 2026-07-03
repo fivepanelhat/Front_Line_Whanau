@@ -48,14 +48,14 @@ export default async function AdminReviewQueue() {
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-500">Agent:</span>
-                <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-medium uppercase">{review.agent}</span>
+                <span className="bg-indigo-100 text-indigo-800 px-2 py-1 rounded text-xs font-medium uppercase">{review.agent}</span>
               </div>
             </div>
             
             <div className="p-6 space-y-4">
               <div>
                 <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">User Query</h4>
-                <div className="bg-blue-50 p-4 rounded-lg text-blue-900">
+                <div className="bg-indigo-50 p-4 rounded-lg text-indigo-900">
                   {review.query}
                 </div>
               </div>

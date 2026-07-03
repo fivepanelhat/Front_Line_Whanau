@@ -80,7 +80,7 @@ export default function AIReviewQueuePage() {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <span className="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full font-medium">Pending Human-in-the-Loop</span>
+                  <span className="px-3 py-1 bg-indigo-100 text-indigo-800 text-xs rounded-full font-medium">Pending Human-in-the-Loop</span>
                 </div>
               </div>
               
@@ -131,7 +131,7 @@ export default function AIReviewQueuePage() {
                         setEditingId(review.id);
                         setEditedResponse(review.proposed_response);
                       }}
-                      className="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg font-medium hover:bg-blue-200"
+                      className="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-lg font-medium hover:bg-indigo-200"
                     >
                       Edit Response
                     </button>

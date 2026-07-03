@@ -112,10 +112,10 @@ export default function PractitionerDashboard() {
               required
               value={passphrase} 
               onChange={e => setPassphrase(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
             />
           </div>
-          <button type="submit" className="w-full bg-blue-600 text-white font-medium py-3 rounded-lg hover:bg-blue-700">
+          <button type="submit" className="w-full bg-indigo-600 text-white font-medium py-3 rounded-lg hover:bg-indigo-700">
             Unlock Vault
           </button>
         </form>
@@ -139,7 +139,7 @@ export default function PractitionerDashboard() {
               value={patientRef} 
               onChange={e => setPatientRef(e.target.value)}
               placeholder="e.g. Patient A"
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
             />
           </div>
 
@@ -150,14 +150,14 @@ export default function PractitionerDashboard() {
               rows={5}
               value={content} 
               onChange={e => setContent(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
             />
           </div>
 
           <button 
             type="submit" 
             disabled={isLoading}
-            className="w-full bg-blue-600 text-white font-medium py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            className="w-full bg-indigo-600 text-white font-medium py-3 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
           >
             {isLoading ? 'Encrypting & Saving...' : 'Save Securely'}
           </button>

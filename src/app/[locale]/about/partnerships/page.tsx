@@ -1,9 +1,9 @@
 export default function PartnershipsPage() {
   return (
     <div className="min-h-screen bg-white">
-      <div className="bg-blue-700 py-16 px-6 text-center">
+      <div className="bg-indigo-700 py-16 px-6 text-center">
         <h1 className="text-4xl font-bold text-white mb-4">National Partnerships</h1>
-        <p className="text-blue-100 text-lg max-w-2xl mx-auto">
+        <p className="text-indigo-100 text-lg max-w-2xl mx-auto">
           Collaborating to provide a seamless support ecosystem for preterm whānau in Aotearoa.
         </p>
       </div>

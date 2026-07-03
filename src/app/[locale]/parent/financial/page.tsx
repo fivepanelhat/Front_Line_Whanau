@@ -42,10 +42,10 @@ export default function FinancialEligibilityPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      <div className="bg-emerald-700 py-16 px-6">
+      <div className="bg-indigo-700 py-16 px-6">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold text-white mb-4">Financial Support Eligibility</h1>
-          <p className="text-emerald-100 text-lg">
+          <p className="text-indigo-100 text-lg">
             Use our AI-assisted tool to figure out which grants and funding pathways (WINZ, Best Start, Disability Allowance) your whānau might be eligible for.
           </p>
         </div>
@@ -60,7 +60,7 @@ export default function FinancialEligibilityPage() {
               <select 
                 value={income} 
                 onChange={e => setIncome(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="">Select...</option>
                 <option value="Under $50k">Under $50,000</option>
@@ -77,7 +77,7 @@ export default function FinancialEligibilityPage() {
                 value={gestation} 
                 onChange={e => setGestation(e.target.value)}
                 placeholder="e.g. 28"
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
               />
             </div>
 
@@ -88,7 +88,7 @@ export default function FinancialEligibilityPage() {
                 value={region} 
                 onChange={e => setRegion(e.target.value)}
                 placeholder="e.g. Waikato"
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
               />
             </div>
 
@@ -99,14 +99,14 @@ export default function FinancialEligibilityPage() {
                 value={support} 
                 onChange={e => setSupport(e.target.value)}
                 placeholder="e.g. Paid Parental Leave"
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
               />
             </div>
 
             <button 
               type="submit" 
               disabled={isLoading}
-              className="w-full bg-emerald-600 text-white font-medium py-3 rounded-lg hover:bg-emerald-700 disabled:opacity-50 mt-4"
+              className="w-full bg-indigo-600 text-white font-medium py-3 rounded-lg hover:bg-indigo-700 disabled:opacity-50 mt-4"
             >
               {isLoading ? 'Analysing Eligibility...' : 'Check Eligibility'}
             </button>

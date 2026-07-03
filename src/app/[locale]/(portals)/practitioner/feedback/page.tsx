@@ -41,7 +41,7 @@ export default function FeedbackDashboard() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-8 h-8 bg-blue-600 rounded-full animate-pulse" />
+        <div className="w-8 h-8 bg-indigo-600 rounded-full animate-pulse" />
       </div>
     );
   }
@@ -66,7 +66,7 @@ export default function FeedbackDashboard() {
             <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">Total Feedback</p>
             <p className="text-4xl font-bold text-gray-900 mt-2">{totalFeedback}</p>
           </div>
-          <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-2xl">
+          <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-2xl">
             📊
           </div>
         </div>

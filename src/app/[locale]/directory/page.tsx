@@ -23,10 +23,10 @@ export default async function DirectoryPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-blue-700 py-16 px-6">
+      <div className="bg-indigo-700 py-16 px-6">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-4xl font-bold text-white mb-4">National Directory</h1>
-          <p className="text-blue-100 text-lg max-w-2xl">
+          <p className="text-indigo-100 text-lg max-w-2xl">
             Find verified support services, clinical organisations, and community groups across Aotearoa New Zealand.
           </p>
         </div>
