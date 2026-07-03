@@ -12,6 +12,11 @@ on:
         description: 'Existing tag to build installers for (e.g. v0.4.0)'
         required: true
 
+# tauri-action creates/updates the GitHub release and uploads installer
+# assets — needs write access (default GITHUB_TOKEN is read-only).
+permissions:
+  contents: write
+
 jobs:
   build:
     strategy:
