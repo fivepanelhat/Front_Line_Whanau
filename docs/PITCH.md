@@ -37,6 +37,10 @@ We're seeking **partnership and seed support** to move from beta to national rol
 - **Funding** — 12 months of runway for a small core team: clinical-safety review, Te Reo content expansion, and directory onboarding for the ~200 organisations whānau actually need
 - **Advisors** — Māori data governance, neonatal clinical practice
 
+## See It Live
+
+**https://front-line-whanau.vercel.app** — production deployment (Sydney region), health-checked against the live database.
+
 ## Contact
 
 **fivepanelhat** — fivepanelhat@gmail.com
