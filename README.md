@@ -9,6 +9,23 @@ A sovereign, privacy-first digital platform designed to support whānau of prete
 
 **🌐 Live: https://front-line-whanau.vercel.app**
 
+## Demo
+
+| Platform | Link | Notes |
+|----------|------|-------|
+| **Web** | [front-line-whanau.vercel.app](https://front-line-whanau.vercel.app) | Production deployment (Sydney region) |
+| **Mobile** | Same URL on any phone browser | Tap "Add to Home Screen" to install as a PWA |
+| **Desktop** | `npm run tauri:dev` (local) | Tauri 2 native app — Windows (.msi) and Linux (.deb/.AppImage) |
+
+### Quick demo walkthrough
+
+1. Open the web link and choose **"I am a Parent / Whanau"**
+2. Try the **AI Assistant** (Support page) — ask "What is CPAP?"
+3. Open the **National Directory** — search by region or service type
+4. Check **Financial Support Checker** — run an eligibility report
+5. Open **Whanau Hub** (Resources) — explore pathways, timers, and the Taonga Vault
+6. Switch to **Practitioner** view via the portal switcher for moderation and feedback tools
+
 ## The 5 W's
 
 **Who**  

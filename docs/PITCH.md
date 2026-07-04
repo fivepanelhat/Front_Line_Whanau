@@ -37,9 +37,21 @@ We're seeking **partnership and seed support** to move from beta to national rol
 - **Funding** — 12 months of runway for a small core team: clinical-safety review, Te Reo content expansion, and directory onboarding for the ~200 organisations whānau actually need
 - **Advisors** — Māori data governance, neonatal clinical practice
 
-## See It Live
+## Demo
 
-**https://front-line-whanau.vercel.app** — production deployment (Sydney region), health-checked against the live database.
+| Platform | Access |
+|----------|--------|
+| **Web App** | [front-line-whanau.vercel.app](https://front-line-whanau.vercel.app) |
+| **Mobile (PWA)** | Open the link on any phone — tap "Add to Home Screen" to install |
+| **Desktop (Tauri)** | Windows (.msi) and Linux (.deb/.AppImage) — `npm run tauri:build` |
+
+Production deployment (Sydney region), health-checked against the live Supabase database.
+
+### What to look for in a demo
+
+- **Parent Portal**: AI chat assistant, financial eligibility checker, national services directory, support pathways with checklists
+- **Practitioner Portal**: Encrypted patient notes (Taonga Vault), HITL moderation queue, feedback analytics dashboard
+- **Cross-cutting**: Dark-mode-first responsive design, multilingual (EN/Te Reo/Samoan/Tongan), consent-gated AI processing
 
 ## Contact
 

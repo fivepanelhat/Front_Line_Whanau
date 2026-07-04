@@ -4,8 +4,10 @@
   "description": "National directory and support pathways for preterm whānau in Aotearoa",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "background_color": "#131c17",
+  "theme_color": "#131c17",
+  "categories": ["health", "education", "lifestyle"],
   "icons": [
     {
       "src": "/favicon.ico",
