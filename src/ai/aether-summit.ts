@@ -3,8 +3,22 @@ import { WhanauPathwayArchitect } from "./pathway-architect";
 import { SovereignExecutor } from "./executor";
 import { AgentResponse, OrchestrationContext } from "./types";
 import { checkGuardrails, checkInputGuardrails } from "./guardrails";
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
-import { buildSupervisorClassificationPrompt } from "./prompts";
+import { classifyIntent as sharedClassify, type Intent } from "./classifier";
+
+// The summit runs four lanes; the shared classifier is finer-grained.
+// Info-flavoured intents collapse to RESEARCH, advocacy to PLANNING.
+const LANE_MAP: Record<Intent, 'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'COMPLEX'> = {
+  RESEARCH: 'RESEARCH',
+  PLANNING: 'PLANNING',
+  EXECUTION: 'EXECUTION',
+  COMPLEX: 'COMPLEX',
+  CLINICAL: 'RESEARCH',
+  TRANSLATE: 'RESEARCH',
+  NUTRITION: 'RESEARCH',
+  CULTURAL: 'RESEARCH',
+  LOCAL_SERVICES: 'RESEARCH',
+  ADVOCACY: 'PLANNING',
+};
 
 export class AetherSummit {
   private knowledgeWeaver = new Riroriro();
@@ -21,19 +35,10 @@ export class AetherSummit {
     }
 
     try {
-      const llm = new ChatGoogleGenerativeAI({
-        model: "gemini-2.5-flash",
-        temperature: 0,
-      });
-      
-      const prompt = buildSupervisorClassificationPrompt(query);
-      
-      const response = await llm.invoke(prompt);
-      const text = (response.content as string).trim().toUpperCase();
-      if (['RESEARCH', 'PLANNING', 'EXECUTION', 'COMPLEX'].includes(text)) {
-        return text as any;
-      }
-      return 'COMPLEX';
+      // Single source of truth: the same classifier the main graph uses.
+      // This class previously ran its own 4-way prompt that had drifted
+      // from the graph's, so routing differed by API entry point.
+      return LANE_MAP[await sharedClassify(query)];
     } catch (e) {
       return 'COMPLEX';
     }

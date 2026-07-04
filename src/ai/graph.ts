@@ -39,7 +39,7 @@ const AgentState = Annotation.Root({
     reducer: (x, y) => y ?? x,
     default: () => '',
   }),
-  intent: Annotation<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'CLINICAL' | 'ADVOCACY' | 'TRANSLATE' | 'NUTRITION' | 'CULTURAL' | 'COMPLEX' | null>({
+  intent: Annotation<Intent | null>({
     reducer: (x, y) => y ?? x,
     default: () => null,
   }),
@@ -108,55 +108,10 @@ const takahe = new Takahe();
 const toroa = new Toroa();
 
 // === NODES ===
-const intentClassifier = new ChatGoogleGenerativeAI({
-  model: "gemini-2.5-flash",
-  temperature: 0,
-  maxOutputTokens: 1024,
-});
-
-export async function classifyIntent(query: string, history?: BaseMessage[]): Promise<'RESEARCH' | 'PLANNING' | 'EXECUTION' | 'COMPLEX' | 'CLINICAL' | 'ADVOCACY' | 'TRANSLATE' | 'NUTRITION' | 'CULTURAL'> {
-  // Follow-ups like "how much is it per week?" are unclassifiable in
-  // isolation — give the classifier a compact view of the recent turns.
-  const recent = (history || [])
-    .slice(-4, -1) // last few turns, excluding the current query itself
-    .map((m) => {
-      const role = m._getType?.() === 'human' ? 'User' : 'Assistant';
-      const text = typeof m.content === 'string' ? m.content : JSON.stringify(m.content);
-      return `${role}: ${text.slice(0, 200)}`;
-    })
-    .join('\n');
-
-  const systemPrompt = `You are an intent classifier for a preterm whānau support system in Aotearoa New Zealand.
-
-Classify the user's query into exactly one of these categories:
-- RESEARCH: Questions about information, eligibility, definitions, or facts.
-- PLANNING: Questions about steps, pathways, advice, or "how do I".
-- EXECUTION: Requests to check eligibility, apply for payments/support, or take a concrete financial action. NOT email/letter drafting — that is ADVOCACY.
-- CLINICAL: Questions about medical symptoms, diagnosis, sickness, or medical advice.
-- ADVOCACY: Requests to draft emails, challenge decisions, or learn about legal/hospital rights.
-- TRANSLATE: Requests to explain or translate complex medical jargon or reports into simple English.
-- NUTRITION: Questions specifically about feeding, tube feeding, breastfeeding, breastmilk, expressing, or solids.
-- CULTURAL: Questions specifically about tikanga, karakia, marae, iwi, whenua, or Māori cultural practices.
-- COMPLEX: Queries that combine multiple intents or are emotionally heavy.
-
-Respond with ONLY one word: RESEARCH, PLANNING, EXECUTION, CLINICAL, ADVOCACY, TRANSLATE, NUTRITION, CULTURAL, or COMPLEX.`;
-
-  const userContent = recent
-    ? `Recent conversation:\n${recent}\n\nCurrent query to classify: ${query}`
-    : query;
-
-  const response = await intentClassifier.invoke([
-    new SystemMessage(systemPrompt),
-    new HumanMessage(userContent),
-  ]);
-
-  const intent = response.content.toString().trim().toUpperCase();
-
-  if (["RESEARCH", "PLANNING", "EXECUTION", "COMPLEX", "CLINICAL", "ADVOCACY", "TRANSLATE", "NUTRITION", "CULTURAL"].includes(intent)) {
-    return intent as any;
-  }
-  return "COMPLEX";
-}
+// Shared with aether-summit (see classifier.ts) — re-exported for existing
+// importers (tests) that pull classifyIntent from this module.
+export { classifyIntent } from './classifier';
+import { classifyIntent as classify, type Intent } from './classifier';
 
 export async function supervisorNode(state: AgentStateType): Promise<Partial<AgentStateType>> {
   // NOTE: never return `messages` here — the messages reducer concats, and
@@ -169,7 +124,7 @@ export async function supervisorNode(state: AgentStateType): Promise<Partial<Age
     };
   }
 
-  const intent = await classifyIntent(state.query, state.messages);
+  const intent = await classify(state.query, state.messages);
 
   let nextAgent = "riroriro";
 
@@ -185,6 +140,8 @@ export async function supervisorNode(state: AgentStateType): Promise<Partial<Age
     nextAgent = "takahe";
   } else if (intent === "CULTURAL") {
     nextAgent = "toroa";
+  } else if (intent === "LOCAL_SERVICES") {
+    nextAgent = "resource_navigator";
   } else if (intent === "PLANNING") {
     // How-do-I / step-by-step questions belong to the pathway planner;
     // this previously routed to kiwi (emotional support), which answered

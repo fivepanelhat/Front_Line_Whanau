@@ -19,6 +19,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "eval:agents": "node scripts/eval-agents.mjs",
     "e2e:install": "playwright install --with-deps chromium",
     "e2e": "playwright test",
     "test:e2e": "playwright test",
