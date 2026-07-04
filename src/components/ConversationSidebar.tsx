@@ -35,7 +35,7 @@ export function ConversationSidebar({
   }, [refreshTrigger]);
 
   return (
-    <div className="flex w-72 flex-col border-r bg-gray-50 p-4">
+    <div className="hidden w-72 flex-col border-r bg-gray-50 p-4 md:flex">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="font-semibold">Conversations</h3>
         <button

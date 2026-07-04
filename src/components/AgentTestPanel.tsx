@@ -239,27 +239,27 @@ export function AgentTestPanel({
   };
 
   return (
-    <div className="flex flex-col h-full max-w-4xl mx-auto p-6">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-semibold">Multi-Turn Agent</h2>
-        <div className="flex gap-2 print:hidden">
+    <div className="flex flex-col h-full max-w-4xl mx-auto p-3 sm:p-6">
+      {/* Header — stacks on mobile so the title and actions never collide */}
+      <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
+        <h2 className="text-xl sm:text-2xl font-semibold">Multi-Turn Agent</h2>
+        <div className="flex flex-wrap gap-2 print:hidden">
           <button
             onClick={generateSummary}
             disabled={messages.length === 0}
-            className="text-sm px-4 py-2 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg hover:bg-indigo-100 disabled:opacity-50 transition-colors"
+            className="text-sm px-3 py-2 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg hover:bg-indigo-100 disabled:opacity-50 transition-colors"
           >
-            🩺 Summary for Doctor
+            🩺 <span className="hidden sm:inline">Summary for Doctor</span><span className="sm:hidden">Summary</span>
           </button>
           <button
             onClick={() => alert("Need help now?\n\n• Emergency: 111\n• Healthline (24/7 nurses): 0800 611 116\n• PlunketLine (24/7 baby & parenting): 0800 933 922\n• Need to Talk? (24/7 counsellors): call or text 1737")}
-            className="text-sm px-4 py-2 border rounded-lg hover:bg-gray-50 flex items-center gap-2"
+            className="text-sm px-3 py-2 border rounded-lg hover:bg-gray-50 flex items-center gap-1"
           >
             <span>🆘</span> Support
           </button>
           <button
             onClick={startNewConversation}
-            className="text-sm px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+            className="text-sm px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
           >
             + New
           </button>
@@ -353,7 +353,7 @@ export function AgentTestPanel({
         <button
           onClick={sendMessage}
           disabled={isLoading || !input.trim()}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:hover:bg-indigo-600 shadow-md active:scale-95"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 sm:px-8 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:hover:bg-indigo-600 shadow-md active:scale-95 shrink-0"
         >
           Send
         </button>
