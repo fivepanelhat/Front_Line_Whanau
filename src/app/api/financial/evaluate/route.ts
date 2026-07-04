@@ -17,12 +17,15 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { income, gestation, support, region } = body;
+    const { income, gestation, support, region } = body as Record<string, string | undefined>;
 
-    const query = `I am a parent in ${region || 'New Zealand'}. 
-My household income is ${income || 'unknown'}. 
-My baby was born at ${gestation || 'unknown'} weeks gestation. 
-Currently I am receiving: ${support || 'nothing'}. 
+    const sanitize = (v: string | undefined, max = 200) =>
+      v ? v.slice(0, max).replace(/[<>"'`;${}]/g, '') : undefined;
+
+    const query = `I am a parent in ${sanitize(region) || 'New Zealand'}.
+My household income is ${sanitize(income) || 'unknown'}.
+My baby was born at ${sanitize(gestation) || 'unknown'} weeks gestation.
+Currently I am receiving: ${sanitize(support) || 'nothing'}.
 Please evaluate my eligibility for financial grants such as Best Start, WINZ, or Disability Allowance.`;
 
     const result = await agentGraph.invoke(
@@ -45,8 +48,6 @@ Please evaluate my eligibility for financial grants such as Best Start, WINZ, or
     });
 
   } catch (error: any) {
-    console.error('API Route Error:', error);
-    
     // If we hit the interrupt due to human review (which funding_eligibility_checker requires)
     if (error && (error.name === 'Interrupt' || error.name === 'GraphInterrupt')) {
       const interruptValue = error.value || error.interrupt || {};

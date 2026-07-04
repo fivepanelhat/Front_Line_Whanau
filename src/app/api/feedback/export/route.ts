@@ -48,8 +48,9 @@ export async function GET(req: NextRequest) {
 
     for (const fb of feedbacks || []) {
       const values = headers.map(header => {
-        const val = fb[header as keyof typeof fb];
-        const escaped = ('' + val).replace(/"/g, '""');
+        let val = '' + (fb[header as keyof typeof fb] ?? '');
+        if (/^[=+\-@\t\r]/.test(val)) val = "'" + val;
+        const escaped = val.replace(/"/g, '""');
         return `"${escaped}"`;
       });
       csvRows.push(values.join(','));

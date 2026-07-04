@@ -8,6 +8,17 @@ export async function GET(request: NextRequest) {
 
   try {
     const supabase = await createClient();
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', auth.user.id)
+      .single();
+
+    if (profile?.role !== 'admin' && profile?.role !== 'practitioner') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     const { data: reviews, error } = await supabase
       .from('ai_reviews')
       .select('*')

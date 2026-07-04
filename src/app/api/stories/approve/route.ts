@@ -23,17 +23,17 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { id, is_approved, cultural_safety_approved } = body;
+    const { id, is_approved, cultural_safety_approved } = body as Record<string, unknown>;
 
-    if (!id) {
+    if (!id || typeof id !== 'string') {
       return NextResponse.json({ error: 'Story ID is required' }, { status: 400 });
     }
 
     const { data, error } = await supabase
       .from('peer_stories')
-      .update({ 
-        is_approved: is_approved ?? true,
-        cultural_safety_approved: cultural_safety_approved ?? true
+      .update({
+        is_approved: is_approved === true,
+        cultural_safety_approved: cultural_safety_approved === true,
       })
       .eq('id', id)
       .select()

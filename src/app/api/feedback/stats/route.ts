@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-import { createClient as createServerClient } from '@/lib/supabase/server';
+import { createClient as createServerClient, createAdminClient } from '@/lib/supabase/server';
 import { z } from 'zod';
 
 const StatsQuerySchema = z.object({
@@ -37,10 +36,7 @@ export async function GET(req: NextRequest) {
       agent: searchParams.get('agent') || undefined,
     });
 
-    const supabase = createSupabaseClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const supabase = await createAdminClient();
 
     let dbQuery = supabase
       .from('ai_feedback')

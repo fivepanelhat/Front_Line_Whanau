@@ -11,6 +11,7 @@ const envSchema = z.object({
   DATABASE_URL: z.string().url().optional(),
   JWT_SECRET: z.string().min(32).optional(),
   GOOGLE_API_KEY: z.string().min(1).optional(),
+  TAVILY_API_KEY: z.string().min(1).optional(),
   AETHER_SUMMIT_URL: z.string().url().optional(),
 
   // Optional

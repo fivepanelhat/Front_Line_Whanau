@@ -54,8 +54,8 @@ export async function POST(request: NextRequest) {
       const detail = await upstream.text();
       console.error(`[aether proxy] upstream ${upstream.status}:`, detail);
       return NextResponse.json(
-        { error: 'Agent service error', detail },
-        { status: upstream.status }
+        { error: 'Agent service error' },
+        { status: upstream.status >= 500 ? 502 : upstream.status }
       );
     }
 

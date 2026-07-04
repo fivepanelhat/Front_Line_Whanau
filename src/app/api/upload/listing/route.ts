@@ -11,10 +11,20 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { organisation, service_type, region, contact_email, contact_phone, website_url, description } = body;
+    const { organisation, service_type, region, contact_email, contact_phone, website_url, description } = body as Record<string, string | undefined>;
 
     if (!organisation || !service_type || !region || !description) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    if (contact_email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact_email)) {
+      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
+    }
+    if (website_url && !/^https?:\/\/.+/.test(website_url)) {
+      return NextResponse.json({ error: 'Invalid website URL' }, { status: 400 });
+    }
+    if (contact_phone && !/^[\d\s+\-()]{6,20}$/.test(contact_phone)) {
+      return NextResponse.json({ error: 'Invalid phone number' }, { status: 400 });
     }
 
     const { data, error } = await supabase

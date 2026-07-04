@@ -23,9 +23,9 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { id } = body;
+    const { id } = body as Record<string, unknown>;
 
-    if (!id) {
+    if (!id || typeof id !== 'string') {
       return NextResponse.json({ error: 'Listing ID is required' }, { status: 400 });
     }
 

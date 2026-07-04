@@ -51,6 +51,6 @@ Keep it highly concise, professional, and objective. Exclude casual chat, greeti
 
   } catch (error: any) {
     console.error('Failed to generate summary:', error);
-    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to generate summary' }, { status: 500 });
   }
 }

@@ -46,16 +46,25 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   try {
     const supabase = await createClient();
-    const { searchParams } = new URL(req.url);
-    const approvedOnly = searchParams.get('approved') === 'true';
+
+    const { data: { user } } = await supabase.auth.getUser();
+    let isPrivileged = false;
+    if (user) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single();
+      isPrivileged = profile?.role === 'admin' || profile?.role === 'practitioner';
+    }
 
     let query = supabase
       .from('peer_stories')
       .select('id, author_id, title, content, tags, is_approved, cultural_safety_approved, created_at')
       .order('created_at', { ascending: false })
       .limit(100);
-    
-    if (approvedOnly) {
+
+    if (!isPrivileged) {
       query = query.eq('is_approved', true).eq('cultural_safety_approved', true);
     }
 

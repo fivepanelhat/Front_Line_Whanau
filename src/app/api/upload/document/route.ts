@@ -20,6 +20,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
+    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+    if (file.size > MAX_FILE_SIZE) {
+      return NextResponse.json({ error: 'File exceeds 10 MB limit' }, { status: 400 });
+    }
+
+    const ALLOWED_TYPES = new Set([
+      'application/pdf',
+      'image/jpeg', 'image/png', 'image/webp',
+      'text/plain', 'text/csv',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    ]);
+    if (!ALLOWED_TYPES.has(file.type)) {
+      return NextResponse.json({ error: 'File type not allowed' }, { status: 400 });
+    }
+
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 

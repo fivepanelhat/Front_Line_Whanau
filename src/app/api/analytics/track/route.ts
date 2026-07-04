@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import crypto from 'crypto';
 import { RateLimiter } from '@/lib/rate-limit';
+import { AnalyticsEventSchema } from '@/lib/validations';
 
 const rateLimiter = new RateLimiter(60000, 20); // 20 events per minute
 
@@ -9,16 +10,16 @@ export async function POST(req: NextRequest) {
   try {
     const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || '127.0.0.1';
     const isAllowed = await rateLimiter.check(`analytics_${ip}`);
-    
+
     if (!isAllowed) {
       return NextResponse.json({ error: 'Too many analytics requests' }, { status: 429 });
     }
 
-    const { event_type, path, metadata } = await req.json();
-
-    if (!event_type || !path) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    const parsed = AnalyticsEventSchema.safeParse(await req.json());
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
     }
+    const { event_type, path, metadata } = parsed.data;
 
     // Generate a daily anonymised session hash based on IP
     // This allows us to track unique sessions per day without storing PII

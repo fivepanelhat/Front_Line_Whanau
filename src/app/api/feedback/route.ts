@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { createAdminClient } from '@/lib/supabase/server';
 import { logger } from '@/lib/logger';
 import { FeedbackSchema } from '@/lib/validations';
 import { RateLimiter } from '@/lib/rate-limit';
@@ -10,21 +10,18 @@ export async function POST(req: Request) {
   try {
     const ip = req.headers.get('x-forwarded-for') || 'anonymous';
     const isAllowed = await rateLimiter.check(`feedback_${ip}`);
-    
+
     if (!isAllowed) {
       return NextResponse.json({ error: 'Too many feedback requests. Please try again later.' }, { status: 429 });
     }
 
     const parsed = FeedbackSchema.safeParse(await req.json());
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid input', details: parsed.error }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
     }
     const { threadId, messageContent, rating, comment, agent } = parsed.data;
 
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const supabase = await createAdminClient();
 
     const { error } = await supabase
       .from('ai_feedback')

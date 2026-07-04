@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
     const result = await weaver.process(query, {});
     return NextResponse.json(result);
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error('Test agent error:', error);
+    return NextResponse.json({ error: 'Agent processing failed' }, { status: 500 });
   }
 }
