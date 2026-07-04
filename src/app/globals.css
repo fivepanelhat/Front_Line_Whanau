@@ -169,12 +169,21 @@
   }
 }
 
-/* ── Dark-theme surface overrides ───────────────────────────
-   `white` stays literal (text-white on accent buttons/heroes must remain
-   light in both themes); only white-as-surface flips to the card colour. */
+/* ── Card surfaces: modern glass panels ─────────────────────
+   Every bg-white card becomes a translucent, blurred glass panel over the
+   page background — light mode gets frosted warm-white, dark mode frosted
+   forest with a hairline light border. `white` stays literal for text
+   (text-white on accent buttons/heroes must remain light in both themes).
+   Colours are otherwise untouched — this is a surface treatment only. */
 @layer utilities {
+  .bg-white {
+    background-color: rgba(255, 253, 248, 0.7);
+    -webkit-backdrop-filter: blur(16px) saturate(1.15);
+    backdrop-filter: blur(16px) saturate(1.15);
+  }
   .dark .bg-white {
-    background-color: var(--n-card);
+    background-color: rgba(27, 38, 32, 0.55);
+    border-color: rgba(255, 255, 255, 0.08);
   }
   .dark .prose {
     color: var(--n-700);
