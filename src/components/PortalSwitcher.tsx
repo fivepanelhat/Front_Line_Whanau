@@ -15,22 +15,22 @@ export default function PortalSwitcher() {
   if (!role) return null;
 
   return (
-    <div className="flex items-center gap-2 bg-white border rounded-lg px-3 py-1.5 shadow-sm">
-      <span className="text-sm text-gray-500">Switch to:</span>
-      
+    <div className="flex items-center gap-2 bg-bg-secondary border border-border rounded-lg px-2 sm:px-3 py-1.5">
+      <span className="text-xs sm:text-sm text-text-muted hidden sm:inline">Switch to:</span>
+
       {role === 'parent' ? (
         <button
           onClick={() => switchRole('practitioner')}
-          className="text-sm px-3 py-1 bg-cyan-100 text-cyan-800 rounded-md hover:bg-cyan-200 transition"
+          className="text-xs sm:text-sm px-2 sm:px-3 py-1 bg-accent-secondary/15 text-accent-secondary rounded-md hover:bg-accent-secondary/25 transition"
         >
-          Practitioner View
+          Practitioner
         </button>
       ) : (
         <button
           onClick={() => switchRole('parent')}
-          className="text-sm px-3 py-1 bg-indigo-100 text-indigo-700 rounded-md hover:bg-indigo-200 transition"
+          className="text-xs sm:text-sm px-2 sm:px-3 py-1 bg-accent-primary/15 text-accent-primary rounded-md hover:bg-accent-primary/25 transition"
         >
-          Parent View
+          Parent
         </button>
       )}
 
@@ -39,9 +39,9 @@ export default function PortalSwitcher() {
           clearRole();
           router.push('/');
         }}
-        className="text-xs text-gray-500 hover:text-red-600 ml-2"
+        className="text-xs text-text-muted hover:text-red-400 ml-1 sm:ml-2"
       >
-        Change Role
+        Exit
       </button>
     </div>
   );

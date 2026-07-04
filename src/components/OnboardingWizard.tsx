@@ -20,11 +20,17 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
 
   if (!isOpen) return null;
 
+  const handleSkip = () => {
+    localStorage.setItem('front_line_onboarded', 'true');
+    setIsOpen(false);
+    onComplete();
+  };
+
   const handleComplete = async () => {
     if (!agreed) return;
     localStorage.setItem('front_line_onboarded', 'true');
     setIsOpen(false);
-    
+
     try {
       await fetch('/api/analytics/track', {
         method: 'POST',
@@ -32,7 +38,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
         body: JSON.stringify({
           event_type: 'beta_consent_given',
           path: window.location.pathname,
-          metadata: { 
+          metadata: {
             agreed: true,
             gestationalAge,
             hospital,
@@ -44,7 +50,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
     } catch (e) {
       console.error('Failed to log beta consent', e);
     }
-    
+
     // Instead of closing immediately, go to the final "What to expect" screen
     setStep(6);
   };
@@ -59,11 +65,21 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
       <div className="bg-white rounded-2xl p-6 md:p-8 max-w-xl w-full shadow-2xl relative overflow-hidden max-h-[90vh] overflow-y-auto">
         {/* Progress Bar */}
         <div className="absolute top-0 left-0 w-full h-2 bg-gray-100">
-          <div 
-            className="h-full bg-indigo-600 transition-all duration-300" 
+          <div
+            className="h-full bg-indigo-600 transition-all duration-300"
             style={{ width: `${(step / 6) * 100}%` }}
           />
         </div>
+
+        {/* Skip button */}
+        {step < 6 && (
+          <button
+            onClick={handleSkip}
+            className="absolute top-4 right-4 text-sm text-gray-400 hover:text-gray-600 transition-colors z-10"
+          >
+            Skip
+          </button>
+        )}
 
         {step === 1 && (
           <div className="space-y-4 mt-4 animate-in fade-in zoom-in duration-300">

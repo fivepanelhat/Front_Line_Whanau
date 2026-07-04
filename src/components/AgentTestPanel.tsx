@@ -239,10 +239,10 @@ export function AgentTestPanel({
   };
 
   return (
-    <div className="flex flex-col h-full max-w-4xl mx-auto p-3 sm:p-6">
+    <div className="flex flex-col h-full max-w-4xl mx-auto px-2 py-2 sm:p-6">
       {/* Header — stacks on mobile so the title and actions never collide */}
-      <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-xl sm:text-2xl font-semibold">Multi-Turn Agent</h2>
+      <div className="flex flex-col gap-2 mb-3 sm:mb-4 sm:flex-row sm:items-center sm:justify-between">
+        <h2 className="text-lg sm:text-2xl font-semibold">Whānau Support</h2>
         <div className="flex flex-wrap gap-2 print:hidden">
           <button
             onClick={generateSummary}

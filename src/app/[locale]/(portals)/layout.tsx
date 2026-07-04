@@ -28,10 +28,10 @@ export default function PortalsLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="border-b bg-white">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="font-semibold text-xl">Front_Line_Whanau</div>
+    <div className="min-h-screen bg-bg-primary">
+      <header className="border-b border-border bg-bg-secondary/80 backdrop-blur">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
+          <div className="font-semibold text-lg sm:text-xl text-text-primary">Front Line Whanau</div>
           <PortalSwitcher />
         </div>
       </header>

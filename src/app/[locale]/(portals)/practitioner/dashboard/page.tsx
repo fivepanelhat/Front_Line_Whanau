@@ -20,7 +20,7 @@ function DecryptedNote({ note, passphrase, isUnlocked }: { note: any; passphrase
     }
   }, [note, isUnlocked, passphrase]);
 
-  return <p className="text-gray-700 whitespace-pre-wrap">{decryptedText}</p>;
+  return <p className="text-text-secondary whitespace-pre-wrap">{decryptedText}</p>;
 }
 
 export default function PractitionerDashboard() {
@@ -99,23 +99,23 @@ export default function PractitionerDashboard() {
 
   if (!isUnlocked) {
     return (
-      <div className="p-8 max-w-xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4 text-gray-900">Practitioner Vault</h1>
-        <p className="text-gray-600 mb-8">Enter your Taonga Vault passphrase to unlock and decrypt your patient notes locally. We never store this passphrase.</p>
-        
-        <form onSubmit={handleUnlock} className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-          {error && <div className="mb-4 text-red-600 text-sm">{error}</div>}
+      <div className="p-4 sm:p-8 max-w-xl mx-auto">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-4 text-text-primary">Practitioner Vault</h1>
+        <p className="text-text-secondary mb-6 sm:mb-8">Enter your Taonga Vault passphrase to unlock and decrypt your patient notes locally. We never store this passphrase.</p>
+
+        <form onSubmit={handleUnlock} className="bg-bg-secondary p-5 sm:p-6 rounded-xl border border-border">
+          {error && <div className="mb-4 text-red-400 text-sm">{error}</div>}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Passphrase</label>
-            <input 
-              type="password" 
+            <label className="block text-sm font-medium text-text-secondary mb-1">Passphrase</label>
+            <input
+              type="password"
               required
-              value={passphrase} 
+              value={passphrase}
               onChange={e => setPassphrase(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-border rounded-lg bg-bg-primary text-text-primary focus:ring-2 focus:ring-accent-primary"
             />
           </div>
-          <button type="submit" className="w-full bg-indigo-600 text-white font-medium py-3 rounded-lg hover:bg-indigo-700">
+          <button type="submit" className="w-full bg-accent-primary text-white font-medium py-3 rounded-lg hover:opacity-90 transition-opacity">
             Unlock Vault
           </button>
         </form>
@@ -124,40 +124,40 @@ export default function PractitionerDashboard() {
   }
 
   return (
-    <div className="p-8 max-w-5xl mx-auto grid gap-8 md:grid-cols-2">
+    <div className="p-4 sm:p-8 max-w-5xl mx-auto grid gap-6 sm:gap-8 md:grid-cols-2">
       <div>
-        <h1 className="text-3xl font-bold mb-8 text-gray-900">Patient Notes</h1>
-        
-        <form onSubmit={handleSaveNote} className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">New Encrypted Note</h2>
-          {error && <div className="mb-4 text-red-600 text-sm">{error}</div>}
-          
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-text-primary">Patient Notes</h1>
+
+        <form onSubmit={handleSaveNote} className="bg-bg-secondary p-5 sm:p-6 rounded-xl border border-border mb-8">
+          <h2 className="text-lg sm:text-xl font-bold text-text-primary mb-4">New Encrypted Note</h2>
+          {error && <div className="mb-4 text-red-400 text-sm">{error}</div>}
+
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Patient Reference (Plaintext)</label>
-            <input 
-              type="text" 
-              value={patientRef} 
+            <label className="block text-sm font-medium text-text-secondary mb-1">Patient Reference (Plaintext)</label>
+            <input
+              type="text"
+              value={patientRef}
               onChange={e => setPatientRef(e.target.value)}
               placeholder="e.g. Patient A"
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-border rounded-lg bg-bg-primary text-text-primary focus:ring-2 focus:ring-accent-primary"
             />
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Clinical Note (Encrypted locally)</label>
-            <textarea 
+            <label className="block text-sm font-medium text-text-secondary mb-1">Clinical Note (Encrypted locally)</label>
+            <textarea
               required
               rows={5}
-              value={content} 
+              value={content}
               onChange={e => setContent(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-border rounded-lg bg-bg-primary text-text-primary focus:ring-2 focus:ring-accent-primary"
             />
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={isLoading}
-            className="w-full bg-indigo-600 text-white font-medium py-3 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+            className="w-full bg-accent-primary text-white font-medium py-3 rounded-lg hover:opacity-90 disabled:opacity-50 transition-opacity"
           >
             {isLoading ? 'Encrypting & Saving...' : 'Save Securely'}
           </button>
@@ -165,15 +165,15 @@ export default function PractitionerDashboard() {
       </div>
 
       <div className="space-y-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Saved Notes</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-text-primary mb-2">Saved Notes</h2>
         {notes.length === 0 ? (
-          <div className="text-gray-500">No notes found.</div>
+          <div className="text-text-muted">No notes found.</div>
         ) : (
           notes.map(note => (
-            <div key={note.id} className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-              <div className="flex justify-between items-center mb-4 border-b pb-2">
-                <h3 className="font-bold text-gray-900">{note.patient_reference || 'Unnamed Note'}</h3>
-                <span className="text-xs text-gray-500">{new Date(note.created_at).toLocaleString()}</span>
+            <div key={note.id} className="bg-bg-secondary p-5 sm:p-6 rounded-xl border border-border">
+              <div className="flex justify-between items-center mb-4 border-b border-border pb-2">
+                <h3 className="font-bold text-text-primary">{note.patient_reference || 'Unnamed Note'}</h3>
+                <span className="text-xs text-text-muted">{new Date(note.created_at).toLocaleString()}</span>
               </div>
               <DecryptedNote note={note} passphrase={passphrase} isUnlocked={isUnlocked} />
             </div>

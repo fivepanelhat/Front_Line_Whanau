@@ -42,28 +42,28 @@ export default function ParentPortal() {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-12">
-      <div className="mb-10">
-        <h1 className="text-4xl font-bold text-gray-900 tracking-tight">Parent & Whānau Portal</h1>
-        <p className="text-lg text-gray-600 mt-3">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
+      <div className="mb-6 sm:mb-10">
+        <h1 className="text-2xl sm:text-4xl font-bold text-text-primary tracking-tight">Parent & Whanau Portal</h1>
+        <p className="text-base sm:text-lg text-text-secondary mt-2 sm:mt-3">
           Support and information for families of preterm babies — nau mai, haere mai.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {tools.map((tool) => (
           <Link
             key={tool.title}
             href={tool.href}
-            className="group bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-indigo-200 transition-all block"
+            className="group bg-bg-secondary p-5 sm:p-6 rounded-xl border border-border hover:border-accent-primary/40 transition-all block"
           >
-            <div className={`inline-flex h-11 w-11 items-center justify-center rounded-lg text-2xl mb-4 ${tool.color}`}>
+            <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-2xl mb-3 sm:mb-4 bg-white/5">
               {tool.icon}
             </div>
-            <h3 className="font-semibold text-gray-900 mb-1 group-hover:text-indigo-700 transition-colors">
+            <h3 className="font-semibold text-text-primary mb-1 group-hover:text-accent-primary transition-colors">
               {tool.title}
             </h3>
-            <p className="text-sm text-gray-600 leading-relaxed">{tool.description}</p>
+            <p className="text-sm text-text-secondary leading-relaxed">{tool.description}</p>
           </Link>
         ))}
       </div>

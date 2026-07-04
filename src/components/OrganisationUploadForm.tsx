@@ -31,49 +31,49 @@ export function OrganisationUploadForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-xl shadow border border-gray-100">
+    <form onSubmit={handleSubmit} className="space-y-6 bg-bg-secondary p-5 sm:p-6 rounded-xl border border-border">
       <div>
-        <h2 className="text-xl font-semibold text-gray-900">Secure Document Upload</h2>
-        <p className="text-sm text-gray-500 mt-1">Upload clinical guidelines, forms, or resources. Files are encrypted by default via the Taonga Vault.</p>
+        <h2 className="text-lg sm:text-xl font-semibold text-text-primary">Secure Document Upload</h2>
+        <p className="text-sm text-text-muted mt-1">Upload clinical guidelines, forms, or resources. Files are encrypted by default via the Taonga Vault.</p>
       </div>
 
       {message && (
-        <div role="alert" aria-live="polite" className={`p-4 rounded-lg text-sm ${message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
+        <div role="alert" aria-live="polite" className={`p-4 rounded-lg text-sm ${message.type === 'success' ? 'bg-accent-success/10 text-accent-success border border-accent-success/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'}`}>
           {message.text}
         </div>
       )}
 
       <div>
-        <label htmlFor="file-upload" className="block text-sm font-medium text-gray-700 mb-1">Select File *</label>
-        <input 
+        <label htmlFor="file-upload" className="block text-sm font-medium text-text-secondary mb-1">Select File *</label>
+        <input
           id="file-upload"
-          required 
-          name="file" 
-          type="file" 
+          required
+          name="file"
+          type="file"
           accept=".pdf,.doc,.docx,.txt"
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100" 
+          className="w-full px-4 py-2 border border-border rounded-lg bg-bg-primary text-text-primary focus:ring-2 focus:ring-accent-primary outline-none transition file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-white/10 file:text-text-primary hover:file:bg-white/15"
         />
       </div>
-      
+
       <div>
-        <label htmlFor="filename-input" className="block text-sm font-medium text-gray-700 mb-1">Display Title (Optional)</label>
-        <input id="filename-input" name="filename" type="text" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition" placeholder="Leave blank to use original filename" />
+        <label htmlFor="filename-input" className="block text-sm font-medium text-text-secondary mb-1">Display Title (Optional)</label>
+        <input id="filename-input" name="filename" type="text" className="w-full px-4 py-2 border border-border rounded-lg bg-bg-primary text-text-primary focus:ring-2 focus:ring-accent-primary outline-none transition" placeholder="Leave blank to use original filename" />
       </div>
 
-      <div className="flex items-start space-x-3 bg-gray-50 p-4 rounded-lg">
+      <div className="flex items-start space-x-3 bg-white/[0.03] p-4 rounded-lg border border-border">
         <div className="flex items-center h-5">
-          <input id="is_encrypted" defaultChecked name="is_encrypted" type="checkbox" className="w-4 h-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500" />
+          <input id="is_encrypted" defaultChecked name="is_encrypted" type="checkbox" className="w-4 h-4 rounded border-border focus:ring-accent-primary" />
         </div>
         <div className="flex-1 text-sm">
-          <label htmlFor="is_encrypted" className="font-medium text-gray-700">Apply Taonga Vault Encryption</label>
-          <p className="text-gray-500">Encrypt this file securely at rest. Note: Encrypted files cannot be processed by the AI RAG pipeline.</p>
+          <label htmlFor="is_encrypted" className="font-medium text-text-secondary">Apply Taonga Vault Encryption</label>
+          <p className="text-text-muted">Encrypt this file securely at rest. Note: Encrypted files cannot be processed by the AI RAG pipeline.</p>
         </div>
       </div>
 
       <button
         type="submit"
         disabled={isLoading}
-        className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-medium py-3 rounded-lg transition disabled:opacity-50"
+        className="w-full bg-accent-success hover:opacity-90 text-white font-medium py-3 rounded-lg transition disabled:opacity-50"
       >
         {isLoading ? 'Uploading...' : 'Securely Upload Document'}
       </button>

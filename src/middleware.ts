@@ -10,6 +10,11 @@ const intlMiddleware = createIntlMiddleware({
   localeDetection: true,
 });
 
+const isDev = process.env.NODE_ENV === 'development';
+const scriptSrc = isDev
+  ? "script-src 'self' 'unsafe-eval' 'unsafe-inline'; "
+  : "script-src 'self' 'unsafe-inline'; ";
+
 export async function middleware(request: NextRequest) {
   // Don't apply i18n middleware to API routes
   if (request.nextUrl.pathname.startsWith('/api/')) {
@@ -52,7 +57,7 @@ export async function middleware(request: NextRequest) {
     response.headers.set(
       'Content-Security-Policy',
       "default-src 'self'; " +
-      "script-src 'self' 'unsafe-inline'; " +
+      scriptSrc +
       "style-src 'self' 'unsafe-inline'; " +
       "img-src 'self' data: https:; " +
       "font-src 'self'; " +
@@ -78,7 +83,7 @@ export async function middleware(request: NextRequest) {
   response.headers.set(
     'Content-Security-Policy',
     "default-src 'self'; " +
-    "script-src 'self' 'unsafe-inline'; " +
+    scriptSrc +
     "style-src 'self' 'unsafe-inline'; " +
     "img-src 'self' data: https:; " +
     "font-src 'self'; " +

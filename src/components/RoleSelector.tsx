@@ -10,7 +10,7 @@ export default function RoleSelector() {
   const locale = useLocale();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] px-4 text-center">
+    <div className="flex flex-col items-center justify-center min-h-[70vh] w-full text-center">
       <h1 className="text-4xl font-bold mb-4">{t('title')}</h1>
       <p className="text-xl text-gray-600 mb-10 max-w-md">
         {t('subtitle')}
@@ -22,7 +22,7 @@ export default function RoleSelector() {
           href={`/${locale}/parent`}
           onClick={() => setRole('parent')}
           data-testid="parent-role-btn"
-          className="flex-1 p-8 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl transition-all duration-200 shadow-lg text-left block"
+          className="w-full md:flex-1 p-8 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl transition-all duration-200 shadow-lg text-left block"
         >
           <div className="text-2xl font-semibold mb-2">{t('parentTitle')}</div>
           <p className="text-indigo-100">{t('parentDescription')}</p>
@@ -33,7 +33,7 @@ export default function RoleSelector() {
           href={`/${locale}/practitioner`}
           onClick={() => setRole('practitioner')}
           data-testid="practitioner-role-btn"
-          className="flex-1 p-8 bg-cyan-700 hover:bg-cyan-800 text-white rounded-2xl transition-all duration-200 shadow-lg text-left block"
+          className="w-full md:flex-1 p-8 bg-cyan-700 hover:bg-cyan-800 text-white rounded-2xl transition-all duration-200 shadow-lg text-left block"
         >
           <div className="text-2xl font-semibold mb-2">{t('practitionerTitle')}</div>
           <p className="text-cyan-100">{t('practitionerDescription')}</p>

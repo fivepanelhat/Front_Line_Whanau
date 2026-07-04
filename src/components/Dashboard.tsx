@@ -56,6 +56,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
   const [activeTab, setActiveTab] = useState<'ai' | 'pathways' | 'vault' | 'journal' | 'directory' | 'timers'>(initialTab);
   const [hasVaultSalt, setHasVaultSalt] = useState(false);
   const [hasJournalSalt, setHasJournalSalt] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const locale = useLocale();
 
   useEffect(() => {
@@ -302,12 +303,19 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
   return (
     <div className="dark-space fixed inset-0 z-50 flex flex-col bg-bg-primary text-text-primary overflow-hidden">
       {/* Dashboard Top bar */}
-      <header className="flex h-16 items-center justify-between border-b border-white/[0.08] bg-bg-secondary px-6">
-        <div className="flex items-center gap-3">
-          <span className="text-xl font-heading font-extrabold text-gradient">Whānau Hub</span>
-          <span className="rounded bg-accent-secondary/15 px-2.5 py-0.5 text-xs font-semibold text-accent-secondary">Sovereign Space</span>
+      <header className="flex h-14 sm:h-16 items-center justify-between border-b border-white/[0.08] bg-bg-secondary px-4 sm:px-6">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="md:hidden flex h-8 w-8 items-center justify-center rounded-lg hover:bg-white/10 transition-colors"
+            aria-label="Toggle menu"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
+          </button>
+          <span className="text-lg sm:text-xl font-heading font-extrabold text-gradient">Whānau Hub</span>
+          <span className="hidden sm:inline rounded bg-accent-secondary/15 px-2.5 py-0.5 text-xs font-semibold text-accent-secondary">Sovereign Space</span>
         </div>
-        <button 
+        <button
           onClick={onClose}
           className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/10 transition-colors"
           title="Exit Hub"
@@ -318,11 +326,16 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
 
       {/* Main Grid: Left Side Navigation, Center Active View */}
       <div className="flex flex-1 overflow-hidden">
+        {/* Mobile sidebar backdrop */}
+        {sidebarOpen && (
+          <div className="fixed inset-0 z-40 bg-black/50 md:hidden" onClick={() => setSidebarOpen(false)} />
+        )}
+
         {/* Sidebar Nav */}
-        <aside className="w-64 border-r border-white/[0.08] bg-bg-secondary/40 p-4 flex flex-col justify-between">
+        <aside className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 fixed md:relative z-50 md:z-auto w-64 h-[calc(100%-3.5rem)] sm:h-[calc(100%-4rem)] md:h-auto border-r border-white/[0.08] bg-bg-secondary md:bg-bg-secondary/40 p-4 flex flex-col justify-between transition-transform duration-200`}>
           <div className="space-y-1">
             <button
-              onClick={() => setActiveTab('ai')}
+              onClick={() => { setActiveTab('ai'); setSidebarOpen(false); }}
               className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
                 activeTab === 'ai' ? 'bg-accent-primary text-white' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
               }`}
@@ -330,7 +343,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
               💬 AI Assistant
             </button>
             <button
-              onClick={() => setActiveTab('pathways')}
+              onClick={() => { setActiveTab('pathways'); setSidebarOpen(false); }}
               className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
                 activeTab === 'pathways' ? 'bg-accent-primary text-white' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
               }`}
@@ -338,7 +351,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
               📋 Support Pathways
             </button>
             <button
-              onClick={() => setActiveTab('vault')}
+              onClick={() => { setActiveTab('vault'); setSidebarOpen(false); }}
               className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
                 activeTab === 'vault' ? 'bg-accent-primary text-white' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
               }`}
@@ -346,7 +359,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
               🔒 Taonga Vault
             </button>
             <button
-              onClick={() => setActiveTab('journal')}
+              onClick={() => { setActiveTab('journal'); setSidebarOpen(false); }}
               className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
                 activeTab === 'journal' ? 'bg-accent-primary text-white' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
               }`}
@@ -354,7 +367,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
               📝 Private Journal
             </button>
             <button
-              onClick={() => setActiveTab('directory')}
+              onClick={() => { setActiveTab('directory'); setSidebarOpen(false); }}
               className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
                 activeTab === 'directory' ? 'bg-accent-primary text-white' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
               }`}
@@ -362,7 +375,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
               🗺️ Services Directory
             </button>
             <button
-              onClick={() => setActiveTab('timers')}
+              onClick={() => { setActiveTab('timers'); setSidebarOpen(false); }}
               className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
                 activeTab === 'timers' ? 'bg-accent-primary text-white' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
               }`}
@@ -399,7 +412,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
         </aside>
 
         {/* Workspace */}
-        <main className="flex-1 overflow-y-auto p-8 bg-gradient-subtle">
+        <main className="flex-1 overflow-y-auto p-3 sm:p-6 md:p-8 bg-gradient-subtle">
           
           {/* TAB 1: AI Assistant */}
           {activeTab === 'ai' && (
