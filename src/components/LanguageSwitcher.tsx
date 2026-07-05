@@ -34,7 +34,7 @@ export function LanguageSwitcher() {
             className={cn(
               'rounded-lg px-4 py-1.5 text-sm font-medium transition-all duration-200',
               isActive
-                ? 'bg-accent-primary text-white shadow-sm'
+                ? 'bg-accent-primary text-accent-ink shadow-sm'
                 : 'text-text-secondary hover:bg-bg-secondary hover:text-text-primary'
             )}
             aria-pressed={isActive ? 'true' : 'false'}

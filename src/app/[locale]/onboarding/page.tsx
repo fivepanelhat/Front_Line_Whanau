@@ -44,7 +44,7 @@ export default async function OnboardingPage() {
           </div>
           <button
             type="submit"
-            className="w-full bg-accent-primary text-white font-semibold py-2 rounded-lg hover:opacity-90 transition-opacity"
+            className="w-full bg-accent-primary text-accent-ink font-semibold py-2 rounded-lg hover:opacity-90 transition-opacity"
           >
             Continue
           </button>

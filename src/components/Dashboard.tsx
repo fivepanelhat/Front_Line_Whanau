@@ -337,7 +337,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
             <button
               onClick={() => { setActiveTab('ai'); setSidebarOpen(false); }}
               className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
-                activeTab === 'ai' ? 'bg-accent-primary text-white' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
+                activeTab === 'ai' ? 'bg-accent-primary text-accent-ink' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
               }`}
             >
               💬 AI Assistant
@@ -345,7 +345,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
             <button
               onClick={() => { setActiveTab('pathways'); setSidebarOpen(false); }}
               className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
-                activeTab === 'pathways' ? 'bg-accent-primary text-white' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
+                activeTab === 'pathways' ? 'bg-accent-primary text-accent-ink' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
               }`}
             >
               📋 Support Pathways
@@ -353,7 +353,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
             <button
               onClick={() => { setActiveTab('vault'); setSidebarOpen(false); }}
               className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
-                activeTab === 'vault' ? 'bg-accent-primary text-white' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
+                activeTab === 'vault' ? 'bg-accent-primary text-accent-ink' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
               }`}
             >
               🔒 Taonga Vault
@@ -361,7 +361,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
             <button
               onClick={() => { setActiveTab('journal'); setSidebarOpen(false); }}
               className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
-                activeTab === 'journal' ? 'bg-accent-primary text-white' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
+                activeTab === 'journal' ? 'bg-accent-primary text-accent-ink' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
               }`}
             >
               📝 Private Journal
@@ -369,7 +369,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
             <button
               onClick={() => { setActiveTab('directory'); setSidebarOpen(false); }}
               className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
-                activeTab === 'directory' ? 'bg-accent-primary text-white' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
+                activeTab === 'directory' ? 'bg-accent-primary text-accent-ink' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
               }`}
             >
               🗺️ Services Directory
@@ -377,7 +377,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
             <button
               onClick={() => { setActiveTab('timers'); setSidebarOpen(false); }}
               className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
-                activeTab === 'timers' ? 'bg-accent-primary text-white' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
+                activeTab === 'timers' ? 'bg-accent-primary text-accent-ink' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
               }`}
             >
               ⏱️ Care Timers
@@ -423,7 +423,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
                   <div key={i} className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}>
                     <div className={`max-w-[85%] rounded-xl p-4 leading-relaxed ${
                       msg.sender === 'user' 
-                        ? 'bg-accent-primary text-white' 
+                        ? 'bg-accent-primary text-accent-ink' 
                         : 'border border-white/[0.08] bg-bg-secondary'
                     }`}>
                       {msg.agent && (
@@ -524,7 +524,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
                   />
                   <button 
                     type="submit"
-                    className="rounded-lg bg-accent-primary px-6 py-3 font-semibold text-white hover:bg-accent-primary/80 transition-colors"
+                    className="rounded-lg bg-accent-primary px-6 py-3 font-semibold text-accent-ink hover:bg-accent-primary/80 transition-colors"
                   >
                     Send
                   </button>
@@ -649,7 +649,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
                   <button
                     onClick={handleUnlockVault}
                     disabled={hasVaultSalt ? vaultPassword.length < 4 : !assessPassphrase(vaultPassword).acceptable}
-                    className="w-full rounded-lg bg-accent-primary py-2.5 font-bold text-white hover:bg-accent-primary/80 disabled:opacity-50"
+                    className="w-full rounded-lg bg-accent-primary py-2.5 font-bold text-accent-ink hover:bg-accent-primary/80 disabled:opacity-50"
                   >
                     {hasVaultSalt ? 'Unlock' : 'Create Vault'}
                   </button>
@@ -677,7 +677,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
                         />
                         <button
                           onClick={handleEncryptFile}
-                          className="w-full rounded-lg bg-accent-primary py-2 font-bold text-white hover:bg-accent-primary/80"
+                          className="w-full rounded-lg bg-accent-primary py-2 font-bold text-accent-ink hover:bg-accent-primary/80"
                         >
                           Encrypt & Save Locally
                         </button>
@@ -780,7 +780,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
                   <button
                     onClick={handleUnlockJournal}
                     disabled={hasJournalSalt ? journalPassword.length < 4 : !assessPassphrase(journalPassword).acceptable}
-                    className="w-full rounded-lg bg-accent-primary py-2.5 font-bold text-white hover:bg-accent-primary/80 disabled:opacity-50"
+                    className="w-full rounded-lg bg-accent-primary py-2.5 font-bold text-accent-ink hover:bg-accent-primary/80 disabled:opacity-50"
                   >
                     {hasJournalSalt ? 'Unlock' : 'Create Journal'}
                   </button>
@@ -829,7 +829,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
 
                         <button
                           onClick={handleSaveJournal}
-                          className="w-full rounded-lg bg-accent-primary py-2 font-bold text-white hover:bg-accent-primary/80"
+                          className="w-full rounded-lg bg-accent-primary py-2 font-bold text-accent-ink hover:bg-accent-primary/80"
                         >
                           Save Encrypted Entry
                         </button>

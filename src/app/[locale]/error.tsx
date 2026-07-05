@@ -19,7 +19,7 @@ export default function Error({
       <h2 className="text-2xl font-bold mb-4 text-text-primary">Something went wrong!</h2>
       <p className="mb-6 text-text-secondary">We&apos;ve been notified and are looking into it.</p>
       <button
-        className="px-4 py-2 bg-accent-primary text-white rounded-lg hover:opacity-90 transition-opacity"
+        className="px-4 py-2 bg-accent-primary text-accent-ink rounded-lg hover:opacity-90 transition-opacity"
         onClick={() => reset()}
       >
         Try again

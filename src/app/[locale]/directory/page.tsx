@@ -25,8 +25,8 @@ export default async function DirectoryPage() {
     <div className="min-h-screen bg-bg-primary">
       <div className="bg-accent-primary py-10 sm:py-16 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-2xl sm:text-4xl font-bold text-white mb-3 sm:mb-4">National Directory</h1>
-          <p className="text-white/80 text-base sm:text-lg max-w-2xl">
+          <h1 className="text-2xl sm:text-4xl font-bold text-accent-ink mb-3 sm:mb-4">National Directory</h1>
+          <p className="text-accent-ink/80 text-base sm:text-lg max-w-2xl">
             Find verified support services, clinical organisations, and community groups across Aotearoa New Zealand.
           </p>
         </div>

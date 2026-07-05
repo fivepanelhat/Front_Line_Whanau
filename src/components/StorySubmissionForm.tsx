@@ -101,7 +101,7 @@ export function StorySubmissionForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full bg-accent-primary text-white font-medium py-3 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
+        className="w-full bg-accent-primary text-accent-ink font-medium py-3 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
       >
         {isSubmitting ? 'Submitting...' : 'Submit Story Anonymously'}
       </button>

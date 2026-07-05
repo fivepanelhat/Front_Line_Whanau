@@ -32,6 +32,9 @@ const config: Config = {
           warm: '#e0a458',
           success: '#7cb385',
           danger: '#d0645f',
+          // Text colour for solid accent-primary surfaces. White on the tan
+          // is 2.26:1 (fails WCAG AA); this dark driftwood ink is ~7.9:1.
+          ink: '#231a10',
         },
       },
 

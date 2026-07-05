@@ -115,7 +115,7 @@ export default function PractitionerDashboard() {
               className="w-full px-4 py-2 border border-border rounded-lg bg-bg-primary text-text-primary focus:ring-2 focus:ring-accent-primary"
             />
           </div>
-          <button type="submit" className="w-full bg-accent-primary text-white font-medium py-3 rounded-lg hover:opacity-90 transition-opacity">
+          <button type="submit" className="w-full bg-accent-primary text-accent-ink font-medium py-3 rounded-lg hover:opacity-90 transition-opacity">
             Unlock Vault
           </button>
         </form>
@@ -157,7 +157,7 @@ export default function PractitionerDashboard() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-accent-primary text-white font-medium py-3 rounded-lg hover:opacity-90 disabled:opacity-50 transition-opacity"
+            className="w-full bg-accent-primary text-accent-ink font-medium py-3 rounded-lg hover:opacity-90 disabled:opacity-50 transition-opacity"
           >
             {isLoading ? 'Encrypting & Saving...' : 'Save Securely'}
           </button>

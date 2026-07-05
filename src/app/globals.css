@@ -201,12 +201,27 @@
     @apply bg-gradient-brand bg-clip-text text-transparent;
   }
 
-  /* Glassmorphism panel */
+  /* Glassmorphism panel (dark surfaces: Whānau Hub, header overlays) */
   .glass-panel {
-    background: rgba(30, 41, 59, 0.65);
+    background: rgba(27, 38, 32, 0.65);
     -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
     @apply rounded-xl border border-white/[0.08];
+  }
+
+  /* Theme-aware glass card: frosted warm-white in light mode, frosted
+     forest in dark. Built on the --n-* vars (not `dark:` utilities, which
+     track the OS media query rather than the ThemeToggle class). */
+  .glass-card {
+    background: color-mix(in srgb, var(--n-card) 55%, transparent);
+    -webkit-backdrop-filter: blur(20px) saturate(1.2);
+    backdrop-filter: blur(20px) saturate(1.2);
+    border: 1px solid color-mix(in srgb, var(--n-900) 14%, transparent);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  }
+
+  .dark .glass-card {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
   }
 
   /* Screen-reader only */

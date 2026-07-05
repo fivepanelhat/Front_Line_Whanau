@@ -259,7 +259,7 @@ export function AgentTestPanel({
           </button>
           <button
             onClick={startNewConversation}
-            className="text-sm px-3 py-2 bg-accent-primary text-white rounded-lg hover:opacity-90"
+            className="text-sm px-3 py-2 bg-accent-primary text-accent-ink rounded-lg hover:opacity-90"
           >
             + New
           </button>
@@ -275,7 +275,7 @@ export function AgentTestPanel({
         {messages.map((msg, index) => (
           <div key={index} className={`mb-4 flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-4 duration-300`}>
             <div className={`group relative max-w-[80%] px-5 py-4 rounded-3xl ${
-              msg.role === 'user' ? 'bg-accent-primary text-white rounded-br-sm' : 'bg-bg-secondary border border-border text-text-primary rounded-bl-sm'
+              msg.role === 'user' ? 'bg-accent-primary text-accent-ink rounded-br-sm' : 'bg-bg-secondary border border-border text-text-primary rounded-bl-sm'
             }`}>
               {msg.role === 'assistant' ? (
                 <div className="prose prose-sm prose-invert max-w-none break-words prose-p:my-1 prose-ul:my-1">
@@ -351,7 +351,7 @@ export function AgentTestPanel({
         <button
           onClick={sendMessage}
           disabled={isLoading || !input.trim()}
-          className="bg-accent-primary hover:opacity-90 text-white px-5 sm:px-8 rounded-2xl font-semibold transition-all disabled:opacity-50 active:scale-95 shrink-0"
+          className="bg-accent-primary hover:opacity-90 text-accent-ink px-5 sm:px-8 rounded-2xl font-semibold transition-all disabled:opacity-50 active:scale-95 shrink-0"
         >
           Send
         </button>
@@ -376,7 +376,7 @@ export function AgentTestPanel({
               </button>
               <button
                 onClick={() => setShowReview(false)}
-                className="flex-1 bg-accent-primary text-white py-2 rounded-lg hover:opacity-90"
+                className="flex-1 bg-accent-primary text-accent-ink py-2 rounded-lg hover:opacity-90"
               >
                 Close
               </button>
@@ -421,7 +421,7 @@ export function AgentTestPanel({
               <button
                 onClick={() => window.print()}
                 disabled={isGeneratingSummary}
-                className="px-4 py-2 bg-accent-primary text-white rounded-lg hover:opacity-90 font-medium transition"
+                className="px-4 py-2 bg-accent-primary text-accent-ink rounded-lg hover:opacity-90 font-medium transition"
               >
                 🖨️ Print
               </button>

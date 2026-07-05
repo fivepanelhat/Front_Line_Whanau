@@ -2,8 +2,8 @@ export default function PartnershipsPage() {
   return (
     <div className="min-h-screen bg-bg-primary">
       <div className="bg-accent-primary py-10 sm:py-16 px-4 sm:px-6 text-center">
-        <h1 className="text-2xl sm:text-4xl font-bold text-white mb-3 sm:mb-4">National Partnerships</h1>
-        <p className="text-white/80 text-base sm:text-lg max-w-2xl mx-auto">
+        <h1 className="text-2xl sm:text-4xl font-bold text-accent-ink mb-3 sm:mb-4">National Partnerships</h1>
+        <p className="text-accent-ink/80 text-base sm:text-lg max-w-2xl mx-auto">
           Collaborating to provide a seamless support ecosystem for preterm whanau in Aotearoa.
         </p>
       </div>

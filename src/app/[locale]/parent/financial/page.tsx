@@ -44,8 +44,8 @@ export default function FinancialEligibilityPage() {
     <div className="min-h-screen bg-bg-primary pb-20">
       <div className="bg-accent-primary py-10 sm:py-16 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-2xl sm:text-4xl font-bold text-white mb-3 sm:mb-4">Financial Support Eligibility</h1>
-          <p className="text-white/80 text-base sm:text-lg">
+          <h1 className="text-2xl sm:text-4xl font-bold text-accent-ink mb-3 sm:mb-4">Financial Support Eligibility</h1>
+          <p className="text-accent-ink/80 text-base sm:text-lg">
             Use our AI-assisted tool to figure out which grants and funding pathways (WINZ, Best Start, Disability Allowance) your whanau might be eligible for.
           </p>
         </div>
@@ -106,7 +106,7 @@ export default function FinancialEligibilityPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-accent-primary text-white font-medium py-3 rounded-lg hover:opacity-90 disabled:opacity-50 mt-4 transition-opacity"
+              className="w-full bg-accent-primary text-accent-ink font-medium py-3 rounded-lg hover:opacity-90 disabled:opacity-50 mt-4 transition-opacity"
             >
               {isLoading ? 'Analysing Eligibility...' : 'Check Eligibility'}
             </button>

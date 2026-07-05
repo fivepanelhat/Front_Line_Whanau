@@ -40,7 +40,7 @@ export function ConversationSidebar({
         <h3 className="font-semibold text-text-primary">Conversations</h3>
         <button
           onClick={onNewConversation}
-          className="rounded-md bg-accent-primary px-3 py-1.5 text-xs text-white hover:opacity-90"
+          className="rounded-md bg-accent-primary px-3 py-1.5 text-xs text-accent-ink hover:opacity-90"
         >
           + New
         </button>
@@ -58,7 +58,7 @@ export function ConversationSidebar({
               onClick={() => onSelectConversation(conv.thread_id)}
               className={`w-full rounded-lg px-3 py-2.5 text-left text-sm transition ${
                 conv.thread_id === currentThreadId
-                  ? 'bg-accent-primary text-white'
+                  ? 'bg-accent-primary text-accent-ink'
                   : 'text-text-secondary hover:bg-white/5'
               }`}
             >
