@@ -13,18 +13,24 @@ export default function PortalsLayout({
   const { role, isLoading } = useRole();
   const router = useRouter();
 
-  // Redirect in an effect, not during render: a render-time redirect() races
-  // the RoleSelector's setRole(): the click's context update and the Link
-  // navigation land in different passes, so this layout could render with the
-  // stale null role and bounce straight back to the home page.
+  // Check localStorage as fallback: setRole() writes to localStorage
+  // synchronously, but the React context state may not have propagated
+  // yet during the same navigation tick.
   useEffect(() => {
     if (!isLoading && !role) {
-      router.replace('/');
+      try {
+        const saved = localStorage.getItem('userRole');
+        if (!saved) router.replace('/');
+      } catch {
+        router.replace('/');
+      }
     }
   }, [role, isLoading, router]);
 
-  if (isLoading || !role) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  const hasRole = role || (typeof window !== 'undefined' && !!localStorage.getItem('userRole'));
+
+  if (isLoading || !hasRole) {
+    return <div className="flex items-center justify-center min-h-screen text-text-secondary">Loading...</div>;
   }
 
   return (

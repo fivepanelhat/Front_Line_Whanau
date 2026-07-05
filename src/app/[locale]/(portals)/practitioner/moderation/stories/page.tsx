@@ -49,55 +49,53 @@ export default function StoryModerationPage() {
   };
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8 text-gray-900">Peer Story Moderation</h1>
+    <div className="p-4 sm:p-8 max-w-5xl mx-auto">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-text-primary">Peer Story Moderation</h1>
 
       {isLoading ? (
-        <div className="text-gray-500">Loading pending stories...</div>
+        <div className="text-text-muted">Loading pending stories...</div>
       ) : stories.length === 0 ? (
-        <div className="bg-white p-12 text-center rounded-xl border border-gray-200 text-gray-500">
+        <div className="bg-bg-secondary p-8 sm:p-12 text-center rounded-xl border border-border text-text-muted">
           No stories pending review.
         </div>
       ) : (
-        <div className="grid gap-6">
+        <div className="grid gap-4 sm:gap-6">
           {stories.map(story => (
-            <div key={story.id} className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-              <div className="flex justify-between items-start mb-4">
+            <div key={story.id} className="bg-bg-secondary p-4 sm:p-6 rounded-xl border border-border">
+              <div className="flex flex-wrap justify-between items-start gap-2 mb-4">
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900">{story.title}</h3>
-                  <div className="text-sm text-gray-500 mt-1">
+                  <h3 className="text-lg sm:text-xl font-bold text-text-primary">{story.title}</h3>
+                  <div className="text-sm text-text-muted mt-1">
                     Submitted: {new Date(story.created_at).toLocaleString()}
                   </div>
                 </div>
-                <div className="flex gap-2">
-                  <span className="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full font-medium">Pending Review</span>
-                </div>
+                <span className="px-3 py-1 bg-yellow-500/15 text-yellow-300 text-xs rounded-full font-medium">Pending Review</span>
               </div>
-              
-              <div className="p-4 bg-gray-50 rounded-lg text-gray-700 whitespace-pre-wrap mb-4 font-serif">
+
+              <div className="p-3 sm:p-4 bg-bg-primary rounded-lg text-text-secondary whitespace-pre-wrap mb-4 font-serif border border-border">
                 {story.content}
               </div>
 
-              <div className="flex gap-2 mb-6">
+              <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
                 {story.tags?.map((tag: string) => (
-                  <span key={tag} className="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded-full font-medium">
+                  <span key={tag} className="px-2 py-1 bg-white/10 text-text-secondary text-xs rounded-full font-medium">
                     {tag}
                   </span>
                 ))}
               </div>
 
-              <div className="flex gap-3 border-t pt-4">
-                <button 
+              <div className="flex flex-wrap gap-2 sm:gap-3 border-t border-border pt-4">
+                <button
                   onClick={() => handleApprove(story.id)}
-                  className="bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700"
+                  className="bg-accent-success text-white px-4 py-2 rounded-lg font-medium hover:opacity-90 transition-opacity"
                 >
-                  Approve (Safe for Publish)
+                  Approve
                 </button>
-                <button 
+                <button
                   onClick={() => handleReject(story.id)}
-                  className="bg-red-100 text-red-700 px-4 py-2 rounded-lg font-medium hover:bg-red-200"
+                  className="bg-red-500/15 text-red-400 px-4 py-2 rounded-lg font-medium hover:bg-red-500/25 transition-colors"
                 >
-                  Reject / Delete
+                  Reject
                 </button>
               </div>
             </div>

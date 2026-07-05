@@ -1,14 +1,14 @@
 export default function FundingPage() {
   return (
-    <div className="min-h-screen bg-white">
-      <div className="bg-emerald-700 py-16 px-6 text-center">
-        <h1 className="text-4xl font-bold text-white mb-4">Sustainable Funding & Operations</h1>
-        <p className="text-emerald-100 text-lg max-w-2xl mx-auto">
-          How we sustain the platform to provide free, equitable support for all whānau across Aotearoa.
+    <div className="min-h-screen bg-bg-primary">
+      <div className="bg-accent-success py-10 sm:py-16 px-4 sm:px-6 text-center">
+        <h1 className="text-2xl sm:text-4xl font-bold text-white mb-3 sm:mb-4">Sustainable Funding & Operations</h1>
+        <p className="text-white/80 text-base sm:text-lg max-w-2xl mx-auto">
+          How we sustain the platform to provide free, equitable support for all whanau across Aotearoa.
         </p>
       </div>
 
-      <div className="max-w-4xl mx-auto px-6 py-12 prose prose-emerald prose-lg">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 prose prose-invert prose-lg">
         <h2>Our Funding Model</h2>
         <p>
           Front Line Whānau operates as a not-for-profit initiative. Our primary goal is to remove barriers to access, meaning the platform will <strong>always remain free for parents and whānau</strong>. To achieve this, we rely on a diversified, sustainable funding and operations model.

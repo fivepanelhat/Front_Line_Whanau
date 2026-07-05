@@ -59,52 +59,50 @@ export default function AIReviewQueuePage() {
   };
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8 text-gray-900">AI Response Review Queue</h1>
+    <div className="p-4 sm:p-8 max-w-5xl mx-auto">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-text-primary">AI Response Review Queue</h1>
 
       {isLoading ? (
-        <div className="text-gray-500">Loading pending reviews...</div>
+        <div className="text-text-muted">Loading pending reviews...</div>
       ) : reviews.length === 0 ? (
-        <div className="bg-white p-12 text-center rounded-xl border border-gray-200 text-gray-500">
+        <div className="bg-bg-secondary p-8 sm:p-12 text-center rounded-xl border border-border text-text-muted">
           No agent responses pending review.
         </div>
       ) : (
-        <div className="grid gap-6">
+        <div className="grid gap-4 sm:gap-6">
           {reviews.map(review => (
-            <div key={review.id} className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-              <div className="flex justify-between items-start mb-4">
+            <div key={review.id} className="bg-bg-secondary p-4 sm:p-6 rounded-xl border border-border">
+              <div className="flex flex-wrap justify-between items-start gap-2 mb-4">
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900">Thread: {review.thread_id.split('_').pop()}</h3>
-                  <div className="text-sm text-gray-500 mt-1">
+                  <h3 className="text-lg sm:text-xl font-bold text-text-primary">Thread: {review.thread_id.split('_').pop()}</h3>
+                  <div className="text-sm text-text-muted mt-1">
                     Suspended: {new Date(review.created_at).toLocaleString()}
                   </div>
                 </div>
-                <div className="flex gap-2">
-                  <span className="px-3 py-1 bg-indigo-100 text-indigo-800 text-xs rounded-full font-medium">Pending Human-in-the-Loop</span>
-                </div>
+                <span className="px-3 py-1 bg-accent-primary/15 text-accent-primary text-xs rounded-full font-medium">Pending HITL</span>
               </div>
-              
+
               {editingId === review.id ? (
                 <div className="mb-4">
-                  <div className="p-4 bg-gray-100 rounded-lg text-sm text-gray-800 mb-4 font-serif italic border-l-4 border-gray-300">
-                    <strong>User Asked:</strong> {review.query || "No query recorded"}
+                  <div className="p-3 sm:p-4 bg-bg-primary rounded-lg text-sm text-text-secondary mb-4 font-serif italic border-l-4 border-border">
+                    <strong className="text-text-primary">User Asked:</strong> {review.query || "No query recorded"}
                   </div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Edit Proposed Response:</label>
+                  <label className="block text-sm font-medium text-text-secondary mb-2">Edit Proposed Response:</label>
                   <textarea
-                    className="w-full border rounded-lg p-3 font-serif min-h-[150px]"
+                    className="w-full border border-border rounded-lg p-3 font-serif min-h-[150px] bg-bg-primary text-text-primary focus:ring-2 focus:ring-accent-primary"
                     value={editedResponse}
                     onChange={(e) => setEditedResponse(e.target.value)}
                   />
-                  <div className="flex gap-2 mt-2">
-                    <button 
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    <button
                       onClick={() => handleReview(review, true, editedResponse)}
-                      className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700"
+                      className="bg-accent-success text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
                     >
-                      Approve Edited Response
+                      Approve Edited
                     </button>
-                    <button 
+                    <button
                       onClick={() => setEditingId(null)}
-                      className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200"
+                      className="bg-white/10 text-text-secondary px-4 py-2 rounded-lg text-sm font-medium hover:bg-white/15 transition-colors"
                     >
                       Cancel
                     </button>
@@ -112,32 +110,32 @@ export default function AIReviewQueuePage() {
                 </div>
               ) : (
                 <>
-                  <div className="p-4 bg-gray-100 rounded-lg text-sm text-gray-800 mb-4 font-serif italic border-l-4 border-gray-300">
-                    <strong>User Asked:</strong> {review.query || "No query recorded"}
+                  <div className="p-3 sm:p-4 bg-bg-primary rounded-lg text-sm text-text-secondary mb-4 font-serif italic border-l-4 border-border">
+                    <strong className="text-text-primary">User Asked:</strong> {review.query || "No query recorded"}
                   </div>
-                  <div className="p-4 bg-gray-50 rounded-lg text-gray-700 whitespace-pre-wrap mb-4 font-serif">
-                    <strong>Proposed AI Response:</strong><br/>
+                  <div className="p-3 sm:p-4 bg-bg-primary rounded-lg text-text-secondary whitespace-pre-wrap mb-4 font-serif border border-border">
+                    <strong className="text-text-primary">Proposed AI Response:</strong><br/>
                     {review.proposed_response}
                   </div>
-                  <div className="flex gap-3 border-t pt-4">
-                    <button 
+                  <div className="flex flex-wrap gap-2 sm:gap-3 border-t border-border pt-4">
+                    <button
                       onClick={() => handleReview(review, true)}
-                      className="bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700"
+                      className="bg-accent-success text-white px-4 py-2 rounded-lg font-medium hover:opacity-90 transition-opacity"
                     >
-                      Approve As-Is
+                      Approve
                     </button>
-                    <button 
+                    <button
                       onClick={() => {
                         setEditingId(review.id);
                         setEditedResponse(review.proposed_response);
                       }}
-                      className="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-lg font-medium hover:bg-indigo-200"
+                      className="bg-accent-primary/15 text-accent-primary px-4 py-2 rounded-lg font-medium hover:bg-accent-primary/25 transition-colors"
                     >
-                      Edit Response
+                      Edit
                     </button>
-                    <button 
+                    <button
                       onClick={() => handleReview(review, false)}
-                      className="bg-red-100 text-red-700 px-4 py-2 rounded-lg font-medium hover:bg-red-200"
+                      className="bg-red-500/15 text-red-400 px-4 py-2 rounded-lg font-medium hover:bg-red-500/25 transition-colors"
                     >
                       Reject
                     </button>
