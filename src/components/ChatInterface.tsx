@@ -29,7 +29,7 @@ export function ChatInterface() {
       <OnboardingWizard onComplete={() => console.log('User onboarded')} />
       {/* dvh (not vh) so the input row isn't hidden behind mobile browser
           chrome; the offset accounts for the sticky header height. */}
-      <div className="flex h-[calc(100dvh-5rem)] overflow-hidden rounded-xl border bg-white">
+      <div className="flex h-[calc(100dvh-5rem)] overflow-hidden rounded-xl border border-border bg-bg-secondary">
         <ConversationSidebar
           currentThreadId={currentThreadId}
           refreshTrigger={refreshKey}

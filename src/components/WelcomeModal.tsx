@@ -20,16 +20,16 @@ export function WelcomeModal() {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-4">
-      <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full p-6 animate-in fade-in zoom-in duration-200">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Welcome to the Beta! 👋</h2>
-        
-        <div className="space-y-4 text-gray-600 text-sm mb-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+      <div className="bg-bg-secondary rounded-2xl border border-border max-w-lg w-full p-6">
+        <h2 className="text-2xl font-bold text-text-primary mb-4">Welcome to the Beta!</h2>
+
+        <div className="space-y-4 text-text-secondary text-sm mb-6">
           <p>
-            You are testing the <strong>Front Line Whānau Assistant</strong>. We're so glad you're here to help us shape this tool!
+            You are testing the <strong>Front Line Whanau Assistant</strong>. We&apos;re so glad you&apos;re here to help us shape this tool!
           </p>
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-amber-800">
-            <strong>⚠️ Important Medical Disclaimer</strong>
+          <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4 text-yellow-300">
+            <strong>Important Medical Disclaimer</strong>
             <p className="mt-1">
               This AI is an experimental support tool and is <strong>NOT</strong> a doctor. It cannot diagnose or provide medical advice. Always call 111 in an emergency, or PlunketLine/Healthline for urgent medical questions.
             </p>
@@ -41,7 +41,7 @@ export function WelcomeModal() {
 
         <button
           onClick={handleAccept}
-          className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition shadow-sm"
+          className="w-full py-3 bg-accent-primary text-white font-semibold rounded-xl hover:opacity-90 transition-opacity"
         >
           I Understand & Agree
         </button>

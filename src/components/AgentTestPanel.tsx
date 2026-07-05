@@ -242,24 +242,24 @@ export function AgentTestPanel({
     <div className="flex flex-col h-full max-w-4xl mx-auto px-2 py-2 sm:p-6">
       {/* Header — stacks on mobile so the title and actions never collide */}
       <div className="flex flex-col gap-2 mb-3 sm:mb-4 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-lg sm:text-2xl font-semibold">Whānau Support</h2>
+        <h2 className="text-lg sm:text-2xl font-semibold text-text-primary">Whanau Support</h2>
         <div className="flex flex-wrap gap-2 print:hidden">
           <button
             onClick={generateSummary}
             disabled={messages.length === 0}
-            className="text-sm px-3 py-2 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg hover:bg-indigo-100 disabled:opacity-50 transition-colors"
+            className="text-sm px-3 py-2 bg-accent-primary/15 text-accent-primary border border-accent-primary/30 rounded-lg hover:bg-accent-primary/25 disabled:opacity-50 transition-colors"
           >
             🩺 <span className="hidden sm:inline">Summary for Doctor</span><span className="sm:hidden">Summary</span>
           </button>
           <button
             onClick={() => alert("Need help now?\n\n• Emergency: 111\n• Healthline (24/7 nurses): 0800 611 116\n• PlunketLine (24/7 baby & parenting): 0800 933 922\n• Need to Talk? (24/7 counsellors): call or text 1737")}
-            className="text-sm px-3 py-2 border rounded-lg hover:bg-gray-50 flex items-center gap-1"
+            className="text-sm px-3 py-2 border border-border text-text-secondary rounded-lg hover:bg-white/5 flex items-center gap-1"
           >
             <span>🆘</span> Support
           </button>
           <button
             onClick={startNewConversation}
-            className="text-sm px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+            className="text-sm px-3 py-2 bg-accent-primary text-white rounded-lg hover:opacity-90"
           >
             + New
           </button>
@@ -267,20 +267,18 @@ export function AgentTestPanel({
       </div>
 
       {/* Chat Area */}
-      <div className="flex-1 border rounded-xl p-4 overflow-y-auto mb-4 bg-white">
+      <div className="flex-1 border border-border rounded-xl p-4 overflow-y-auto mb-4 bg-bg-primary">
         {messages.length === 0 && (
-          <p className="text-gray-400 text-center mt-8">Start a conversation...</p>
+          <p className="text-text-muted text-center mt-8">Start a conversation...</p>
         )}
 
         {messages.map((msg, index) => (
           <div key={index} className={`mb-4 flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-4 duration-300`}>
-            <div className={`group relative max-w-[80%] px-5 py-4 rounded-3xl shadow-sm ${
-              msg.role === 'user' ? 'bg-gradient-to-r from-indigo-600 to-indigo-600 text-white rounded-br-sm' : 'bg-white border border-gray-100 text-gray-800 rounded-bl-sm'
+            <div className={`group relative max-w-[80%] px-5 py-4 rounded-3xl ${
+              msg.role === 'user' ? 'bg-accent-primary text-white rounded-br-sm' : 'bg-bg-secondary border border-border text-text-primary rounded-bl-sm'
             }`}>
               {msg.role === 'assistant' ? (
-                // No whitespace-pre-wrap here: markdown newlines rendered as
-                // paragraphs AND preserved literally doubles the spacing.
-                <div className="prose prose-sm max-w-none break-words prose-p:my-1 prose-ul:my-1">
+                <div className="prose prose-sm prose-invert max-w-none break-words prose-p:my-1 prose-ul:my-1">
                   <ReactMarkdown>
                     {msg.content}
                   </ReactMarkdown>
@@ -289,24 +287,24 @@ export function AgentTestPanel({
                 <div className="whitespace-pre-wrap break-words">{msg.content}</div>
               )}
               {msg.role === 'assistant' && msg.content && (
-                <div className="absolute -top-3 -right-2 opacity-0 group-hover:opacity-100 transition flex gap-1 bg-white border rounded-full p-1 shadow-sm">
+                <div className="absolute -top-3 -right-2 opacity-0 group-hover:opacity-100 transition flex gap-1 bg-bg-secondary border border-border rounded-full p-1">
                   <button
                     onClick={() => submitFeedback(msg.content, 1, msg.agent)}
-                    className="hover:bg-gray-100 rounded-full p-1 text-xs"
+                    className="hover:bg-white/10 rounded-full p-1 text-xs"
                     title="Helpful"
                   >
                     👍
                   </button>
                   <button
                     onClick={() => submitFeedback(msg.content, -1, msg.agent)}
-                    className="hover:bg-gray-100 rounded-full p-1 text-xs"
+                    className="hover:bg-white/10 rounded-full p-1 text-xs"
                     title="Not Helpful"
                   >
                     👎
                   </button>
                   <button
                     onClick={() => copyToClipboard(msg.content, index)}
-                    className="hover:bg-gray-100 rounded-full p-1 text-xs"
+                    className="hover:bg-white/10 rounded-full p-1 text-xs"
                     title="Copy"
                   >
                     {copiedIndex === index ? '✓' : '📋'}
@@ -318,23 +316,23 @@ export function AgentTestPanel({
         ))}
 
         {isLoading && (
-          <div className="flex items-center gap-2 text-gray-500 pl-4 py-2 animate-in fade-in duration-300">
+          <div className="flex items-center gap-2 text-text-muted pl-4 py-2 animate-in fade-in duration-300">
             <div className="flex gap-1">
-              <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-              <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-              <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+              <div className="w-2 h-2 bg-accent-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+              <div className="w-2 h-2 bg-accent-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+              <div className="w-2 h-2 bg-accent-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
             </div>
             <span className="text-sm font-medium">Gathering thoughts...</span>
           </div>
         )}
 
         {error && (
-          <div className="mt-4 p-4 bg-red-50 border border-red-100 text-red-700 rounded-2xl text-sm flex justify-between items-center animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="mt-4 p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-2xl text-sm flex justify-between items-center animate-in fade-in slide-in-from-top-2 duration-300">
             <div className="flex items-center gap-2">
               <span className="text-lg">⚠️</span>
               {error}
             </div>
-            <button onClick={() => setError(null)} className="font-semibold px-3 py-1 bg-red-100 hover:bg-red-200 rounded-lg transition-colors">Dismiss</button>
+            <button onClick={() => setError(null)} className="font-semibold px-3 py-1 bg-red-500/20 hover:bg-red-500/30 rounded-lg transition-colors">Dismiss</button>
           </div>
         )}
       </div>
@@ -347,13 +345,13 @@ export function AgentTestPanel({
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
           placeholder="Ask the agent anything..."
-          className="flex-1 border border-gray-200 rounded-2xl px-5 py-4 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all shadow-sm"
+          className="flex-1 bg-bg-primary text-text-primary border border-border rounded-2xl px-5 py-4 focus:ring-2 focus:ring-accent-primary outline-none transition-all"
           disabled={isLoading}
         />
         <button
           onClick={sendMessage}
           disabled={isLoading || !input.trim()}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 sm:px-8 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:hover:bg-indigo-600 shadow-md active:scale-95 shrink-0"
+          className="bg-accent-primary hover:opacity-90 text-white px-5 sm:px-8 rounded-2xl font-semibold transition-all disabled:opacity-50 active:scale-95 shrink-0"
         >
           Send
         </button>
@@ -362,9 +360,9 @@ export function AgentTestPanel({
       {/* Human Review Modal (Read-Only) */}
       {showReview && interruptData && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 print:hidden">
-          <div className="bg-white rounded-xl p-6 w-full max-w-lg">
-            <h3 className="font-semibold text-lg mb-4 text-indigo-700">Pending Practitioner Review</h3>
-            <p className="text-sm text-gray-600 mb-4">
+          <div className="bg-bg-secondary rounded-xl p-6 w-full max-w-lg border border-border">
+            <h3 className="font-semibold text-lg mb-4 text-accent-primary">Pending Practitioner Review</h3>
+            <p className="text-sm text-text-secondary mb-4">
               To ensure cultural safety and accurate information, this response requires review by a practitioner before it can be provided to you.
             </p>
 
@@ -372,13 +370,13 @@ export function AgentTestPanel({
               <button
                 onClick={checkReviewStatus}
                 disabled={isLoading}
-                className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 disabled:bg-green-400"
+                className="flex-1 bg-accent-success text-white py-2 rounded-lg hover:opacity-90 disabled:opacity-50"
               >
                 {isLoading ? 'Checking...' : 'Refresh Status'}
               </button>
               <button
                 onClick={() => setShowReview(false)}
-                className="flex-1 bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700"
+                className="flex-1 bg-accent-primary text-white py-2 rounded-lg hover:opacity-90"
               >
                 Close
               </button>
@@ -390,20 +388,20 @@ export function AgentTestPanel({
       {/* Summary Modal */}
       {showSummary && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 print:bg-white print:p-0">
-          <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] flex flex-col print:max-w-full print:shadow-none print:max-h-none print:h-auto">
+          <div className="bg-bg-secondary rounded-xl p-6 w-full max-w-2xl max-h-[90vh] flex flex-col border border-border print:max-w-full print:shadow-none print:max-h-none print:h-auto print:bg-white print:border-none">
             <div className="flex justify-between items-center mb-4 print:hidden">
-              <h3 className="font-semibold text-xl text-indigo-700">🩺 Clinical Summary</h3>
-              <button onClick={() => setShowSummary(false)} className="text-gray-500 hover:bg-gray-100 p-2 rounded-lg">✕</button>
+              <h3 className="font-semibold text-xl text-accent-primary">🩺 Clinical Summary</h3>
+              <button onClick={() => setShowSummary(false)} className="text-text-muted hover:bg-white/10 p-2 rounded-lg">✕</button>
             </div>
-            
-            <div className="flex-1 overflow-y-auto p-4 bg-gray-50 border rounded-lg print:border-none print:bg-white print:p-0">
+
+            <div className="flex-1 overflow-y-auto p-4 bg-bg-primary border border-border rounded-lg print:border-none print:bg-white print:p-0">
               {isGeneratingSummary ? (
-                <div className="flex items-center justify-center h-40 text-gray-500">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mr-3"></div>
+                <div className="flex items-center justify-center h-40 text-text-muted">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent-primary mr-3"></div>
                   Synthesizing conversation...
                 </div>
               ) : (
-                <div className="prose prose-sm sm:prose-base max-w-none text-gray-800">
+                <div className="prose prose-sm prose-invert sm:prose-base max-w-none print:prose print:text-gray-800">
                   <ReactMarkdown>{summaryMarkdown || ""}</ReactMarkdown>
                 </div>
               )}
@@ -416,14 +414,14 @@ export function AgentTestPanel({
                   alert("Copied to clipboard!");
                 }}
                 disabled={isGeneratingSummary}
-                className="px-4 py-2 border rounded-lg hover:bg-gray-50 font-medium"
+                className="px-4 py-2 border border-border text-text-secondary rounded-lg hover:bg-white/5 font-medium"
               >
                 📋 Copy
               </button>
               <button
                 onClick={() => window.print()}
                 disabled={isGeneratingSummary}
-                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium transition shadow"
+                className="px-4 py-2 bg-accent-primary text-white rounded-lg hover:opacity-90 font-medium transition"
               >
                 🖨️ Print
               </button>
