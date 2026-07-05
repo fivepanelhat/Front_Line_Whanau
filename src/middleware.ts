@@ -20,8 +20,9 @@ export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/api/')) {
     // 1. Define truly public endpoints (e.g. Chat AI, Health, Feedback Submission)
     // chat/summary and review/status are part of the anonymous chat flow
-    // (doctor-summary tab, HITL status polling) — both rate-limited in-route.
-    const publicPaths = ['/api/health', '/api/agents', '/api/feedback', '/api/chat/summary', '/api/review/status'];
+    // (doctor-summary tab, HITL status polling); summit powers the anonymous
+    // dashboard AI panel — all rate-limited in-route.
+    const publicPaths = ['/api/health', '/api/agents', '/api/feedback', '/api/chat/summary', '/api/review/status', '/api/summit'];
     const isPublic = publicPaths.some(p => request.nextUrl.pathname === p || request.nextUrl.pathname.startsWith(`${p}/`));
 
     // Special rule for /api/feedback: POST is public, but /api/feedback/export is NOT public.

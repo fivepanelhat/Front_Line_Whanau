@@ -31,6 +31,12 @@ export const AgentQuerySchema = z.object({
   history: z.array(HistoryMessageSchema).max(50).optional(),
 });
 
+export const SummitQuerySchema = z.object({
+  query: z.string().min(1).max(5000),
+  scopes: z.array(z.string().max(100)).max(10).optional(),
+  locale: z.string().max(20).optional(),
+});
+
 export const AnalyticsEventSchema = z.object({
   event_type: z.string().min(1).max(100),
   path: z.string().min(1).max(500),

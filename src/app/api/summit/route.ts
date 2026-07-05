@@ -1,29 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AetherSummit } from '@/ai/aether-summit';
-import { requireAuth } from '@/lib/api-auth';
 import { RateLimiter } from '@/lib/rate-limit';
+import { SummitQuerySchema } from '@/lib/validations';
 
 const limiter = new RateLimiter(60_000, 10);
 
+// Anonymous endpoint: the dashboard AI panel runs without login (role lives
+// in localStorage only), so this follows the same public + IP-rate-limited
+// pattern as /api/agents. Must stay listed in middleware publicPaths.
 export async function POST(request: NextRequest) {
-  const auth = await requireAuth(request);
-  if (auth instanceof NextResponse) return auth;
-
-  const allowed = await limiter.check(auth.user.id);
+  const ip = request.headers.get('x-forwarded-for') || 'unknown_ip';
+  const allowed = await limiter.check(ip);
   if (!allowed) {
     return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
   }
 
   try {
-    const body = await request.json();
-    const { query, scopes, locale } = body;
+    const rawBody = await request.json();
+    const parsed = SummitQuerySchema.safeParse(rawBody);
 
-    if (!query) {
+    if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Missing query' },
+        { error: 'Invalid Input' },
         { status: 400 }
       );
     }
+
+    const { query, scopes, locale } = parsed.data;
 
     const summitInstance = new AetherSummit();
     const res = await summitInstance.process(query, scopes || [], locale);
