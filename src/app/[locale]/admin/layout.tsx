@@ -8,28 +8,26 @@ export default async function AdminLayout(
   const locale = params.locale || 'en';
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      <nav className="bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex">
-              <div className="flex-shrink-0 flex items-center">
-                <span className="font-bold text-xl text-indigo-700">Front Line Whānau</span>
-              </div>
-              <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                <Link href={`/${locale}/admin`} className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                  Feedback Dashboard
+    <div className="min-h-screen bg-bg-primary flex flex-col">
+      <nav className="bg-bg-secondary/80 backdrop-blur border-b border-border">
+        <div className="max-w-6xl mx-auto px-4 sm:px-8">
+          <div className="flex justify-between h-14 sm:h-16">
+            <div className="flex items-center gap-4 sm:gap-6">
+              <span className="hidden sm:inline font-bold text-xl text-accent-primary whitespace-nowrap">Admin</span>
+              <div className="flex space-x-4 sm:space-x-8">
+                <Link href={`/${locale}/admin`} className="border-transparent text-text-secondary hover:text-text-primary hover:border-accent-primary inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium whitespace-nowrap">
+                  Feedback
                 </Link>
-                <Link href={`/${locale}/admin/review`} className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                  Review Queue
+                <Link href={`/${locale}/admin/review`} className="border-transparent text-text-secondary hover:text-text-primary hover:border-accent-primary inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium whitespace-nowrap">
+                  Review
                 </Link>
-                <Link href={`/${locale}/admin/system`} className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                  System Health
+                <Link href={`/${locale}/admin/system`} className="border-transparent text-text-secondary hover:text-text-primary hover:border-accent-primary inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium whitespace-nowrap">
+                  System
                 </Link>
               </div>
             </div>
             <div className="flex items-center">
-              <Link href={`/${locale}/chat`} className="text-sm font-medium text-indigo-600 hover:text-indigo-500">Back to App &rarr;</Link>
+              <Link href={`/${locale}`} className="text-sm font-medium text-accent-primary hover:opacity-80 whitespace-nowrap">Back &rarr;</Link>
             </div>
           </div>
         </div>

@@ -23,14 +23,14 @@ export default async function OnboardingPage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold mb-2">Welcome to the Beta</h1>
-        <p className="text-gray-600 mb-6">Let's get started. What should we call you?</p>
-        
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-bg-primary">
+      <div className="w-full max-w-md bg-bg-secondary p-6 sm:p-8 rounded-xl border border-border">
+        <h1 className="text-2xl font-bold mb-2 text-text-primary">Welcome to the Beta</h1>
+        <p className="text-text-secondary mb-6">Let&apos;s get started. What should we call you?</p>
+
         <form action={submitName} className="flex flex-col gap-4">
           <div>
-            <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="firstName" className="block text-sm font-medium text-text-secondary mb-1">
               First Name
             </label>
             <input
@@ -38,13 +38,13 @@ export default async function OnboardingPage() {
               id="firstName"
               name="firstName"
               required
-              className="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 p-2 border"
+              className="w-full bg-bg-primary text-text-primary border-border rounded-md focus:ring-accent-primary focus:border-accent-primary p-2 border"
               placeholder="e.g. Jane"
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white font-semibold py-2 rounded hover:bg-indigo-700 transition"
+            className="w-full bg-accent-primary text-white font-semibold py-2 rounded-lg hover:opacity-90 transition-opacity"
           >
             Continue
           </button>

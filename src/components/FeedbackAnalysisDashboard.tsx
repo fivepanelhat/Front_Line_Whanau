@@ -73,46 +73,46 @@ export function FeedbackAnalysisDashboard() {
   }, [filters]);
 
   if (loading && !stats) {
-    return <div className="p-8 text-gray-500">Loading feedback insights...</div>;
+    return <div className="p-8 text-text-muted">Loading feedback insights...</div>;
   }
 
   if (error) {
-    return <div className="p-8 text-red-600">{error}</div>;
+    return <div className="p-8 text-red-400">{error}</div>;
   }
 
   if (!stats) return null;
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-semibold">Feedback Analysis</h1>
+    <div className="p-4 sm:p-8 max-w-7xl mx-auto">
+      <div className="flex flex-wrap justify-between items-center gap-3 mb-8">
+        <h1 className="text-2xl sm:text-3xl font-semibold text-text-primary">Feedback Analysis</h1>
         <button
           onClick={fetchStats}
-          className="px-4 py-2 text-sm border rounded-lg hover:bg-gray-50"
+          className="px-4 py-2 text-sm border border-border rounded-lg hover:bg-white/5 text-text-secondary transition-colors"
         >
           Refresh Data
         </button>
       </div>
 
       {/* Summary KPIs */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white p-6 rounded-2xl border">
-          <div className="text-sm text-gray-500">Total Feedback</div>
-          <div className="text-4xl font-semibold mt-2">{stats.summary.total}</div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="bg-bg-secondary p-4 sm:p-6 rounded-2xl border border-border">
+          <div className="text-sm text-text-muted">Total Feedback</div>
+          <div className="text-3xl sm:text-4xl font-semibold mt-2 text-text-primary">{stats.summary.total}</div>
         </div>
-        <div className="bg-white p-6 rounded-2xl border">
-          <div className="text-sm text-gray-500">Positive Rate</div>
-          <div className="text-4xl font-semibold mt-2 text-green-600">
+        <div className="bg-bg-secondary p-4 sm:p-6 rounded-2xl border border-border">
+          <div className="text-sm text-text-muted">Positive Rate</div>
+          <div className="text-3xl sm:text-4xl font-semibold mt-2 text-accent-success">
             {stats.summary.positiveRate}%
           </div>
         </div>
-        <div className="bg-white p-6 rounded-2xl border">
-          <div className="text-sm text-gray-500">Positive</div>
-          <div className="text-4xl font-semibold mt-2">{stats.summary.positive}</div>
+        <div className="bg-bg-secondary p-4 sm:p-6 rounded-2xl border border-border">
+          <div className="text-sm text-text-muted">Positive</div>
+          <div className="text-3xl sm:text-4xl font-semibold mt-2 text-text-primary">{stats.summary.positive}</div>
         </div>
-        <div className="bg-white p-6 rounded-2xl border">
-          <div className="text-sm text-gray-500">Negative</div>
-          <div className="text-4xl font-semibold mt-2 text-red-600">
+        <div className="bg-bg-secondary p-4 sm:p-6 rounded-2xl border border-border">
+          <div className="text-sm text-text-muted">Negative</div>
+          <div className="text-3xl sm:text-4xl font-semibold mt-2 text-red-400">
             {stats.summary.negative}
           </div>
         </div>
@@ -120,14 +120,14 @@ export function FeedbackAnalysisDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         {/* Feedback by Agent */}
-        <div className="bg-white p-6 rounded-2xl border">
-          <h3 className="font-semibold mb-4">Feedback by Agent</h3>
+        <div className="bg-bg-secondary p-4 sm:p-6 rounded-2xl border border-border">
+          <h3 className="font-semibold mb-4 text-text-primary">Feedback by Agent</h3>
           <div className="h-[320px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={stats.byAgent}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="agent" />
-                <YAxis />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                <XAxis dataKey="agent" tick={{ fill: '#94a3b8' }} />
+                <YAxis tick={{ fill: '#94a3b8' }} />
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="up" name="Positive" stackId="a" fill="#22c55e" />
@@ -138,14 +138,14 @@ export function FeedbackAnalysisDashboard() {
         </div>
         
         {/* Trend Over Time */}
-        <div className="bg-white p-6 rounded-2xl border">
-          <h3 className="font-semibold mb-4">Trend Over Time</h3>
+        <div className="bg-bg-secondary p-4 sm:p-6 rounded-2xl border border-border">
+          <h3 className="font-semibold mb-4 text-text-primary">Trend Over Time</h3>
           <div className="h-[320px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={stats.trend}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                <XAxis dataKey="date" tick={{ fill: '#94a3b8' }} />
+                <YAxis tick={{ fill: '#94a3b8' }} />
                 <Tooltip />
                 <Legend />
                 <Line type="monotone" dataKey="up" name="Positive" stroke="#22c55e" activeDot={{ r: 8 }} />
@@ -157,27 +157,27 @@ export function FeedbackAnalysisDashboard() {
       </div>
 
       {/* Needs Attention */}
-      <div className="bg-white p-6 rounded-2xl border">
-        <h3 className="font-semibold mb-4">Needs Attention (Recent Negative Feedback)</h3>
+      <div className="bg-bg-secondary p-4 sm:p-6 rounded-2xl border border-border">
+        <h3 className="font-semibold mb-4 text-text-primary">Needs Attention (Recent Negative Feedback)</h3>
         {stats.needsAttention.length > 0 ? (
           <div className="space-y-4">
             {stats.needsAttention.map((item) => (
-              <div key={item.id} className="p-4 bg-red-50 border border-red-100 rounded-lg">
-                <div className="flex justify-between mb-2">
-                  <span className="font-semibold text-red-800">Agent: {item.agent || 'Unknown'}</span>
-                  <span className="text-sm text-gray-500">{new Date(item.created_at).toLocaleString()}</span>
+              <div key={item.id} className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+                <div className="flex flex-wrap justify-between gap-2 mb-2">
+                  <span className="font-semibold text-red-400">Agent: {item.agent || 'Unknown'}</span>
+                  <span className="text-sm text-text-muted">{new Date(item.created_at).toLocaleString()}</span>
                 </div>
-                <div className="text-sm text-gray-700 mb-2">
+                <div className="text-sm text-text-secondary mb-2">
                   <strong>Query:</strong> {item.query || 'N/A'}
                 </div>
-                <div className="text-sm text-gray-700">
+                <div className="text-sm text-text-secondary">
                   <strong>Response:</strong> {item.response || 'N/A'}
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-gray-500">No negative feedback recently.</p>
+          <p className="text-text-muted">No negative feedback recently.</p>
         )}
       </div>
     </div>

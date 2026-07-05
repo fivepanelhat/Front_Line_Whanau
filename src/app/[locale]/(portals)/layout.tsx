@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import PortalSwitcher from '@/components/PortalSwitcher';
 import { useRole } from '@/context';
@@ -12,24 +12,22 @@ export default function PortalsLayout({
 }) {
   const { role, isLoading } = useRole();
   const router = useRouter();
+  const [localRole, setLocalRole] = useState(false);
 
-  // Check localStorage as fallback: setRole() writes to localStorage
-  // synchronously, but the React context state may not have propagated
-  // yet during the same navigation tick.
   useEffect(() => {
-    if (!isLoading && !role) {
-      try {
-        const saved = localStorage.getItem('userRole');
-        if (!saved) router.replace('/');
-      } catch {
+    try {
+      const saved = localStorage.getItem('userRole');
+      if (saved) {
+        setLocalRole(true);
+      } else if (!isLoading && !role) {
         router.replace('/');
       }
+    } catch {
+      if (!isLoading && !role) router.replace('/');
     }
   }, [role, isLoading, router]);
 
-  const hasRole = role || (typeof window !== 'undefined' && !!localStorage.getItem('userRole'));
-
-  if (isLoading || !hasRole) {
+  if (isLoading || (!role && !localRole)) {
     return <div className="flex items-center justify-center min-h-screen text-text-secondary">Loading...</div>;
   }
 

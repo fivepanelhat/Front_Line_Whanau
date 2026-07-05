@@ -64,14 +64,14 @@ export function SystemMetricsCharts({ events }: { events: any[] }) {
   return (
     <div className="space-y-8">
       {/* Usage Chart */}
-      <div className="bg-white shadow rounded-lg p-6 border border-gray-100">
-        <h2 className="text-xl font-semibold mb-6">Usage Spikes (Last 24 Hours)</h2>
+      <div className="bg-bg-secondary rounded-lg p-4 sm:p-6 border border-border">
+        <h2 className="text-xl font-semibold mb-6 text-text-primary">Usage Spikes (Last 24 Hours)</h2>
         <div className="h-72 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={usageData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="time" />
-              <YAxis />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+              <XAxis dataKey="time" tick={{ fill: '#94a3b8' }} />
+              <YAxis tick={{ fill: '#94a3b8' }} />
               <Tooltip />
               <Legend />
               <Line type="monotone" dataKey="requests" name="Total Requests" stroke="#3b82f6" activeDot={{ r: 8 }} />
@@ -81,15 +81,15 @@ export function SystemMetricsCharts({ events }: { events: any[] }) {
       </div>
 
       {/* Latency Chart */}
-      <div className="bg-white shadow rounded-lg p-6 border border-gray-100">
-        <h2 className="text-xl font-semibold mb-6">Average Latency by Agent (ms)</h2>
+      <div className="bg-bg-secondary rounded-lg p-4 sm:p-6 border border-border">
+        <h2 className="text-xl font-semibold mb-6 text-text-primary">Average Latency by Agent (ms)</h2>
         <div className="h-72 w-full">
           {latencyData.length > 0 ? (
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={latencyData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                <XAxis dataKey="name" tick={{ fill: '#94a3b8' }} />
+                <YAxis tick={{ fill: '#94a3b8' }} />
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="avgLatency" name="Latency (ms)">
@@ -102,7 +102,7 @@ export function SystemMetricsCharts({ events }: { events: any[] }) {
               </BarChart>
             </ResponsiveContainer>
           ) : (
-            <div className="flex items-center justify-center h-full text-gray-500">
+            <div className="flex items-center justify-center h-full text-text-muted">
               No latency data recorded yet.
             </div>
           )}
