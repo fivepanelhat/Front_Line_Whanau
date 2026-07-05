@@ -59,7 +59,7 @@ export default async function PractitionerPortal({
                 {tool.icon}
               </div>
               <div>
-                <h3 className="text-lg sm:text-xl font-bold text-text-primary mb-1 sm:mb-2 group-hover:text-accent-primary transition-colors">{tool.title}</h3>
+                <h2 className="text-lg sm:text-xl font-bold text-text-primary mb-1 sm:mb-2 group-hover:text-accent-primary transition-colors">{tool.title}</h2>
                 <p className="text-sm sm:text-base text-text-secondary leading-relaxed">{tool.description}</p>
               </div>
             </div>

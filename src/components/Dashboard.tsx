@@ -303,7 +303,8 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
   return (
     <div className="dark-space fixed inset-0 z-50 flex flex-col bg-bg-primary text-text-primary overflow-hidden">
       {/* Dashboard Top bar */}
-      <header className="flex h-14 sm:h-16 items-center justify-between border-b border-white/[0.08] bg-bg-secondary px-4 sm:px-6">
+      {/* div, not <header>: the site banner is still in the DOM under this overlay */}
+      <div className="flex h-14 sm:h-16 items-center justify-between border-b border-white/[0.08] bg-bg-secondary px-4 sm:px-6">
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -322,7 +323,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
         >
           ✕
         </button>
-      </header>
+      </div>
 
       {/* Main Grid: Left Side Navigation, Center Active View */}
       <div className="flex flex-1 overflow-hidden">
@@ -471,7 +472,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
                                 window.open(action.target, '_blank');
                               }
                             }}
-                            className="rounded-full border border-accent-secondary/20 bg-accent-secondary/5 px-3 py-1 text-xs text-accent-secondary hover:bg-accent-secondary hover:text-white transition-all"
+                            className="rounded-full border border-accent-secondary/20 bg-accent-secondary/5 px-3 py-1 text-xs text-accent-secondary hover:bg-accent-secondary hover:text-accent-ink transition-all"
                           >
                             {action.label}
                           </button>
@@ -549,7 +550,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
                 <button
                   onClick={() => setSelectedPathway('financial')}
                   className={`rounded-lg px-4 py-2 text-sm font-semibold transition-all ${
-                    selectedPathway === 'financial' ? 'bg-accent-secondary text-white' : 'bg-white/5 hover:bg-white/10 text-text-secondary'
+                    selectedPathway === 'financial' ? 'bg-accent-secondary text-accent-ink' : 'bg-white/5 hover:bg-white/10 text-text-secondary'
                   }`}
                 >
                   💰 Financial Entitlements
@@ -557,7 +558,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
                 <button
                   onClick={() => setSelectedPathway('housing')}
                   className={`rounded-lg px-4 py-2 text-sm font-semibold transition-all ${
-                    selectedPathway === 'housing' ? 'bg-accent-secondary text-white' : 'bg-white/5 hover:bg-white/10 text-text-secondary'
+                    selectedPathway === 'housing' ? 'bg-accent-secondary text-accent-ink' : 'bg-white/5 hover:bg-white/10 text-text-secondary'
                   }`}
                 >
                   🏠 Rental & Tenancy
@@ -565,7 +566,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
                 <button
                   onClick={() => setSelectedPathway('mental')}
                   className={`rounded-lg px-4 py-2 text-sm font-semibold transition-all ${
-                    selectedPathway === 'mental' ? 'bg-accent-secondary text-white' : 'bg-white/5 hover:bg-white/10 text-text-secondary'
+                    selectedPathway === 'mental' ? 'bg-accent-secondary text-accent-ink' : 'bg-white/5 hover:bg-white/10 text-text-secondary'
                   }`}
                 >
                   💚 Perinatal Wellbeing

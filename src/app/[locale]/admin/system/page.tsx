@@ -46,14 +46,14 @@ export default async function SystemHealthDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-8">
         <div className="bg-bg-secondary rounded-lg p-4 sm:p-6 border border-border flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-medium text-text-muted uppercase">Agent Error Rate</h3>
+            <h2 className="text-sm font-medium text-text-muted uppercase">Agent Error Rate</h2>
             <p className="text-3xl font-bold text-text-primary mt-2">{errorRate}%</p>
           </div>
           <div className="text-4xl">{parseFloat(errorRate) > 5 ? '⚠️' : '✅'}</div>
         </div>
         <div className="bg-bg-secondary rounded-lg p-4 sm:p-6 border border-border flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-medium text-text-muted uppercase">Review Rejection Rate</h3>
+            <h2 className="text-sm font-medium text-text-muted uppercase">Review Rejection Rate</h2>
             <p className="text-3xl font-bold text-text-primary mt-2">{rejectionRate}%</p>
           </div>
           <div className="text-4xl">{parseFloat(rejectionRate) > 20 ? '⚠️' : '✅'}</div>
@@ -71,9 +71,9 @@ export default async function SystemHealthDashboard() {
             {activeAlerts.map(alert => (
               <div key={alert.id} className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
                 <div>
-                  <h4 className="font-semibold text-red-400">
+                  <h3 className="font-semibold text-red-400">
                     {alert.event_type === 'agent_error' ? 'Critical Agent Error' : 'High Latency Detected'}
-                  </h4>
+                  </h3>
                   <p className="text-sm text-text-secondary mt-1">
                     Agent: <strong>{alert.metadata?.agent || 'Unknown'}</strong>
                     {alert.event_type === 'agent_latency' && ` took ${alert.metadata?.durationMs}ms to respond.`}

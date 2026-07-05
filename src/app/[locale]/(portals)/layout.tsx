@@ -33,12 +33,13 @@ export default function PortalsLayout({
 
   return (
     <div className="min-h-screen bg-bg-primary">
-      <header className="border-b border-border bg-bg-secondary/80 backdrop-blur">
+      {/* nav, not <header>: the site Header already provides the banner landmark */}
+      <nav aria-label="Portal" className="border-b border-border bg-bg-secondary/80 backdrop-blur">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
           <div className="font-semibold text-lg sm:text-xl text-text-primary">Front Line Whanau</div>
           <PortalSwitcher />
         </div>
-      </header>
+      </nav>
       <main>{children}</main>
     </div>
   );

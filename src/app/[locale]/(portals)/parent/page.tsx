@@ -60,9 +60,9 @@ export default function ParentPortal() {
             <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-2xl mb-3 sm:mb-4 bg-white/5">
               {tool.icon}
             </div>
-            <h3 className="font-semibold text-text-primary mb-1 group-hover:text-accent-primary transition-colors">
+            <h2 className="font-semibold text-text-primary mb-1 group-hover:text-accent-primary transition-colors">
               {tool.title}
-            </h3>
+            </h2>
             <p className="text-sm text-text-secondary leading-relaxed">{tool.description}</p>
           </Link>
         ))}

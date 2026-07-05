@@ -24,11 +24,11 @@ const config: Config = {
         text: {
           primary: '#f2ede2',
           secondary: '#a9b8ab',
-          muted: '#76867c',
+          muted: '#819187',
         },
         accent: {
           primary: '#d4a373',
-          secondary: '#58a08c',
+          secondary: '#63ab97',
           warm: '#e0a458',
           success: '#7cb385',
           danger: '#d0645f',
