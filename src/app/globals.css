@@ -185,6 +185,34 @@
     background-color: rgba(27, 38, 32, 0.55);
     border-color: rgba(255, 255, 255, 0.08);
   }
+
+  /* App-wide glass: the dark card/panel tokens get the same frosted
+     treatment as .bg-white above. Opacity-modified variants (e.g. the
+     bg-bg-secondary/80 sticky navs) are separate utility classes and
+     keep their own styling; inputs use bg-bg-primary and stay opaque. */
+  .bg-bg-secondary {
+    background-color: rgba(24, 36, 32, 0.6);
+    -webkit-backdrop-filter: blur(16px) saturate(1.15);
+    backdrop-filter: blur(16px) saturate(1.15);
+  }
+
+  .bg-bg-card {
+    background-color: rgba(27, 38, 32, 0.6);
+    -webkit-backdrop-filter: blur(16px) saturate(1.15);
+    backdrop-filter: blur(16px) saturate(1.15);
+  }
+
+  /* Ambient aurora behind full-page dark surfaces so the glass has
+     something to refract. Scoped to page wrappers and the Whānau Hub
+     overlay — NOT plain bg-bg-primary, which inputs also use. */
+  .min-h-screen.bg-bg-primary,
+  .fixed.inset-0.bg-bg-primary {
+    background-color: #101a15;
+    background-image:
+      radial-gradient(ellipse 55% 45% at 18% 8%, rgba(53, 128, 108, 0.16), transparent 65%),
+      radial-gradient(ellipse 50% 40% at 85% 90%, rgba(212, 163, 115, 0.10), transparent 65%);
+    background-attachment: fixed;
+  }
   .dark .prose {
     color: var(--n-700);
   }
