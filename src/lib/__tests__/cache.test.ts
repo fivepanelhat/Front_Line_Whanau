@@ -31,6 +31,23 @@ describe('MemoryCache', () => {
     expect(aiToolCache.get('key2')).toBeNull();
   });
 
+  it('sweeps expired entries on set after the sweep interval', () => {
+    const cache = new MemoryCache(1000);
+    cache.set('stale', 'x', 100);
+    cache.set('fresh', 'y', 60_000);
+
+    // Past the stale TTL and the sweep interval — next set() evicts
+    // 'stale' even though it is never read again.
+    vi.advanceTimersByTime(1001);
+    cache.set('trigger', 'z');
+
+    const store = (cache as any).cache as Map<string, unknown>;
+    expect(store.has('stale')).toBe(false);
+    expect(store.has('fresh')).toBe(true);
+    expect(cache.get('fresh')).toBe('y');
+    expect(cache.get('trigger')).toBe('z');
+  });
+
   it('deletes items manually', () => {
     aiToolCache.set('key3', 'value3');
     aiToolCache.delete('key3');
