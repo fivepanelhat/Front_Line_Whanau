@@ -40,6 +40,8 @@ export class RateLimiter {
     }
 
     const now = Date.now();
+    this.sweep(now);
+
     const timestamps = this.store.get(key) || [];
     const recent = timestamps.filter(ts => now - ts < this.windowMs);
 
@@ -48,5 +50,18 @@ export class RateLimiter {
     recent.push(now);
     this.store.set(key, recent);
     return true;
+  }
+
+  /** Evict keys whose window has fully expired so the in-memory store
+   *  doesn't grow unbounded with one entry per unique IP/user. */
+  private lastSweep = 0;
+  private sweep(now: number) {
+    if (now - this.lastSweep < this.windowMs) return;
+    this.lastSweep = now;
+    for (const [key, timestamps] of this.store) {
+      if (timestamps.length === 0 || now - timestamps[timestamps.length - 1] >= this.windowMs) {
+        this.store.delete(key);
+      }
+    }
   }
 }

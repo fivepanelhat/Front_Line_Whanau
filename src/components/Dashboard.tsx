@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useConsent, useConsentManager } from '@/hooks/useConsent';
 import { useEncryptedJournal, type DecryptedJournalEntry } from '@/hooks/useEncryptedJournal';
 import { encrypt, decrypt, openVault, encryptWithKey, decryptWithKey, type EncryptedPayload } from '@/lib/encryption';
@@ -41,6 +41,17 @@ const PATHWAY_DATA = {
   }
 };
 
+type DashboardTab = 'ai' | 'pathways' | 'vault' | 'journal' | 'directory' | 'timers';
+
+const NAV_TABS: Array<{ id: DashboardTab; label: string }> = [
+  { id: 'ai', label: '💬 AI Assistant' },
+  { id: 'pathways', label: '📋 Support Pathways' },
+  { id: 'vault', label: '🔒 Taonga Vault' },
+  { id: 'journal', label: '📝 Private Journal' },
+  { id: 'directory', label: '🗺️ Services Directory' },
+  { id: 'timers', label: '⏱️ Care Timers' },
+];
+
 function cleanAsterisks(text: string): string {
   if (!text) return '';
   // Remove **bold**
@@ -52,8 +63,8 @@ function cleanAsterisks(text: string): string {
   return cleaned;
 }
 
-export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void; initialTab?: 'ai' | 'pathways' | 'vault' | 'journal' | 'directory' | 'timers' }) {
-  const [activeTab, setActiveTab] = useState<'ai' | 'pathways' | 'vault' | 'journal' | 'directory' | 'timers'>(initialTab);
+export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void; initialTab?: DashboardTab }) {
+  const [activeTab, setActiveTab] = useState<DashboardTab>(initialTab);
   const [hasVaultSalt, setHasVaultSalt] = useState(false);
   const [hasJournalSalt, setHasJournalSalt] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -164,6 +175,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
   const [newFileContent, setNewFileContent] = useState('');
   const [vaultLog, setVaultLog] = useState<string[]>([]);
   const [decryptedFileText, setDecryptedFileText] = useState<Record<string, string>>({});
+  const vaultAssessment = useMemo(() => assessPassphrase(vaultPassword), [vaultPassword]);
 
   useEffect(() => {
     if (isVaultUnlocked) {
@@ -175,9 +187,8 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
   }, [isVaultUnlocked]);
 
   const handleUnlockVault = async () => {
-    const assessment = assessPassphrase(vaultPassword);
-    if (!hasVaultSalt && !assessment.acceptable) {
-      alert(assessment.message);
+    if (!hasVaultSalt && !vaultAssessment.acceptable) {
+      alert(vaultAssessment.message);
       return;
     }
     try {
@@ -262,11 +273,11 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
   const [journalText, setJournalText] = useState('');
   const [selectedMood, setSelectedMood] = useState('🥰 Calmed');
   const [journalTags, setJournalTags] = useState('');
+  const journalAssessment = useMemo(() => assessPassphrase(journalPassword), [journalPassword]);
 
   const handleUnlockJournal = async () => {
-    const assessment = assessPassphrase(journalPassword);
-    if (!hasJournalSalt && !assessment.acceptable) {
-      alert(assessment.message);
+    if (!hasJournalSalt && !journalAssessment.acceptable) {
+      alert(journalAssessment.message);
       return;
     }
     try {
@@ -293,12 +304,16 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
   const [searchDir, setSearchDir] = useState('');
   const [selectedDirCategory, setSelectedDirCategory] = useState<string>('All');
 
-  const filteredServices = SERVICES.filter((srv) => {
-    const matchCat = selectedDirCategory === 'All' || srv.categories.some(c => c.replace('-', ' ').toLowerCase() === selectedDirCategory.toLowerCase());
-    const matchSearch = srv.name.toLowerCase().includes(searchDir.toLowerCase()) ||
-                        srv.description.toLowerCase().includes(searchDir.toLowerCase());
-    return matchCat && matchSearch;
-  });
+  const filteredServices = useMemo(() => {
+    const search = searchDir.toLowerCase();
+    const category = selectedDirCategory.toLowerCase();
+    return SERVICES.filter((srv) => {
+      const matchCat = selectedDirCategory === 'All' || srv.categories.some(c => c.replace('-', ' ').toLowerCase() === category);
+      const matchSearch = srv.name.toLowerCase().includes(search) ||
+                          srv.description.toLowerCase().includes(search);
+      return matchCat && matchSearch;
+    });
+  }, [searchDir, selectedDirCategory]);
 
   return (
     <div className="dark-space fixed inset-0 z-50 flex flex-col bg-bg-primary text-text-primary overflow-hidden">
@@ -335,54 +350,17 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
         {/* Sidebar Nav */}
         <aside className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 fixed md:relative z-50 md:z-auto w-64 h-[calc(100%-3.5rem)] sm:h-[calc(100%-4rem)] md:h-auto border-r border-white/[0.08] bg-bg-secondary md:bg-bg-secondary/40 p-4 flex flex-col justify-between transition-transform duration-200`}>
           <div className="space-y-1">
-            <button
-              onClick={() => { setActiveTab('ai'); setSidebarOpen(false); }}
-              className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
-                activeTab === 'ai' ? 'bg-accent-primary text-accent-ink' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
-              }`}
-            >
-              💬 AI Assistant
-            </button>
-            <button
-              onClick={() => { setActiveTab('pathways'); setSidebarOpen(false); }}
-              className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
-                activeTab === 'pathways' ? 'bg-accent-primary text-accent-ink' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
-              }`}
-            >
-              📋 Support Pathways
-            </button>
-            <button
-              onClick={() => { setActiveTab('vault'); setSidebarOpen(false); }}
-              className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
-                activeTab === 'vault' ? 'bg-accent-primary text-accent-ink' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
-              }`}
-            >
-              🔒 Taonga Vault
-            </button>
-            <button
-              onClick={() => { setActiveTab('journal'); setSidebarOpen(false); }}
-              className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
-                activeTab === 'journal' ? 'bg-accent-primary text-accent-ink' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
-              }`}
-            >
-              📝 Private Journal
-            </button>
-            <button
-              onClick={() => { setActiveTab('directory'); setSidebarOpen(false); }}
-              className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
-                activeTab === 'directory' ? 'bg-accent-primary text-accent-ink' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
-              }`}
-            >
-              🗺️ Services Directory
-            </button>
-            <button
-              onClick={() => { setActiveTab('timers'); setSidebarOpen(false); }}
-              className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
-                activeTab === 'timers' ? 'bg-accent-primary text-accent-ink' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
-              }`}
-            >
-              ⏱️ Care Timers
-            </button>
+            {NAV_TABS.map(({ id, label }) => (
+              <button
+                key={id}
+                onClick={() => { setActiveTab(id); setSidebarOpen(false); }}
+                className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
+                  activeTab === id ? 'bg-accent-primary text-accent-ink' : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
           </div>
 
           {/* Privacy status & Consent overview */}
@@ -639,8 +617,8 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
                     className="w-full rounded-lg border border-white/[0.08] bg-bg-secondary px-4 py-2.5 text-center focus:outline-none"
                   />
                   {!hasVaultSalt && vaultPassword && (
-                    <div className={`text-xs p-2 rounded ${assessPassphrase(vaultPassword).acceptable ? 'bg-accent-success/15 text-accent-success' : 'bg-accent-warm/15 text-accent-warm'}`}>
-                      {assessPassphrase(vaultPassword).message}
+                    <div className={`text-xs p-2 rounded ${vaultAssessment.acceptable ? 'bg-accent-success/15 text-accent-success' : 'bg-accent-warm/15 text-accent-warm'}`}>
+                      {vaultAssessment.message}
                     </div>
                   )}
                   <p className="text-[11px] text-text-muted leading-relaxed">
@@ -649,7 +627,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
                   </p>
                   <button
                     onClick={handleUnlockVault}
-                    disabled={hasVaultSalt ? vaultPassword.length < 4 : !assessPassphrase(vaultPassword).acceptable}
+                    disabled={hasVaultSalt ? vaultPassword.length < 4 : !vaultAssessment.acceptable}
                     className="w-full rounded-lg bg-accent-primary py-2.5 font-bold text-accent-ink hover:bg-accent-primary/80 disabled:opacity-50"
                   >
                     {hasVaultSalt ? 'Unlock' : 'Create Vault'}
@@ -770,8 +748,8 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
                     className="w-full rounded-lg border border-white/[0.08] bg-bg-secondary px-4 py-2.5 text-center focus:outline-none"
                   />
                   {!hasJournalSalt && journalPassword && (
-                    <div className={`text-xs p-2 rounded ${assessPassphrase(journalPassword).acceptable ? 'bg-accent-success/15 text-accent-success' : 'bg-accent-warm/15 text-accent-warm'}`}>
-                      {assessPassphrase(journalPassword).message}
+                    <div className={`text-xs p-2 rounded ${journalAssessment.acceptable ? 'bg-accent-success/15 text-accent-success' : 'bg-accent-warm/15 text-accent-warm'}`}>
+                      {journalAssessment.message}
                     </div>
                   )}
                   <p className="text-[11px] text-text-muted leading-relaxed">
@@ -780,7 +758,7 @@ export function Dashboard({ onClose, initialTab = 'ai' }: { onClose: () => void;
                   </p>
                   <button
                     onClick={handleUnlockJournal}
-                    disabled={hasJournalSalt ? journalPassword.length < 4 : !assessPassphrase(journalPassword).acceptable}
+                    disabled={hasJournalSalt ? journalPassword.length < 4 : !journalAssessment.acceptable}
                     className="w-full rounded-lg bg-accent-primary py-2.5 font-bold text-accent-ink hover:bg-accent-primary/80 disabled:opacity-50"
                   >
                     {hasJournalSalt ? 'Unlock' : 'Create Journal'}

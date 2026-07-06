@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { AetherSummit } from '@/ai/aether-summit';
+import { aetherSummit } from '@/ai/aether-summit';
 import { RateLimiter } from '@/lib/rate-limit';
 import { SummitQuerySchema } from '@/lib/validations';
 
@@ -28,8 +28,7 @@ export async function POST(request: NextRequest) {
 
     const { query, scopes, locale } = parsed.data;
 
-    const summitInstance = new AetherSummit();
-    const res = await summitInstance.process(query, scopes || [], locale);
+    const res = await aetherSummit.process(query, scopes || [], locale);
 
     return NextResponse.json(res);
   } catch (error) {

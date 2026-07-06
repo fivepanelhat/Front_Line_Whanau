@@ -22,9 +22,19 @@ export class MemoryCache {
   }
 
   set<T>(key: string, value: T, ttlMs?: number): void {
-    const expiry = Date.now() + (ttlMs || this.defaultTTLMs);
-    this.cache.set(key, { value, expiry });
+    const now = Date.now();
+    // Expired entries are otherwise only removed when re-read, so sweep
+    // periodically to keep the process-lifetime cache from growing unbounded.
+    if (now - this.lastSweep > this.defaultTTLMs) {
+      this.lastSweep = now;
+      for (const [k, entry] of this.cache) {
+        if (now > entry.expiry) this.cache.delete(k);
+      }
+    }
+    this.cache.set(key, { value, expiry: now + (ttlMs || this.defaultTTLMs) });
   }
+
+  private lastSweep = Date.now();
 
   delete(key: string): void {
     this.cache.delete(key);

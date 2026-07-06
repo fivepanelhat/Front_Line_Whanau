@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 type DirectoryListing = {
   id: string;
@@ -22,19 +22,25 @@ export function DirectorySearch({ initialListings }: DirectorySearchProps) {
   const [regionFilter, setRegionFilter] = useState('All');
 
   // Extract unique regions for the dropdown
-  const regions = ['All', ...Array.from(new Set(initialListings.map(l => l.region).filter(Boolean)))];
+  const regions = useMemo(
+    () => ['All', ...Array.from(new Set(initialListings.map(l => l.region).filter(Boolean)))],
+    [initialListings]
+  );
 
-  const filtered = initialListings.filter(listing => {
-    const matchesSearch = 
-      search === '' || 
-      listing.organisation?.toLowerCase().includes(search.toLowerCase()) || 
-      listing.service_type?.toLowerCase().includes(search.toLowerCase()) ||
-      listing.description?.toLowerCase().includes(search.toLowerCase());
-      
-    const matchesRegion = regionFilter === 'All' || listing.region === regionFilter;
-    
-    return matchesSearch && matchesRegion;
-  });
+  const filtered = useMemo(() => {
+    const needle = search.toLowerCase();
+    return initialListings.filter(listing => {
+      const matchesSearch =
+        needle === '' ||
+        listing.organisation?.toLowerCase().includes(needle) ||
+        listing.service_type?.toLowerCase().includes(needle) ||
+        listing.description?.toLowerCase().includes(needle);
+
+      const matchesRegion = regionFilter === 'All' || listing.region === regionFilter;
+
+      return matchesSearch && matchesRegion;
+    });
+  }, [initialListings, search, regionFilter]);
 
   return (
     <div className="space-y-6 sm:space-y-8">

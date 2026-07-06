@@ -4,6 +4,7 @@ import { requireAuth } from '@/lib/api-auth';
 import { RateLimiter } from '@/lib/rate-limit';
 
 const limiter = new RateLimiter(60_000, 10);
+const weaver = new Riroriro();
 
 export async function POST(request: NextRequest) {
   const auth = await requireAuth(request);
@@ -16,7 +17,6 @@ export async function POST(request: NextRequest) {
 
   try {
     const { query } = await request.json();
-    const weaver = new Riroriro();
     const result = await weaver.process(query, {});
     return NextResponse.json(result);
   } catch (error: any) {

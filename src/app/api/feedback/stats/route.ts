@@ -41,6 +41,7 @@ export async function GET(req: NextRequest) {
     let dbQuery = supabase
       .from('ai_feedback')
       .select('id, created_at, rating, agent, message_content, comment')
+      .order('created_at', { ascending: false })
       .limit(2000);
 
     if (query.from) dbQuery = dbQuery.gte('created_at', query.from);
@@ -51,50 +52,46 @@ export async function GET(req: NextRequest) {
 
     if (error) throw error;
 
-    // === Summary KPIs ===
-    const total = data.length;
     // Map 'up'/'down' to 'positive'/'negative' based on our schema
-    const positive = data.filter((d) => d.rating === 'positive' || d.rating === 'up' || d.rating === 1).length;
-    const negative = data.filter((d) => d.rating === 'negative' || d.rating === 'down' || d.rating === -1).length;
-    const positiveRate = total > 0 ? Math.round((positive / total) * 100) : 0;
+    const isPositive = (r: unknown) => r === 'positive' || r === 'up' || r === 1;
 
-    // === Feedback by Agent ===
-    const byAgent = Object.values(
-      data.reduce((acc: any, item) => {
-        const key = item.agent || 'unknown';
-        if (!acc[key]) acc[key] = { agent: key, up: 0, down: 0, total: 0 };
-
-        const isPositive = item.rating === 'positive' || item.rating === 'up' || item.rating === 1;
-        acc[key][isPositive ? 'up' : 'down']++;
-        acc[key].total++;
-        return acc;
-      }, {})
-    );
-
-    // === Trend Over Time (daily) ===
+    // Single pass over the (newest-first) rows: KPIs, per-agent counts,
+    // daily trend, and the 10 most recent negatives.
+    const total = data.length;
+    let positive = 0;
+    const agentMap: Record<string, { agent: string; up: number; down: number; total: number }> = {};
     const trendMap: Record<string, { date: string; up: number; down: number }> = {};
-    data.forEach((item) => {
+    const needsAttention: Array<Record<string, unknown>> = [];
+
+    for (const item of data) {
+      const up = isPositive(item.rating);
+      if (up) positive++;
+
+      const key = item.agent || 'unknown';
+      const agentEntry = (agentMap[key] ??= { agent: key, up: 0, down: 0, total: 0 });
+      agentEntry[up ? 'up' : 'down']++;
+      agentEntry.total++;
+
       const date = item.created_at.split('T')[0];
-      if (!trendMap[date]) trendMap[date] = { date, up: 0, down: 0 };
+      const trendEntry = (trendMap[date] ??= { date, up: 0, down: 0 });
+      trendEntry[up ? 'up' : 'down']++;
 
-      const isPositive = item.rating === 'positive' || item.rating === 'up' || item.rating === 1;
-      trendMap[date][isPositive ? 'up' : 'down']++;
-    });
+      if (!up && needsAttention.length < 10) {
+        needsAttention.push({
+          id: item.id,
+          created_at: item.created_at,
+          agent: item.agent,
+          query: item.message_content, // Map to what the frontend might expect
+          response: item.message_content, // Map to what the frontend might expect
+          review_status: 'pending', // Mocked if not present
+        });
+      }
+    }
+
+    const negative = total - positive;
+    const positiveRate = total > 0 ? Math.round((positive / total) * 100) : 0;
+    const byAgent = Object.values(agentMap);
     const trend = Object.values(trendMap).sort((a, b) => a.date.localeCompare(b.date));
-
-    // === Needs Attention (recent negative feedback) ===
-    const needsAttention = data
-      .filter((d) => d.rating === 'negative' || d.rating === 'down' || d.rating === -1)
-      .sort((a, b) => b.created_at.localeCompare(a.created_at))
-      .slice(0, 10)
-      .map((d) => ({
-        id: d.id,
-        created_at: d.created_at,
-        agent: d.agent,
-        query: d.message_content, // Map to what the frontend might expect
-        response: d.message_content, // Map to what the frontend might expect
-        review_status: 'pending', // Mocked if not present
-      }));
 
     return NextResponse.json({
       summary: {
