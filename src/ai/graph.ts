@@ -24,6 +24,7 @@ import { Tui } from './agents/tui';
 import { Takahe } from './agents/takahe';
 import { Toroa } from './agents/toroa';
 import { Riroriro } from './agents/riroriro';
+import { ActivationAuditor } from './agents/activation-auditor';
 import { createCheckpointSaver } from './checkpointer';
 
 const AgentState = Annotation.Root({
@@ -106,6 +107,7 @@ const kahu = new Kahu();
 const tui = new Tui();
 const takahe = new Takahe();
 const toroa = new Toroa();
+const activationAuditor = new ActivationAuditor();
 
 // === NODES ===
 // Shared with aether-summit (see classifier.ts) — re-exported for existing
@@ -121,6 +123,30 @@ export async function supervisorNode(state: AgentStateType): Promise<Partial<Age
     return {
       intent: "RESEARCH",
       currentAgent: "riroriro",
+    };
+  }
+
+  // Activation requests route deterministically (no LLM round-trip):
+  // a structured intake from the audit form, or open-ended
+  // "where do I start" asks, both belong to the Activation Auditor.
+  const q = state.query.toLowerCase();
+  const wantsActivation =
+    state.context?.auditInput !== undefined ||
+    q.includes("playbook") ||
+    q.includes("where do i start") ||
+    q.includes("where do we start") ||
+    q.includes("don't know where to begin") ||
+    q.includes("dont know where to begin");
+
+  if (wantsActivation) {
+    logAgentEvent('supervisor_routed', {
+      query: state.query,
+      intent: 'PLANNING',
+      agent: 'activation_auditor',
+    });
+    return {
+      intent: 'PLANNING',
+      currentAgent: 'activation_auditor',
     };
   }
 
@@ -302,6 +328,27 @@ async function toroaNode(state: AgentStateType) {
   };
 }
 
+async function activationAuditorNode(state: AgentStateType) {
+  try {
+    const result = await activationAuditor.process(state.query, state as any);
+    return {
+      finalResponse: result.content,
+      sources: result.sources || [],
+      requiresHumanReview: result.requiresHumanReview ?? false,
+      showUrgentHelp: result.showUrgentHelp ?? false,
+      context: {
+        playbook: result.metadata?.playbook ?? null,
+      },
+    };
+  } catch (error) {
+    log.error({ error }, 'activationAuditorNode failed');
+    return {
+      finalResponse:
+        "I couldn't build your playbook just now. Please try again shortly, or tell me a little about your situation and I'll help directly.",
+    };
+  }
+}
+
 export async function guardrailNode(state: AgentStateType): Promise<Partial<AgentStateType>> {
   if (!state.finalResponse) {
     return {};
@@ -393,6 +440,7 @@ const graph = new StateGraph(AgentState)
   .addNode('tui', tuiNode)
   .addNode('takahe', takaheNode)
   .addNode('toroa', toroaNode)
+  .addNode('activation_auditor', activationAuditorNode)
   .addNode('guardrails', guardrailNode)
   .addNode('human_review', humanReviewNode);
 
@@ -424,6 +472,8 @@ graph.addConditionalEdges('supervisor', (state) => {
       return 'takahe';
     case 'toroa':
       return 'toroa';
+    case 'activation_auditor':
+      return 'activation_auditor';
     default:
       return 'riroriro';
   }
@@ -442,8 +492,14 @@ graph.addEdge('kahu', 'guardrails');
 graph.addEdge('tui', 'guardrails');
 graph.addEdge('takahe', 'guardrails');
 graph.addEdge('toroa', 'guardrails');
+graph.addEdge('activation_auditor', 'guardrails');
 
 graph.addConditionalEdges("guardrails", (state) => {
+  // activation_auditor is intentionally NOT here: its playbooks flag
+  // financial/cultural plays requiresHumanReview for the async review
+  // queue and render per-play "will be confirmed" notices, but blocking
+  // delivery behind the interrupt queue would also hold back urgent
+  // crisis contacts (same reasoning as the kahu note above).
   const highRiskAgents = ["kea", "tuatara", "kahu"];
 
   if (highRiskAgents.includes(state.currentAgent) && state.requiresHumanReview) {

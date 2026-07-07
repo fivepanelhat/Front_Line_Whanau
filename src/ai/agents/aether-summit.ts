@@ -1,5 +1,6 @@
 import { BaseAgent } from "./base";
 import { AgentState } from "@/ai/types";
+import { PROMPTS } from "@/ai/prompts";
 import { KaitiakiCrawler } from "./kaitiaki-crawler";
 import { RangahauHauora } from "./rangahau-hauora";
 import { ManaAwhina } from "./mana-awhina";
@@ -18,8 +19,8 @@ export class AetherSummit extends BaseAgent {
   constructor() {
     super({
       name: "aether_summit",
-      description: "Main orchestrator for Front_Line_Whanau agent system",
-      systemPrompt: "You are Aether Summit, the lead orchestrator of the Front_Line_Whanau AI system.",
+      description: "Kaitiaki Activation Orchestrator for the Front_Line_Whanau agent system",
+      systemPrompt: PROMPTS.supervisor,
     });
   }
 
