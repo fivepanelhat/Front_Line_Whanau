@@ -21,7 +21,7 @@ All contributions must align with the project's core values:
 
 ### 1. Reporting Bugs
 
-Use the [Bug Report](.github/ISSUE_TEMPLATE/bug_report.md) template. Include:
+Use the [Bug Report](../.github/ISSUE_TEMPLATE/bug_report.md) template. Include:
 
 - Steps to reproduce
 - Expected vs actual behaviour
@@ -30,7 +30,7 @@ Use the [Bug Report](.github/ISSUE_TEMPLATE/bug_report.md) template. Include:
 
 ### 2. Suggesting Features
 
-Use the [Feature Request](.github/ISSUE_TEMPLATE/feature_request.md) template. Consider:
+Use the [Feature Request](../.github/ISSUE_TEMPLATE/feature_request.md) template. Consider:
 
 - How does this help whānau?
 - Does it align with our values?
