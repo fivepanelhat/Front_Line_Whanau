@@ -179,3 +179,6 @@ npm run type-check && npm run lint && npm run test:coverage && npm run e2e
 npm run e2e:ui
 ```
 
+## License
+
+This project is licensed under the **Apache License 2.0**. See [LICENSE](./LICENSE).
