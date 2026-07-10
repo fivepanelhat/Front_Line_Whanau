@@ -1,14 +1,5 @@
 # Front_Line_Whanau
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue?style=flat-square)](LICENSE)  
-[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)]()  
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript&logoColor=white)]()  
-[![Te Tiriti](https://img.shields.io/badge/Te%20Tiriti-Aligned-00247D?style=flat-square)]()  
-[![Te Mana Raraunga](https://img.shields.io/badge/Te%20Mana%20Raraunga-Data%20Sovereignty-005A9C?style=flat-square)]()  
-[![Sovereignty](https://img.shields.io/badge/Sovereignty-NZ%20Data%20Bound-00247D?style=flat-square)]()  
-[![CI](https://github.com/fivepanelhat/Front_Line_Whanau/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/fivepanelhat/Front_Line_Whanau/actions/workflows/ci.yml)  
-[![Accessibility](https://img.shields.io/badge/WCAG-2.2%20AA-success?style=flat-square)]()  
-[![Dependabot](https://img.shields.io/badge/Dependencies-Monitored-brightgreen?style=flat-square&logo=dependabot)]()
 
 Open-Source National Frontline Whānau Support Platform – Aotearoa New Zealand
 
@@ -182,3 +173,19 @@ npm run e2e:ui
 ## License
 
 This project is licensed under the **Apache License 2.0**. See [LICENSE](./LICENSE).
+
+---
+
+## Project badges
+
+Status badges for this repository (CI, security, license, and stack metadata):
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue?style=flat-square)](LICENSE)  
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)]()  
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript&logoColor=white)]()  
+[![Te Tiriti](https://img.shields.io/badge/Te%20Tiriti-Aligned-00247D?style=flat-square)]()  
+[![Te Mana Raraunga](https://img.shields.io/badge/Te%20Mana%20Raraunga-Data%20Sovereignty-005A9C?style=flat-square)]()  
+[![Sovereignty](https://img.shields.io/badge/Sovereignty-NZ%20Data%20Bound-00247D?style=flat-square)]()  
+[![CI](https://github.com/fivepanelhat/Front_Line_Whanau/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/fivepanelhat/Front_Line_Whanau/actions/workflows/ci.yml)  
+[![Accessibility](https://img.shields.io/badge/WCAG-2.2%20AA-success?style=flat-square)]()  
+[![Dependabot](https://img.shields.io/badge/Dependencies-Monitored-brightgreen?style=flat-square&logo=dependabot)]()
