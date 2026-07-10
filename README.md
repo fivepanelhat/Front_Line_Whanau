@@ -1,5 +1,8 @@
 # Front_Line_Whanau
 
+![Banner](assets/social_preview.png)
+
+
 
 Open-Source National Frontline Whānau Support Platform – Aotearoa New Zealand
 
