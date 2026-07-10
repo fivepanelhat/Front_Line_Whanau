@@ -14,6 +14,9 @@ on:
         required: false
         default: 'https://front-line-whanau.vercel.app'
 
+permissions:
+  contents: read
+
 jobs:
   evals:
     runs-on: ubuntu-latest

@@ -37,3 +37,19 @@ We actively log high-risk actions using `createAuditLog()` in `src/ai/security.t
 - `FHIR_ACCESS`: Logged when patient data is queried.
 
 *Review logs weekly via your logging provider (e.g., Vercel Logs, Datadog).*
+
+## Security Notifications
+
+| Channel | Response |
+| ------- | -------- |
+| Dependabot (npm + Actions) | Weekly; merge security updates first |
+| npm audit / CI | Zero high/critical on `main` |
+| Secret rotation | Follow runbook tables above |
+| CSP / rate limits / RLS | Keep defaults strict; review on every auth change |
+
+## Active patches (2026-07)
+
+| Finding | Mitigation |
+| ------- | ---------- |
+| Workflow token scope | `permissions: contents: read` on CI |
+| Supply chain | Dependabot enabled; lockfile commits required |
