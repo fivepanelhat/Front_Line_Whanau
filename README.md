@@ -3,7 +3,6 @@
 ![Banner](assets/social_preview.png)
 
 
-
 Open-Source National Frontline Whānau Support Platform – Aotearoa New Zealand
 
 A sovereign, privacy-first digital platform designed to support whānau of preterm twins and families navigating complex frontline services across Aotearoa New Zealand.
@@ -72,17 +71,69 @@ Nationwide across Aotearoa New Zealand, available as Web, Desktop (Tauri), and P
 - **Testing**: Vitest + Playwright
 - **CI/CD**: GitHub Actions
 
-## AI Architecture (LangGraph)
+## Architecture Overview
 
-The platform features a multi-agent orchestrated backend using **LangGraph**. A single entry point analyzes the user's intent and dynamically routes them to specialized AI companions:
+Front Line Whānau is a **sovereign, privacy-first** multi-surface platform (web PWA, Tauri desktop) for whānau and frontline practitioners across Aotearoa, with optional LangGraph AI assist and strong data boundaries.
 
-1. **Supervisor Node (`intentClassifier`)**: Routes queries based on intent (`RESEARCH`, `PLANNING`, `EXECUTION`, `CLINICAL`, `ADVOCACY`).
-2. **Specialized Agents**:
-   - `TraumaInformedCompanion`: Handles general research and planning with deep empathy.
-   - `FundingEligibilityChecker`: Walks users through MSD/WINZ and clinical funding logic.
-   - `ClinicalTriageCompanion`: Safely detects medical symptoms and escalates immediately based on severity (EMERGENCY/URGENT/INFO).
-   - `PolicyAdvocateCompanion`: Drafts formal letters and empowers whānau to advocate for their rights.
-3. **Guardrails & Human Review**: High-risk actions automatically hit a circuit-breaker and flag for human practitioner review before finalizing.
+![Front Line Whānau architecture — liquid glass overview](assets/architecture_overview.png)
+
+### System map
+
+```mermaid
+%%{init: {
+  "theme": "dark",
+  "themeVariables": {
+    "fontSize": "16px",
+    "fontFamily": "Inter, ui-sans-serif, system-ui, sans-serif",
+    "primaryColor": "#0ea5e9",
+    "primaryTextColor": "#f8fafc",
+    "primaryBorderColor": "#38bdf8",
+    "lineColor": "#67e8f9",
+    "secondaryColor": "#1e293b",
+    "tertiaryColor": "#0f172a",
+    "clusterBkg": "#0b1220cc",
+    "clusterBorder": "#38bdf880",
+    "titleColor": "#e2e8f0"
+  },
+  "flowchart": {
+    "nodeSpacing": 40,
+    "rankSpacing": 48,
+    "padding": 20,
+    "htmlLabels": true,
+    "curve": "basis"
+  }
+}}%%
+flowchart TB
+
+    classDef sense fill:#052e16,stroke:#4ade80,stroke-width:2px,color:#f0fdf4
+    classDef edge fill:#0c4a6e,stroke:#38bdf8,stroke-width:2px,color:#f0f9ff
+    classDef core fill:#134e4a,stroke:#2dd4bf,stroke-width:2px,color:#f0fdfa
+    classDef act fill:#422006,stroke:#fbbf24,stroke-width:2px,color:#fffbeb
+    classDef store fill:#1e1b4b,stroke:#a5b4fc,stroke-width:2px,color:#eef2ff
+    classDef ai fill:#3b0764,stroke:#e879f9,stroke-width:2px,color:#fdf4ff
+    classDef app fill:#1e1b4b,stroke:#c4b5fd,stroke-width:2px,color:#eef2ff
+
+    U["Whānau · practitioners · orgs"] --> WEB["Next.js web / PWA"]
+    U --> DESK["Tauri 2 desktop"]
+    WEB & DESK --> API["API + auth<br/>rate limits · CSP"]
+    API --> DB["Supabase / data plane<br/>tenant boundaries"]
+    API --> AI["Optional LangGraph assist"]
+    AI --> LOCAL["Policy-bound tools<br/>no unrestricted PHI"]
+
+    class U act
+    class WEB,DESK,API core
+    class DB,LOCAL store
+    class AI ai
+```
+
+| Layer | Components | Role |
+| :--- | :--- | :--- |
+| **Clients** | Web PWA + Tauri | Mobile & desktop |
+| **API** | Auth · CSP · rate limits | Hardened edge |
+| **Data** | Tenant boundaries | Privacy-first |
+| **AI** | LangGraph optional | Policy-bound assist |
+
+*Full detail: [ARCHITECTURE.md](./ARCHITECTURE.md) · [AI-ARCHITECTURE.md](./AI-ARCHITECTURE.md)*
 
 ## Directory Structure
 
