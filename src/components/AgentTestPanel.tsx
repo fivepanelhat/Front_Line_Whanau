@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { saveConversation, loadConversation, MessageInput } from '@/lib/conversation';
 import ReactMarkdown from 'react-markdown';
 
@@ -40,10 +40,21 @@ export function AgentTestPanel({
   const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
   const [summaryMarkdown, setSummaryMarkdown] = useState<string | null>(null);
 
+  // Cancel in-flight SSE / fetch when unmounting or sending a new message
+  const abortRef = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    return () => {
+      abortRef.current?.abort();
+    };
+  }, []);
+
   // Load previous conversation
   useEffect(() => {
+    let cancelled = false;
     const loadPrevious = async () => {
       const result = await loadConversation(threadId);
+      if (cancelled) return;
       if (result?.messages?.length) {
         const loaded = result.messages.map((m) => ({
           role: m.role as 'user' | 'assistant',
@@ -53,6 +64,9 @@ export function AgentTestPanel({
       }
     };
     loadPrevious();
+    return () => {
+      cancelled = true;
+    };
   }, [threadId]);
 
   const copyToClipboard = (text: string, index: number) => {
@@ -61,21 +75,25 @@ export function AgentTestPanel({
     setTimeout(() => setCopiedIndex(null), 1500);
   };
 
-  const saveConversationToDb = async (updatedMessages: Message[]) => {
+  const saveConversationToDb = useCallback(async (updatedMessages: Message[]) => {
     const inputs: MessageInput[] = updatedMessages.map((m) => ({
       role: m.role,
       content: m.content,
     }));
     await saveConversation(threadId, inputs);
-    if (onConversationUpdated) {
-      onConversationUpdated();
-    }
-  };
+    onConversationUpdated?.();
+  }, [threadId, onConversationUpdated]);
 
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
 
+    // Abort any previous stream before starting a new one
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     const userMessage: Message = { role: 'user', content: input };
+    const historyForRequest = messages;
     const newMessages = [...messages, userMessage];
 
     setMessages(newMessages);
@@ -88,11 +106,12 @@ export function AgentTestPanel({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          query: input,
+          query: userMessage.content,
           consentGiven: true,
           threadId,
-          history: messages,
+          history: historyForRequest,
         }),
+        signal: controller.signal,
       });
 
       if (!res.ok || !res.body) throw new Error('connection_failed');
@@ -100,6 +119,7 @@ export function AgentTestPanel({
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let assistantResponse = '';
+      let sseBuffer = '';
 
       // Add placeholder for assistant
       setMessages([...newMessages, { role: 'assistant', content: '' }]);
@@ -108,14 +128,18 @@ export function AgentTestPanel({
         const { done, value } = await reader.read();
         if (done) break;
 
-        const chunk = decoder.decode(value);
-        const lines = chunk.split('\n\n');
+        // Buffer partial SSE frames across TCP chunks
+        sseBuffer += decoder.decode(value, { stream: true });
+        const frames = sseBuffer.split('\n\n');
+        sseBuffer = frames.pop() ?? '';
 
-        for (const line of lines) {
+        for (const line of frames) {
           if (!line.startsWith('data: ')) continue;
+          const raw = line.slice(6).trim();
+          if (raw === '[DONE]') continue;
 
           try {
-            const data = JSON.parse(line.replace('data: ', ''));
+            const data = JSON.parse(raw);
 
             if (data.type === 'reset') {
               // New model call in the graph (classifier → agent steps):
@@ -162,7 +186,9 @@ export function AgentTestPanel({
                 return updated;
               });
             }
-          } catch {}
+          } catch {
+            // Ignore malformed SSE frames
+          }
         }
       }
 
@@ -170,10 +196,15 @@ export function AgentTestPanel({
       const finalMessages: Message[] = [...newMessages, { role: 'assistant' as const, content: assistantResponse }];
       await saveConversationToDb(finalMessages);
     } catch (err) {
+      if (err instanceof DOMException && err.name === 'AbortError') {
+        return;
+      }
       console.error(err);
       setError('I am currently experiencing connection issues. Please try again in a moment.');
     } finally {
-      setIsLoading(false);
+      if (!controller.signal.aborted) {
+        setIsLoading(false);
+      }
     }
   };
 

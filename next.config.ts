@@ -44,6 +44,11 @@ const nextConfig: NextConfig = {
       '@radix-ui/react-select',
       'date-fns',
       'zod',
+      'recharts',
+      'react-markdown',
+      '@langchain/core',
+      '@langchain/langgraph',
+      '@sentry/nextjs',
     ],
   },
 

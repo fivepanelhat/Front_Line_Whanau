@@ -3,7 +3,7 @@ import { agentApp } from '@/ai/graph';
 import { HumanMessage } from '@langchain/core/messages';
 import { requireAuth } from '@/lib/api-auth';
 import { RateLimiter } from '@/lib/rate-limit';
-import { logger } from '@/utils/logger';
+import { logger, metric } from '@/lib/logger';
 import { z } from 'zod';
 
 const AgentRequestSchema = z.object({
@@ -32,7 +32,10 @@ export async function POST(request: NextRequest) {
 
     const validationResult = AgentRequestSchema.safeParse(body);
     if (!validationResult.success) {
-      logger.warn({ message: 'Invalid API Agent payload', errors: validationResult.error.flatten(), userId: auth.user.id });
+      logger.warn(
+        { errors: validationResult.error.flatten(), userId: auth.user.id },
+        'Invalid API Agent payload',
+      );
       return NextResponse.json(
         { error: 'Invalid request payload', details: validationResult.error.flatten() },
         { status: 400 }
@@ -48,7 +51,7 @@ export async function POST(request: NextRequest) {
       query,
     });
     const latencyMs = Date.now() - startTime;
-    logger.metric('api_agent_route_latency_ms', latencyMs, { userId: auth.user.id, userRole });
+    metric('api_agent_route_latency_ms', latencyMs, { userId: auth.user.id, userRole });
 
     const responseText = result.messages?.[result.messages.length - 1]?.content || 
                         "Sorry, I couldn't generate a response right now.";
@@ -61,10 +64,10 @@ export async function POST(request: NextRequest) {
     responseString = responseString.replace(/^(\s*)\*\s+/gm, '$1- ');
     responseString = responseString.replace(/\*/g, '');
 
-    logger.info({ message: 'Agent request successful', userId: auth.user.id, latencyMs });
+    logger.info({ userId: auth.user.id, latencyMs }, 'Agent request successful');
     return NextResponse.json({ response: responseString });
   } catch (error) {
-    logger.error({ message: 'AI Agent Error', userId: auth.user.id }, error);
+    logger.error({ err: error, userId: auth.user.id }, 'AI Agent Error');
     return NextResponse.json(
       { error: 'Something went wrong with the AI assistant' },
       { status: 500 }

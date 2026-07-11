@@ -1,8 +1,16 @@
 import { z } from 'zod';
 import { agentLogger } from '@/lib/logger';
 import { createClient } from '@/lib/supabase/server';
+import { RateLimiter } from '@/lib/rate-limit';
 
 const secLogger = agentLogger('Security');
+
+/**
+ * Distributed rate limit via Supabase RPC when available.
+ * Falls back to Upstash/in-memory RateLimiter so serverless instances
+ * still share a process-local budget when the DB is unavailable.
+ */
+const localFallback = new RateLimiter(60_000, 10);
 
 const AgentInputSchema = z.object({
   query: z
@@ -30,46 +38,52 @@ export function sanitizeAgentOutput(text: string): string {
     .trim();
 }
 
-export function createAuditLog(event: string, metadata: Record<string, any> = {}) {
-  secLogger.info({
-    event,
-    ...metadata,
-  }, `Security Audit Event: ${event}`);
+export function createAuditLog(event: string, metadata: Record<string, unknown> = {}) {
+  secLogger.info(
+    {
+      event,
+      ...metadata,
+    },
+    `Security Audit Event: ${event}`,
+  );
 }
-
-// Rate limiting helper (simple in-memory version)
-const requestLog = new Map<string, number[]>();
 
 export async function checkRateLimit(
   identifier: string,
   maxRequests = 10,
-  windowMs = 60000
+  windowMs = 60000,
 ): Promise<boolean> {
   try {
     const supabase = await createClient();
     const now = Date.now();
     const resetTime = now + windowMs;
 
-    // We use upsert to atomically create or update the rate limit record.
-    // If reset_time has passed, we reset hits to 1. Otherwise, we increment hits.
     const { data, error } = await supabase.rpc('increment_rate_limit', {
       p_ip: identifier,
       p_window_ms: windowMs,
-      p_max_requests: maxRequests
+      p_max_requests: maxRequests,
     });
 
     if (error) {
       // Fallback if RPC doesn't exist (e.g. migration hasn't run)
-      // We do a manual fetch + update as a fallback
-      const { data: row } = await supabase.from('rate_limits').select('*').eq('ip', identifier).single();
-      
+      const { data: row } = await supabase
+        .from('rate_limits')
+        .select('*')
+        .eq('ip', identifier)
+        .single();
+
       if (!row) {
-        await supabase.from('rate_limits').insert({ ip: identifier, hits: 1, reset_time: resetTime });
+        await supabase
+          .from('rate_limits')
+          .insert({ ip: identifier, hits: 1, reset_time: resetTime });
         return true;
       }
 
       if (now > row.reset_time) {
-        await supabase.from('rate_limits').update({ hits: 1, reset_time: resetTime }).eq('ip', identifier);
+        await supabase
+          .from('rate_limits')
+          .update({ hits: 1, reset_time: resetTime })
+          .eq('ip', identifier);
         return true;
       }
 
@@ -77,14 +91,17 @@ export async function checkRateLimit(
         return false;
       }
 
-      await supabase.from('rate_limits').update({ hits: row.hits + 1 }).eq('ip', identifier);
+      await supabase
+        .from('rate_limits')
+        .update({ hits: row.hits + 1 })
+        .eq('ip', identifier);
       return true;
     }
 
-    // If RPC succeeds, it returns true if allowed, false if blocked
-    return data;
+    return data as boolean;
   } catch (err) {
-    secLogger.error({ err }, 'Failed to check rate limit, allowing by default');
-    return true; // Fail open
+    secLogger.error({ err }, 'Failed to check rate limit, using local fallback');
+    // Prefer fail-closed-ish local limiter over unrestricted traffic
+    return localFallback.check(`${identifier}:${maxRequests}:${windowMs}`);
   }
 }

@@ -9,10 +9,14 @@ on:
 permissions:
   contents: read
 
-jobs:
-  ci:
-    runs-on: ubuntu-latest
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
+jobs:
+  quality:
+    name: Typecheck · Lint · Unit
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -32,6 +36,25 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Unit tests with coverage
+        run: npm run test:coverage
+
+  build:
+    name: Production build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Build
         run: npm run build
         env:
@@ -43,17 +66,41 @@ jobs:
           GOOGLE_API_KEY: ci-placeholder-key
           TAVILY_API_KEY: ci-placeholder-key
 
-      - name: Unit tests with coverage
-        run: npm run test:coverage
+  e2e:
+    name: Playwright E2E
+    runs-on: ubuntu-latest
+    needs: [quality]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Playwright system deps (cache hit)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
 
       - name: Run E2E tests
         run: npm run e2e
         env:
-          # Same placeholders as the Build step: the E2E dev server needs env
-          # to boot routes; PORTAL_E2E mode stubs external calls in tests.
           NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder.supabase.co
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon-key
           GOOGLE_API_KEY: ci-placeholder-key

@@ -205,7 +205,7 @@ After setup, you can use these commands:
 
 ## 🔒 Security & Privacy
 
-- **Security headers** enforced on all routes via middleware (`X-Frame-Options: DENY`, `X-Content-Type-Options`, `Referrer-Policy`, baseline CSP)
+- **Security headers** enforced on all routes via the Next.js 16 proxy (`X-Frame-Options: DENY`, `X-Content-Type-Options`, `Referrer-Policy`, baseline CSP)
 - **Health check** at `/api/health` (verifies live database connectivity)
 - **Privacy-by-design approach** — no PHI stored without explicit consent
 

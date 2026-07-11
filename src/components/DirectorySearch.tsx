@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useDeferredValue, useMemo, useState } from 'react';
 
 type DirectoryListing = {
   id: string;
@@ -17,30 +17,46 @@ interface DirectorySearchProps {
   initialListings: DirectoryListing[];
 }
 
+/** Pre-index listings once so filter stays O(n) without per-keystroke string rebuilds. */
+function buildIndex(listings: DirectoryListing[]) {
+  return listings.map((listing) => ({
+    listing,
+    haystack: [
+      listing.organisation,
+      listing.service_type,
+      listing.description,
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase(),
+  }));
+}
+
 export function DirectorySearch({ initialListings }: DirectorySearchProps) {
   const [search, setSearch] = useState('');
   const [regionFilter, setRegionFilter] = useState('All');
+  // Keep input snappy; filter against a deferred value under load
+  const deferredSearch = useDeferredValue(search);
 
-  // Extract unique regions for the dropdown
+  const indexed = useMemo(() => buildIndex(initialListings), [initialListings]);
+
   const regions = useMemo(
-    () => ['All', ...Array.from(new Set(initialListings.map(l => l.region).filter(Boolean)))],
-    [initialListings]
+    () => ['All', ...Array.from(new Set(initialListings.map((l) => l.region).filter(Boolean)))],
+    [initialListings],
   );
 
   const filtered = useMemo(() => {
-    const needle = search.toLowerCase();
-    return initialListings.filter(listing => {
-      const matchesSearch =
-        needle === '' ||
-        listing.organisation?.toLowerCase().includes(needle) ||
-        listing.service_type?.toLowerCase().includes(needle) ||
-        listing.description?.toLowerCase().includes(needle);
+    const needle = deferredSearch.trim().toLowerCase();
+    return indexed
+      .filter(({ listing, haystack }) => {
+        const matchesSearch = needle === '' || haystack.includes(needle);
+        const matchesRegion = regionFilter === 'All' || listing.region === regionFilter;
+        return matchesSearch && matchesRegion;
+      })
+      .map(({ listing }) => listing);
+  }, [indexed, deferredSearch, regionFilter]);
 
-      const matchesRegion = regionFilter === 'All' || listing.region === regionFilter;
-
-      return matchesSearch && matchesRegion;
-    });
-  }, [initialListings, search, regionFilter]);
+  const isStale = search !== deferredSearch;
 
   return (
     <div className="space-y-6 sm:space-y-8">
@@ -48,12 +64,13 @@ export function DirectorySearch({ initialListings }: DirectorySearchProps) {
       <div className="bg-bg-secondary p-4 rounded-xl border border-border flex flex-col md:flex-row gap-3 sm:gap-4">
         <div className="flex-1 relative">
           <input
-            type="text"
+            type="search"
             placeholder="Search organisations, services, keywords..."
             className="w-full pl-4 pr-4 py-3 border border-border rounded-lg bg-bg-primary text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent-primary"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             aria-label="Search directory"
+            autoComplete="off"
           />
         </div>
         <div className="w-full md:w-64">
@@ -63,8 +80,10 @@ export function DirectorySearch({ initialListings }: DirectorySearchProps) {
             onChange={(e) => setRegionFilter(e.target.value)}
             aria-label="Filter by region"
           >
-            {regions.map(r => (
-              <option key={r} value={r}>{r}</option>
+            {regions.map((r) => (
+              <option key={r} value={r}>
+                {r}
+              </option>
             ))}
           </select>
         </div>
@@ -76,14 +95,22 @@ export function DirectorySearch({ initialListings }: DirectorySearchProps) {
           <p className="text-text-muted">No services found matching your criteria.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {filtered.map(listing => (
-            <div key={listing.id} className="bg-bg-secondary p-5 sm:p-6 rounded-xl border border-border flex flex-col h-full hover:border-accent-primary/40 transition">
+        <div
+          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 transition-opacity ${isStale ? 'opacity-70' : 'opacity-100'}`}
+          aria-busy={isStale}
+        >
+          {filtered.map((listing) => (
+            <article
+              key={listing.id}
+              className="bg-bg-secondary p-5 sm:p-6 rounded-xl border border-border flex flex-col h-full hover:border-accent-primary/40 transition"
+            >
               <div className="mb-4 flex-1">
                 <span className="inline-block px-3 py-1 bg-accent-primary/15 text-accent-primary text-xs font-semibold rounded-full mb-3">
                   {listing.service_type}
                 </span>
-                <h3 className="text-lg sm:text-xl font-bold text-text-primary mb-2">{listing.organisation}</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-text-primary mb-2">
+                  {listing.organisation}
+                </h3>
                 <p className="text-sm text-text-secondary line-clamp-3">{listing.description}</p>
               </div>
 
@@ -96,23 +123,40 @@ export function DirectorySearch({ initialListings }: DirectorySearchProps) {
                 {listing.contact_phone && (
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-text-primary">Phone:</span>
-                    <a href={`tel:${listing.contact_phone}`} className="text-accent-primary hover:underline">{listing.contact_phone}</a>
+                    <a
+                      href={`tel:${listing.contact_phone}`}
+                      className="text-accent-primary hover:underline"
+                    >
+                      {listing.contact_phone}
+                    </a>
                   </div>
                 )}
                 {listing.contact_email && (
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-text-primary">Email:</span>
-                    <a href={`mailto:${listing.contact_email}`} className="text-accent-primary hover:underline">{listing.contact_email}</a>
+                    <a
+                      href={`mailto:${listing.contact_email}`}
+                      className="text-accent-primary hover:underline"
+                    >
+                      {listing.contact_email}
+                    </a>
                   </div>
                 )}
                 {listing.website_url && (
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-text-primary">Web:</span>
-                    <a href={listing.website_url} target="_blank" rel="noreferrer" className="text-accent-primary hover:underline truncate">Visit Site</a>
+                    <a
+                      href={listing.website_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-accent-primary hover:underline truncate"
+                    >
+                      Visit Site
+                    </a>
                   </div>
                 )}
               </div>
-            </div>
+            </article>
           ))}
         </div>
       )}
