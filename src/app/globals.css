@@ -1,29 +1,22 @@
 /* ============================================================
    Front Line Whānau — Global Styles
-   ============================================================
-   Tailwind base + custom component layers ported from the
-   original design system. Trauma-informed, culturally grounded.
+   Liquid Glass Morphism design system
+   Trauma-informed · culturally grounded · privacy-first
    ============================================================ */
 
 @import "tailwindcss";
 @config "../../tailwind.config.ts";
 
 /* ── Warm Coastal Forest theme ──────────────────────────────
-   Two-theme system (dark is the default; a ThemeToggle swaps the
-   `dark` class on <html>). Components keep using the standard
-   utilities they always used (indigo-*, cyan-*, gray-*, slate-*);
-   the @theme block below remaps those scales onto these variables,
-   so the palette changes here restyle the whole app.
-
-   indigo → forest teal (brand primary: heroes, CTAs, links)
-   cyan   → driftwood amber (practitioner accent, warm highlights)
-   gray / slate → warm sage-sand neutrals (flip direction in dark)
+   Two-theme system (dark is the default; ThemeToggle swaps the
+   `dark` class on <html>). Components keep using standard
+   utilities; @theme remaps palette scales onto these variables.
    ─────────────────────────────────────────────────────────── */
 :root {
   color-scheme: light;
 
   /* neutrals: sand → forest ink */
-  --n-0: #f7f3ea;   /* page background (slate-50) */
+  --n-0: #f7f3ea;
   --n-50: #f4efe6;
   --n-100: #ece5d8;
   --n-200: #ddd5c6;
@@ -34,7 +27,7 @@
   --n-700: #435449;
   --n-800: #31423a;
   --n-900: #22302a;
-  --n-card: #fffdf8; /* bg-white cards */
+  --n-card: #fffdf8;
 
   /* brand: forest teal */
   --brand-50: #e9f1ec;
@@ -52,12 +45,32 @@
   --warm-200: #e4d2b4;
   --warm-700: #a26b38;
   --warm-800: #8a5a2e;
+
+  /* Liquid glass tokens (light) */
+  --glass-bg: rgba(255, 253, 248, 0.48);
+  --glass-bg-strong: rgba(255, 253, 248, 0.72);
+  --glass-bg-soft: rgba(255, 253, 248, 0.32);
+  --glass-border: rgba(34, 48, 42, 0.12);
+  --glass-border-bright: rgba(255, 255, 255, 0.55);
+  --glass-highlight: rgba(255, 255, 255, 0.65);
+  --glass-shadow: 0 8px 32px rgba(34, 48, 42, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  --glass-shadow-lg: 0 20px 60px rgba(34, 48, 42, 0.12),
+    0 1px 0 rgba(255, 255, 255, 0.55) inset;
+  --glass-blur: 24px;
+  --glass-saturate: 1.35;
+  --liquid-blob-1: rgba(71, 145, 124, 0.28);
+  --liquid-blob-2: rgba(212, 163, 115, 0.22);
+  --liquid-blob-3: rgba(99, 171, 151, 0.18);
+  --page-mesh: radial-gradient(ellipse 70% 50% at 15% 10%, var(--liquid-blob-1), transparent 55%),
+    radial-gradient(ellipse 55% 45% at 88% 20%, var(--liquid-blob-2), transparent 50%),
+    radial-gradient(ellipse 60% 50% at 50% 90%, var(--liquid-blob-3), transparent 55%),
+    linear-gradient(165deg, #f7f3ea 0%, #eef5f0 40%, #f4efe6 100%);
 }
 
 .dark {
   color-scheme: dark;
 
-  /* neutrals flip: page goes deep forest, text goes warm cream */
   --n-0: #131c17;
   --n-50: #18231d;
   --n-100: #202d26;
@@ -85,6 +98,25 @@
   --warm-200: #4a3f2c;
   --warm-700: #9c6c39;
   --warm-800: #b57f45;
+
+  /* Liquid glass tokens (dark) */
+  --glass-bg: rgba(27, 38, 32, 0.42);
+  --glass-bg-strong: rgba(27, 38, 32, 0.68);
+  --glass-bg-soft: rgba(27, 38, 32, 0.28);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-bright: rgba(255, 255, 255, 0.22);
+  --glass-highlight: rgba(255, 255, 255, 0.14);
+  --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
+  --glass-shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.45),
+    0 1px 0 rgba(255, 255, 255, 0.1) inset;
+  --liquid-blob-1: rgba(53, 128, 108, 0.32);
+  --liquid-blob-2: rgba(212, 163, 115, 0.18);
+  --liquid-blob-3: rgba(99, 171, 151, 0.2);
+  --page-mesh: radial-gradient(ellipse 65% 50% at 12% 8%, var(--liquid-blob-1), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 90% 15%, var(--liquid-blob-2), transparent 55%),
+    radial-gradient(ellipse 55% 45% at 55% 95%, var(--liquid-blob-3), transparent 55%),
+    linear-gradient(165deg, #0d1411 0%, #131c17 45%, #101a15 100%);
 }
 
 @theme inline {
@@ -121,7 +153,6 @@
 /* ── Base Layer ─────────────────────────────────────────────── */
 @layer base {
   @media (prefers-reduced-motion: reduce) {
-
     *,
     *::before,
     *::after {
@@ -136,20 +167,23 @@
     scroll-behavior: smooth;
   }
 
+  body {
+    background: var(--page-mesh);
+    background-attachment: fixed;
+    min-height: 100dvh;
+  }
+
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    /* --n-900 is forest ink in light mode, warm cream in dark mode */
     @apply font-heading font-bold leading-tight;
     color: var(--n-900);
   }
 
-  /* Dark-surface scope: components rendering on bg-bg-primary/secondary
-     (Whānau Hub overlay, site header) keep light-on-dark headings in
-     BOTH themes — these surfaces don't flip. */
+  /* Dark-surface scope: Whānau Hub / dark chrome keep light text */
   .dark-space :is(h1, h2, h3, h4, h5, h6) {
     @apply text-text-primary;
   }
@@ -167,89 +201,225 @@
     @apply cursor-pointer border-none bg-transparent font-body;
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary rounded-sm;
   }
+
+  /* Frosted form fields on glass surfaces */
+  input:not([type='checkbox']):not([type='radio']),
+  select,
+  textarea {
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  input:not([type='checkbox']):not([type='radio']):focus,
+  select:focus,
+  textarea:focus {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-500) 25%, transparent);
+  }
 }
 
-/* ── Card surfaces: modern glass panels ─────────────────────
-   Every bg-white card becomes a translucent, blurred glass panel over the
-   page background — light mode gets frosted warm-white, dark mode frosted
-   forest with a hairline light border. `white` stays literal for text
-   (text-white on accent buttons/heroes must remain light in both themes).
-   Colours are otherwise untouched — this is a surface treatment only. */
+/* ── Shared glass surface utilities ─────────────────────────── */
 @layer utilities {
   .bg-white {
-    background-color: rgba(255, 253, 248, 0.7);
-    -webkit-backdrop-filter: blur(16px) saturate(1.15);
-    backdrop-filter: blur(16px) saturate(1.15);
-  }
-  .dark .bg-white {
-    background-color: rgba(27, 38, 32, 0.55);
-    border-color: rgba(255, 255, 255, 0.08);
+    background: var(--glass-bg-strong);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    box-shadow: var(--glass-shadow);
   }
 
-  /* App-wide glass: the dark card/panel tokens get the same frosted
-     treatment as .bg-white above. Opacity-modified variants (e.g. the
-     bg-bg-secondary/80 sticky navs) are separate utility classes and
-     keep their own styling; inputs use bg-bg-primary and stay opaque. */
+  .dark .bg-white {
+    background: var(--glass-bg-strong);
+    border-color: var(--glass-border);
+  }
+
   .bg-bg-secondary {
-    background-color: rgba(24, 36, 32, 0.6);
-    -webkit-backdrop-filter: blur(16px) saturate(1.15);
-    backdrop-filter: blur(16px) saturate(1.15);
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   }
 
   .bg-bg-card {
-    background-color: rgba(27, 38, 32, 0.6);
-    -webkit-backdrop-filter: blur(16px) saturate(1.15);
-    backdrop-filter: blur(16px) saturate(1.15);
+    background: var(--glass-bg-strong);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   }
 
-  /* Ambient aurora behind full-page dark surfaces so the glass has
-     something to refract. Scoped to page wrappers and the Whānau Hub
-     overlay — NOT plain bg-bg-primary, which inputs also use. */
+  /* Ambient mesh for full-page dark wrappers / hub overlay */
   .min-h-screen.bg-bg-primary,
   .fixed.inset-0.bg-bg-primary {
-    background-color: #101a15;
-    background-image:
-      radial-gradient(ellipse 55% 45% at 18% 8%, rgba(53, 128, 108, 0.16), transparent 65%),
-      radial-gradient(ellipse 50% 40% at 85% 90%, rgba(212, 163, 115, 0.10), transparent 65%);
+    background-color: transparent;
+    background-image: var(--page-mesh);
     background-attachment: fixed;
   }
+
   .dark .prose {
     color: var(--n-700);
   }
+
   .dark .prose :is(h1, h2, h3, h4, strong, b) {
     color: var(--n-900);
   }
 }
 
-/* ── Component Layer ────────────────────────────────────────── */
+/* ── Component Layer — Liquid Glass ─────────────────────────── */
 @layer components {
-
-  /* Gradient text effect — preserved from original */
   .text-gradient {
     @apply bg-gradient-brand bg-clip-text text-transparent;
   }
 
-  /* Glassmorphism panel (dark surfaces: Whānau Hub, header overlays) */
+  /* Core liquid glass panel (dark hub surfaces) */
   .glass-panel {
-    background: rgba(27, 38, 32, 0.65);
-    -webkit-backdrop-filter: blur(16px);
-    backdrop-filter: blur(16px);
-    @apply rounded-xl border border-white/[0.08];
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(27, 38, 32, 0.45) 40%,
+      rgba(27, 38, 32, 0.55) 100%
+    );
+    -webkit-backdrop-filter: blur(28px) saturate(1.4);
+    backdrop-filter: blur(28px) saturate(1.4);
+    border: 1px solid var(--glass-border);
+    border-radius: 1.25rem;
+    box-shadow: var(--glass-shadow);
   }
 
-  /* Theme-aware glass card: frosted warm-white in light mode, frosted
-     forest in dark. Built on the --n-* vars (not `dark:` utilities, which
-     track the OS media query rather than the ThemeToggle class). */
+  .glass-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      var(--glass-highlight) 0%,
+      transparent 42%
+    );
+    opacity: 0.55;
+    z-index: 0;
+  }
+
+  .glass-panel > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Theme-aware liquid glass card */
   .glass-card {
-    background: color-mix(in srgb, var(--n-card) 55%, transparent);
-    -webkit-backdrop-filter: blur(20px) saturate(1.2);
-    backdrop-filter: blur(20px) saturate(1.2);
-    border: 1px solid color-mix(in srgb, var(--n-900) 14%, transparent);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: linear-gradient(
+      155deg,
+      color-mix(in srgb, var(--n-card) 72%, transparent) 0%,
+      color-mix(in srgb, var(--n-card) 42%, transparent) 100%
+    );
+    -webkit-backdrop-filter: blur(28px) saturate(1.4);
+    backdrop-filter: blur(28px) saturate(1.4);
+    border: 1px solid var(--glass-border);
+    border-radius: 1.5rem;
+    box-shadow: var(--glass-shadow);
+    transition:
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.35s ease;
   }
 
-  .dark .glass-card {
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  .glass-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+      125deg,
+      var(--glass-highlight) 0%,
+      transparent 40%,
+      transparent 60%,
+      rgba(255, 255, 255, 0.04) 100%
+    );
+    z-index: 0;
+  }
+
+  .glass-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--glass-border-bright),
+      transparent
+    );
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .glass-card > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  .glass-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: var(--glass-shadow-lg);
+    border-color: color-mix(in srgb, var(--brand-500) 35%, var(--glass-border));
+  }
+
+  /* Ultra-soft glass (nav, chips) */
+  .glass-nav {
+    background: color-mix(in srgb, var(--n-card) 55%, transparent);
+    -webkit-backdrop-filter: blur(32px) saturate(1.5);
+    backdrop-filter: blur(32px) saturate(1.5);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .dark .glass-nav {
+    background: rgba(16, 26, 21, 0.55);
+  }
+
+  /* Liquid input / control */
+  .glass-input {
+    background: color-mix(in srgb, var(--n-card) 40%, transparent);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 0.875rem;
+    color: inherit;
+  }
+
+  .glass-input:focus {
+    outline: none;
+    border-color: color-mix(in srgb, var(--brand-500) 55%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-500) 22%, transparent);
+  }
+
+  /* Floating liquid orbs (background decoration) */
+  .liquid-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+    will-change: transform;
+    animation: liquid-drift 18s ease-in-out infinite;
+  }
+
+  .liquid-orb--teal {
+    background: var(--liquid-blob-1);
+  }
+
+  .liquid-orb--amber {
+    background: var(--liquid-blob-2);
+  }
+
+  .liquid-orb--seafoam {
+    background: var(--liquid-blob-3);
   }
 
   /* Screen-reader only */
@@ -261,23 +431,44 @@
 
   /* ── Buttons ────────────────────────────────────────────── */
   .btn {
-    @apply inline-flex items-center gap-2 rounded-lg px-7 py-3.5 text-sm font-semibold tracking-tight transition-all duration-250 ease-smooth;
+    @apply inline-flex items-center gap-2 rounded-2xl px-7 py-3.5 text-sm font-semibold tracking-tight;
+    transition:
+      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.3s ease,
+      filter 0.3s ease;
   }
 
   .btn-primary {
-    @apply bg-gradient-brand text-white shadow-btn-primary;
+    @apply bg-gradient-brand text-white;
+    box-shadow:
+      0 8px 28px rgba(47, 117, 102, 0.35),
+      0 1px 0 rgba(255, 255, 255, 0.25) inset;
   }
 
   .btn-primary:hover {
-    @apply -translate-y-0.5 shadow-btn-primary-hover;
+    transform: translateY(-2px) scale(1.02);
+    filter: brightness(1.05);
+    box-shadow:
+      0 14px 36px rgba(47, 117, 102, 0.4),
+      0 1px 0 rgba(255, 255, 255, 0.3) inset;
   }
 
   .btn-secondary {
-    @apply border border-accent-primary/15 bg-bg-secondary text-text-primary;
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(16px) saturate(1.3);
+    backdrop-filter: blur(16px) saturate(1.3);
+    border: 1px solid var(--glass-border);
+    color: var(--n-900);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .dark .btn-secondary {
+    color: var(--n-900);
   }
 
   .btn-secondary:hover {
-    @apply -translate-y-0.5 bg-surface;
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--brand-500) 40%, var(--glass-border));
   }
 
   /* ── Section Headers ────────────────────────────────────── */
@@ -295,78 +486,160 @@
 
   /* ── Feature Cards ──────────────────────────────────────── */
   .feature-card {
-    @apply relative overflow-hidden rounded-xl border border-white/[0.08] bg-bg-card p-8 transition-all duration-250;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: 1.5rem;
+    padding: 2rem;
+    border: 1px solid var(--glass-border);
+    background: linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--n-card) 65%, transparent),
+      color-mix(in srgb, var(--n-card) 35%, transparent)
+    );
+    -webkit-backdrop-filter: blur(24px) saturate(1.35);
+    backdrop-filter: blur(24px) saturate(1.35);
+    box-shadow: var(--glass-shadow);
+    transition:
+      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.4s ease,
+      border-color 0.3s ease;
   }
 
   .feature-card::before {
     content: '';
-    @apply absolute left-0 right-0 top-0 h-[3px] bg-gradient-brand opacity-0 transition-opacity duration-250;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #35806c, #d4a373);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+  }
+
+  .feature-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(135deg, var(--glass-highlight), transparent 45%);
+    opacity: 0.5;
+    z-index: 0;
+  }
+
+  .feature-card > * {
+    position: relative;
+    z-index: 2;
   }
 
   .feature-card:hover {
-    @apply -translate-y-1 border-accent-primary/20 shadow-lg shadow-glow;
+    transform: translateY(-6px);
+    box-shadow: var(--glass-shadow-lg);
+    border-color: color-mix(in srgb, var(--brand-500) 30%, var(--glass-border));
   }
 
   .feature-card:hover::before {
-    @apply opacity-100;
+    opacity: 1;
   }
 
-  /* ── Feature Icon Backgrounds ───────────────────────────── */
   .feature-icon {
-    @apply mb-6 flex h-12 w-12 items-center justify-center rounded-lg text-2xl;
+    @apply mb-6 flex h-14 w-14 items-center justify-center rounded-2xl text-2xl;
+    background: color-mix(in srgb, var(--brand-500) 14%, transparent);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 1px 0 var(--glass-highlight) inset;
   }
 
   .feature-icon--pathway {
-    background: rgba(99, 102, 241, 0.12);
+    background: rgba(71, 145, 124, 0.16);
   }
 
   .feature-icon--forms {
-    background: rgba(6, 182, 212, 0.12);
+    background: rgba(99, 171, 151, 0.16);
   }
 
   .feature-icon--vault {
-    background: rgba(245, 158, 11, 0.12);
+    background: rgba(212, 163, 115, 0.16);
   }
 
   .feature-icon--doc {
-    background: rgba(16, 185, 129, 0.12);
+    background: rgba(124, 179, 133, 0.16);
   }
 
   .feature-icon--dir {
-    background: rgba(236, 72, 153, 0.12);
+    background: rgba(224, 164, 88, 0.16);
   }
 
   .feature-icon--ai {
-    background: rgba(139, 92, 246, 0.12);
+    background: rgba(99, 171, 151, 0.2);
   }
 
   /* ── Value Items ────────────────────────────────────────── */
   .value-item {
-    @apply rounded-xl border border-white/[0.08] p-6 transition-all duration-250;
-    background: rgba(15, 23, 42, 0.5);
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(20px) saturate(1.3);
+    backdrop-filter: blur(20px) saturate(1.3);
+    box-shadow: var(--glass-shadow);
+    transition:
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.3s ease,
+      box-shadow 0.35s ease;
+  }
+
+  .value-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(145deg, var(--glass-highlight), transparent 50%);
+    opacity: 0.4;
+    pointer-events: none;
   }
 
   .value-item:hover {
-    @apply border-accent-primary/20;
-    background: rgba(30, 41, 59, 0.4);
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--brand-500) 35%, var(--glass-border));
+    box-shadow: var(--glass-shadow-lg);
   }
 
   /* ── Privacy Badge ──────────────────────────────────────── */
   .privacy-badge {
-    @apply flex items-center gap-1 rounded-full border border-accent-success/20 bg-accent-success/10 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-widest text-accent-success;
+    @apply flex items-center gap-1 rounded-full px-3.5 py-1.5 text-xs font-semibold uppercase tracking-widest text-accent-success;
+    background: color-mix(in srgb, var(--n-card) 40%, transparent);
+    border: 1px solid color-mix(in srgb, #7cb385 30%, transparent);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
   }
 
-  /* ── Hero Background Effect ─────────────────────────────── */
+  /* ── Hero liquid backdrop ───────────────────────────────── */
+  .hero-bg {
+    position: relative;
+  }
+
   .hero-bg::before {
     content: '';
-    @apply absolute -left-1/2 -top-1/2 h-[200%] w-[200%] animate-fade-in;
-    background: radial-gradient(ellipse at 30% 20%,
-        rgba(99, 102, 241, 0.08) 0%,
-        transparent 50%),
-      radial-gradient(ellipse at 70% 80%, rgba(6, 182, 212, 0.06) 0%, transparent 50%);
+    position: absolute;
+    inset: -20%;
+    background:
+      radial-gradient(ellipse 45% 40% at 25% 30%, var(--liquid-blob-1), transparent 60%),
+      radial-gradient(ellipse 40% 35% at 75% 65%, var(--liquid-blob-2), transparent 55%),
+      radial-gradient(ellipse 35% 30% at 55% 20%, var(--liquid-blob-3), transparent 50%);
+    animation: liquid-drift 22s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 0;
   }
 
   /* ── Nav Link Underline Effect ──────────────────────────── */
+  .nav-underline {
+    position: relative;
+  }
+
   .nav-underline::after {
     content: '';
     @apply absolute bottom-0 left-0 h-0.5 w-0 rounded-full bg-gradient-brand transition-all duration-250;
@@ -374,6 +647,18 @@
 
   .nav-underline:hover::after {
     @apply w-full;
+  }
+
+  /* Directory / listing cards */
+  .liquid-listing {
+    @apply glass-card p-5 sm:p-6 flex flex-col h-full;
+  }
+
+  /* Modal / dialog glass */
+  .glass-modal {
+    @apply glass-card p-6;
+    border-radius: 1.5rem;
+    max-height: min(90vh, 720px);
   }
 }
 
@@ -393,5 +678,20 @@
 
   .animate-delay-400 {
     animation-delay: 0.4s;
+  }
+}
+
+@keyframes liquid-drift {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate(3%, -2%) scale(1.05) rotate(2deg);
+  }
+  66% {
+    transform: translate(-2%, 3%) scale(0.97) rotate(-1deg);
+  }
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
   }
 }

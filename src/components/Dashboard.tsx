@@ -58,14 +58,23 @@ export function Dashboard({
   } = useConsent('ai.execute');
 
   return (
-    <div className="dark-space fixed inset-0 z-50 flex flex-col bg-bg-primary text-text-primary overflow-hidden">
+    <div className="dark-space fixed inset-0 z-50 flex flex-col overflow-hidden bg-bg-primary text-text-primary">
+      <div
+        aria-hidden
+        className="liquid-orb liquid-orb--teal pointer-events-none absolute -left-24 top-10 h-96 w-96 opacity-50"
+      />
+      <div
+        aria-hidden
+        className="liquid-orb liquid-orb--amber pointer-events-none absolute -right-20 bottom-0 h-80 w-80 opacity-40"
+      />
+
       {/* div, not <header>: the site banner is still in the DOM under this overlay */}
-      <div className="flex h-14 sm:h-16 items-center justify-between border-b border-white/[0.08] bg-bg-secondary px-4 sm:px-6">
+      <div className="relative z-20 mx-3 mt-3 flex h-14 items-center justify-between rounded-2xl border border-white/10 bg-bg-secondary/70 px-4 shadow-glass backdrop-blur-2xl sm:mx-4 sm:mt-4 sm:h-16 sm:px-6">
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             type="button"
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="md:hidden flex h-8 w-8 items-center justify-center rounded-lg hover:bg-white/10 transition-colors"
+            className="flex h-9 w-9 items-center justify-center rounded-xl transition-colors hover:bg-white/10 md:hidden"
             aria-label="Toggle menu"
           >
             <svg
@@ -83,34 +92,34 @@ export function Dashboard({
               />
             </svg>
           </button>
-          <span className="text-lg sm:text-xl font-heading font-extrabold text-gradient">
+          <span className="font-heading text-lg font-extrabold text-gradient sm:text-xl">
             Whānau Hub
           </span>
-          <span className="hidden sm:inline rounded bg-accent-secondary/15 px-2.5 py-0.5 text-xs font-semibold text-accent-secondary">
+          <span className="hidden rounded-full border border-accent-secondary/25 bg-accent-secondary/15 px-2.5 py-0.5 text-xs font-semibold text-accent-secondary sm:inline">
             Sovereign Space
           </span>
         </div>
         <button
           type="button"
           onClick={onClose}
-          className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/10 transition-colors"
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors hover:bg-white/10"
           title="Exit Hub"
         >
           ✕
         </button>
       </div>
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="relative z-10 flex flex-1 overflow-hidden p-3 pt-3 sm:p-4">
         {sidebarOpen && (
           <div
-            className="fixed inset-0 z-40 bg-black/50 md:hidden"
+            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm md:hidden"
             onClick={() => setSidebarOpen(false)}
             aria-hidden
           />
         )}
 
         <aside
-          className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 fixed md:relative z-50 md:z-auto w-64 h-[calc(100%-3.5rem)] sm:h-[calc(100%-4rem)] md:h-auto border-r border-white/[0.08] bg-bg-secondary md:bg-bg-secondary/40 p-4 flex flex-col justify-between transition-transform duration-200`}
+          className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} glass-panel fixed z-50 flex h-[calc(100%-5.5rem)] w-64 flex-col justify-between p-4 transition-transform duration-200 md:relative md:z-auto md:h-auto md:translate-x-0`}
         >
           <div className="space-y-1">
             {NAV_TABS.map(({ id, label }) => (
@@ -121,10 +130,10 @@ export function Dashboard({
                   setActiveTab(id);
                   setSidebarOpen(false);
                 }}
-                className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
+                className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all ${
                   activeTab === id
-                    ? 'bg-accent-primary text-accent-ink'
-                    : 'hover:bg-white/5 text-text-secondary hover:text-text-primary'
+                    ? 'bg-gradient-brand text-white shadow-glow'
+                    : 'text-text-secondary hover:bg-white/5 hover:text-text-primary'
                 }`}
               >
                 {label}
@@ -132,7 +141,7 @@ export function Dashboard({
             ))}
           </div>
 
-          <div className="rounded-lg border border-white/[0.08] bg-bg-primary/50 p-3 space-y-2">
+          <div className="space-y-2 rounded-2xl border border-white/10 bg-black/20 p-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-text-muted">
               Consent Settings
             </h4>
@@ -141,7 +150,7 @@ export function Dashboard({
               <button
                 type="button"
                 onClick={() => (aiProcessGranted ? revokeAiProcess() : grantAiProcess())}
-                className={`rounded px-1.5 py-0.5 font-bold ${aiProcessGranted ? 'bg-accent-success/20 text-accent-success' : 'bg-white/10 text-text-secondary'}`}
+                className={`rounded-lg px-2 py-0.5 font-bold ${aiProcessGranted ? 'bg-accent-success/20 text-accent-success' : 'bg-white/10 text-text-secondary'}`}
               >
                 {aiProcessGranted ? 'Active' : 'Disabled'}
               </button>
@@ -151,19 +160,19 @@ export function Dashboard({
               <button
                 type="button"
                 onClick={() => (aiExecuteGranted ? revokeAiExecute() : grantAiExecute())}
-                className={`rounded px-1.5 py-0.5 font-bold ${aiExecuteGranted ? 'bg-accent-success/20 text-accent-success' : 'bg-white/10 text-text-secondary'}`}
+                className={`rounded-lg px-2 py-0.5 font-bold ${aiExecuteGranted ? 'bg-accent-success/20 text-accent-success' : 'bg-white/10 text-text-secondary'}`}
               >
                 {aiExecuteGranted ? 'Active' : 'Disabled'}
               </button>
             </div>
-            <p className="text-[10px] text-text-muted mt-1 pt-1 border-t border-white/[0.08]">
+            <p className="mt-1 border-t border-white/10 pt-1 text-[10px] text-text-muted">
               Consent Log: a private log only you can verify with your passphrase — kept on your
               device.
             </p>
           </div>
         </aside>
 
-        <main className="flex-1 overflow-y-auto p-3 sm:p-6 md:p-8 bg-gradient-subtle">
+        <main className="ml-0 min-w-0 flex-1 overflow-y-auto rounded-3xl border border-white/10 bg-white/[0.03] p-3 shadow-glass backdrop-blur-xl sm:p-6 md:ml-4 md:p-8">
           <Suspense fallback={tabLoading}>
             {activeTab === 'ai' && <AiAssistantTab onNavigateTab={setActiveTab} />}
             {activeTab === 'pathways' && <PathwaysTab />}

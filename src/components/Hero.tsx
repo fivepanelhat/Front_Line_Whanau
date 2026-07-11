@@ -5,12 +5,19 @@ interface HeroProps {
 export function Hero({ onLaunchHub }: HeroProps) {
   return (
     <section
-      className="hero-bg relative flex min-h-screen items-center justify-center overflow-hidden px-6 pb-16 pt-[calc(72px+4rem)] text-center"
+      className="hero-bg relative flex min-h-[88vh] items-center justify-center overflow-hidden px-6 pb-16 pt-[calc(72px+3rem)] text-center"
       id="hero"
     >
-      <div className="relative z-10 max-w-[800px]">
-        {/* Badge */}
-        <div className="mb-8 inline-flex animate-hero-fade-1 items-center gap-2 rounded-full border border-accent-secondary/20 bg-accent-secondary/10 px-5 py-2 text-sm font-medium text-accent-secondary">
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="liquid-orb liquid-orb--teal left-[5%] top-[20%] h-96 w-96 opacity-80" />
+        <div
+          className="liquid-orb liquid-orb--amber right-[0%] top-[40%] h-80 w-80"
+          style={{ animationDelay: '-8s' }}
+        />
+      </div>
+
+      <div className="relative z-10 max-w-[820px]">
+        <div className="privacy-badge mb-8 inline-flex animate-hero-fade-1 gap-2 normal-case tracking-normal">
           <svg
             width="16"
             height="16"
@@ -20,26 +27,29 @@ export function Hero({ onLaunchHub }: HeroProps) {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
+            aria-hidden
           >
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
           </svg>
           Sovereign &amp; Privacy-First for Aotearoa
         </div>
 
-        {/* Heading */}
-        <h1 className="mb-6 animate-hero-fade-2 text-[clamp(1.875rem,5vw,3rem)] font-extrabold">
+        <h1 className="mb-6 animate-hero-fade-2 text-[clamp(1.875rem,5vw,3.25rem)] font-extrabold tracking-tight">
           Supporting <span className="text-gradient">Front Line Families</span> of Preterm Twins
         </h1>
 
-        {/* Description */}
-        <p className="mx-auto mb-12 max-w-[600px] animate-hero-fade-3 text-lg leading-relaxed text-text-secondary">
+        <p className="mx-auto mb-10 max-w-[600px] animate-hero-fade-3 text-lg leading-relaxed text-text-secondary">
           Clear, personalised, and culturally safe guidance through financial support, housing,
           health services, and mental wellbeing — before, during, and after the neonatal journey.
         </p>
 
-        {/* Actions */}
-        <div className="flex animate-hero-fade-4 flex-wrap justify-center gap-4">
-          <button onClick={onLaunchHub} className="btn btn-primary animate-pulse-glow" id="hero-cta-launch">
+        <div className="glass-card mx-auto mb-4 inline-flex animate-hero-fade-4 flex-wrap justify-center gap-3 rounded-3xl p-3 sm:gap-4 sm:p-4">
+          <button
+            type="button"
+            onClick={onLaunchHub}
+            className="btn btn-primary animate-pulse-glow"
+            id="hero-cta-launch"
+          >
             <svg
               width="18"
               height="18"
@@ -49,6 +59,7 @@ export function Hero({ onLaunchHub }: HeroProps) {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              aria-hidden
             >
               <circle cx="12" cy="12" r="10" />
               <polyline points="12 16 16 12 12 8" />
@@ -64,4 +75,3 @@ export function Hero({ onLaunchHub }: HeroProps) {
     </section>
   );
 }
-

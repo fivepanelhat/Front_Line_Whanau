@@ -12,7 +12,6 @@ export function ChatInterface() {
 
   const handleSelectConversation = (threadId: string) => {
     setCurrentThreadId(threadId);
-    // Don't change refreshKey here, just change the active thread
   };
 
   const handleNewConversation = () => {
@@ -25,29 +24,35 @@ export function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col h-full relative">
-      <OnboardingWizard onComplete={() => console.log('User onboarded')} />
-      {/* dvh (not vh) so the input row isn't hidden behind mobile browser
-          chrome; the offset accounts for the sticky header height. */}
-      <div className="flex h-[calc(100dvh-5rem)] overflow-hidden rounded-xl border border-border bg-bg-secondary">
-        <ConversationSidebar
-          currentThreadId={currentThreadId}
-          refreshTrigger={refreshKey}
-          onSelectConversation={handleSelectConversation}
-          onNewConversation={handleNewConversation}
-        />
+    <div className="relative flex h-full flex-col overflow-hidden">
+      <div
+        aria-hidden
+        className="liquid-orb liquid-orb--teal pointer-events-none absolute -left-20 top-10 h-72 w-72 opacity-40"
+      />
+      <div
+        aria-hidden
+        className="liquid-orb liquid-orb--amber pointer-events-none absolute -right-16 bottom-10 h-64 w-64 opacity-35"
+      />
 
-        {/* min-w-0 lets the chat column shrink below its content's intrinsic
-            width instead of overflowing off-screen (the mobile bug where the
-            Send button sat ~200px past the right edge). */}
-        <div className="flex min-w-0 flex-1 flex-col">
-          <ErrorBoundary>
-            <AgentTestPanel 
-              key={currentThreadId} 
-              initialThreadId={currentThreadId} 
-              onConversationUpdated={handleConversationUpdated}
-            />
-          </ErrorBoundary>
+      <OnboardingWizard onComplete={() => console.log('User onboarded')} />
+      <div className="relative z-10 mx-3 mb-3 mt-2 flex h-[calc(100dvh-5.5rem)] overflow-hidden rounded-3xl border border-white/10 shadow-glass-lg sm:mx-4 sm:mb-4">
+        <div className="flex min-h-0 w-full bg-bg-secondary/40 backdrop-blur-2xl">
+          <ConversationSidebar
+            currentThreadId={currentThreadId}
+            refreshTrigger={refreshKey}
+            onSelectConversation={handleSelectConversation}
+            onNewConversation={handleNewConversation}
+          />
+
+          <div className="flex min-w-0 flex-1 flex-col">
+            <ErrorBoundary>
+              <AgentTestPanel
+                key={currentThreadId}
+                initialThreadId={currentThreadId}
+                onConversationUpdated={handleConversationUpdated}
+              />
+            </ErrorBoundary>
+          </div>
         </div>
       </div>
     </div>

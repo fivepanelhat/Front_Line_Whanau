@@ -110,7 +110,7 @@ export function AiAssistantTab({
               className={`max-w-[85%] rounded-xl p-4 leading-relaxed ${
                 msg.sender === 'user'
                   ? 'bg-accent-primary text-accent-ink'
-                  : 'border border-white/[0.08] bg-bg-secondary'
+                  : 'border border-white/10 bg-white/5 shadow-glass backdrop-blur-md'
               }`}
             >
               {msg.agent && (
@@ -206,11 +206,11 @@ export function AiAssistantTab({
             placeholder="Ask about financial support, healthy homes, WINZ/IRD applications, or local services..."
             value={chatInput}
             onChange={(e) => setChatInput(e.target.value)}
-            className="flex-1 rounded-lg border border-white/[0.08] bg-bg-secondary px-4 py-3 text-sm focus:outline-none focus:border-accent-primary"
+            className="glass-input flex-1 px-4 py-3 text-sm"
           />
           <button
             type="submit"
-            className="rounded-lg bg-accent-primary px-6 py-3 font-semibold text-accent-ink hover:bg-accent-primary/80 transition-colors"
+            className="rounded-2xl bg-gradient-brand px-6 py-3 font-semibold text-white shadow-glow transition hover:brightness-105"
           >
             Send
           </button>

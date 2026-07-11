@@ -39,9 +39,12 @@ const values = [
 
 export function Values() {
   return (
-    <section className="bg-gradient-subtle py-16" id="values">
-      <div className="mx-auto max-w-site px-6">
-        {/* Section Header */}
+    <section className="relative overflow-hidden py-20" id="values">
+      <div
+        aria-hidden
+        className="liquid-orb liquid-orb--seafoam pointer-events-none absolute -left-20 top-10 h-72 w-72 opacity-50"
+      />
+      <div className="relative mx-auto max-w-site px-6">
         <div className="mb-16 text-center">
           <p className="section-label">Our Values</p>
           <h2 className="section-title">
@@ -53,7 +56,6 @@ export function Values() {
           </p>
         </div>
 
-        {/* Values Grid */}
         <div
           className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
           id="values-grid"

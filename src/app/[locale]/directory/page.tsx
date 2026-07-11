@@ -9,10 +9,11 @@ export const metadata = {
 export default async function DirectoryPage() {
   const supabase = await createClient();
 
-  // Fetch verified active listings
   const { data: listings, error } = await supabase
     .from('directory_listings')
-    .select('id, organisation, service_type, region, description, contact_email, contact_phone, website_url')
+    .select(
+      'id, organisation, service_type, region, description, contact_email, contact_phone, website_url',
+    )
     .eq('is_verified', true)
     .eq('is_active', true)
     .order('organisation', { ascending: true });
@@ -22,17 +23,30 @@ export default async function DirectoryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-bg-primary">
-      <div className="bg-accent-primary py-10 sm:py-16 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto">
-          <h1 className="text-2xl sm:text-4xl font-bold text-accent-ink mb-3 sm:mb-4">National Directory</h1>
-          <p className="text-accent-ink/80 text-base sm:text-lg max-w-2xl">
-            Find verified support services, clinical organisations, and community groups across Aotearoa New Zealand.
+    <div className="relative min-h-screen overflow-hidden">
+      <div
+        aria-hidden
+        className="liquid-orb liquid-orb--teal pointer-events-none absolute -left-16 top-0 h-80 w-80 opacity-60"
+      />
+      <div
+        aria-hidden
+        className="liquid-orb liquid-orb--amber pointer-events-none absolute -right-10 top-32 h-72 w-72 opacity-50"
+      />
+
+      <div className="relative px-4 pb-6 pt-10 sm:px-6 sm:pb-10 sm:pt-14">
+        <div className="glass-card mx-auto max-w-6xl overflow-hidden rounded-3xl p-6 sm:p-10">
+          <p className="section-label">Aotearoa · National</p>
+          <h1 className="mb-3 text-2xl font-bold tracking-tight text-text-primary sm:mb-4 sm:text-4xl">
+            National Directory
+          </h1>
+          <p className="max-w-2xl text-base text-text-secondary sm:text-lg">
+            Find verified support services, clinical organisations, and community groups across
+            Aotearoa New Zealand.
           </p>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 -mt-6 sm:-mt-8 relative z-10">
+      <div className="relative z-10 mx-auto max-w-6xl px-4 pb-12 sm:px-6 sm:pb-16">
         <DirectorySearch initialListings={listings || []} />
       </div>
     </div>
