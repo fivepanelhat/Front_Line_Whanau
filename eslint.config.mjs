@@ -30,7 +30,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['src/ai/**/*.ts', 'src/components/Dashboard.tsx'],
+    files: ['src/ai/**/*.ts', 'src/components/Dashboard.tsx', 'src/components/dashboard/**/*.{ts,tsx}'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
