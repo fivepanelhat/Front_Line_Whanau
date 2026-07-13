@@ -1,7 +1,6 @@
 import { StateGraph, END, START, interrupt, MemorySaver } from '@langchain/langgraph';
 import { BaseMessage, HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { Annotation } from '@langchain/langgraph';
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { agentLogger } from '@/lib/logger';
 
 const log = agentLogger('Graph');
