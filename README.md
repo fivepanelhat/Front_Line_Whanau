@@ -1,5 +1,7 @@
 # Front_Line_Whanau
 
+**Coastal Alpine Tech Limited** — pre-seed startup, New Plymouth, Taranaki, Aotearoa New Zealand.
+
 ![Banner](assets/social_preview.png)
 
 
@@ -7,13 +9,13 @@ Open-Source National Frontline Whānau Support Platform – Aotearoa New Zealand
 
 A sovereign, privacy-first digital platform designed to support whānau of preterm twins and families navigating complex frontline services across Aotearoa New Zealand.
 
-**🌐 Live: https://front-line-whanau.vercel.app**
+**Demo:** https://front-line-whanau.vercel.app (early public demo; Coastal Alpine Tech Limited is pre-seed)
 
 ## Demo
 
 | Platform | Link | Notes |
 |----------|------|-------|
-| **Web** | [front-line-whanau.vercel.app](https://front-line-whanau.vercel.app) | Production deployment (Sydney region) |
+| **Web** | [front-line-whanau.vercel.app](https://front-line-whanau.vercel.app) | Hosted demo deployment (Sydney region) — product is early-stage |
 | **Mobile** | Same URL on any phone browser | Tap "Add to Home Screen" to install as a PWA |
 | **Desktop** | `npm run tauri:dev` (local) | Tauri 2 native app — Windows (.msi) and Linux (.deb/.AppImage) |
 
@@ -38,7 +40,7 @@ A unified, searchable national platform that brings together information and ser
 Frontline whānau often face fragmented services, information overload, navigation fatigue, and equity gaps. This platform reduces complexity while prioritising cultural safety and data sovereignty.
 
 **When**  
-MVP targeted for the next 4–8 weeks, with ongoing development toward national adoption.
+MVP in active development (pre-seed). National adoption is a long-term aspiration, not a current claim.
 
 **Where**  
 Nationwide across Aotearoa New Zealand, available as Web, Desktop (Tauri), and Progressive Web App (PWA).
@@ -72,6 +74,8 @@ Nationwide across Aotearoa New Zealand, available as Web, Desktop (Tauri), and P
 - **CI/CD**: GitHub Actions
 
 ## Architecture Overview
+
+> **Diagrams:** Architecture images and Mermaid maps describe the **target product architecture** for this pre-seed stack. They are engineering design maps — not claims of large-scale commercial fleet deployment.
 
 Front Line Whānau is a **sovereign, privacy-first** multi-surface platform (web PWA, Tauri desktop) for whānau and frontline practitioners across Aotearoa, with optional LangGraph AI assist and strong data boundaries.
 
