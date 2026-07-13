@@ -51,7 +51,7 @@
     "@langchain/community": "^1.1.29",
     "@langchain/core": "^1.2.2",
     "@langchain/google-genai": "^2.2.0",
-    "@langchain/langgraph": "^1.4.5",
+    "@langchain/langgraph": "^1.4.7",
     "@langchain/langgraph-checkpoint-postgres": "^1.0.4",
     "@langchain/tavily": "^1.2.0",
     "@next/bundle-analyzer": "^16.2.9",
