@@ -25,7 +25,7 @@ The **Front Line Families Support Hub NZ** is designed in alignment with the pri
 
 - Those who handle data have **obligations of care** (kaitiakitanga) toward the data subjects.
 - The platform **minimises data collection** — we only ask for what is needed.
-- Data handlers (developers, maintainers) are bound by the [Code of Conduct](../CODE_OF_CONDUCT.md).
+- Data handlers (developers, maintainers) are bound by the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ### 4. Kotahitanga (Collective Benefit)
 
