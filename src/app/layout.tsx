@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import { headers } from 'next/headers';
+import { Suspense } from 'react';
 
 import './globals.css';
 import { cn } from '@/lib/utils';
@@ -50,23 +51,40 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
 };
 
-export default async function RootLayout({
+/**
+ * Nonce comes from headers() (request-time). With Cache Components enabled,
+ * that uncached access must sit inside Suspense so static shells can still
+ * prerender. The fallback uses the same script without a nonce — CSP allows
+ * it via THEME_SCRIPT_HASH in proxy.ts.
+ */
+async function ThemeBootstrapScript() {
+  const nonce = (await headers()).get('x-nonce') ?? undefined;
+  return (
+    <script
+      nonce={nonce}
+      dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP_SCRIPT }}
+    />
+  );
+}
+
+function ThemeBootstrapFallback() {
+  return (
+    <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP_SCRIPT }} />
+  );
+}
+
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const nonce = (await headers()).get('x-nonce') ?? undefined;
-
   return (
     <html lang="en" className={cn(inter.variable, 'antialiased')} suppressHydrationWarning>
       <head>
         {/* Theme FOUC guard — hashed in CSP (see proxy.ts THEME_SCRIPT_HASH) */}
-        <script
-          nonce={nonce}
-          dangerouslySetInnerHTML={{
-            __html: THEME_BOOTSTRAP_SCRIPT,
-          }}
-        />
+        <Suspense fallback={<ThemeBootstrapFallback />}>
+          <ThemeBootstrapScript />
+        </Suspense>
       </head>
       <body className="min-h-screen font-body text-slate-900 antialiased">
         <a
