@@ -40,7 +40,16 @@ export function createAgentLLM(options: AgentLLMOptions = {}) {
   // callbacks force a callback-manager merge at every nesting level of the
   // react-agent subgraphs, which registered the stream handler multiple
   // times and made every streamed token reach clients 3x.
-  const apiKey = resolveGoogleApiKey() ?? 'BUILD_TIME_PLACEHOLDER';
+  let apiKey = resolveGoogleApiKey();
+  if (!apiKey) {
+    // Some @langchain/google-genai versions still read process.env even when
+    // `apiKey` is passed. Seed a non-secret placeholder so `next build` can
+    // evaluate agent modules on Dependabot/preview deploys without secrets.
+    apiKey = 'BUILD_TIME_PLACEHOLDER';
+    if (!process.env.GOOGLE_API_KEY) {
+      process.env.GOOGLE_API_KEY = apiKey;
+    }
+  }
 
   return new ChatGoogleGenerativeAI({
     model: options.model || 'gemini-2.5-flash',
