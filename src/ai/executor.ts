@@ -1,9 +1,9 @@
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { PROMPTS } from "./prompts";
 import { documentSearchTool, getFundingInfoTool } from "./tools";
+import { createAgentLLM } from "./llm";
 
-const executorLLM = new ChatGoogleGenerativeAI({
+const executorLLM = createAgentLLM({
   model: "gemini-2.5-flash",
   temperature: 0.1,
 });

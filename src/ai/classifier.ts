@@ -1,5 +1,5 @@
-import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { SystemMessage, HumanMessage, BaseMessage } from '@langchain/core/messages';
+import { createAgentLLM } from './llm';
 
 /**
  * Shared intent classifier.
@@ -27,7 +27,7 @@ const INTENTS: Intent[] = [
   'TRANSLATE', 'NUTRITION', 'CULTURAL', 'LOCAL_SERVICES', 'COMPLEX',
 ];
 
-const intentClassifier = new ChatGoogleGenerativeAI({
+const intentClassifier = createAgentLLM({
   model: 'gemini-2.5-flash',
   temperature: 0,
   maxOutputTokens: 1024,
