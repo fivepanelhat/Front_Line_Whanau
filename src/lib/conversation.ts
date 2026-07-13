@@ -1,9 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 // ============================================================
 // TYPES
@@ -31,6 +26,24 @@ export interface MessageInput {
 }
 
 // ============================================================
+// CLIENT (lazy — must not throw during `next build` without env)
+// ============================================================
+
+let _supabase: SupabaseClient | null = null;
+
+function getSupabase(): SupabaseClient | null {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) {
+    return null;
+  }
+  if (!_supabase) {
+    _supabase = createClient(url, key);
+  }
+  return _supabase;
+}
+
+// ============================================================
 // CONVERSATION FUNCTIONS
 // ============================================================
 
@@ -42,6 +55,10 @@ export async function saveConversation(
   messages: MessageInput[]
 ): Promise<{ success: boolean; conversationId?: string; error?: string }> {
   try {
+    const supabase = getSupabase();
+    if (!supabase) {
+      return { success: false, error: 'Supabase is not configured' };
+    }
     if (messages.length === 0) {
       return { success: false, error: 'No messages to save' };
     }
@@ -98,6 +115,10 @@ export async function loadConversation(threadId: string): Promise<{
   messages: Message[];
 }> {
   try {
+    const supabase = getSupabase();
+    if (!supabase) {
+      return { conversation: null, messages: [] };
+    }
     const { data: conversation } = await supabase
       .from('conversations')
       .select('*')
@@ -127,6 +148,8 @@ export async function loadConversation(threadId: string): Promise<{
  * List recent conversations
  */
 export async function listRecentConversations(limit = 20): Promise<Conversation[]> {
+  const supabase = getSupabase();
+  if (!supabase) return [];
   const { data } = await supabase
     .from('conversations')
     .select('*')
@@ -141,6 +164,8 @@ export async function listRecentConversations(limit = 20): Promise<Conversation[
  */
 export async function deleteConversation(threadId: string): Promise<boolean> {
   try {
+    const supabase = getSupabase();
+    if (!supabase) return false;
     const { data: conv } = await supabase
       .from('conversations')
       .select('id')
