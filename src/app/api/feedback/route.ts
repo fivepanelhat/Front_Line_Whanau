@@ -1,14 +1,18 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/server';
 import { logger } from '@/lib/logger';
 import { FeedbackSchema } from '@/lib/validations';
 import { RateLimiter } from '@/lib/rate-limit';
+import { assertSameOrigin, clientIp } from '@/lib/request-guard';
 
 const rateLimiter = new RateLimiter(60000, 10); // 10 feedback posts per minute
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const ip = req.headers.get('x-forwarded-for') || 'anonymous';
+    const originBlock = assertSameOrigin(req);
+    if (originBlock) return originBlock;
+
+    const ip = clientIp(req);
     const isAllowed = await rateLimiter.check(`feedback_${ip}`);
 
     if (!isAllowed) {

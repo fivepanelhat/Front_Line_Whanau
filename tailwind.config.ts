@@ -59,17 +59,25 @@ const config: Config = {
       borderRadius: {
         xl: '1rem',
         '2xl': '1.5rem',
+        '3xl': '1.75rem',
+        pill: '9999px',
       },
 
-      // ── Shadows ──────────────────────────────────────
+      // ── Shadows (liquid glass) ───────────────────────
       boxShadow: {
-        sm: '0 1px 3px rgba(0, 0, 0, 0.3)',
-        md: '0 4px 14px rgba(0, 0, 0, 0.35)',
-        lg: '0 10px 40px rgba(0, 0, 0, 0.4)',
-        glow: '0 0 30px rgba(99, 102, 241, 0.15)',
-        'glow-lg': '0 0 40px rgba(99, 102, 241, 0.3)',
-        'btn-primary': '0 4px 14px rgba(0, 0, 0, 0.35), 0 0 20px rgba(99, 102, 241, 0.2)',
-        'btn-primary-hover': '0 10px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(99, 102, 241, 0.3)',
+        sm: '0 2px 8px rgba(0, 0, 0, 0.12)',
+        md: '0 8px 28px rgba(0, 0, 0, 0.18)',
+        lg: '0 20px 50px rgba(0, 0, 0, 0.28)',
+        glow: '0 8px 40px rgba(53, 128, 108, 0.22)',
+        'glow-lg': '0 16px 56px rgba(53, 128, 108, 0.32)',
+        'btn-primary':
+          '0 8px 28px rgba(47, 117, 102, 0.35), 0 1px 0 rgba(255, 255, 255, 0.25) inset',
+        'btn-primary-hover':
+          '0 14px 36px rgba(47, 117, 102, 0.4), 0 1px 0 rgba(255, 255, 255, 0.3) inset',
+        glass:
+          '0 8px 32px rgba(0, 0, 0, 0.12), 0 1px 0 rgba(255, 255, 255, 0.12) inset',
+        'glass-lg':
+          '0 24px 64px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.14) inset',
       },
 
       // ── Transitions ──────────────────────────────────
@@ -95,8 +103,16 @@ const config: Config = {
           '100%': { opacity: '1', transform: 'translateX(0)' },
         },
         'pulse-glow': {
-          '0%, 100%': { boxShadow: '0 0 20px rgba(99, 102, 241, 0.15)' },
-          '50%': { boxShadow: '0 0 40px rgba(99, 102, 241, 0.3)' },
+          '0%, 100%': { boxShadow: '0 8px 28px rgba(47, 117, 102, 0.28)' },
+          '50%': { boxShadow: '0 12px 40px rgba(47, 117, 102, 0.45)' },
+        },
+        'liquid-float': {
+          '0%, 100%': { transform: 'translateY(0) scale(1)' },
+          '50%': { transform: 'translateY(-8px) scale(1.02)' },
+        },
+        sheen: {
+          '0%': { transform: 'translateX(-120%) skewX(-12deg)' },
+          '100%': { transform: 'translateX(220%) skewX(-12deg)' },
         },
       },
       animation: {
@@ -104,6 +120,8 @@ const config: Config = {
         'fade-in': 'fade-in 0.5s cubic-bezier(0.4, 0, 0.2, 1) both',
         'slide-in-left': 'slide-in-left 0.6s cubic-bezier(0.4, 0, 0.2, 1) both',
         'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
+        'liquid-float': 'liquid-float 6s ease-in-out infinite',
+        sheen: 'sheen 2.8s ease-in-out infinite',
         'hero-fade-1': 'fade-in-up 0.6s ease-out both',
         'hero-fade-2': 'fade-in-up 0.6s ease-out 0.1s both',
         'hero-fade-3': 'fade-in-up 0.6s ease-out 0.2s both',
@@ -114,8 +132,12 @@ const config: Config = {
       backgroundImage: {
         'gradient-brand': 'linear-gradient(135deg, #35806c 0%, #d4a373 100%)',
         'gradient-warm': 'linear-gradient(135deg, #e0a458 0%, #d0645f 100%)',
-        'gradient-subtle': 'linear-gradient(180deg, rgba(53,128,108,0.08) 0%, transparent 100%)',
-        'hero-radial': 'radial-gradient(ellipse at 30% 20%, rgba(53, 128, 108, 0.10) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(212, 163, 115, 0.08) 0%, transparent 50%)',
+        'gradient-subtle':
+          'linear-gradient(180deg, rgba(53,128,108,0.1) 0%, transparent 100%)',
+        'hero-radial':
+          'radial-gradient(ellipse at 30% 20%, rgba(53, 128, 108, 0.14) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(212, 163, 115, 0.1) 0%, transparent 50%)',
+        'liquid-sheen':
+          'linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.18) 48%, transparent 65%)',
       },
     },
   },

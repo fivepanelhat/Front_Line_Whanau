@@ -45,9 +45,12 @@ const features = [
 
 export function Features() {
   return (
-    <section className="mx-auto max-w-site px-6 py-16" id="features">
-      {/* Section Header */}
-      <div className="mb-16 text-center">
+    <section className="relative mx-auto max-w-site overflow-hidden px-6 py-20" id="features">
+      <div
+        aria-hidden
+        className="liquid-orb liquid-orb--teal pointer-events-none absolute -right-24 top-0 h-64 w-64 opacity-40"
+      />
+      <div className="relative mb-16 text-center">
         <p className="section-label">Key Features</p>
         <h2 className="section-title">
           Built for Whānau, <span className="text-gradient">By Design</span>
@@ -58,8 +61,7 @@ export function Features() {
         </p>
       </div>
 
-      {/* Features Grid */}
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3" id="features-grid">
+      <div className="relative grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8" id="features-grid">
         {features.map((f, i) => (
           <article
             key={f.title}

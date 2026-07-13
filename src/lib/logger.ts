@@ -100,3 +100,18 @@ export function routeLogger(route: string) {
 export function agentLogger(agentName: string) {
   return logger.child({ agent: agentName });
 }
+
+/**
+ * Emit a structured metric line (latency, tokens, counters).
+ * Prefer this over ad-hoc console logging so metrics share redaction + base fields.
+ */
+export function metric(
+  name: string,
+  value: number,
+  tags: Record<string, unknown> = {},
+) {
+  logger.info(
+    { metric_name: name, metric_value: value, ...tags },
+    `Metric: ${name}`,
+  );
+}

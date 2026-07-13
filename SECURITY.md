@@ -18,7 +18,7 @@ This document outlines the standard operating procedures for managing, rotating,
 ### Rotating `API_SECRET_KEY` (Zero-Downtime)
 1. Generate a new high-entropy string (e.g., `openssl rand -base64 32`).
 2. Update the `API_SECRET_KEY` environment variable in Vercel to a JSON array or comma-separated string containing BOTH the old and new keys (e.g., `old_key,new_key`).
-3. Update `src/middleware.ts` to accept either key during the transition window.
+3. Update `src/proxy.ts` to accept either key during the transition window.
 4. Deploy the application.
 5. Update all client-side or external services to use the `new_key`.
 6. Once metrics show no usage of `old_key`, remove it from Vercel and redeploy.

@@ -2,12 +2,31 @@ import { NextRequest, NextResponse } from 'next/server';
 import { SystemMessage, HumanMessage } from '@langchain/core/messages';
 import { RateLimiter } from '@/lib/rate-limit';
 import { createAgentLLM, hasGoogleApiKey } from '@/ai/llm';
+import { assertSameOrigin, clientIp } from '@/lib/request-guard';
+import { z } from 'zod';
+import { routeLogger } from '@/lib/logger';
 
 const limiter = new RateLimiter(60_000, 5);
+const log = routeLogger('/api/chat/summary');
+
+const HistorySchema = z.object({
+  history: z
+    .array(
+      z.object({
+        role: z.enum(['user', 'assistant']),
+        content: z.string().max(5000),
+      }),
+    )
+    .min(1)
+    .max(50),
+});
 
 export async function POST(req: NextRequest) {
   try {
-    const ip = req.headers.get('x-forwarded-for') || 'anonymous';
+    const originBlock = assertSameOrigin(req);
+    if (originBlock) return originBlock;
+
+    const ip = clientIp(req);
     const allowed = await limiter.check(`chat_summary_${ip}`);
     if (!allowed) {
       return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
@@ -20,11 +39,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { history } = await req.json();
+    let body: unknown;
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
+    }
 
-    if (!history || !Array.isArray(history) || history.length > 50) {
+    const parsed = HistorySchema.safeParse(body);
+    if (!parsed.success) {
       return NextResponse.json({ error: 'Missing or invalid history' }, { status: 400 });
     }
+    const { history } = parsed.data;
 
     const llm = createAgentLLM({
       model: 'gemini-2.5-flash',
@@ -44,20 +70,18 @@ Please format your summary using standard Markdown. Include the following sectio
 Keep it highly concise, professional, and objective. Exclude casual chat, greetings, and emotional processing unless it represents a clinical concern (e.g., severe maternal distress). Do not invent information; if a section has no data, omit it.
 `;
 
-    // Combine history into a single text block
     const conversationText = history
-      .map((msg: any) => `${msg.role.toUpperCase()}: ${msg.content}`)
+      .map((msg) => `${msg.role.toUpperCase()}: ${msg.content}`)
       .join('\n\n');
 
     const response = await llm.invoke([
       new SystemMessage(systemPrompt),
-      new HumanMessage(`Here is the conversation history:\n\n${conversationText}`)
+      new HumanMessage(`Here is the conversation history:\n\n${conversationText}`),
     ]);
 
     return NextResponse.json({ summary: response.content });
-
-  } catch (error: any) {
-    console.error('Failed to generate summary:', error);
+  } catch (error) {
+    log.error({ err: error }, 'Failed to generate summary');
     return NextResponse.json({ error: 'Failed to generate summary' }, { status: 500 });
   }
 }

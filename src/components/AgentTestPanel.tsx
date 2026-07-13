@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { saveConversation, loadConversation, MessageInput } from '@/lib/conversation';
 import ReactMarkdown from 'react-markdown';
 
@@ -40,10 +40,21 @@ export function AgentTestPanel({
   const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
   const [summaryMarkdown, setSummaryMarkdown] = useState<string | null>(null);
 
+  // Cancel in-flight SSE / fetch when unmounting or sending a new message
+  const abortRef = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    return () => {
+      abortRef.current?.abort();
+    };
+  }, []);
+
   // Load previous conversation
   useEffect(() => {
+    let cancelled = false;
     const loadPrevious = async () => {
       const result = await loadConversation(threadId);
+      if (cancelled) return;
       if (result?.messages?.length) {
         const loaded = result.messages.map((m) => ({
           role: m.role as 'user' | 'assistant',
@@ -53,6 +64,9 @@ export function AgentTestPanel({
       }
     };
     loadPrevious();
+    return () => {
+      cancelled = true;
+    };
   }, [threadId]);
 
   const copyToClipboard = (text: string, index: number) => {
@@ -61,21 +75,25 @@ export function AgentTestPanel({
     setTimeout(() => setCopiedIndex(null), 1500);
   };
 
-  const saveConversationToDb = async (updatedMessages: Message[]) => {
+  const saveConversationToDb = useCallback(async (updatedMessages: Message[]) => {
     const inputs: MessageInput[] = updatedMessages.map((m) => ({
       role: m.role,
       content: m.content,
     }));
     await saveConversation(threadId, inputs);
-    if (onConversationUpdated) {
-      onConversationUpdated();
-    }
-  };
+    onConversationUpdated?.();
+  }, [threadId, onConversationUpdated]);
 
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
 
+    // Abort any previous stream before starting a new one
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     const userMessage: Message = { role: 'user', content: input };
+    const historyForRequest = messages;
     const newMessages = [...messages, userMessage];
 
     setMessages(newMessages);
@@ -88,11 +106,12 @@ export function AgentTestPanel({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          query: input,
+          query: userMessage.content,
           consentGiven: true,
           threadId,
-          history: messages,
+          history: historyForRequest,
         }),
+        signal: controller.signal,
       });
 
       if (!res.ok || !res.body) throw new Error('connection_failed');
@@ -100,6 +119,7 @@ export function AgentTestPanel({
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let assistantResponse = '';
+      let sseBuffer = '';
 
       // Add placeholder for assistant
       setMessages([...newMessages, { role: 'assistant', content: '' }]);
@@ -108,14 +128,18 @@ export function AgentTestPanel({
         const { done, value } = await reader.read();
         if (done) break;
 
-        const chunk = decoder.decode(value);
-        const lines = chunk.split('\n\n');
+        // Buffer partial SSE frames across TCP chunks
+        sseBuffer += decoder.decode(value, { stream: true });
+        const frames = sseBuffer.split('\n\n');
+        sseBuffer = frames.pop() ?? '';
 
-        for (const line of lines) {
+        for (const line of frames) {
           if (!line.startsWith('data: ')) continue;
+          const raw = line.slice(6).trim();
+          if (raw === '[DONE]') continue;
 
           try {
-            const data = JSON.parse(line.replace('data: ', ''));
+            const data = JSON.parse(raw);
 
             if (data.type === 'reset') {
               // New model call in the graph (classifier → agent steps):
@@ -162,7 +186,9 @@ export function AgentTestPanel({
                 return updated;
               });
             }
-          } catch {}
+          } catch {
+            // Ignore malformed SSE frames
+          }
         }
       }
 
@@ -170,10 +196,15 @@ export function AgentTestPanel({
       const finalMessages: Message[] = [...newMessages, { role: 'assistant' as const, content: assistantResponse }];
       await saveConversationToDb(finalMessages);
     } catch (err) {
+      if (err instanceof DOMException && err.name === 'AbortError') {
+        return;
+      }
       console.error(err);
       setError('I am currently experiencing connection issues. Please try again in a moment.');
     } finally {
-      setIsLoading(false);
+      if (!controller.signal.aborted) {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -239,44 +270,57 @@ export function AgentTestPanel({
   };
 
   return (
-    <div className="flex flex-col h-full max-w-4xl mx-auto px-2 py-2 sm:p-6">
-      {/* Header — stacks on mobile so the title and actions never collide */}
-      <div className="flex flex-col gap-2 mb-3 sm:mb-4 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-lg sm:text-2xl font-semibold text-text-primary">Whanau Support</h2>
+    <div className="mx-auto flex h-full max-w-4xl flex-col px-2 py-2 sm:p-6">
+      <div className="mb-3 flex flex-col gap-2 sm:mb-4 sm:flex-row sm:items-center sm:justify-between">
+        <h2 className="text-lg font-semibold text-text-primary sm:text-2xl">Whānau Support</h2>
         <div className="flex flex-wrap gap-2 print:hidden">
           <button
+            type="button"
             onClick={generateSummary}
             disabled={messages.length === 0}
-            className="text-sm px-3 py-2 bg-accent-primary/15 text-accent-primary border border-accent-primary/30 rounded-lg hover:bg-accent-primary/25 disabled:opacity-50 transition-colors"
+            className="rounded-xl border border-accent-primary/30 bg-accent-primary/15 px-3 py-2 text-sm text-accent-primary transition-colors hover:bg-accent-primary/25 disabled:opacity-50"
           >
-            🩺 <span className="hidden sm:inline">Summary for Doctor</span><span className="sm:hidden">Summary</span>
+            🩺 <span className="hidden sm:inline">Summary for Doctor</span>
+            <span className="sm:hidden">Summary</span>
           </button>
           <button
-            onClick={() => alert("Need help now?\n\n• Emergency: 111\n• Healthline (24/7 nurses): 0800 611 116\n• PlunketLine (24/7 baby & parenting): 0800 933 922\n• Need to Talk? (24/7 counsellors): call or text 1737")}
-            className="text-sm px-3 py-2 border border-border text-text-secondary rounded-lg hover:bg-white/5 flex items-center gap-1"
+            type="button"
+            onClick={() =>
+              alert(
+                'Need help now?\n\n• Emergency: 111\n• Healthline (24/7 nurses): 0800 611 116\n• PlunketLine (24/7 baby & parenting): 0800 933 922\n• Need to Talk? (24/7 counsellors): call or text 1737',
+              )
+            }
+            className="flex items-center gap-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-text-secondary transition-colors hover:bg-white/10"
           >
             <span>🆘</span> Support
           </button>
           <button
+            type="button"
             onClick={startNewConversation}
-            className="text-sm px-3 py-2 bg-accent-primary text-accent-ink rounded-lg hover:opacity-90"
+            className="rounded-xl bg-gradient-brand px-3 py-2 text-sm font-medium text-white shadow-glow transition hover:brightness-105"
           >
             + New
           </button>
         </div>
       </div>
 
-      {/* Chat Area */}
-      <div className="flex-1 border border-border rounded-xl p-4 overflow-y-auto mb-4 bg-bg-primary">
+      <div className="mb-4 flex-1 overflow-y-auto rounded-3xl border border-white/10 bg-black/15 p-4 shadow-glass backdrop-blur-xl">
         {messages.length === 0 && (
-          <p className="text-text-muted text-center mt-8">Start a conversation...</p>
+          <p className="mt-8 text-center text-text-muted">Start a conversation...</p>
         )}
 
         {messages.map((msg, index) => (
-          <div key={index} className={`mb-4 flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-4 duration-300`}>
-            <div className={`group relative max-w-[80%] px-5 py-4 rounded-3xl ${
-              msg.role === 'user' ? 'bg-accent-primary text-accent-ink rounded-br-sm' : 'bg-bg-secondary border border-border text-text-primary rounded-bl-sm'
-            }`}>
+          <div
+            key={index}
+            className={`mb-4 flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-4 duration-300`}
+          >
+            <div
+              className={`group relative max-w-[80%] rounded-3xl px-5 py-4 ${
+                msg.role === 'user'
+                  ? 'rounded-br-sm bg-gradient-brand text-white shadow-glow'
+                  : 'rounded-bl-sm border border-white/10 bg-white/5 text-text-primary shadow-glass backdrop-blur-md'
+              }`}
+            >
               {msg.role === 'assistant' ? (
                 <div className="prose prose-sm prose-invert max-w-none break-words prose-p:my-1 prose-ul:my-1">
                   <ReactMarkdown>
@@ -337,7 +381,6 @@ export function AgentTestPanel({
         )}
       </div>
 
-      {/* Input */}
       <div className="flex gap-2">
         <input
           type="text"
@@ -345,13 +388,14 @@ export function AgentTestPanel({
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
           placeholder="Ask the agent anything..."
-          className="flex-1 bg-bg-primary text-text-primary border border-border rounded-2xl px-5 py-4 focus:ring-2 focus:ring-accent-primary outline-none transition-all"
+          className="glass-input flex-1 px-5 py-4 text-text-primary outline-none"
           disabled={isLoading}
         />
         <button
+          type="button"
           onClick={sendMessage}
           disabled={isLoading || !input.trim()}
-          className="bg-accent-primary hover:opacity-90 text-accent-ink px-5 sm:px-8 rounded-2xl font-semibold transition-all disabled:opacity-50 active:scale-95 shrink-0"
+          className="shrink-0 rounded-2xl bg-gradient-brand px-5 font-semibold text-white shadow-glow transition-all hover:brightness-105 active:scale-95 disabled:opacity-50 sm:px-8"
         >
           Send
         </button>

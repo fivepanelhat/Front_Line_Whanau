@@ -6,6 +6,16 @@ export type { Service, ServiceCategory, Region };
 
 const STALE_AFTER_DAYS = 365;
 
+/** Precomputed lowercase haystack per service — avoids rebuild on every keystroke. */
+const SEARCH_INDEX: ReadonlyArray<{ service: Service; haystack: string }> = SERVICES.map(
+  (service) => ({
+    service,
+    haystack: [service.name, service.description, ...service.categories]
+      .join(' ')
+      .toLowerCase(),
+  }),
+);
+
 export function getAll(): Service[] {
   return SERVICES;
 }
@@ -29,9 +39,7 @@ export function getCrisisServices(): Service[] {
 export function search(query: string): Service[] {
   const q = query.trim().toLowerCase();
   if (!q) return SERVICES;
-  return SERVICES.filter((s) =>
-    [s.name, s.description, ...s.categories].join(' ').toLowerCase().includes(q),
-  );
+  return SEARCH_INDEX.filter((entry) => entry.haystack.includes(q)).map((e) => e.service);
 }
 
 /** Group every service under each of its category labels (for rendering). */
@@ -48,7 +56,6 @@ export function groupByCategory(): Record<string, Service[]> {
 export function getStaleServices(now = new Date()): Service[] {
   return SERVICES.filter(
     (s) =>
-      (now.getTime() - new Date(s.lastVerified).getTime()) / 86_400_000 >
-      STALE_AFTER_DAYS,
+      (now.getTime() - new Date(s.lastVerified).getTime()) / 86_400_000 > STALE_AFTER_DAYS,
   );
 }

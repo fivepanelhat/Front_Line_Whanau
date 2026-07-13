@@ -5,11 +5,12 @@ import { HumanMessage, AIMessage } from '@langchain/core/messages';
 import { routeLogger } from '@/lib/logger';
 import { aiCircuitBreaker } from '@/lib/circuit-breaker';
 import * as Sentry from '@sentry/nextjs';
-
-const log = routeLogger('/api/agents');
 import { createClient } from '@/lib/supabase/server';
 import { checkRateLimit } from '@/ai/security';
 import { AgentQuerySchema } from '@/lib/validations';
+import { assertSameOrigin, clientIp } from '@/lib/request-guard';
+
+const log = routeLogger('/api/agents');
 
 
 
@@ -28,8 +29,11 @@ function isChatHistoryMessage(value: unknown): value is ChatHistoryMessage {
 }
 
 export async function POST(request: NextRequest) {
+  const originBlock = assertSameOrigin(request);
+  if (originBlock) return originBlock;
+
   // 1. IP-based Rate Limiting (10 requests per minute)
-  const ip = request.headers.get('x-forwarded-for') || 'unknown_ip';
+  const ip = clientIp(request);
   const isAllowed = await checkRateLimit(ip, 10, 60000);
   if (!isAllowed) {
     log.warn({ ip }, 'Rate limit exceeded');

@@ -8,7 +8,7 @@
   - Parent / Practitioner role buttons
   - Language switcher component
 - [x] Update E2E selectors to be more resilient
-- [ ] Rename `middleware.ts` to `proxy.ts` for Next.js 16 convention compliance
+- [x] Rename `middleware.ts` to `proxy.ts` for Next.js 16 convention compliance
 
 ## Medium Priority
 

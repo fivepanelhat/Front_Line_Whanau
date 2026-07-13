@@ -1,13 +1,18 @@
 import { logger } from './logger';
 
+/**
+ * Simple three-state circuit breaker (closed → open → half-open).
+ * In half-open, only one trial request is admitted; concurrent callers still fail fast.
+ */
 export class CircuitBreaker {
   private failureCount = 0;
   private lastFailureTime: number | null = null;
-  
+  private halfOpenTrial = false;
+
   constructor(
     public name: string,
     public failureThreshold: number = 3,
-    public resetTimeoutMs: number = 30000
+    public resetTimeoutMs: number = 30000,
   ) {}
 
   async fire<T>(action: () => Promise<T>): Promise<T> {
@@ -27,30 +32,41 @@ export class CircuitBreaker {
   }
 
   private isOpen(): boolean {
-    if (this.failureCount >= this.failureThreshold) {
-      const now = Date.now();
-      if (this.lastFailureTime && now - this.lastFailureTime > this.resetTimeoutMs) {
-        // Half-open: let the next request try
-        logger.info({ breaker: this.name }, 'Circuit breaker transitioning to HALF-OPEN.');
-        return false;
-      }
-      return true;
+    if (this.failureCount < this.failureThreshold) return false;
+
+    const now = Date.now();
+    const cooledDown =
+      this.lastFailureTime !== null && now - this.lastFailureTime > this.resetTimeoutMs;
+
+    if (!cooledDown) return true;
+
+    // Half-open: admit exactly one trial request
+    if (!this.halfOpenTrial) {
+      this.halfOpenTrial = true;
+      logger.info({ breaker: this.name }, 'Circuit breaker transitioning to HALF-OPEN.');
+      return false;
     }
-    return false;
+
+    return true;
   }
 
   private onSuccess() {
-    if (this.failureCount > 0) {
+    if (this.failureCount > 0 || this.halfOpenTrial) {
       logger.info({ breaker: this.name }, 'Circuit breaker reset to CLOSED.');
     }
     this.failureCount = 0;
     this.lastFailureTime = null;
+    this.halfOpenTrial = false;
   }
 
   private onFailure() {
     this.failureCount++;
     this.lastFailureTime = Date.now();
-    logger.error({ breaker: this.name, failures: this.failureCount }, 'Circuit breaker recorded failure.');
+    this.halfOpenTrial = false;
+    logger.error(
+      { breaker: this.name, failures: this.failureCount },
+      'Circuit breaker recorded failure.',
+    );
   }
 }
 

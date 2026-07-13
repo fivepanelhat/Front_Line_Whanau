@@ -18,13 +18,16 @@ export class RateLimiter {
           token: process.env.UPSTASH_REDIS_REST_TOKEN,
         });
 
-        // @ts-ignore - Upstash types might be strict about time units, 'ms' is supported
         this.upstashRatelimit = new Ratelimit({
           redis,
-          limiter: Ratelimit.slidingWindow(maxRequests, `${windowMs} ms`),
+          // Upstash accepts duration strings like "60000 ms"
+          limiter: Ratelimit.slidingWindow(maxRequests, `${windowMs} ms` as `${number} ms`),
         });
       } catch (e) {
-        console.warn('Failed to initialize Upstash Redis rate limiter, falling back to in-memory.', e);
+        console.warn(
+          'Failed to initialize Upstash Redis rate limiter, falling back to in-memory.',
+          e,
+        );
       }
     }
   }
@@ -35,7 +38,7 @@ export class RateLimiter {
         const { success } = await this.upstashRatelimit.limit(key);
         return success;
       } catch (e) {
-        console.error("Upstash Rate Limit error, falling back to in-memory", e);
+        console.error('Upstash Rate Limit error, falling back to in-memory', e);
       }
     }
 
@@ -43,7 +46,7 @@ export class RateLimiter {
     this.sweep(now);
 
     const timestamps = this.store.get(key) || [];
-    const recent = timestamps.filter(ts => now - ts < this.windowMs);
+    const recent = timestamps.filter((ts) => now - ts < this.windowMs);
 
     if (recent.length >= this.maxRequests) return false;
 
@@ -65,3 +68,6 @@ export class RateLimiter {
     }
   }
 }
+
+/** Shared AI endpoint limiter (10 req / minute / key) for route handlers. */
+export const aiRouteLimiter = new RateLimiter(60_000, 10);

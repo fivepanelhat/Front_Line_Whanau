@@ -10,62 +10,72 @@ export default function RoleSelector() {
   const locale = useLocale();
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-[70vh] w-full text-center">
-      {/* Aurora glow — gives the glass panels something to refract */}
+    <div className="relative flex min-h-[70vh] w-full flex-col items-center justify-center overflow-hidden text-center">
+      {/* Liquid orbs */}
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-1/4 top-1/4 h-80 w-80 -translate-x-1/2 rounded-full bg-indigo-500/25 blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 h-80 w-80 translate-x-1/2 rounded-full bg-accent-primary/20 blur-3xl" />
+        <div className="liquid-orb liquid-orb--teal left-[8%] top-[12%] h-72 w-72 animate-liquid-float" />
+        <div
+          className="liquid-orb liquid-orb--amber bottom-[10%] right-[6%] h-80 w-80"
+          style={{ animationDelay: '-6s' }}
+        />
+        <div
+          className="liquid-orb liquid-orb--seafoam left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 opacity-70"
+          style={{ animationDelay: '-12s' }}
+        />
       </div>
 
-      <h1 className="relative text-4xl font-bold mb-4">{t('title')}</h1>
-      <p className="relative text-xl text-gray-600 mb-10 max-w-md">
-        {t('subtitle')}
-      </p>
+      <div className="relative z-10 mb-10 max-w-xl px-2">
+        <p className="section-label mb-3">Kia ora · Welcome</p>
+        <h1 className="mb-4 text-4xl font-bold tracking-tight sm:text-5xl">{t('title')}</h1>
+        <p className="text-lg text-gray-600 sm:text-xl">{t('subtitle')}</p>
+      </div>
 
-      <div className="relative flex flex-col md:flex-row gap-6 w-full max-w-2xl">
-        {/* Parent Portal */}
+      <div className="relative z-10 flex w-full max-w-2xl flex-col gap-5 px-1 md:flex-row md:gap-6">
         <Link
           href={`/${locale}/parent`}
           onClick={() => setRole('parent')}
           data-testid="parent-role-btn"
-          className="glass-card group w-full md:flex-1 p-8 rounded-2xl text-left block transition-all duration-250 hover:-translate-y-1 hover:shadow-glow"
+          className="glass-card group block w-full rounded-3xl p-8 text-left md:flex-1"
         >
           <span
             aria-hidden
-            className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-600/15 text-2xl"
+            className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-indigo-600/15 text-2xl shadow-glass"
           >
             🌱
           </span>
-          <div className="text-2xl font-semibold mb-2 text-gray-900">{t('parentTitle')}</div>
+          <div className="mb-2 text-2xl font-semibold text-gray-900">{t('parentTitle')}</div>
           <p className="text-gray-600">{t('parentDescription')}</p>
           <span
             aria-hidden
-            className="mt-6 inline-block text-xl text-gray-700 transition-all duration-250 group-hover:translate-x-1 group-hover:text-gray-900"
+            className="mt-6 inline-flex items-center gap-1 text-lg font-medium text-gray-700 transition-all duration-300 group-hover:translate-x-1.5 group-hover:text-gray-900"
           >
-            →
+            Enter portal
+            <span aria-hidden>→</span>
           </span>
         </Link>
 
-        {/* Practitioner Portal */}
         <Link
           href={`/${locale}/practitioner`}
           onClick={() => setRole('practitioner')}
           data-testid="practitioner-role-btn"
-          className="glass-card group w-full md:flex-1 p-8 rounded-2xl text-left block transition-all duration-250 hover:-translate-y-1 hover:shadow-glow"
+          className="glass-card group block w-full rounded-3xl p-8 text-left md:flex-1"
         >
           <span
             aria-hidden
-            className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-700/20 text-2xl"
+            className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-cyan-700/20 text-2xl shadow-glass"
           >
             🩺
           </span>
-          <div className="text-2xl font-semibold mb-2 text-gray-900">{t('practitionerTitle')}</div>
+          <div className="mb-2 text-2xl font-semibold text-gray-900">
+            {t('practitionerTitle')}
+          </div>
           <p className="text-gray-600">{t('practitionerDescription')}</p>
           <span
             aria-hidden
-            className="mt-6 inline-block text-xl text-gray-700 transition-all duration-250 group-hover:translate-x-1 group-hover:text-gray-900"
+            className="mt-6 inline-flex items-center gap-1 text-lg font-medium text-gray-700 transition-all duration-300 group-hover:translate-x-1.5 group-hover:text-gray-900"
           >
-            →
+            Enter portal
+            <span aria-hidden>→</span>
           </span>
         </Link>
       </div>

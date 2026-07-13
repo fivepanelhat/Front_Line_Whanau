@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react';
  * localStorage under `flw-theme`.
  */
 export default function ThemeToggle() {
-  // null until mounted so SSR markup never disagrees with the client
   const [isDark, setIsDark] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -32,7 +31,7 @@ export default function ThemeToggle() {
       onClick={toggle}
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-      className="flex h-9 w-9 items-center justify-center rounded-lg text-lg hover:bg-white/10 transition-colors"
+      className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-lg shadow-glass transition-all hover:-translate-y-0.5 hover:bg-white/10"
     >
       {isDark === null ? (
         <span className="h-4 w-4" />
