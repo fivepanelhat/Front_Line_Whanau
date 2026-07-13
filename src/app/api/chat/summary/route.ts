@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { SystemMessage, HumanMessage } from '@langchain/core/messages';
 import { RateLimiter } from '@/lib/rate-limit';
+import { createAgentLLM, hasGoogleApiKey } from '@/ai/llm';
 
 const limiter = new RateLimiter(60_000, 5);
 
@@ -13,13 +13,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
     }
 
+    if (!hasGoogleApiKey()) {
+      return NextResponse.json(
+        { error: 'AI summary is not configured (missing GOOGLE_API_KEY)' },
+        { status: 503 }
+      );
+    }
+
     const { history } = await req.json();
 
     if (!history || !Array.isArray(history) || history.length > 50) {
       return NextResponse.json({ error: 'Missing or invalid history' }, { status: 400 });
     }
 
-    const llm = new ChatGoogleGenerativeAI({
+    const llm = createAgentLLM({
       model: 'gemini-2.5-flash',
       temperature: 0.1,
     });
