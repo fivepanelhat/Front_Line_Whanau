@@ -306,8 +306,11 @@
     z-index: 1;
   }
 
-  /* Theme-aware liquid glass card */
-  .glass-card {
+  /* Theme-aware liquid glass card
+     (.liquid-listing / .glass-modal share styles — Tailwind v4 cannot @apply custom classes) */
+  .glass-card,
+  .liquid-listing,
+  .glass-modal {
     position: relative;
     isolation: isolate;
     overflow: hidden;
@@ -327,7 +330,9 @@
       border-color 0.35s ease;
   }
 
-  .glass-card::before {
+  .glass-card::before,
+  .liquid-listing::before,
+  .glass-modal::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -343,7 +348,9 @@
     z-index: 0;
   }
 
-  .glass-card::after {
+  .glass-card::after,
+  .liquid-listing::after,
+  .glass-modal::after {
     content: '';
     position: absolute;
     top: 0;
@@ -360,12 +367,15 @@
     pointer-events: none;
   }
 
-  .glass-card > * {
+  .glass-card > *,
+  .liquid-listing > *,
+  .glass-modal > * {
     position: relative;
     z-index: 2;
   }
 
-  .glass-card:hover {
+  .glass-card:hover,
+  .liquid-listing:hover {
     transform: translateY(-4px) scale(1.01);
     box-shadow: var(--glass-shadow-lg);
     border-color: color-mix(in srgb, var(--brand-500) 35%, var(--glass-border));
@@ -649,14 +659,14 @@
     @apply w-full;
   }
 
-  /* Directory / listing cards */
+  /* Directory / listing cards (glass base styles shared above) */
   .liquid-listing {
-    @apply glass-card p-5 sm:p-6 flex flex-col h-full;
+    @apply p-5 sm:p-6 flex flex-col h-full;
   }
 
-  /* Modal / dialog glass */
+  /* Modal / dialog glass (glass base styles shared above) */
   .glass-modal {
-    @apply glass-card p-6;
+    @apply p-6;
     border-radius: 1.5rem;
     max-height: min(90vh, 720px);
   }
