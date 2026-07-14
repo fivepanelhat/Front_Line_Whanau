@@ -1,5 +1,27 @@
 # Front_Line_Whanau
 
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-15-000000?logo=next.js&logoColor=white)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+
+[![Linux](https://img.shields.io/badge/Linux-Ubuntu%2C%20Debian%2C%20Fedora-FCC624?logo=linux&logoColor=black)](https://github.com/fivepanelhat/Front_Line_Whanau)
+[![Windows](https://img.shields.io/badge/Windows-10%2B-0078D4?logo=windows&logoColor=white)](https://github.com/fivepanelhat/Front_Line_Whanau)
+[![macOS](https://img.shields.io/badge/macOS-12%2B-000000?logo=apple&logoColor=white)](https://github.com/fivepanelhat/Front_Line_Whanau)
+
+[![Claude AI](https://img.shields.io/badge/Claude-Anthropic-9C27B0)](https://anthropic.com)
+[![Gemini](https://img.shields.io/badge/Gemini-Google-4285F4?logo=google&logoColor=white)](https://gemini.google.com)
+[![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4-00A67E)](https://openai.com)
+[![Grok](https://img.shields.io/badge/Grok-xAI-000000)](https://x.ai)
+
+[![Tauri](https://img.shields.io/badge/Tauri-2-FFC131?logo=tauri&logoColor=black)](https://tauri.app)
+[![Supabase](https://img.shields.io/badge/Supabase-Postgres-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com)
+[![Te Tiriti](https://img.shields.io/badge/Te%20Tiriti-Aligned-00247D)](https://github.com/fivepanelhat/Front_Line_Whanau)
+[![Te Mana Raraunga](https://img.shields.io/badge/Te%20Mana%20Raraunga-Data%20Sovereignty-005A9C)](https://www.temanararaunga.maori.nz)
+[![Accessibility](https://img.shields.io/badge/WCAG-2.2%20AA-success)](https://github.com/fivepanelhat/Front_Line_Whanau)
+
+[![CI Status](https://github.com/fivepanelhat/Front_Line_Whanau/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/fivepanelhat/Front_Line_Whanau/actions/workflows/ci.yml)
+[![Dependencies](https://img.shields.io/badge/Dependencies-Monitored-brightgreen?logo=dependabot)](https://github.com/fivepanelhat/Front_Line_Whanau/security/dependabot)
+
 **Coastal Alpine Tech Limited** — pre-seed startup, New Plymouth, Taranaki, Aotearoa New Zealand.
 
 ![Banner](assets/social_preview.png)
@@ -231,19 +253,3 @@ npm run e2e:ui
 ## License
 
 This project is licensed under the **Apache License 2.0**. See [LICENSE](./LICENSE).
-
----
-
-## Project badges
-
-Status badges for this repository (CI, security, license, and stack metadata):
-
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue?style=flat-square)](LICENSE)  
-[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)]()  
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript&logoColor=white)]()  
-[![Te Tiriti](https://img.shields.io/badge/Te%20Tiriti-Aligned-00247D?style=flat-square)]()  
-[![Te Mana Raraunga](https://img.shields.io/badge/Te%20Mana%20Raraunga-Data%20Sovereignty-005A9C?style=flat-square)]()  
-[![Sovereignty](https://img.shields.io/badge/Sovereignty-NZ%20Data%20Bound-00247D?style=flat-square)]()  
-[![CI](https://github.com/fivepanelhat/Front_Line_Whanau/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/fivepanelhat/Front_Line_Whanau/actions/workflows/ci.yml)  
-[![Accessibility](https://img.shields.io/badge/WCAG-2.2%20AA-success?style=flat-square)]()  
-[![Dependabot](https://img.shields.io/badge/Dependencies-Monitored-brightgreen?style=flat-square&logo=dependabot)]()
