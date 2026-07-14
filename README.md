@@ -15,6 +15,7 @@
 
 [![Tauri](https://img.shields.io/badge/Tauri-2-FFC131?logo=tauri&logoColor=black)](https://tauri.app)
 [![Supabase](https://img.shields.io/badge/Supabase-Postgres-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com)
+[![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000000?logo=vercel&logoColor=white)](https://front-line-whanau.vercel.app)
 [![Te Tiriti](https://img.shields.io/badge/Te%20Tiriti-Aligned-00247D)](https://github.com/fivepanelhat/Front_Line_Whanau)
 [![Te Mana Raraunga](https://img.shields.io/badge/Te%20Mana%20Raraunga-Data%20Sovereignty-005A9C)](https://www.temanararaunga.maori.nz)
 [![Accessibility](https://img.shields.io/badge/WCAG-2.2%20AA-success)](https://github.com/fivepanelhat/Front_Line_Whanau)
