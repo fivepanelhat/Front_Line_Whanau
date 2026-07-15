@@ -19,12 +19,15 @@ Anti-hallucination policy: [`.github/agent-fleet/anti-hallucination.md`](./.gith
 
 ![Banner](assets/social_preview.png)
 
+> **Canonical product (2026-07-16 merge):** This repository is the **single** national platform.  
+> The legacy scaffold [`whanau-preterm-support-hub`](https://github.com/fivepanelhat/whanau-preterm-support-hub) is redirected/archived.  
+> Merge details: [docs/MERGE_FROM_WHANAU_PRETERM_SUPPORT_HUB.md](./docs/MERGE_FROM_WHANAU_PRETERM_SUPPORT_HUB.md) · Status: [REALITY.md](./REALITY.md)
 
-Open-Source National Frontline WhÄnau Support Platform  Aotearoa New Zealand
+Open-Source National Frontline Whanau Support Platform — Aotearoa New Zealand
 
-A sovereign, privacy-first digital platform designed to support whÄnau of preterm twins and families navigating complex frontline services across Aotearoa New Zealand.
+A sovereign, privacy-first digital platform designed to support whanau of preterm twins and families navigating complex frontline services across Aotearoa New Zealand.
 
-**ðŸŒ Live: https://front-line-whanau.vercel.app**
+**Live: https://front-line-whanau.vercel.app**
 
 ## Demo
 
