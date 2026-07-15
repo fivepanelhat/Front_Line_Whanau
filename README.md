@@ -8,19 +8,19 @@
 [![HITL](https://img.shields.io/badge/HITL-Draft%2FPrepare%20only-dc2626)](./.github/agent-fleet/AGENTS.md)
 [![Te Mana Raraunga](https://img.shields.io/badge/Te%20Mana%20Raraunga-Aligned-0f766e)](https://github.com/fivepanelhat/fivepanelhat)
 
-**Part of the [Kiwi Edge AI Stack](https://github.com/fivepanelhat/fivepanelhat)** · Founder OS: [NZ-Start-Up](https://github.com/fivepanelhat/NZ-Start-Up) · Agent policy: [`.github/agent-fleet/`](./.github/agent-fleet/)
+**Part of the [Kiwi Edge AI Stack](https://github.com/fivepanelhat/fivepanelhat)** | Founder OS: [NZ-Start-Up](https://github.com/fivepanelhat/NZ-Start-Up) | Agent policy: [`.github/agent-fleet/`](./.github/agent-fleet/)
 
-> Sovereign hybrid edge AI for NZ farms & founders — local-first + multi-model, Te Mana Raraunga aligned — collaborating with Venture Taranaki, startups.com investors & Kotahitanga Investment Fund (HITL + cultural advisory for formal approaches).
+> Sovereign hybrid edge AI for NZ farms and founders - local-first + multi-model, Te Mana Raraunga aligned - collaborating with Venture Taranaki, startups.com investors and Kotahitanga Investment Fund (HITL + cultural advisory for formal approaches).
 
 **Agents inform, draft, prepare, monitor, and remind. Humans advise, sign, file, send, and pay.**  
-Anti-hallucination policy: [`.github/agent-fleet/anti-hallucination.md`](./.github/agent-fleet/anti-hallucination.md) · Congruence: [`CAT_CONGRUENCE.md`](./CAT_CONGRUENCE.md)
+Anti-hallucination policy: [`.github/agent-fleet/anti-hallucination.md`](./.github/agent-fleet/anti-hallucination.md) | Congruence: [`CAT_CONGRUENCE.md`](./CAT_CONGRUENCE.md)
 <!-- END CAT_CONGRUENCE_SNIPPET -->
 
 
 ![Banner](assets/social_preview.png)
 
 
-Open-Source National Frontline WhÄnau Support Platform â€“ Aotearoa New Zealand
+Open-Source National Frontline WhÄnau Support Platform  Aotearoa New Zealand
 
 A sovereign, privacy-first digital platform designed to support whÄnau of preterm twins and families navigating complex frontline services across Aotearoa New Zealand.
 
@@ -28,36 +28,36 @@ A sovereign, privacy-first digital platform designed to support whÄnau of pre
 
 ## Demo
 
-| Platform | Link | Notes |
-|----------|------|-------|
-| **Web** | [front-line-whanau.vercel.app](https://front-line-whanau.vercel.app) | Production deployment (Sydney region) |
-| **Mobile** | Same URL on any phone browser | Tap "Add to Home Screen" to install as a PWA |
-| **Desktop** | `npm run tauri:dev` (local) | Tauri 2 native app â€” Windows (.msi) and Linux (.deb/.AppImage) |
+ | Platform | Link | Notes |
+ | ---------- | ------ | ------- |
+ | **Web** | [front-line-whanau.vercel.app](https://front-line-whanau.vercel.app) | Production deployment (Sydney region) |
+ | **Mobile** | Same URL on any phone browser | Tap "Add to Home Screen" to install as a PWA |
+ | **Desktop** | `npm run tauri:dev` (local) | Tauri 2 native app  Windows (.msi) and Linux (.deb/.AppImage) |
 
 ### Quick demo walkthrough
 
 1. Open the web link and choose **"I am a Parent / Whanau"**
-2. Try the **AI Assistant** (Support page) â€” ask "What is CPAP?"
-3. Open the **National Directory** â€” search by region or service type
-4. Check **Financial Support Checker** â€” run an eligibility report
-5. Open **Whanau Hub** (Resources) â€” explore pathways, timers, and the Taonga Vault
+2. Try the **AI Assistant** (Support page)  ask "What is CPAP?"
+3. Open the **National Directory**  search by region or service type
+4. Check **Financial Support Checker**  run an eligibility report
+5. Open **Whanau Hub** (Resources)  explore pathways, timers, and the Taonga Vault
 6. Switch to **Practitioner** view via the portal switcher for moderation and feedback tools
 
 ## The 5 W's
 
-**Who**  
-WhÄnau (parents, caregivers, and extended families), practitioners, doctors, midwives, social workers, and frontline organisations â€” with a strong focus on MÄori, Pacific, and rural communities.
+**Who**
+WhÄnau (parents, caregivers, and extended families), practitioners, doctors, midwives, social workers, and frontline organisations  with a strong focus on MÄori, Pacific, and rural communities.
 
-**What**  
+**What**
 A unified, searchable national platform that brings together information and services from multiple organisations into one place. It features role-based experiences (Parent/WhÄnau and Practitioner/Organisation portals), self-service uploads, encrypted local storage, and AI-assisted curation.
 
-**Why**  
+**Why**
 Frontline whÄnau often face fragmented services, information overload, navigation fatigue, and equity gaps. This platform reduces complexity while prioritising cultural safety and data sovereignty.
 
-**When**  
-MVP targeted for the next 4â€“8 weeks, with ongoing development toward national adoption.
+**When**
+MVP targeted for the next 48 weeks, with ongoing development toward national adoption.
 
-**Where**  
+**Where**
 Nationwide across Aotearoa New Zealand, available as Web, Desktop (Tauri), and Progressive Web App (PWA).
 
 ## Problems We Are Solving
@@ -92,7 +92,7 @@ Nationwide across Aotearoa New Zealand, available as Web, Desktop (Tauri), and P
 
 Front Line WhÄnau is a **sovereign, privacy-first** multi-surface platform (web PWA, Tauri desktop) for whÄnau and frontline practitioners across Aotearoa, with optional LangGraph AI assist and strong data boundaries.
 
-![Front Line WhÄnau architecture â€” liquid glass overview](assets/architecture_overview.png)
+![Front Line WhÄnau architecture  liquid glass overview](assets/architecture_overview.png)
 
 ### System map
 
@@ -130,9 +130,9 @@ flowchart TB
     classDef ai fill:#3b0764,stroke:#e879f9,stroke-width:2px,color:#fdf4ff
     classDef app fill:#1e1b4b,stroke:#c4b5fd,stroke-width:2px,color:#eef2ff
 
-    U["WhÄnau Â· practitioners Â· orgs"] --> WEB["Next.js web / PWA"]
+    U["WhÄnau | practitioners | orgs"] --> WEB["Next.js web / PWA"]
     U --> DESK["Tauri 2 desktop"]
-    WEB & DESK --> API["API + auth<br/>rate limits Â· CSP"]
+    WEB & DESK --> API["API + auth<br/>rate limits | CSP"]
     API --> DB["Supabase / data plane<br/>tenant boundaries"]
     API --> AI["Optional LangGraph assist"]
     AI --> LOCAL["Policy-bound tools<br/>no unrestricted PHI"]
@@ -143,30 +143,30 @@ flowchart TB
     class AI ai
 ```
 
-| Layer | Components | Role |
-| :--- | :--- | :--- |
-| **Clients** | Web PWA + Tauri | Mobile & desktop |
-| **API** | Auth Â· CSP Â· rate limits | Hardened edge |
-| **Data** | Tenant boundaries | Privacy-first |
-| **AI** | LangGraph optional | Policy-bound assist |
+ | Layer | Components | Role |
+ | :--- | :--- | :--- |
+ | **Clients** | Web PWA + Tauri | Mobile & desktop |
+ | **API** | Auth | CSP | rate limits | Hardened edge |
+ | **Data** | Tenant boundaries | Privacy-first |
+ | **AI** | LangGraph optional | Policy-bound assist |
 
-*Full detail: [ARCHITECTURE.md](./ARCHITECTURE.md) Â· [AI-ARCHITECTURE.md](./AI-ARCHITECTURE.md)*
+*Full detail: [ARCHITECTURE.md](./ARCHITECTURE.md) | [AI-ARCHITECTURE.md](./AI-ARCHITECTURE.md)*
 
 ## Directory Structure
 
 ```text
 Front_Line_Whanau/
-â”œâ”€â”€ .github/workflows/     # CI/CD pipelines
-â”œâ”€â”€ docs/                  # Architecture, roadmap, guides
-â”œâ”€â”€ agents/                # AI agent definitions
-â”œâ”€â”€ src/
-â”‚   â”œâ”€â”€ app/               # Next.js routes & pages
-â”‚   â”œâ”€â”€ components/        # UI components
-â”‚   â”œâ”€â”€ features/          # Domain features (directory, uploads, etc.)
-â”‚   â”œâ”€â”€ lib/               # Utilities (encryption, consent, etc.)
-â”‚   â””â”€â”€ ai/                # AI agent logic
-â”œâ”€â”€ supabase/              # Database schema & migrations
-â””â”€â”€ vitest.config.ts       # Test configuration
+â"œâ"€â"€ .github/workflows/     # CI/CD pipelines
+â"œâ"€â"€ docs/                  # Architecture, roadmap, guides
+â"œâ"€â"€ agents/                # AI agent definitions
+â"œâ"€â"€ src/
+â"‚   â"œâ"€â"€ app/               # Next.js routes & pages
+â"‚   â"œâ"€â"€ components/        # UI components
+â"‚   â"œâ"€â"€ features/          # Domain features (directory, uploads, etc.)
+â"‚   â"œâ"€â"€ lib/               # Utilities (encryption, consent, etc.)
+â"‚   â""â"€â"€ ai/                # AI agent logic
+â"œâ"€â"€ supabase/              # Database schema & migrations
+â""â"€â"€ vitest.config.ts       # Test configuration
 ```
 
 ## Requirements
@@ -189,8 +189,8 @@ git clone https://github.com/fivepanelhat/Front_Line_Whanau.git
 cd Front_Line_Whanau
 npm install
 
-# 1. Configure environment â€” copy the template and fill in your Supabase keys
-#    (Supabase Dashboard â†’ Project Settings â†’ API). GOOGLE_API_KEY is optional;
+# 1. Configure environment  copy the template and fill in your Supabase keys
+#    (Supabase Dashboard â†' Project Settings â†' API). GOOGLE_API_KEY is optional;
 #    without it the AI agents run in stub mode.
 cp .env.example .env.local
 
@@ -203,33 +203,33 @@ npx supabase db push
 npm run dev
 ```
 
-The app starts at `http://localhost:3000`. Verify your database connection at `http://localhost:3000/api/health` â€” it should return `{"status":"ok","database":"connected"}`.
+The app starts at `http://localhost:3000`. Verify your database connection at `http://localhost:3000/api/health`  it should return `{"status":"ok","database":"connected"}`.
 
 ### Tauri Desktop Commands
 
 After setup, you can use these commands:
 
-| Command | Platform | What it does |
-| --------- | ---------- | -------------- |
-| `npm run tauri:dev` | Windows/Linux | Run desktop app in development mode |
-| `npm run tauri:build` | Current OS | Build for current operating system |
-| `npm run tauri:build:windows` | Any | Build Windows installer (.msi) |
-| `npm run tauri:build:linux` | Any | Build Linux AppImage + .deb |
+ | Command | Platform | What it does |
+ | --------- | ---------- | -------------- |
+ | `npm run tauri:dev` | Windows/Linux | Run desktop app in development mode |
+ | `npm run tauri:build` | Current OS | Build for current operating system |
+ | `npm run tauri:build:windows` | Any | Build Windows installer (.msi) |
+ | `npm run tauri:build:linux` | Any | Build Linux AppImage + .deb |
 
-## ðŸ”’ Security & Privacy
+## ðŸ"' Security & Privacy
 
 - **Security headers** enforced on all routes via the Next.js 16 proxy (`X-Frame-Options: DENY`, `X-Content-Type-Options`, `Referrer-Policy`, baseline CSP)
 - **Health check** at `/api/health` (verifies live database connectivity)
-- **Privacy-by-design approach** â€” no PHI stored without explicit consent
+- **Privacy-by-design approach**  no PHI stored without explicit consent
 
 ## ðŸ§ª Testing & Quality
 
-| Check                    | Status              | Command                          |
-|--------------------------|---------------------|----------------------------------|
-| TypeScript               | âœ… Passing          | `npm run type-check`             |
-| ESLint                   | âœ… Passing          | `npm run lint`                   |
-| Unit Tests + Coverage    | âœ… 94.95%           | `npm run test:coverage`          |
-| E2E Tests (Playwright)   | âœ… **40/40 passing**| `npm run e2e`                    |
+ | Check | Status | Command |
+ | -------------------------- | --------------------- | ---------------------------------- |
+ | TypeScript | âœ... Passing | `npm run type-check` |
+ | ESLint | âœ... Passing | `npm run lint` |
+ | Unit Tests + Coverage | âœ... 94.95% | `npm run test:coverage` |
+ | E2E Tests (Playwright) | âœ... **40/40 passing** | `npm run e2e` |
 
 ### Running Tests
 
@@ -251,12 +251,12 @@ This project is licensed under the **Apache License 2.0**. See [LICENSE](./LICEN
 
 Status badges for this repository (CI, security, license, and stack metadata):
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue?style=flat-square)](LICENSE)  
-[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)]()  
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript&logoColor=white)]()  
-[![Te Tiriti](https://img.shields.io/badge/Te%20Tiriti-Aligned-00247D?style=flat-square)]()  
-[![Te Mana Raraunga](https://img.shields.io/badge/Te%20Mana%20Raraunga-Data%20Sovereignty-005A9C?style=flat-square)]()  
-[![Sovereignty](https://img.shields.io/badge/Sovereignty-NZ%20Data%20Bound-00247D?style=flat-square)]()  
-[![CI](https://github.com/fivepanelhat/Front_Line_Whanau/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/fivepanelhat/Front_Line_Whanau/actions/workflows/ci.yml)  
-[![Accessibility](https://img.shields.io/badge/WCAG-2.2%20AA-success?style=flat-square)]()  
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue?style=flat-square)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)]()
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript&logoColor=white)]()
+[![Te Tiriti](https://img.shields.io/badge/Te%20Tiriti-Aligned-00247D?style=flat-square)]()
+[![Te Mana Raraunga](https://img.shields.io/badge/Te%20Mana%20Raraunga-Data%20Sovereignty-005A9C?style=flat-square)]()
+[![Sovereignty](https://img.shields.io/badge/Sovereignty-NZ%20Data%20Bound-00247D?style=flat-square)]()
+[![CI](https://github.com/fivepanelhat/Front_Line_Whanau/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/fivepanelhat/Front_Line_Whanau/actions/workflows/ci.yml)
+[![Accessibility](https://img.shields.io/badge/WCAG-2.2%20AA-success?style=flat-square)]()
 [![Dependabot](https://img.shields.io/badge/Dependencies-Monitored-brightgreen?style=flat-square&logo=dependabot)]()
