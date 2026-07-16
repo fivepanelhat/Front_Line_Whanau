@@ -12,7 +12,7 @@ export default async function PractitionerPortal({
  const tools = [
  {
  title: 'Directory Management',
- description: 'Update your organisation's information in the Taranaki Directory.',
+ description: "Update your organisation's information in the Taranaki Directory.",
  href: `/${locale}/practitioner/upload`,
  icon: '📁',
  color: 'bg-indigo-50 text-indigo-700',

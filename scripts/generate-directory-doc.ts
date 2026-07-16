@@ -37,7 +37,7 @@ function build(): string {
  '# Taranaki Services Directory',
  '',
  'Services for whanau of preterm babies in Taranaki and nationally. This page is',
- 'generated from the app's canonical data, so it always matches what families see.',
+ "generated from the app's canonical data, so it always matches what families see.",
  '',
  '> Benefit and payment amounts are intentionally **not** listed here. For current',
  '> figures see the in-app entitlements or the official IRD / Work and Income sites.',

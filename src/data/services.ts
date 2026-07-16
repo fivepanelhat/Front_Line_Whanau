@@ -253,7 +253,7 @@ export const SERVICES: Service[] = [
  availability: '24/7',
  crisis: true,
  description:
- 'Child protection and family support. 24/7 contact for concerns about a child's safety; also family support services.',
+ "Child protection and family support. 24/7 contact for concerns about a child's safety; also family support services.",
  lastVerified: '2026-06-21',
  },
  {
@@ -313,7 +313,7 @@ export const SERVICES: Service[] = [
  contact: '(06) 751 1618',
  url: 'https://taranakiwomenscentre.co.nz/',
  address: '69 Powderham Street, New Plymouth',
- description: 'Support network focusing on women's holistic wellness, offering low-cost counselling, massage, and support groups.',
+ description: "Support network focusing on women's holistic wellness, offering low-cost counselling, massage, and support groups.",
  lastVerified: '2026-06-30',
  },
 

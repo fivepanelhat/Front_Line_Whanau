@@ -50,7 +50,7 @@ export default function RoleSelector() {
  className="mt-6 inline-flex items-center gap-1 text-lg font-medium text-gray-700 transition-all duration-300 group-hover:translate-x-1.5 group-hover:text-gray-900"
  >
  Enter portal
- <span aria-hidden>-></span>
+ <span aria-hidden>{'->'}</span>
  </span>
  </Link>
 
@@ -75,7 +75,7 @@ export default function RoleSelector() {
  className="mt-6 inline-flex items-center gap-1 text-lg font-medium text-gray-700 transition-all duration-300 group-hover:translate-x-1.5 group-hover:text-gray-900"
  >
  Enter portal
- <span aria-hidden>-></span>
+ <span aria-hidden>{'->'}</span>
  </span>
  </Link>
  </div>
