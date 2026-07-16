@@ -2,7 +2,7 @@
 
 ## Overview
 
-**Front_Line_Whanau** is a privacy-first, sovereign digital platform designed to support whānau of preterm twins and families navigating complex frontline services in Aotearoa New Zealand.
+**Front_Line_Whanau** is a privacy-first, sovereign digital platform designed to support whanau of preterm twins and families navigating complex frontline services in Aotearoa New Zealand.
 
 The architecture prioritises:
 
@@ -14,55 +14,55 @@ The architecture prioritises:
 ## Core Principles
 
 - **Privacy by Design**: Sensitive data stays on-device by default (Taonga Vault).
-- **Role-Based Experience**: Separate but unified experiences for whānau/parents and practitioners/organisations.
-- **Cultural Safety First**: All content and features are reviewed through a Te Ao Māori lens.
+- **Role-Based Experience**: Separate but unified experiences for whanau/parents and practitioners/organisations.
+- **Cultural Safety First**: All content and features are reviewed through a Te Ao Maori lens.
 - **Progressive Enhancement**: Core functionality works offline/client-side; optional server sync available.
 
 ## Technology Stack
 
-| Layer            | Technology                           | Purpose                        |
+| Layer | Technology | Purpose |
 |------------------|--------------------------------------|--------------------------------|
-| Frontend         | Next.js 15 (App Router) + TypeScript | Main application framework     |
-| Styling          | Tailwind CSS + shadcn/ui             | UI components                  |
-| Desktop          | Tauri 2                              | Cross-platform desktop app     |
-| Database & Auth  | Supabase (Postgres + pgvector)       | Data storage, auth, RAG        |
-| AI Orchestration | LangGraph                            | Multi-agent workflows          |
-| Testing          | Vitest + Playwright                  | Unit + E2E testing             |
-| CI/CD            | GitHub Actions                       | Automated testing & deployment |
+| Frontend | Next.js 15 (App Router) + TypeScript | Main application framework |
+| Styling | Tailwind CSS + shadcn/ui | UI components |
+| Desktop | Tauri 2 | Cross-platform desktop app |
+| Database & Auth | Supabase (Postgres + pgvector) | Data storage, auth, RAG |
+| AI Orchestration | LangGraph | Multi-agent workflows |
+| Testing | Vitest + Playwright | Unit + E2E testing |
+| CI/CD | GitHub Actions | Automated testing & deployment |
 
 ## High-Level Architecture
 
 ```mermaid
 graph TB
-    subgraph Client["Client (Browser)"]
-        UI["React UI<br/>Next.js App Router"]
-        ENC["Encryption Layer<br/>Web Crypto API"]
-        CONSENT["Consent Manager"]
-        STORE["Local Storage<br/>(Encrypted)"]
-        
-        UI --> ENC
-        UI --> CONSENT
-        ENC --> STORE
-    end
-    
-    subgraph Edge["Edge / Server"]
-        API["API Routes<br/>Next.js"]
-        MW["Consent Middleware"]
-        AI["AI Agent System<br/>1+3 Architecture"]
-        
-        API --> MW
-        MW --> AI
-    end
-    
-    subgraph Data["Data Layer"]
-        DB["Supabase<br/>PostgreSQL + RLS"]
-        SEED["Directory Data<br/>(Public)"]
-        
-        DB --> SEED
-    end
-    
-    Client -->|"Consent-gated"| Edge
-    Edge --> Data
+ subgraph Client["Client (Browser)"]
+ UI["React UI<br/>Next.js App Router"]
+ ENC["Encryption Layer<br/>Web Crypto API"]
+ CONSENT["Consent Manager"]
+ STORE["Local Storage<br/>(Encrypted)"]
+ 
+ UI --> ENC
+ UI --> CONSENT
+ ENC --> STORE
+ end
+ 
+ subgraph Edge["Edge / Server"]
+ API["API Routes<br/>Next.js"]
+ MW["Consent Middleware"]
+ AI["AI Agent System<br/>1+3 Architecture"]
+ 
+ API --> MW
+ MW --> AI
+ end
+ 
+ subgraph Data["Data Layer"]
+ DB["Supabase<br/>PostgreSQL + RLS"]
+ SEED["Directory Data<br/>(Public)"]
+ 
+ DB --> SEED
+ end
+ 
+ Client -->|"Consent-gated"| Edge
+ Edge --> Data
 ```
 
 ---
@@ -71,28 +71,28 @@ graph TB
 
 ```mermaid
 graph LR
-    USER["User Query"] --> AS["Aether Summit<br/>(Orchestrator)"]
-    
-    AS --> KW["Knowledge Weaver<br/>(Information)"]
-    AS --> PA["Pathway Architect<br/>(Planning)"]
-    AS --> EX["Executor<br/>(Action)"]
-    
-    KW --> AS
-    PA --> AS
-    EX -->|"Requires consent"| AS
-    
-    AS --> GR["Guardrails<br/>(Safety + Cultural)"]
-    GR --> RESP["Response"]
+ USER["User Query"] --> AS["Aether Summit<br/>(Orchestrator)"]
+ 
+ AS --> KW["Knowledge Weaver<br/>(Information)"]
+ AS --> PA["Pathway Architect<br/>(Planning)"]
+ AS --> EX["Executor<br/>(Action)"]
+ 
+ KW --> AS
+ PA --> AS
+ EX -->|"Requires consent"| AS
+ 
+ AS --> GR["Guardrails<br/>(Safety + Cultural)"]
+ GR --> RESP["Response"]
 ```
 
 ### Agent Roles
 
-| Agent                 | Role                                                                     | Consent Required        |
+| Agent | Role | Consent Required |
 |-----------------------|--------------------------------------------------------------------------|-------------------------|
-| **Aether Summit**     | Lead orchestrator — routes queries, maintains context, filters responses | No (orchestration only) |
-| **Knowledge Weaver**  | Information retrieval from directory, guides, and NZ statutes            | No (public data)        |
-| **Pathway Architect** | Generates personalised support pathways                                  | Yes (`ai.process`)      |
-| **Executor**          | Takes action — form pre-fill, document drafts, reminders                 | Yes (`ai.execute`)      |
+| **Aether Summit** | Lead orchestrator - routes queries, maintains context, filters responses | No (orchestration only) |
+| **Knowledge Weaver** | Information retrieval from directory, guides, and NZ statutes | No (public data) |
+| **Pathway Architect** | Generates personalised support pathways | Yes (`ai.process`) |
+| **Executor** | Takes action - form pre-fill, document drafts, reminders | Yes (`ai.execute`) |
 
 ### Guardrails
 

@@ -1,6 +1,6 @@
 # Moderator & Practitioner Guide
 
-Welcome to the Front Line Whānau AI Moderation Portal. This document explains how to use the Review Queue and outlines the policies for approving or rejecting AI-generated responses.
+Welcome to the Front Line Whanau AI Moderation Portal. This document explains how to use the Review Queue and outlines the policies for approving or rejecting AI-generated responses.
 
 ## Accessing the Review Queue
 

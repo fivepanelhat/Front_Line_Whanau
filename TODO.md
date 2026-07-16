@@ -1,12 +1,12 @@
-# TODO & Active Tasks — Whānau Preterm Support Hub NZ
+# TODO & Active Tasks - Whanau Preterm Support Hub NZ
 
 ## High Priority (This Week)
 
 - [x] Stabilise E2E tests for role selection buttons on home page
 - [x] Stabilise language switcher E2E tests (visibility + active state)
 - [x] Add `data-testid` attributes to:
-  - Parent / Practitioner role buttons
-  - Language switcher component
+ - Parent / Practitioner role buttons
+ - Language switcher component
 - [x] Update E2E selectors to be more resilient
 - [x] Rename `middleware.ts` to `proxy.ts` for Next.js 16 convention compliance
 

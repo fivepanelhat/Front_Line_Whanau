@@ -4,7 +4,7 @@
 
 **Status**: In Progress
 
-### Completed (2026-06-30 – 2026-07-01)
+### Completed (2026-06-30 - 2026-07-01)
 
 - [x] Phase 3: Beta Readiness (caching layer, error boundaries, consent modals, and Policy Advocate Agent)
 - [x] Phase 4: Beta Operations (health check APIs, Medical Jargon Translator, Playwright E2E suite, and markdown display)
@@ -31,7 +31,7 @@
 - [x] Organisation self-service upload flow
 - [x] Connect Supabase (optional sync)
 
-## Phase 1: MVP (Target: July – August 2026)
+## Phase 1: MVP (Target: July - August 2026)
 
 **Status**: Completed
 
@@ -46,7 +46,7 @@
 - [x] Improve test coverage (>60%)
 - [x] Accessibility audit (WCAG 2.2 AA)
 
-## Phase 2: Beta & Hardening (September – October 2026)
+## Phase 2: Beta & Hardening (September - October 2026)
 
 **Status**: Completed
 
@@ -58,22 +58,22 @@
 - [x] Performance optimisation & offline support
 - [x] Public beta launch
 
-## Phase 3: National Scale (Q4 2026 – 2027)
+## Phase 3: National Scale (Q4 2026 - 2027)
 
 **Status**: Completed
 
 - [ ] Partnerships with Health NZ, Little Miracles Trust, Plunket, iwi
 - [x] Advanced analytics & outcome tracking (anonymised)
-- [x] Multi-language support (Te Reo Māori + Pacific languages)
+- [x] Multi-language support (Te Reo Maori + Pacific languages)
 - [ ] Community governance model
 - [ ] Sustainable funding & operations model
 - [ ] Potential integration with national health systems (with consent)
 
 ## Key Milestones
 
-| Milestone              | Target Date  | Status      |
+| Milestone | Target Date | Status |
 |------------------------|--------------|-------------|
-| Dual Portals MVP       | July 2026    | Completed   |
-| Full Agent Swarm + RAG | August 2026  | Completed   |
-| Public Beta            | October 2026 | Completed   |
-| National Partnerships  | Q1 2027      | Planned     |
+| Dual Portals MVP | July 2026 | Completed |
+| Full Agent Swarm + RAG | August 2026 | Completed |
+| Public Beta | October 2026 | Completed |
+| National Partnerships | Q1 2027 | Planned |

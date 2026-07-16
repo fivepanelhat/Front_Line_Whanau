@@ -7,20 +7,20 @@ const limiter = new RateLimiter(60_000, 10);
 const weaver = new Riroriro();
 
 export async function POST(request: NextRequest) {
-  const auth = await requireAuth(request);
-  if (auth instanceof NextResponse) return auth;
+ const auth = await requireAuth(request);
+ if (auth instanceof NextResponse) return auth;
 
-  const allowed = await limiter.check(auth.user.id);
-  if (!allowed) {
-    return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
-  }
+ const allowed = await limiter.check(auth.user.id);
+ if (!allowed) {
+ return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+ }
 
-  try {
-    const { query } = await request.json();
-    const result = await weaver.process(query, {});
-    return NextResponse.json(result);
-  } catch (error: any) {
-    console.error('Test agent error:', error);
-    return NextResponse.json({ error: 'Agent processing failed' }, { status: 500 });
-  }
+ try {
+ const { query } = await request.json();
+ const result = await weaver.process(query, {});
+ return NextResponse.json(result);
+ } catch (error: any) {
+ console.error('Test agent error:', error);
+ return NextResponse.json({ error: 'Agent processing failed' }, { status: 500 });
+ }
 }

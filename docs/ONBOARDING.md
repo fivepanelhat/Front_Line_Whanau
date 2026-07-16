@@ -1,6 +1,6 @@
 # Developer Onboarding Guide
 
-Welcome to the Front Line Whānau platform! This document outlines the core architecture of our AI systems and how to contribute effectively.
+Welcome to the Front Line Whanau platform! This document outlines the core architecture of our AI systems and how to contribute effectively.
 
 ## Core Stack
 - **Framework**: Next.js 14 (App Router)
@@ -35,15 +35,15 @@ We have strict Guardrails (`src/ai/guardrails.ts`) that intercept sensitive quer
 1. Open `src/ai/tools.ts`.
 2. Use the `createSafeTool` wrapper to define your tool schema (using Zod) and execution logic.
 3. Example:
-   ```typescript
-   export const myNewTool = createSafeTool({
-     name: "my_new_tool",
-     description: "Does something awesome",
-     schema: z.object({ input: z.string() })
-   }, async ({ input }) => {
-     return "Result";
-   });
-   ```
+ ```typescript
+ export const myNewTool = createSafeTool({
+ name: "my_new_tool",
+ description: "Does something awesome",
+ schema: z.object({ input: z.string() })
+ }, async ({ input }) => {
+ return "Result";
+ });
+ ```
 4. Add the tool to the appropriate agent in `src/ai/agents/`.
 
 ## Observability & Tracing

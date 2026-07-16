@@ -1,6 +1,6 @@
 # Security Runbook: Secrets & Token Management
 
-This document outlines the standard operating procedures for managing, rotating, and securing sensitive credentials in the Front Line Whānau project.
+This document outlines the standard operating procedures for managing, rotating, and securing sensitive credentials in the Front Line Whanau project.
 
 ## 1. Secrets Inventory
 

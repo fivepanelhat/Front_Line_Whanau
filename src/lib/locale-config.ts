@@ -4,8 +4,8 @@ export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = 'en-NZ';
 
 export const localeNames: Record<Locale, string> = {
-  'en-NZ': 'English (NZ)',
-  mi: 'Te Reo Māori',
-  sm: 'Gagana Samoa',
-  to: 'Lea Faka-Tonga'
+ 'en-NZ': 'English (NZ)',
+ mi: 'Te Reo Maori',
+ sm: 'Gagana Samoa',
+ to: 'Lea Faka-Tonga'
 };

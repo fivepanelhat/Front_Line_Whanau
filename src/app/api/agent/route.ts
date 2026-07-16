@@ -7,70 +7,70 @@ import { logger, metric } from '@/lib/logger';
 import { z } from 'zod';
 
 const AgentRequestSchema = z.object({
-  query: z.string().min(1).max(5000),
-  userRole: z.enum(['parent', 'practitioner', 'organisation']),
+ query: z.string().min(1).max(5000),
+ userRole: z.enum(['parent', 'practitioner', 'organisation']),
 });
 
 const limiter = new RateLimiter(60_000, 20);
 
 export async function POST(request: NextRequest) {
-  const auth = await requireAuth(request);
-  if (auth instanceof NextResponse) return auth;
+ const auth = await requireAuth(request);
+ if (auth instanceof NextResponse) return auth;
 
-  const allowed = await limiter.check(auth.user.id);
-  if (!allowed) {
-    return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
-  }
+ const allowed = await limiter.check(auth.user.id);
+ if (!allowed) {
+ return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+ }
 
-  try {
-    let body;
-    try {
-      body = await request.json();
-    } catch {
-      return NextResponse.json({ error: 'Invalid JSON payload' }, { status: 400 });
-    }
+ try {
+ let body;
+ try {
+ body = await request.json();
+ } catch {
+ return NextResponse.json({ error: 'Invalid JSON payload' }, { status: 400 });
+ }
 
-    const validationResult = AgentRequestSchema.safeParse(body);
-    if (!validationResult.success) {
-      logger.warn(
-        { errors: validationResult.error.flatten(), userId: auth.user.id },
-        'Invalid API Agent payload',
-      );
-      return NextResponse.json(
-        { error: 'Invalid request payload', details: validationResult.error.flatten() },
-        { status: 400 }
-      );
-    }
+ const validationResult = AgentRequestSchema.safeParse(body);
+ if (!validationResult.success) {
+ logger.warn(
+ { errors: validationResult.error.flatten(), userId: auth.user.id },
+ 'Invalid API Agent payload',
+ );
+ return NextResponse.json(
+ { error: 'Invalid request payload', details: validationResult.error.flatten() },
+ { status: 400 }
+ );
+ }
 
-    const { query, userRole } = validationResult.data;
+ const { query, userRole } = validationResult.data;
 
-    const startTime = Date.now();
-    const result = await agentApp.invoke({
-      messages: [new HumanMessage(query)],
-      userRole,
-      query,
-    });
-    const latencyMs = Date.now() - startTime;
-    metric('api_agent_route_latency_ms', latencyMs, { userId: auth.user.id, userRole });
+ const startTime = Date.now();
+ const result = await agentApp.invoke({
+ messages: [new HumanMessage(query)],
+ userRole,
+ query,
+ });
+ const latencyMs = Date.now() - startTime;
+ metric('api_agent_route_latency_ms', latencyMs, { userId: auth.user.id, userRole });
 
-    const responseText = result.messages?.[result.messages.length - 1]?.content || 
-                        "Sorry, I couldn't generate a response right now.";
+ const responseText = result.messages?.[result.messages.length - 1]?.content || 
+ "Sorry, I couldn't generate a response right now.";
 
-    let responseString = typeof responseText === 'string'
-      ? responseText
-      : JSON.stringify(responseText);
+ let responseString = typeof responseText === 'string'
+ ? responseText
+ : JSON.stringify(responseText);
 
-    // Clean formatting asterisks
-    responseString = responseString.replace(/^(\s*)\*\s+/gm, '$1- ');
-    responseString = responseString.replace(/\*/g, '');
+ // Clean formatting asterisks
+ responseString = responseString.replace(/^(\s*)\*\s+/gm, '$1- ');
+ responseString = responseString.replace(/\*/g, '');
 
-    logger.info({ userId: auth.user.id, latencyMs }, 'Agent request successful');
-    return NextResponse.json({ response: responseString });
-  } catch (error) {
-    logger.error({ err: error, userId: auth.user.id }, 'AI Agent Error');
-    return NextResponse.json(
-      { error: 'Something went wrong with the AI assistant' },
-      { status: 500 }
-    );
-  }
+ logger.info({ userId: auth.user.id, latencyMs }, 'Agent request successful');
+ return NextResponse.json({ response: responseString });
+ } catch (error) {
+ logger.error({ err: error, userId: auth.user.id }, 'AI Agent Error');
+ return NextResponse.json(
+ { error: 'Something went wrong with the AI assistant' },
+ { status: 500 }
+ );
+ }
 }

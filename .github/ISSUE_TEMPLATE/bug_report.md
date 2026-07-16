@@ -37,7 +37,7 @@ If applicable, add screenshots to help explain your problem.
 
 ## Privacy Note
 
-> ⚠️ **Do not include any personal, health, or financial data in bug reports.** If the bug involves sensitive data handling, describe the issue in general terms without including actual data.
+> **Do not include any personal, health, or financial data in bug reports.** If the bug involves sensitive data handling, describe the issue in general terms without including actual data.
 
 ## Additional Context
 

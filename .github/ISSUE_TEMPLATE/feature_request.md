@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Suggest a feature to help whānau
+about: Suggest a feature to help whanau
 title: "[FEATURE] "
 labels: enhancement
 assignees: ''
@@ -8,7 +8,7 @@ assignees: ''
 
 ## Is your feature request related to a problem?
 
-A clear and concise description of what the problem is. Ex. "It's difficult for whānau to..."
+A clear and concise description of what the problem is. Ex. "It's difficult for whanau to..."
 
 ## Describe the Solution You'd Like
 
@@ -25,7 +25,7 @@ Choose how you want to contribute or make this request:
 
 If you selected private, share a safe contact route (for example: project email or secure form) without posting sensitive data.
 
-## How Does This Help Whānau?
+## How Does This Help Whanau?
 
 Explain how this feature would benefit front line families, practitioners, or the community.
 
@@ -37,7 +37,7 @@ Which project values does this feature support? (Check all that apply)
 - [ ] Kaitiakitanga (data guardianship)
 - [ ] Equity & Active Protection
 - [ ] Inclusivity
-- [ ] Extended Whānau support
+- [ ] Extended Whanau support
 - [ ] Practitioner Safety
 
 ## Privacy Considerations

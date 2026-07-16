@@ -1,7 +1,7 @@
 # ADR-0001: Aether release-preflight guardrails (ported from hub)
 
-**Status:** Accepted  
-**Date:** 2026-07-06 (origin) · **Merged into Front_Line_Whanau:** 2026-07-16  
+**Status:** Accepted 
+**Date:** 2026-07-06 (origin) | **Merged into Front_Line_Whanau:** 2026-07-16 
 **Deciders:** Wayne Roberts (Founder, Coastal Alpine Tech)
 
 ## Context
@@ -19,5 +19,5 @@
 ## Consequences
 
 - Single source of truth for code, issues, and releases.
-- Stronger kaitiakitanga over whānau-adjacent documents before public tags.
+- Stronger kaitiakitanga over whanau-adjacent documents before public tags.
 - Contributors stop opening PRs against the legacy hub scaffold.

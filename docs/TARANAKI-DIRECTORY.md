@@ -1,10 +1,10 @@
-<!-- GENERATED FILE — do not edit by hand.
-     Edit `src/data/services.ts` and run: `npx tsx scripts/generate-directory-doc.ts` -->
+<!-- GENERATED FILE - do not edit by hand.
+ Edit `src/data/services.ts` and run: `npx tsx scripts/generate-directory-doc.ts` -->
 
 # Taranaki Services Directory
 
-Services for whānau of preterm babies in Taranaki and nationally. This page is
-generated from the app’s canonical data, so it always matches what families see.
+Services for whanau of preterm babies in Taranaki and nationally. This page is
+generated from the app's canonical data, so it always matches what families see.
 
 > Benefit and payment amounts are intentionally **not** listed here. For current
 > figures see the in-app entitlements or the official IRD / Work and Income sites.
@@ -13,7 +13,7 @@ generated from the app’s canonical data, so it always matches what families se
 
 ## Neonatal & Preterm
 
-### Taranaki Base Hospital — Neonatal Unit (Neonatal & Preterm)
+### Taranaki Base Hospital - Neonatal Unit (Neonatal & Preterm)
 
 - **Region**: Taranaki
 - **Address**: David Street, New Plymouth 4310
@@ -21,7 +21,7 @@ generated from the app’s canonical data, so it always matches what families se
 - **Description**: Level 2 neonatal unit for preterm and unwell newborns. Neonatal social work, discharge planning, and support during NICU stay.
 - **Last verified**: 2026-06-21
 
-### Health New Zealand | Te Whatu Ora Taranaki — Maternity (Neonatal & Preterm)
+### Health New Zealand | Te Whatu Ora Taranaki - Maternity (Neonatal & Preterm)
 
 - **Region**: Taranaki
 - **Contact**: `(06) 753 6139`
@@ -49,7 +49,7 @@ generated from the app’s canonical data, so it always matches what families se
 
 ## Health
 
-### Taranaki Base Hospital — Neonatal Unit (Health)
+### Taranaki Base Hospital - Neonatal Unit (Health)
 
 - **Region**: Taranaki
 - **Address**: David Street, New Plymouth 4310
@@ -57,7 +57,7 @@ generated from the app’s canonical data, so it always matches what families se
 - **Description**: Level 2 neonatal unit for preterm and unwell newborns. Neonatal social work, discharge planning, and support during NICU stay.
 - **Last verified**: 2026-06-21
 
-### Health New Zealand | Te Whatu Ora Taranaki — Maternity (Health)
+### Health New Zealand | Te Whatu Ora Taranaki - Maternity (Health)
 
 - **Region**: Taranaki
 - **Contact**: `(06) 753 6139`
@@ -79,7 +79,7 @@ generated from the app’s canonical data, so it always matches what families se
 - **Contact**: `0800 933 922`
 - **Hours**: 24/7
 - **URL**: <https://www.plunket.org.nz/>
-- **Description**: Free 24/7 parenting advice and support — feeding, sleep, development, and postnatal mental health.
+- **Description**: Free 24/7 parenting advice and support - feeding, sleep, development, and postnatal mental health.
 - **Last verified**: 2026-06-21
 
 ### National Poisons Centre (Health)
@@ -101,10 +101,10 @@ generated from the app’s canonical data, so it always matches what families se
 - **Contact**: `0800 933 922`
 - **Hours**: 24/7
 - **URL**: <https://www.plunket.org.nz/>
-- **Description**: Free 24/7 parenting advice and support — feeding, sleep, development, and postnatal mental health.
+- **Description**: Free 24/7 parenting advice and support - feeding, sleep, development, and postnatal mental health.
 - **Last verified**: 2026-06-21
 
-### Taranaki Plunket — Whānau Āwhina (Well Child & Parenting)
+### Taranaki Plunket - Whanau Awhina (Well Child & Parenting)
 
 - **Region**: Taranaki
 - **Contact**: `0800 184 803`
@@ -129,17 +129,17 @@ generated from the app’s canonical data, so it always matches what families se
 - **Contact**: `0800 933 922`
 - **Hours**: 24/7
 - **URL**: <https://www.plunket.org.nz/>
-- **Description**: Free 24/7 parenting advice and support — feeding, sleep, development, and postnatal mental health.
+- **Description**: Free 24/7 parenting advice and support - feeding, sleep, development, and postnatal mental health.
 - **Last verified**: 2026-06-21
 
-### 1737 — Need to Talk? (Mental Health & Wellbeing)
+### 1737 - Need to Talk? (Mental Health & Wellbeing)
 
 - **Region**: National
 - **Contact**: `1737 (call or text)`
 - **Hours**: 24/7
 - **URL**: <https://1737.org.nz/>
 - **Crisis line**: yes
-- **Description**: Free counselling. Call or text 1737 to talk with a trained counsellor about anything — stress, anxiety, grief, or just needing someone to listen.
+- **Description**: Free counselling. Call or text 1737 to talk with a trained counsellor about anything - stress, anxiety, grief, or just needing someone to listen.
 - **Last verified**: 2026-06-21
 
 ### Perinatal Anxiety & Depression Aotearoa (PADA) (Mental Health & Wellbeing)
@@ -147,7 +147,7 @@ generated from the app’s canonical data, so it always matches what families se
 - **Region**: National
 - **Contact**: `(04) 461 6318`
 - **URL**: <https://www.pada.nz/>
-- **Description**: Resources and directories for perinatal mental health. Not a crisis line — for immediate support use 1737 or PlunketLine.
+- **Description**: Resources and directories for perinatal mental health. Not a crisis line - for immediate support use 1737 or PlunketLine.
 - **Last verified**: 2026-06-21
 
 ### Taranaki Retreat (Mental Health & Wellbeing)
@@ -164,17 +164,17 @@ generated from the app’s canonical data, so it always matches what families se
 
 ## Financial Support
 
-### Work and Income (WINZ) — New Plymouth (Financial Support)
+### Work and Income (WINZ) - New Plymouth (Financial Support)
 
 - **Region**: Taranaki
 - **Address**: 31-39 Hurlstone Drive, New Plymouth 4312
 - **Contact**: `0800 559 009`
 - **Hours**: Mon-Fri 8:30am-5:00pm
 - **URL**: <https://www.workandincome.govt.nz/>
-- **Description**: Government financial assistance: Preterm Baby Payment, Home Help, Childcare Assistance, Accommodation Supplement, Recoverable Assistance, and emergency grants. Offices in New Plymouth and Hāwera.
+- **Description**: Government financial assistance: Preterm Baby Payment, Home Help, Childcare Assistance, Accommodation Supplement, Recoverable Assistance, and emergency grants. Offices in New Plymouth and Hawera.
 - **Last verified**: 2026-06-21
 
-### Inland Revenue (IRD) — Best Start / Working for Families (Financial Support)
+### Inland Revenue (IRD) - Best Start / Working for Families (Financial Support)
 
 - **Region**: National
 - **Contact**: `0800 227 774`
@@ -183,7 +183,7 @@ generated from the app’s canonical data, so it always matches what families se
 - **Description**: Best Start tax credit, Working for Families tax credits, and Paid Parental Leave / Preterm Baby Payments. Current amounts: see in-app entitlements or ird.govt.nz.
 - **Last verified**: 2026-06-21
 
-### Citizens Advice Bureau — New Plymouth (Financial Support)
+### Citizens Advice Bureau - New Plymouth (Financial Support)
 
 - **Region**: Taranaki
 - **Address**: 32 Leach Street (Community House), New Plymouth
@@ -204,7 +204,7 @@ generated from the app’s canonical data, so it always matches what families se
 - **Description**: Government tenancy advice: repairs, bond disputes, rent increases, tenant rights, and free dispute resolution.
 - **Last verified**: 2026-06-21
 
-### Kāinga Ora — Homes and Communities (Housing & Tenancy)
+### Kainga Ora - Homes and Communities (Housing & Tenancy)
 
 - **Region**: National
 - **Contact**: `0800 801 601`
@@ -212,7 +212,7 @@ generated from the app’s canonical data, so it always matches what families se
 - **Description**: Public housing provider. Manages the Housing Register and provides emergency housing referrals.
 - **Last verified**: 2026-06-21
 
-### New Plymouth District Council — Housing Support (Housing & Tenancy)
+### New Plymouth District Council - Housing Support (Housing & Tenancy)
 
 - **Region**: Taranaki
 - **Contact**: `(06) 759 6060`
@@ -226,14 +226,14 @@ generated from the app’s canonical data, so it always matches what families se
 - **Address**: Level 1, Vero House, 10-12 Devon Street East, New Plymouth 4310
 - **Contact**: `(06) 759 1492` or `0800 529 878`
 - **URL**: <https://www.taranakicommunitylaw.org.nz/>
-- **Description**: Free legal advice and advocacy — tenancy, welfare benefits, and general legal matters.
+- **Description**: Free legal advice and advocacy - tenancy, welfare benefits, and general legal matters.
 - **Last verified**: 2026-06-21
 
 ---
 
 ## Legal & Advocacy
 
-### Citizens Advice Bureau — New Plymouth (Legal & Advocacy)
+### Citizens Advice Bureau - New Plymouth (Legal & Advocacy)
 
 - **Region**: Taranaki
 - **Address**: 32 Leach Street (Community House), New Plymouth
@@ -248,14 +248,14 @@ generated from the app’s canonical data, so it always matches what families se
 - **Address**: Level 1, Vero House, 10-12 Devon Street East, New Plymouth 4310
 - **Contact**: `(06) 759 1492` or `0800 529 878`
 - **URL**: <https://www.taranakicommunitylaw.org.nz/>
-- **Description**: Free legal advice and advocacy — tenancy, welfare benefits, and general legal matters.
+- **Description**: Free legal advice and advocacy - tenancy, welfare benefits, and general legal matters.
 - **Last verified**: 2026-06-21
 
 ---
 
-## Community & Whānau
+## Community & Whanau
 
-### Little Miracles Trust (Community & Whānau)
+### Little Miracles Trust (Community & Whanau)
 
 - **Region**: National
 - **Contact**: `info@littlemiraclestrust.org.nz`
@@ -263,7 +263,7 @@ generated from the app’s canonical data, so it always matches what families se
 - **Description**: National neonatal charity. Emotional support, care packs, peer support, and playgroups for NICU families.
 - **Last verified**: 2026-06-21
 
-### Taranaki Retreat (Community & Whānau)
+### Taranaki Retreat (Community & Whanau)
 
 - **Region**: Taranaki
 - **Address**: 35 Octavius Place, New Plymouth (Waimanako Hub) / 517 Hurford Road, Omata (Residential)
@@ -273,7 +273,7 @@ generated from the app’s canonical data, so it always matches what families se
 - **Description**: Free community-based mental health support, peer support, walk-in services, and residential retreat stays.
 - **Last verified**: 2026-06-21
 
-### Citizens Advice Bureau — New Plymouth (Community & Whānau)
+### Citizens Advice Bureau - New Plymouth (Community & Whanau)
 
 - **Region**: Taranaki
 - **Address**: 32 Leach Street (Community House), New Plymouth
@@ -282,7 +282,7 @@ generated from the app’s canonical data, so it always matches what families se
 - **Description**: Free, confidential advice on financial entitlements, tenancy rights, employment, and government services.
 - **Last verified**: 2026-06-21
 
-### Multiple Birth Association NZ (Multiples NZ) (Community & Whānau)
+### Multiple Birth Association NZ (Multiples NZ) (Community & Whanau)
 
 - **Region**: National
 - **Contact**: `0800 489 467`
@@ -290,7 +290,7 @@ generated from the app’s canonical data, so it always matches what families se
 - **Description**: Support network for families with twins, triplets and higher-order multiples. Peer support, practical advice, and equipment hire via local groups (incl. Multiples Taranaki).
 - **Last verified**: 2026-06-21
 
-### Parents Centre New Zealand (Community & Whānau)
+### Parents Centre New Zealand (Community & Whanau)
 
 - **Region**: National
 - **Contact**: `(04) 476 6950`
@@ -298,28 +298,28 @@ generated from the app’s canonical data, so it always matches what families se
 - **Description**: Antenatal education, parenting support groups, and community connections for new parents.
 - **Last verified**: 2026-06-21
 
-### Oranga Tamariki — Ministry for Children (Community & Whānau)
+### Oranga Tamariki - Ministry for Children (Community & Whanau)
 
 - **Region**: National
 - **Contact**: `0508 326 459 (0508 FAMILY)`
 - **Hours**: 24/7
 - **URL**: <https://www.orangatamariki.govt.nz/>
 - **Crisis line**: yes
-- **Description**: Child protection and family support. 24/7 contact for concerns about a child’s safety; also family support services.
+- **Description**: Child protection and family support. 24/7 contact for concerns about a child's safety; also family support services.
 - **Last verified**: 2026-06-21
 
 ---
 
 ## Child Protection & Family
 
-### Oranga Tamariki — Ministry for Children (Child Protection & Family)
+### Oranga Tamariki - Ministry for Children (Child Protection & Family)
 
 - **Region**: National
 - **Contact**: `0508 326 459 (0508 FAMILY)`
 - **Hours**: 24/7
 - **URL**: <https://www.orangatamariki.govt.nz/>
 - **Crisis line**: yes
-- **Description**: Child protection and family support. 24/7 contact for concerns about a child’s safety; also family support services.
+- **Description**: Child protection and family support. 24/7 contact for concerns about a child's safety; also family support services.
 - **Last verified**: 2026-06-21
 
 ---
@@ -346,8 +346,8 @@ generated from the app’s canonical data, so it always matches what families se
 
 ---
 
-*Maintained by the Front Line Whānau project team. To fix or add a service,
-edit `src/data/services.ts` and open a pull request — do not edit this
+*Maintained by the Front Line Whanau project team. To fix or add a service,
+edit `src/data/services.ts` and open a pull request - do not edit this
 file directly.*
 
 **Generated**: 2026-06-21

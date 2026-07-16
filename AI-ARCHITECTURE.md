@@ -1,6 +1,6 @@
 # AI Architecture Recommendation (LangGraph + RAG)
 
-After reviewing the current setup, here’s what suits **Front_Line_Whanau** best:
+After reviewing the current setup, here's what suits **Front_Line_Whanau** best:
 
 ## Recommended Stack
 
@@ -14,32 +14,32 @@ After reviewing the current setup, here’s what suits **Front_Line_Whanau** bes
 
 ## Proposed Agent Structure
 
-We’ll keep the existing concept but formalise it:
+We'll keep the existing concept but formalise it:
 
-- **Aether Summit** → Main Orchestrator (LangGraph StateGraph)
+- **Aether Summit** -> Main Orchestrator (LangGraph StateGraph)
 - **Specialist Agents**:
-  - **Kaitiaki Crawler** – Web research & data ingestion
-  - **Rangahau Hauora** – Medical evidence synthesis
-  - **Aroha Tohunga** – Clinical translation
-  - **Mana Āwhina** – Cultural safety & equity review
-  - **Tautoko Kaiwhina** – Services directory maintenance
-  - **Māmā & Pāpā Reo** – Lived experience integration
+ - **Kaitiaki Crawler** - Web research & data ingestion
+ - **Rangahau Hauora** - Medical evidence synthesis
+ - **Aroha Tohunga** - Clinical translation
+ - **Mana Awhina** - Cultural safety & equity review
+ - **Tautoko Kaiwhina** - Services directory maintenance
+ - **Mama & Papa Reo** - Lived experience integration
 
 ## Target Directory Layout (`src/ai/`)
 
 ```text
 src/ai/
-├── agents/
-│   ├── base.ts
-│   ├── aether-summit.ts          # Orchestrator
-│   ├── kaitiaki-crawler.ts
-│   ├── rangahau-hauora.ts
-│   └── mana-awhina.ts
-├── graph.ts                      # Main LangGraph workflow
-├── rag.ts                        # RAG pipeline
-├── types.ts                      # Shared types & state
-├── tools.ts                      # Reusable tools
-└── index.ts
+|-- agents/
+| |-- base.ts
+| |-- aether-summit.ts # Orchestrator
+| |-- kaitiaki-crawler.ts
+| |-- rangahau-hauora.ts
+| `-- mana-awhina.ts
+|-- graph.ts # Main LangGraph workflow
+|-- rag.ts # RAG pipeline
+|-- types.ts # Shared types & state
+|-- tools.ts # Reusable tools
+`-- index.ts
 ```
 
 ## Next Steps for Full Kitout
@@ -48,6 +48,6 @@ We recommend performing the following in order:
 
 1. **Formalise the LangGraph setup** (create proper agent classes + state)
 2. **Build the RAG pipeline** (Supabase + pgvector + document loading)
-3. **Implement the first 4–5 core agents**
+3. **Implement the first 4-5 core agents**
 4. **Add Human-in-the-Loop (HITL) gates** for sensitive content
 5. **Create a clean agent interface** so new agents can be added easily

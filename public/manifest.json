@@ -1,18 +1,18 @@
 {
-  "name": "Front Line Whānau",
-  "short_name": "Whānau",
-  "description": "National directory and support pathways for preterm whānau in Aotearoa",
-  "start_url": "/",
-  "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#131c17",
-  "theme_color": "#131c17",
-  "categories": ["health", "education", "lifestyle"],
-  "icons": [
-    {
-      "src": "/favicon.ico",
-      "sizes": "64x64",
-      "type": "image/x-icon"
-    }
-  ]
+ "name": "Front Line Whanau",
+ "short_name": "Whanau",
+ "description": "National directory and support pathways for preterm whanau in Aotearoa",
+ "start_url": "/",
+ "display": "standalone",
+ "orientation": "portrait-primary",
+ "background_color": "#131c17",
+ "theme_color": "#131c17",
+ "categories": ["health", "education", "lifestyle"],
+ "icons": [
+ {
+ "src": "/favicon.ico",
+ "sizes": "64x64",
+ "type": "image/x-icon"
+ }
+ ]
 }
