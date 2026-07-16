@@ -1,17 +1,17 @@
 {
-  "version": "0.0.1",
-  "configurations": [
-    {
-      "name": "dev",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--", "--port", "3105"],
-      "port": 3105
-    },
-    {
-      "name": "prod",
-      "runtimeExecutable": "node",
-      "runtimeArgs": ["-e", "process.env.PORT='3107';process.env.HOSTNAME='127.0.0.1';require('./.next/standalone/server.js')"],
-      "port": 3107
-    }
-  ]
+ "version": "0.0.1",
+ "configurations": [
+ {
+ "name": "dev",
+ "runtimeExecutable": "npm",
+ "runtimeArgs": ["run", "dev", "--", "--port", "3105"],
+ "port": 3105
+ },
+ {
+ "name": "prod",
+ "runtimeExecutable": "node",
+ "runtimeArgs": ["-e", "process.env.PORT='3107';process.env.HOSTNAME='127.0.0.1';require('./.next/standalone/server.js')"],
+ "port": 3107
+ }
+ ]
 }

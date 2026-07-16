@@ -8,5 +8,5 @@ import { Locale } from '@/i18n';
  * Called from the LanguageSwitcher client component.
  */
 export async function switchLocale(locale: Locale): Promise<void> {
-  await setUserLocale(locale);
+ await setUserLocale(locale);
 }

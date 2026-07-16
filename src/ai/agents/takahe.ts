@@ -4,13 +4,13 @@ import { createAgentLLM } from '../llm';
 import { webSearchTool } from '../tools';
 
 export class Takahe {
-  name = 'takahe';
+ name = 'takahe';
 
-  private agent = createReactAgent({
-    llm: createAgentLLM({ model: 'gemini-2.5-flash', temperature: 0.1, maxOutputTokens: 1024 }),
-    tools: [webSearchTool],
-    prompt: `You are the Takahe, a specialized agent dedicated to providing nutrition and feeding support for preterm infants.
-Your goal is to help whānau navigate the complex feeding journeys of their premature babies, including tube feeding, transition to breastfeeding or bottle feeding, and the eventual introduction of solids.
+ private agent = createReactAgent({
+ llm: createAgentLLM({ model: 'gemini-2.5-flash', temperature: 0.1, maxOutputTokens: 1024 }),
+ tools: [webSearchTool],
+ prompt: `You are the Takahe, a specialized agent dedicated to providing nutrition and feeding support for preterm infants.
+Your goal is to help whanau navigate the complex feeding journeys of their premature babies, including tube feeding, transition to breastfeeding or bottle feeding, and the eventual introduction of solids.
 
 Always remain empathetic, patient, and clear. Ground your advice in evidence-based neonatal practices and emphasize that you are an AI assistant, not a replacement for their pediatrician, lactation consultant, or neonatal dietitian. 
 
@@ -21,26 +21,26 @@ Focus areas:
 - Adjusting for corrected age when introducing solids.
 
 If a situation sounds urgent (e.g., severe reflux, failure to thrive, signs of dehydration), urge the family to contact their healthcare provider immediately.`
-  });
+ });
 
-  async process(query: string, state: any) {
-    const result = await this.agent.invoke({
-      messages: buildAgentMessages(query, state),
-    });
+ async process(query: string, state: any) {
+ const result = await this.agent.invoke({
+ messages: buildAgentMessages(query, state),
+ });
 
-    const finalMessage = result.messages[result.messages.length - 1];
-    
-    let content = finalMessage.content;
-    if (Array.isArray(content)) {
-      content = content.map((c: any) => c.text || JSON.stringify(c)).join(" ");
-    } else if (typeof content !== 'string') {
-      content = String(content);
-    }
+ const finalMessage = result.messages[result.messages.length - 1];
+ 
+ let content = finalMessage.content;
+ if (Array.isArray(content)) {
+ content = content.map((c: any) => c.text || JSON.stringify(c)).join(" ");
+ } else if (typeof content !== 'string') {
+ content = String(content);
+ }
 
-    return {
-      content,
-      agentUsed: this.name,
-      sources: []
-    };
-  }
+ return {
+ content,
+ agentUsed: this.name,
+ sources: []
+ };
+ }
 }

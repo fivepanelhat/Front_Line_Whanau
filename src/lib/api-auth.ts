@@ -7,22 +7,22 @@ import { NextRequest, NextResponse } from 'next/server';
  * (which would crash during `next build` without a .env.local present).
  */
 export async function requireAuth(
-  _req: NextRequest
+ _req: NextRequest
 ): Promise<{ user: { id: string } } | NextResponse> {
-  void _req;
-  const { createClient } = await import('@/lib/supabase/server');
-  const supabase = await createClient();
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
+ void _req;
+ const { createClient } = await import('@/lib/supabase/server');
+ const supabase = await createClient();
+ const {
+ data: { user },
+ error,
+ } = await supabase.auth.getUser();
 
-  if (error || !user) {
-    if (process.env.NODE_ENV === 'development') {
-      return { user: { id: 'development-user-id' } };
-    }
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+ if (error || !user) {
+ if (process.env.NODE_ENV === 'development') {
+ return { user: { id: 'development-user-id' } };
+ }
+ return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+ }
 
-  return { user: { id: user.id } };
+ return { user: { id: user.id } };
 }

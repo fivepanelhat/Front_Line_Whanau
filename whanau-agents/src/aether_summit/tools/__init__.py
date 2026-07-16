@@ -4,9 +4,9 @@ from .shell import run_terminal_command
 from .github import github_search
 
 __all__ = [
-    "web_search",
-    "read_file",
-    "write_file",
-    "run_terminal_command",
-    "github_search"
+ "web_search",
+ "read_file",
+ "write_file",
+ "run_terminal_command",
+ "github_search"
 ]

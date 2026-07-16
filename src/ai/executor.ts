@@ -4,41 +4,41 @@ import { documentSearchTool, getFundingInfoTool } from "./tools";
 import { createAgentLLM } from "./llm";
 
 const executorLLM = createAgentLLM({
-  model: "gemini-2.5-flash",
-  temperature: 0.1,
+ model: "gemini-2.5-flash",
+ temperature: 0.1,
 });
 
 const executorAgent = createReactAgent({
-  llm: executorLLM,
-  tools: [documentSearchTool, getFundingInfoTool],
-  prompt: PROMPTS.executor,
+ llm: executorLLM,
+ tools: [documentSearchTool, getFundingInfoTool],
+ prompt: PROMPTS.executor,
 });
 
 export class SovereignExecutor {
-  name = "sovereign_executor";
+ name = "sovereign_executor";
 
-  async process(query: string, state: any) {
-    const result = await executorAgent.invoke({
-      messages: [{ role: "user", content: query }],
-    });
+ async process(query: string, state: any) {
+ const result = await executorAgent.invoke({
+ messages: [{ role: "user", content: query }],
+ });
 
-    const lastMessage = result.messages[result.messages.length - 1];
-    const content = typeof lastMessage.content === 'string'
-      ? lastMessage.content
-      : JSON.stringify(lastMessage.content);
+ const lastMessage = result.messages[result.messages.length - 1];
+ const content = typeof lastMessage.content === 'string'
+ ? lastMessage.content
+ : JSON.stringify(lastMessage.content);
 
-    // Extract tool calls to flag for review if templates are generated
-    const toolMessages = result.messages.filter((m: any) => m._getType && m._getType() === 'tool');
+ // Extract tool calls to flag for review if templates are generated
+ const toolMessages = result.messages.filter((m: any) => m._getType && m._getType() === 'tool');
 
-    return {
-      content,
-      agentUsed: this.name,
-      requiresHumanReview: true, // We always flag execution for human review to ensure templates are safe
-      confidence: 0.85,
-      sources: [],
-      metadata: {
-        toolCalls: toolMessages.length > 0 ? toolMessages : [],
-      },
-    };
-  }
+ return {
+ content,
+ agentUsed: this.name,
+ requiresHumanReview: true, // We always flag execution for human review to ensure templates are safe
+ confidence: 0.85,
+ sources: [],
+ metadata: {
+ toolCalls: toolMessages.length > 0 ? toolMessages : [],
+ },
+ };
+ }
 }

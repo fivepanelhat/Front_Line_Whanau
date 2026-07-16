@@ -1,46 +1,46 @@
 {
-  "resources": {
-    "title": "Resources & Guides",
-    "searchPlaceholder": "Search guides and resources...",
-    "categories": "Categories"
-  },
-  "portal": {
-    "parent": {
-      "welcome": "Welcome to your whānau portal",
-      "subtitle": "Your private space for support, information, and connection.",
-      "quickLinks": "Quick links",
-      "recentResources": "Recent resources",
-      "myDocuments": "My documents",
-      "myConsent": "Privacy settings"
-    },
-    "practitioner": {
-      "welcome": "Practitioner portal",
-      "subtitle": "Tools and resources for healthcare professionals and support organisations.",
-      "manageListings": "Manage directory listings",
-      "resources": "Clinical resources",
-      "guidelines": "Guidelines & protocols"
-    }
-  },
-  "privacy": {
-    "title": "Privacy & Data Sovereignty",
-    "description": "Your data stays under your control. We follow Te Mana Raraunga principles and the NZ Privacy Act.",
-    "yourData": "Your Data, Your Control",
-    "encryption": "Documents are encrypted and stored securely."
-  },
-  "consent": {
-    "title": "Consent & Sharing",
-    "subtitle": "You are in control of your information. Review and change your preferences at any time.",
-    "manage": "Manage who can access your information",
-    "records": "Consent Records",
-    "analyticsTitle": "Usage analytics",
-    "analyticsDescription": "Help us improve the platform by sharing anonymous usage data. No personal information is collected.",
-    "supportTitle": "Peer support matching",
-    "supportDescription": "Allow us to suggest connections with other whānau in similar circumstances.",
-    "grant": "Allow",
-    "revoke": "Withdraw",
-    "granted": "Allowed",
-    "revoked": "Withdrawn",
-    "savedAt": "Last updated",
-    "disclaimer": "You can withdraw consent at any time. Withdrawing consent will not affect services already received."
-  }
+ "resources": {
+ "title": "Resources & Guides",
+ "searchPlaceholder": "Search guides and resources...",
+ "categories": "Categories"
+ },
+ "portal": {
+ "parent": {
+ "welcome": "Welcome to your whanau portal",
+ "subtitle": "Your private space for support, information, and connection.",
+ "quickLinks": "Quick links",
+ "recentResources": "Recent resources",
+ "myDocuments": "My documents",
+ "myConsent": "Privacy settings"
+ },
+ "practitioner": {
+ "welcome": "Practitioner portal",
+ "subtitle": "Tools and resources for healthcare professionals and support organisations.",
+ "manageListings": "Manage directory listings",
+ "resources": "Clinical resources",
+ "guidelines": "Guidelines & protocols"
+ }
+ },
+ "privacy": {
+ "title": "Privacy & Data Sovereignty",
+ "description": "Your data stays under your control. We follow Te Mana Raraunga principles and the NZ Privacy Act.",
+ "yourData": "Your Data, Your Control",
+ "encryption": "Documents are encrypted and stored securely."
+ },
+ "consent": {
+ "title": "Consent & Sharing",
+ "subtitle": "You are in control of your information. Review and change your preferences at any time.",
+ "manage": "Manage who can access your information",
+ "records": "Consent Records",
+ "analyticsTitle": "Usage analytics",
+ "analyticsDescription": "Help us improve the platform by sharing anonymous usage data. No personal information is collected.",
+ "supportTitle": "Peer support matching",
+ "supportDescription": "Allow us to suggest connections with other whanau in similar circumstances.",
+ "grant": "Allow",
+ "revoke": "Withdraw",
+ "granted": "Allowed",
+ "revoked": "Withdrawn",
+ "savedAt": "Last updated",
+ "disclaimer": "You can withdraw consent at any time. Withdrawing consent will not affect services already received."
+ }
 }

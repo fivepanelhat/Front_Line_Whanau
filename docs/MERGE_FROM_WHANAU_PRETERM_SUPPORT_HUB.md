@@ -1,12 +1,12 @@
-# Merge note: whanau-preterm-support-hub → Front_Line_Whanau
+# Merge note: whanau-preterm-support-hub -> Front_Line_Whanau
 
-**Date:** 2026-07-16  
-**Canonical product repo:** [fivepanelhat/Front_Line_Whanau](https://github.com/fivepanelhat/Front_Line_Whanau)  
+**Date:** 2026-07-16 
+**Canonical product repo:** [fivepanelhat/Front_Line_Whanau](https://github.com/fivepanelhat/Front_Line_Whanau) 
 **Legacy scaffold:** [fivepanelhat/whanau-preterm-support-hub](https://github.com/fivepanelhat/whanau-preterm-support-hub) (redirect / archived)
 
 ## Decision
 
-`Front_Line_Whanau` is the single national platform for whānau of preterm twins and frontline service navigation in Aotearoa.  
+`Front_Line_Whanau` is the single national platform for whanau of preterm twins and frontline service navigation in Aotearoa. 
 `whanau-preterm-support-hub` was an earlier Next.js scaffold (v0.1.0) with overlapping vision, cultural principles, and Aether release-preflight work.
 
 To stop dual-tracking:
@@ -33,5 +33,5 @@ To stop dual-tracking:
 
 - Open issues and PRs against **Front_Line_Whanau** only.
 - Live demo: https://front-line-whanau.vercel.app
-- Run release preflight before tags:  
-  `python scripts/flw_release_preflight.py --version 0.4.0`
+- Run release preflight before tags: 
+ `python scripts/flw_release_preflight.py --version 0.4.0`

@@ -1,6 +1,6 @@
-# Contributing to Front Line Whānau
+# Contributing to Front Line Whanau
 
-Thank you for your interest in contributing to the **Front Line Families Support Hub NZ**. Your mahi helps whānau during one of the most challenging periods of their lives.
+Thank you for your interest in contributing to the **Front Line Families Support Hub NZ**. Your mahi helps whanau during one of the most challenging periods of their lives.
 
 ---
 
@@ -8,12 +8,12 @@ Thank you for your interest in contributing to the **Front Line Families Support
 
 All contributions must align with the project's core values:
 
-- **Rangatiratanga & Whānau Sovereignty** — User control over data and decisions
-- **Kaitiakitanga** — Responsible guardianship of sensitive information
-- **Equity & Active Protection** — Reducing disparities, protecting vulnerable whānau
-- **Inclusivity** — Welcoming all backgrounds, cultures, and family structures
-- **Cultural Safety** — Respecting Te Tiriti o Waitangi and Māori data sovereignty
-- **Practitioner Protection** — Balanced support for professionals
+- **Rangatiratanga & Whanau Sovereignty** - User control over data and decisions
+- **Kaitiakitanga** - Responsible guardianship of sensitive information
+- **Equity & Active Protection** - Reducing disparities, protecting vulnerable whanau
+- **Inclusivity** - Welcoming all backgrounds, cultures, and family structures
+- **Cultural Safety** - Respecting Te Tiriti o Waitangi and Maori data sovereignty
+- **Practitioner Protection** - Balanced support for professionals
 
 ---
 
@@ -32,7 +32,7 @@ Use the [Bug Report](.github/ISSUE_TEMPLATE/bug_report.md) template. Include:
 
 Use the [Feature Request](.github/ISSUE_TEMPLATE/feature_request.md) template. Consider:
 
-- How does this help whānau?
+- How does this help whanau?
 - Does it align with our values?
 - Are there privacy implications?
 
@@ -50,24 +50,24 @@ Use the [Feature Request](.github/ISSUE_TEMPLATE/feature_request.md) template. C
 We follow [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```
-feat:     New feature
-fix:      Bug fix
-docs:     Documentation only
-style:    Formatting (no code change)
+feat: New feature
+fix: Bug fix
+docs: Documentation only
+style: Formatting (no code change)
 refactor: Code restructure (no feature change)
-test:     Adding or updating tests
-chore:    Build, tooling, or dependency changes
+test: Adding or updating tests
+chore: Build, tooling, or dependency changes
 ```
 
 ---
 
 ## Code Standards
 
-- **TypeScript** — Strict mode. No `any` types unless absolutely necessary.
-- **Tailwind CSS v3** — Use the project's design system tokens. No arbitrary values where a token exists.
-- **Privacy-first** — Never log, transmit, or store user data without explicit consent.
-- **Accessibility** — Semantic HTML, ARIA labels, keyboard navigation.
-- **Testing** — Unit tests for utilities and logic. E2E tests for user flows.
+- **TypeScript** - Strict mode. No `any` types unless absolutely necessary.
+- **Tailwind CSS v3** - Use the project's design system tokens. No arbitrary values where a token exists.
+- **Privacy-first** - Never log, transmit, or store user data without explicit consent.
+- **Accessibility** - Semantic HTML, ARIA labels, keyboard navigation.
+- **Testing** - Unit tests for utilities and logic. E2E tests for user flows.
 
 ---
 
@@ -75,10 +75,10 @@ chore:    Build, tooling, or dependency changes
 
 When contributing content or copy:
 
-- Use **te reo Māori** terms correctly. If unsure, ask or reference [Te Aka Dictionary](https://maoridictionary.co.nz/).
-- Ensure **macrons** (tohutō) are used correctly: ā, ē, ī, ō, ū.
-- Respect **tikanga Māori** — do not use cultural concepts out of context.
-- The platform serves **all families** — avoid assumptions about ethnicity, culture, or family structure.
+- Use **te reo Maori** terms correctly. If unsure, ask or reference [Te Aka Dictionary](https://maoridictionary.co.nz/).
+- Ensure **macrons** (tohuto) are used correctly: a, e, i, o, u.
+- Respect **tikanga Maori** - do not use cultural concepts out of context.
+- The platform serves **all families** - avoid assumptions about ethnicity, culture, or family structure.
 
 ---
 
@@ -86,10 +86,10 @@ When contributing content or copy:
 
 To protect the integrity of our communities, all pull requests undergo a mandatory **Cultural Safety & Accessibility Review** before merging. Reviewers will evaluate contributions using the following criteria:
 
-1. **Te Tiriti o Waitangi & Data Sovereignty** — Checking that data flow respects Māori data sovereignty principles (Te Mana Raraunga) and ensures clear consent patterns.
-2. **Language and Respect** — Verifying correct syntax and appropriate usage of te reo Māori and tohutō (macrons).
-3. **Accessibility (WCAG 2.2 AA)** — Ensuring that layouts, forms, and tools are inclusive and navigable for all whānau.
-4. **Trauma-Informed & Family-Centred Design** — Confirming that responses, messaging, and components are safe, calm, and supportive for families in high-stress situations.
+1. **Te Tiriti o Waitangi & Data Sovereignty** - Checking that data flow respects Maori data sovereignty principles (Te Mana Raraunga) and ensures clear consent patterns.
+2. **Language and Respect** - Verifying correct syntax and appropriate usage of te reo Maori and tohuto (macrons).
+3. **Accessibility (WCAG 2.2 AA)** - Ensuring that layouts, forms, and tools are inclusive and navigable for all whanau.
+4. **Trauma-Informed & Family-Centred Design** - Confirming that responses, messaging, and components are safe, calm, and supportive for families in high-stress situations.
 
 If issues are flagged during this review, you will receive constructive recommendations to adjust copy, layout, or data storage patterns before final approval.
 
@@ -119,4 +119,4 @@ npm run type-check
 
 Open a [Discussion](https://github.com/fivepanelhat/Front_Line_Whanau/discussions) or reach out to the maintainers.
 
-> *He waka eke noa — We are all in this together.*
+> *He waka eke noa - We are all in this together.*

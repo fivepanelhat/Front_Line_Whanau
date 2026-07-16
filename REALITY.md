@@ -1,4 +1,4 @@
-# Reality checklist — Front_Line_Whanau
+# Reality checklist - Front_Line_Whanau
 
 Honest pre-seed status (not marketing). Update when evidence changes.
 
@@ -10,6 +10,6 @@ Honest pre-seed status (not marketing). Update when evidence changes.
 | **Field / user pilot** | Pre-seed | No formal national pilot yet |
 | **PHI by default** | No | General resources + consent-driven vault design |
 | **Last smoke** | See CI | `npm run validate` + Playwright e2e on main |
-| **Demo (3 steps)** | 1) Open live URL · 2) Parent portal · 3) Directory search |
+| **Demo (3 steps)** | 1) Open live URL | 2) Parent portal | 3) Directory search |
 
-**Not this repo:** `whanau-preterm-support-hub` — historical scaffold only. See [docs/MERGE_FROM_WHANAU_PRETERM_SUPPORT_HUB.md](./docs/MERGE_FROM_WHANAU_PRETERM_SUPPORT_HUB.md).
+**Not this repo:** `whanau-preterm-support-hub` - historical scaffold only. See [docs/MERGE_FROM_WHANAU_PRETERM_SUPPORT_HUB.md](./docs/MERGE_FROM_WHANAU_PRETERM_SUPPORT_HUB.md).

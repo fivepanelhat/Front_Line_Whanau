@@ -1,7 +1,7 @@
 [package]
 name = "app"
 version = "0.4.0"
-description = "Front Line Whānau — sovereign, privacy-first support platform for whānau of preterm babies in Aotearoa New Zealand"
+description = "Front Line Whanau - sovereign, privacy-first support platform for whanau of preterm babies in Aotearoa New Zealand"
 authors = ["fivepanelhat"]
 license = "Apache-2.0"
 repository = "https://github.com/fivepanelhat/Front_Line_Whanau"
