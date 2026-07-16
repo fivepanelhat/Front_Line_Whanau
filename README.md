@@ -16,6 +16,68 @@
 Anti-hallucination policy: [`.github/agent-fleet/anti-hallucination.md`](./.github/agent-fleet/anti-hallucination.md) | Congruence: [`CAT_CONGRUENCE.md`](./CAT_CONGRUENCE.md)
 <!-- END CAT_CONGRUENCE_SNIPPET -->
 
+<!-- BEGIN PROBLEMS_SOLUTIONS_ECONOMY -->
+## Problems we are solving
+
+**Front Line Whanau** is the **canonical social / care beachhead** - a national platform for whanau and practitioners navigating preterm and frontline support pathways.
+
+1. **Fragmented support** - Health NZ, trusts, Plunket, iwi providers, and NGOs each hold pieces of the map.
+2. **Information overload** - NICU and high-stress journeys bury families in PDFs and phone trees.
+3. **Role mismatch** - Parents and practitioners need different tools, not one generic brochure site.
+4. **Stale directories** - Organisations struggle to keep listings current without self-service pathways.
+5. **Equity gaps** - Maori, Pacific, and rural whanau face navigation and cultural-safety gaps.
+6. **Data risk** - Sensitive family information must not default to extractive third-party models.
+
+## Solution we have built
+
+| Built capability | What it does |
+| :--- | :--- |
+| **Dual portals** | Parent/Whanau and Practitioner/Organisation experiences |
+| **National directory** | Searchable services by region, type, and role |
+| **Self-service uploads** | Organisations maintain listings; Taonga Vault for sensitive resources |
+| **AI-assisted curation** | Draft/prepare research and translation - human moderation |
+| **Privacy-first design** | Consent-driven access, client-side encryption patterns, Te Tiriti / Te Mana Raraunga alignment |
+| **Delivery** | Web + PWA + Tauri desktop targets |
+
+Live demo path is documented in this README. **Not** mixed into the agritech cold pitch - social care keeps its own GTM and cultural HITL.
+
+### Local (Taranaki) and national (Aotearoa) economic benefits
+
+Coastal Alpine Tech is a **pre-seed** company engineering in **New Plymouth, Taranaki**, with field context in regional primary industries (including Mana Kai-class / Horowhenua agritech). Benefits are framed as **pathways**, not guaranteed job numbers.
+
+#### Local / regional (Taranaki and rural NZ)
+
+| Pathway | What it creates |
+| :--- | :--- |
+| **R&D and product HQ** | Engineering, product, and IP ownership in region - counterweight to capital-city-only tech |
+| **Field install and support** | RPi / Hailo edge nodes, ESP32 sensors, and pilot support need local technicians and partners |
+| **EDA leverage** | Tools that help Venture Taranaki-class programmes onboard more founders without linear staff growth |
+| **Contractor network** | Legal, cultural advisory, hardware, and pilot ops spend that stays in NZ |
+
+#### National economy and employment
+
+| Pathway | What it creates |
+| :--- | :--- |
+| **Primary sector competitiveness** | Better yield, compliance, and biosecurity decisions support NZ's export food economy |
+| **Onshore data value** | Farm, whanau, and SME operational data stays under NZ custody (Privacy Act + Te Mana Raraunga) |
+| **Founder formation** | Faster, cleaner company setup and RDTI-ready logging keeps more early companies investable **in NZ** |
+| **Digital capability outside main centres** | Edge AI skills (vision, MQTT, local LLM) transferable across regions |
+| **Quality of work** | Human-in-the-loop design preserves skilled human roles in advice, compliance, and care |
+
+#### How this product contributes
+
+See **Solution we have built** above. Cross-portfolio map: [Kiwi Edge AI Stack](https://github.com/fivepanelhat/fivepanelhat) | employment detail: [NZ-Start-Up investor pack](https://github.com/fivepanelhat/NZ-Start-Up/blob/main/docs/INVESTOR_RD_AND_MARKET_REFERENCE.md).
+
+#### Care-sector employment and economy notes
+
+| Pathway | Benefit |
+| :--- | :--- |
+| **Frontline capacity** | Faster navigation means practitioners spend less time on directory hunting and more on care |
+| **NGO / iwi provider efficiency** | Self-service listings reduce duplicate brochure maintenance |
+| **Regional equity** | Rural and Maori / Pacific pathways get equal product attention - national cohesion |
+| **Digital care skills** | Roles in content moderation, cultural advisory, and support tooling - not automated replacement of clinicians |
+<!-- END PROBLEMS_SOLUTIONS_ECONOMY -->
+
 ![Banner](assets/social_preview.png)
 
 > **Canonical product (2026-07-16 merge):** This repository is the **single** national platform. 
@@ -62,15 +124,6 @@ MVP targeted for the next 48 weeks, with ongoing development toward national ado
 **Where**
 Nationwide across Aotearoa New Zealand, available as Web, Desktop (Tauri), and Progressive Web App (PWA).
 
-## Problems We Are Solving
-
-- Fragmented support across many organisations (Health NZ, Little Miracles Trust, Plunket, iwi providers, etc.)
-- Information overload during high-stress periods (e.g. NICU journeys)
-- Lack of role-specific experiences for parents vs practitioners
-- No central, up-to-date searchable directory
-- Difficulty for organisations to keep their information current
-- Equity gaps for Maori, Pacific, and rural whanau
-- Limited integration of lived experience with evidence-based resources
 
 ## Features
 
