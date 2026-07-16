@@ -5,31 +5,31 @@ name: Agent Evals
 # they run nightly and on demand rather than blocking every push. The
 # public /api/agents endpoint is used, so no secrets are required.
 on:
- schedule:
- - cron: '0 16 * * *' # ~4-5am NZ time, daily
- workflow_dispatch:
- inputs:
- base_url:
- description: 'Base URL to evaluate (defaults to production)'
- required: false
- default: 'https://front-line-whanau.vercel.app'
+  schedule:
+    - cron: '0 16 * * *' # ~4-5am NZ time, daily
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Base URL to evaluate (defaults to production)'
+        required: false
+        default: 'https://front-line-whanau.vercel.app'
 
 permissions:
- contents: read
+  contents: read
 
 jobs:
- evals:
- runs-on: ubuntu-latest
- steps:
- - name: Checkout
- uses: actions/checkout@v7
+  evals:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
 
- - name: Setup Node.js
- uses: actions/setup-node@v6
- with:
- node-version: 24
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
 
- - name: Run agent evals
- env:
- EVAL_BASE_URL: ${{ github.event.inputs.base_url || 'https://front-line-whanau.vercel.app' }}
- run: node scripts/eval-agents.mjs
+      - name: Run agent evals
+        env:
+          EVAL_BASE_URL: ${{ github.event.inputs.base_url || 'https://front-line-whanau.vercel.app' }}
+        run: node scripts/eval-agents.mjs
