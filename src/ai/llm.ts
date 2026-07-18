@@ -1,10 +1,10 @@
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 
 export interface AgentLLMOptions {
- model?: string;
- temperature?: number;
- maxOutputTokens?: number;
- maxRetries?: number;
+  model?: string;
+  temperature?: number;
+  maxOutputTokens?: number;
+  maxRetries?: number;
 }
 
 /**
@@ -19,15 +19,11 @@ export interface AgentLLMOptions {
  * the key is missing (see aether-summit / API routes).
  */
 export function resolveGoogleApiKey(): string | undefined {
- return (
- process.env.GOOGLE_API_KEY ||
- process.env.GOOGLE_GENERATIVE_AI_API_KEY ||
- undefined
- );
+  return process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY || undefined;
 }
 
 export function hasGoogleApiKey(): boolean {
- return Boolean(resolveGoogleApiKey());
+  return Boolean(resolveGoogleApiKey());
 }
 
 /**
@@ -35,27 +31,27 @@ export function hasGoogleApiKey(): boolean {
  * Ensures consistent API calling limits, tokenisation caps, and retry resilience.
  */
 export function createAgentLLM(options: AgentLLMOptions = {}) {
- // Telemetry is attached per-invocation (see telemetryHandler in
- // telemetry.ts), NOT as a constructor callback: constructor-bound
- // callbacks force a callback-manager merge at every nesting level of the
- // react-agent subgraphs, which registered the stream handler multiple
- // times and made every streamed token reach clients 3x.
- let apiKey = resolveGoogleApiKey();
- if (!apiKey) {
- // Some @langchain/google-genai versions still read process.env even when
- // `apiKey` is passed. Seed a non-secret placeholder so `next build` can
- // evaluate agent modules on Dependabot/preview deploys without secrets.
- apiKey = 'BUILD_TIME_PLACEHOLDER';
- if (!process.env.GOOGLE_API_KEY) {
- process.env.GOOGLE_API_KEY = apiKey;
- }
- }
+  // Telemetry is attached per-invocation (see telemetryHandler in
+  // telemetry.ts), NOT as a constructor callback: constructor-bound
+  // callbacks force a callback-manager merge at every nesting level of the
+  // react-agent subgraphs, which registered the stream handler multiple
+  // times and made every streamed token reach clients 3x.
+  let apiKey = resolveGoogleApiKey();
+  if (!apiKey) {
+    // Some @langchain/google-genai versions still read process.env even when
+    // `apiKey` is passed. Seed a non-secret placeholder so `next build` can
+    // evaluate agent modules on Dependabot/preview deploys without secrets.
+    apiKey = 'BUILD_TIME_PLACEHOLDER';
+    if (!process.env.GOOGLE_API_KEY) {
+      process.env.GOOGLE_API_KEY = apiKey;
+    }
+  }
 
- return new ChatGoogleGenerativeAI({
- model: options.model || 'gemini-2.5-flash',
- temperature: options.temperature ?? 0.2,
- maxOutputTokens: options.maxOutputTokens || 1024,
- maxRetries: options.maxRetries ?? 3,
- apiKey,
- });
+  return new ChatGoogleGenerativeAI({
+    model: options.model || 'gemini-2.5-flash',
+    temperature: options.temperature ?? 0.2,
+    maxOutputTokens: options.maxOutputTokens || 1024,
+    maxRetries: options.maxRetries ?? 3,
+    apiKey,
+  });
 }

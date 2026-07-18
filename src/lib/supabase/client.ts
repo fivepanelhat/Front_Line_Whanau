@@ -7,8 +7,5 @@ import { env } from '@/env';
  * Safe to call in Client Components and browser hooks.
  */
 export function createClient() {
- return createBrowserClient(
- env.NEXT_PUBLIC_SUPABASE_URL,
- env.NEXT_PUBLIC_SUPABASE_ANON_KEY
- );
+  return createBrowserClient(env.NEXT_PUBLIC_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 }

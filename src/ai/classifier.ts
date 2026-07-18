@@ -11,26 +11,34 @@ import { createAgentLLM } from './llm';
  */
 
 export type Intent =
- | 'RESEARCH'
- | 'PLANNING'
- | 'EXECUTION'
- | 'CLINICAL'
- | 'ADVOCACY'
- | 'TRANSLATE'
- | 'NUTRITION'
- | 'CULTURAL'
- | 'LOCAL_SERVICES'
- | 'COMPLEX';
+  | 'RESEARCH'
+  | 'PLANNING'
+  | 'EXECUTION'
+  | 'CLINICAL'
+  | 'ADVOCACY'
+  | 'TRANSLATE'
+  | 'NUTRITION'
+  | 'CULTURAL'
+  | 'LOCAL_SERVICES'
+  | 'COMPLEX';
 
 const INTENTS: Intent[] = [
- 'RESEARCH', 'PLANNING', 'EXECUTION', 'CLINICAL', 'ADVOCACY',
- 'TRANSLATE', 'NUTRITION', 'CULTURAL', 'LOCAL_SERVICES', 'COMPLEX',
+  'RESEARCH',
+  'PLANNING',
+  'EXECUTION',
+  'CLINICAL',
+  'ADVOCACY',
+  'TRANSLATE',
+  'NUTRITION',
+  'CULTURAL',
+  'LOCAL_SERVICES',
+  'COMPLEX',
 ];
 
 const intentClassifier = createAgentLLM({
- model: 'gemini-2.5-flash',
- temperature: 0,
- maxOutputTokens: 1024,
+  model: 'gemini-2.5-flash',
+  temperature: 0,
+  maxOutputTokens: 1024,
 });
 
 const SYSTEM_PROMPT = `You are an intent classifier for a preterm whanau support system in Aotearoa New Zealand.
@@ -50,26 +58,26 @@ Classify the user's query into exactly one of these categories:
 Respond with ONLY one word: RESEARCH, PLANNING, EXECUTION, CLINICAL, ADVOCACY, TRANSLATE, NUTRITION, CULTURAL, LOCAL_SERVICES, or COMPLEX.`;
 
 export async function classifyIntent(query: string, history?: BaseMessage[]): Promise<Intent> {
- // Follow-ups like "how much is it per week?" are unclassifiable in
- // isolation - give the classifier a compact view of the recent turns.
- const recent = (history || [])
- .slice(-4, -1) // last few turns, excluding the current query itself
- .map((m) => {
- const role = m._getType?.() === 'human' ? 'User' : 'Assistant';
- const text = typeof m.content === 'string' ? m.content : JSON.stringify(m.content);
- return `${role}: ${text.slice(0, 200)}`;
- })
- .join('\n');
+  // Follow-ups like "how much is it per week?" are unclassifiable in
+  // isolation - give the classifier a compact view of the recent turns.
+  const recent = (history || [])
+    .slice(-4, -1) // last few turns, excluding the current query itself
+    .map((m) => {
+      const role = m._getType?.() === 'human' ? 'User' : 'Assistant';
+      const text = typeof m.content === 'string' ? m.content : JSON.stringify(m.content);
+      return `${role}: ${text.slice(0, 200)}`;
+    })
+    .join('\n');
 
- const userContent = recent
- ? `Recent conversation:\n${recent}\n\nCurrent query to classify: ${query}`
- : query;
+  const userContent = recent
+    ? `Recent conversation:\n${recent}\n\nCurrent query to classify: ${query}`
+    : query;
 
- const response = await intentClassifier.invoke([
- new SystemMessage(SYSTEM_PROMPT),
- new HumanMessage(userContent),
- ]);
+  const response = await intentClassifier.invoke([
+    new SystemMessage(SYSTEM_PROMPT),
+    new HumanMessage(userContent),
+  ]);
 
- const intent = response.content.toString().trim().toUpperCase() as Intent;
- return INTENTS.includes(intent) ? intent : 'COMPLEX';
+  const intent = response.content.toString().trim().toUpperCase() as Intent;
+  return INTENTS.includes(intent) ? intent : 'COMPLEX';
 }

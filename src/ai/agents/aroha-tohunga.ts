@@ -1,16 +1,17 @@
-import { BaseAgent } from "./base";
-import { AgentState } from "@/ai/types";
+import { BaseAgent } from './base';
+import { AgentState } from '@/ai/types';
 
 export class ArohaTohunga extends BaseAgent {
- constructor() {
- super({
- name: "aroha_tohunga",
- description: "Translates complex medical information into clear, empathetic language for whanau",
- systemPrompt: `You are Aroha Tohunga. You specialise in translating medical and clinical information about preterm birth and neonatal care into plain, hopeful, and culturally safe language for parents and whanau in Aotearoa New Zealand.`,
- });
- }
+  constructor() {
+    super({
+      name: 'aroha_tohunga',
+      description:
+        'Translates complex medical information into clear, empathetic language for whanau',
+      systemPrompt: `You are Aroha Tohunga. You specialise in translating medical and clinical information about preterm birth and neonatal care into plain, hopeful, and culturally safe language for parents and whanau in Aotearoa New Zealand.`,
+    });
+  }
 
- getSystemPrompt(state: AgentState): string {
- return this.config.systemPrompt;
- }
+  getSystemPrompt(state: AgentState): string {
+    return this.config.systemPrompt;
+  }
 }

@@ -9,9 +9,9 @@ import { LegacyBaseAgent, AgentResponse, OrchestrationContext } from './types';
 // streaming UI showed only the classifier's intent label). Now a real
 // planning agent.
 const pathwayReactAgent = createReactAgent({
- llm: createAgentLLM({ temperature: 0.2, maxOutputTokens: 2048 }),
- tools: [webSearchTool],
- prompt: `You are the Whanau Pathway Architect for families of preterm babies in Aotearoa New Zealand.
+  llm: createAgentLLM({ temperature: 0.2, maxOutputTokens: 2048 }),
+  tools: [webSearchTool],
+  prompt: `You are the Whanau Pathway Architect for families of preterm babies in Aotearoa New Zealand.
 Your job is to answer "how do I..." and "what are the steps..." questions with a clear, practical, step-by-step plan tailored to the user's situation.
 
 Rules:
@@ -23,27 +23,27 @@ Rules:
 });
 
 export class WhanauPathwayArchitect implements LegacyBaseAgent {
- name = "Whanau Pathway Architect";
- description = "Designs clear, culturally safe support pathways";
+  name = 'Whanau Pathway Architect';
+  description = 'Designs clear, culturally safe support pathways';
 
- async process(query: string, context?: OrchestrationContext): Promise<AgentResponse> {
- const result = await pathwayReactAgent.invoke({
- messages: buildAgentMessages(query, context),
- });
+  async process(query: string, context?: OrchestrationContext): Promise<AgentResponse> {
+    const result = await pathwayReactAgent.invoke({
+      messages: buildAgentMessages(query, context),
+    });
 
- const finalMessage = result.messages[result.messages.length - 1];
- let content = finalMessage.content as any;
- if (Array.isArray(content)) {
- content = content.map((c: any) => c.text || JSON.stringify(c)).join(' ');
- } else if (typeof content !== 'string') {
- content = String(content);
- }
+    const finalMessage = result.messages[result.messages.length - 1];
+    let content = finalMessage.content as any;
+    if (Array.isArray(content)) {
+      content = content.map((c: any) => c.text || JSON.stringify(c)).join(' ');
+    } else if (typeof content !== 'string') {
+      content = String(content);
+    }
 
- return {
- content,
- confidence: 0.8,
- agentUsed: this.name,
- requiresHumanReview: false,
- };
- }
+    return {
+      content,
+      confidence: 0.8,
+      agentUsed: this.name,
+      requiresHumanReview: false,
+    };
+  }
 }
