@@ -37,7 +37,7 @@ export default function PortalsLayout({ children }: { children: React.ReactNode 
       <nav aria-label="Portal" className="border-border bg-bg-secondary/80 border-b backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
           <div className="text-text-primary text-lg font-semibold sm:text-xl">
-            Front Line Whanau
+            Front Line Whānau
           </div>
           <PortalSwitcher />
         </div>

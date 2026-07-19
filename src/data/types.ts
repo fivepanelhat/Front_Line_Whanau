@@ -43,7 +43,7 @@ export interface Service {
   hours?: string;
   /** Machine-readable availability for filtering. */
   availability?: '24/7' | 'business-hours' | 'varies';
-  /** What they actually offer whanau. */
+  /** What they actually offer whānau. */
   description: string;
   /**
    * True for life-safety / acute distress lines. The trauma-informed urgent-help
@@ -64,7 +64,7 @@ export const CATEGORY_LABELS: Record<ServiceCategory, string> = {
   financial: 'Financial Support',
   housing: 'Housing & Tenancy',
   legal: 'Legal & Advocacy',
-  community: 'Community & Whanau',
+  community: 'Community & Whānau',
   'child-protection': 'Child Protection & Family',
   emergency: 'Emergency',
   wellness: 'Wellness Centres',

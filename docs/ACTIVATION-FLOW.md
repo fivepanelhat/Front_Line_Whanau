@@ -1,6 +1,6 @@
 # Activation Flow - Audit -> Playbook -> Weaver
 
-How a whanau request moves through the Activation Auditor inside Aether,
+How a whānau request moves through the Activation Auditor inside Aether,
 where human-in-the-loop (HITL) review happens, and how cultural safety is
 maintained end to end.
 
@@ -11,7 +11,7 @@ at `src/ai/agents/activation-auditor.ts`.
 ## The flow
 
 ```
-whanau input -- consent gate -- Aether Summit (supervisor)
+whānau input -- consent gate -- Aether Summit (supervisor)
  | deterministic activation route
  
  Activation Auditor
@@ -33,7 +33,7 @@ whanau input -- consent gate -- Aether Summit (supervisor)
 
 ## Step by step
 
-1. **Input (privacy-preserving).** A whanau member fills the short intake
+1. **Input (privacy-preserving).** A whānau member fills the short intake
  (every field optional: gestational context, need areas, cultural priority,
  coarse urban/rural location) or simply types "we just got home with our
  twins and I don't know where to start". No names, NHI numbers, or contact
@@ -60,8 +60,8 @@ whanau input -- consent gate -- Aether Summit (supervisor)
 6. **The audit.** Deterministic, curated logic (no model call) merges
  explicit needs with needs inferred from the sanitised text, then selects
  plays from a curated library of trusted NZ providers:
- - kaupapa Maori priority adds the cultural play (Whanau Ora pathways);
- - rural whanau only receive remote-accessible pathways;
+ - kaupapa Māori priority adds the cultural play (Whānau Ora pathways);
+ - rural whānau only receive remote-accessible pathways;
  - the multiples community play is always offered (core kaupapa);
  - every play has 1-4 steps with effort estimates and named providers.
 
@@ -81,18 +81,18 @@ whanau input -- consent gate -- Aether Summit (supervisor)
  culturally grounded, the playbook carries a `weaverTrigger` - a theme,
  audience, and cultural elements only, never personal details. The UI
  offers it as an invitation ("we can weave a short story for your
- whanau"). Nothing is generated unless the whanau says yes:
+ whānau"). Nothing is generated unless the whānau says yes:
  `consentRequired` is a literal `true` in the schema.
 
 10. **Cultural safety on the story.** When triggered, the Narrative Weaver's
  output passes cultural safety review (Toroa / cultural navigator, plus
  HITL for anything involving tikanga, karakia, or whakapapa) before it
- reaches the whanau.
+ reaches the whānau.
 
 ## Worked example
 
 **Input:** *"Our twins are in NICU in New Plymouth, we're on one income and
-I'm exhausted. We'd love kaupapa Maori support."* (rural, te ao Maori
+I'm exhausted. We'd love kaupapa Māori support."* (rural, te ao Māori
 priority)
 
 - Sanitised; no crisis terms -> no urgent banner.

@@ -31,10 +31,10 @@ describe('useLocalStorage', () => {
     const { result } = renderHook(() => useLocalStorage<{ name: string }>('obj-key', { name: '' }));
 
     act(() => {
-      result.current[1]({ name: 'Whanau' });
+      result.current[1]({ name: 'Whānau' });
     });
 
-    expect(result.current[0]).toEqual({ name: 'Whanau' });
+    expect(result.current[0]).toEqual({ name: 'Whānau' });
   });
 
   it('supports a function updater', () => {

@@ -21,7 +21,7 @@ export default async function AdminReviewQueue() {
       id: 'req_123',
       threadId: 'thread_123',
       agent: 'cultural_safety_guardian',
-      query: 'Can you recommend a culturally safe way to introduce my pepi to solid foods?',
+      query: 'Can you recommend a culturally safe way to introduce my pēpi to solid foods?',
       proposedResponse:
         'Kia ora! Introducing solids is a beautiful milestone. I recommend speaking with your Plunket nurse...',
       status: 'pending',

@@ -1,46 +1,46 @@
 {
  "resources": {
- "title": "Nga Rauemi me nga Arataki",
- "searchPlaceholder": "Rapua nga arataki me nga rauemi...",
- "categories": "Nga kawai"
+ "title": "Ngā Rauemi me ngā Arataki",
+ "searchPlaceholder": "Rapua ngā arataki me ngā rauemi...",
+ "categories": "Ngā kāwai"
  },
  "portal": {
  "parent": {
- "welcome": "Nau mai ki to whatunga whanau",
- "subtitle": "To wahi mataora mo te tautoko, mo nga mohiotanga, me te hono.",
- "quickLinks": "Nga hononga tere",
- "recentResources": "Nga rauemi hou",
- "myDocuments": "Oku tuhinga",
- "myConsent": "Nga tautuhinga tumataiti"
+ "welcome": "Nau mai ki tō whatunga whānau",
+ "subtitle": "Tō wāhi mataora mō te tautoko, mō ngā mōhiotanga, me te hono.",
+ "quickLinks": "Ngā hononga tere",
+ "recentResources": "Ngā rauemi hou",
+ "myDocuments": "Ōku tuhinga",
+ "myConsent": "Ngā tautuhinga tūmataiti"
  },
  "practitioner": {
  "welcome": "Whatunga kaimahi hauora",
- "subtitle": "Nga taputapu me nga rauemi mo nga kaimahi hauora ngaio me nga whakahaere tautoko.",
- "manageListings": "Whakahaere nga rarangi",
- "resources": "Nga rauemi haumaru",
- "guidelines": "Nga aratohu me nga tikanga"
+ "subtitle": "Ngā taputapu me ngā rauemi mō ngā kaimahi hauora ngaio me ngā whakahaere tautoko.",
+ "manageListings": "Whakahaere ngā rārangi",
+ "resources": "Ngā rauemi haumaru",
+ "guidelines": "Ngā aratohu me ngā tikanga"
  }
  },
  "privacy": {
- "title": "Tumataiti me te Rangatiratanga o nga Raraunga",
- "description": "Kei a koe te mana o o raraunga. E whai ana matou i nga matapono o Te Mana Raraunga me te Ture Tumataiti o Aotearoa.",
- "yourData": "O Raraunga, To Mana",
- "encryption": "Kei te whakamuna nga tuhinga, a, kei te tiakina pai."
+ "title": "Tūmataiti me te Rangatiratanga o ngā Raraunga",
+ "description": "Kei a koe te mana o ō raraunga. E whai ana mātou i ngā mātāpono o Te Mana Raraunga me te Ture Tūmataiti o Aotearoa.",
+ "yourData": "Ō Raraunga, Tō Mana",
+ "encryption": "Kei te whakamuna ngā tuhinga, ā, kei te tiakina pai."
  },
  "consent": {
  "title": "Whakaae me te Tiri",
- "subtitle": "Kei a koe te mana o o mohiohio. Arotakehia, hurihia hoki o hiahia i nga wa katoa.",
- "manage": "Whakahaerehia ko wai ka ahei ki te kite i o mohiohio",
- "records": "Nga Tuhinga Whakaae",
- "analyticsTitle": "Tataritanga whakamahi",
- "analyticsDescription": "Awhina mai i a matou ki te whakapai ake i te papatono ma te tohatoha raraunga whakamahi kore-ingoa. Kaore he mohiohio whaiaro e kohia ana.",
- "supportTitle": "Tuhono tautoko a-hoa",
- "supportDescription": "Tukua matou ki te tutohu i nga hononga ki etahi atu whanau i nga ahuatanga orite.",
+ "subtitle": "Kei a koe te mana o ō mōhiohio. Arotakehia, hurihia hoki ō hiahia i ngā wā katoa.",
+ "manage": "Whakahaerehia ko wai ka āhei ki te kite i ō mōhiohio",
+ "records": "Ngā Tuhinga Whakaae",
+ "analyticsTitle": "Tātaritanga whakamahi",
+ "analyticsDescription": "Āwhina mai i a mātou ki te whakapai ake i te papatono mā te tohatoha raraunga whakamahi kore-ingoa. Kāore he mōhiohio whaiaro e kohia ana.",
+ "supportTitle": "Tūhono tautoko ā-hoa",
+ "supportDescription": "Tukua mātou ki te tūtohu i ngā hononga ki ētahi atu whānau i ngā āhuatanga ōrite.",
  "grant": "Kei te pai",
- "revoke": "Kaore e pai",
+ "revoke": "Kāore e pai",
  "granted": "Kei te whakaae ana",
  "revoked": "Kei te whakakahore ana",
  "savedAt": "I whakahou whakamutunga",
- "disclaimer": "Ka taea e koe te huri i to aheitanga i nga wa katoa. Ko te huri i to aheitanga kaore e pa ana ki nga ratonga kua riro ke."
+ "disclaimer": "Ka taea e koe te huri i tō āheitanga i ngā wā katoa. Ko te huri i tō āheitanga kāore e pā ana ki ngā ratonga kua riro ke."
  }
 }

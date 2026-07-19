@@ -16,7 +16,7 @@ import { z } from 'zod';
  */
 
 // ---------------------------------------------------------------------------
-// Audit input (what whanau / partners give us - everything optional)
+// Audit input (what whānau / partners give us - everything optional)
 // ---------------------------------------------------------------------------
 
 export const GestationalContextSchema = z.enum([
@@ -32,14 +32,14 @@ export const NeedAreaSchema = z.enum([
   'feeding', // breastfeeding, expressing, tube feeding
   'financial', // entitlements, WINZ, Best Start
   'emotional', // wellbeing, anxiety, grief, exhaustion
-  'cultural', // tikanga, karakia, whanau involvement
+  'cultural', // tikanga, karakia, whānau involvement
   'twins_multiples', // multiple-birth specific support
   'discharge_home', // preparing for or adjusting to home
   'partner_org', // a partner organisation seeking guidance
 ]);
 
 export const CulturalPrioritySchema = z.enum([
-  'te_ao_maori', // kaupapa Maori services, tikanga-led support
+  'te_ao_maori', // kaupapa Māori services, tikanga-led support
   'pasifika',
   'faith_based',
   'none_stated',
@@ -72,15 +72,15 @@ export type LocationContext = z.infer<typeof LocationContextSchema>;
 // ---------------------------------------------------------------------------
 
 export const ResourcePathwaySchema = z.object({
-  /** Provider name, e.g. "Whanau Awhina Plunket". */
+  /** Provider name, e.g. "Whānau Āwhina Plunket". */
   provider: z.string(),
   /** Official URL or free phone number - trusted NZ sources only. */
   contact: z.string(),
-  /** What this provider actually does for the whanau, in plain language. */
+  /** What this provider actually does for the whānau, in plain language. */
   whatTheyOffer: z.string(),
-  /** Works without travel - phone/online - so rural whanau aren't excluded. */
+  /** Works without travel - phone/online - so rural whānau aren't excluded. */
   remoteAccessible: z.boolean(),
-  /** True for kaupapa Maori / culturally grounded services. */
+  /** True for kaupapa Māori / culturally grounded services. */
   kaupapaMaori: z.boolean().default(false),
 });
 
@@ -96,7 +96,7 @@ export const PlaySchema = z.object({
   category: NeedAreaSchema,
   /** Short, plain-language title rendered as the card heading. */
   title: z.string(),
-  /** Why this play was included for THIS whanau - the personalisation. */
+  /** Why this play was included for THIS whānau - the personalisation. */
   whyThisMatters: z.string(),
   /** 1-4 immediately actionable steps. Activation over information. */
   steps: z.array(PlayStepSchema).min(1).max(4),
@@ -119,7 +119,7 @@ export const PlaySchema = z.object({
  */
 export const WeaverTriggerSchema = z.object({
   shouldTrigger: z.boolean(),
-  /** e.g. "strength through the NICU journey", "welcoming pepi home". */
+  /** e.g. "strength through the NICU journey", "welcoming pēpi home". */
   theme: z.string().optional(),
   audience: z.enum(['parents', 'siblings', 'wider_whanau']).optional(),
   /** Cultural elements to weave in - reviewed by cultural safety before use. */
@@ -176,8 +176,8 @@ export type KaitiakiPlaybook = z.infer<typeof KaitiakiPlaybookSchema>;
  * renderer, and tests share one source of truth.
  */
 export const PLAYBOOK_DISCLAIMER =
-  'This playbook is general guidance to help your whanau find support - it is ' +
+  'This playbook is general guidance to help your whānau find support - it is ' +
   'not medical, financial, legal, or cultural advice. Always confirm ' +
   'entitlements with the agency involved and discuss anything about your ' +
-  "pepi's health with your medical team. If you are worried about your baby " +
+  "pēpi's health with your medical team. If you are worried about your baby " +
   'right now, call Healthline on 0800 611 116 or, in an emergency, 111.';

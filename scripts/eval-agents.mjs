@@ -69,7 +69,7 @@ const CASES = [
  name: 'advocacy drafts instead of deflecting (was: review void)',
  query: 'Draft an email to WINZ challenging their decision to decline my application',
  minLength: 300,
- anyOf: [/dear|kia ora|tena/i, /subject:/i, /right/i],
+ anyOf: [/dear|kia ora|tēnā/i, /subject:/i, /right/i],
  agents: ['kahu'],
  },
  {

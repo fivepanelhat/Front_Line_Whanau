@@ -4,7 +4,7 @@ const features = [
     iconClass: 'feature-icon--pathway',
     title: 'Personalised Pathways',
     description:
-      'Guided support tailored to your whanau situation - financial assistance, housing, health services, and practical help, all in one place.',
+      'Guided support tailored to your whānau situation - financial assistance, housing, health services, and practical help, all in one place.',
   },
   {
     icon: '📝',
@@ -53,7 +53,7 @@ export function Features() {
       <div className="relative mb-16 text-center">
         <p className="section-label">Key Features</p>
         <h2 className="section-title">
-          Built for Whanau, <span className="text-gradient">By Design</span>
+          Built for Whānau, <span className="text-gradient">By Design</span>
         </h2>
         <p className="section-description">
           Every feature is designed with cultural safety, privacy, and trauma-informed care at its

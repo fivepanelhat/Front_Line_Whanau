@@ -26,7 +26,7 @@ export function WelcomeModal() {
 
         <div className="text-text-secondary mb-6 space-y-4 text-sm">
           <p>
-            You are testing the <strong>Front Line Whanau Assistant</strong>. We&apos;re so glad
+            You are testing the <strong>Front Line Whānau Assistant</strong>. We&apos;re so glad
             you&apos;re here to help us shape this tool!
           </p>
           <div className="rounded-lg border border-yellow-500/20 bg-yellow-500/10 p-4 text-yellow-300">

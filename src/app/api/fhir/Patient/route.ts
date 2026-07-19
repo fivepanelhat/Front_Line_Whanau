@@ -105,7 +105,7 @@ export async function GET(req: NextRequest) {
       communication: [
         {
           language: {
-            coding: [{ system: 'urn:ietf:bcp:47', code: 'mi', display: 'Te Reo Maori' }],
+            coding: [{ system: 'urn:ietf:bcp:47', code: 'mi', display: 'Te Reo Māori' }],
           },
           preferred: true,
         },

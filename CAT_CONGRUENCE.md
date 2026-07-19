@@ -8,7 +8,7 @@ This repository is part of the **Kiwi Edge AI Stack** - hybrid edge (RPi 5 16GB 
 
 ## Investor one-liner (global)
 
-> Coastal Alpine Tech is building the sovereign hybrid edge-AI stack for Aotearoa's primary industries and founders - local-first RPi 5 + Hailo nodes, multi-model fleets (Grok/Claude/Gemini), Te Mana Raraunga data sovereignty, and white-label EDA tools - actively seeking collaboration with Venture Taranaki, startups.com investors, and the Kotahitanga Investment Fund to scale intergenerational Maori and regional economic outcomes.
+> Coastal Alpine Tech is building the sovereign hybrid edge-AI stack for Aotearoa's primary industries and founders - local-first RPi 5 + Hailo nodes, multi-model fleets (Grok/Claude/Gemini), Te Mana Raraunga data sovereignty, and white-label EDA tools - actively seeking collaboration with Venture Taranaki, startups.com investors, and the Kotahitanga Investment Fund to scale intergenerational Māori and regional economic outcomes.
 
 **Collaboration:** Open to Venture Taranaki, startups.com investors, and Kotahitanga Investment Fund - **HITL + cultural advisory** for any formal approach. No implied existing deals.
 
@@ -23,7 +23,7 @@ This repository is part of the **Kiwi Edge AI Stack** - hybrid edge (RPi 5 16GB 
 | Shared SDK | Coastal-Alpine-Core, coastal-alpine-stack |
 | Field | Sovereign-Edge-Firmware |
 | Domains | **Byte Size Kai** (Blue-Moon-Portal), SoilGuard-Portal, AquaGuard-Portal, Sting-Operation-AI |
-| Whanau / social | whanau-preterm-support-hub, Front_Line_Whanau |
+| Whānau / social | whanau-preterm-support-hub, Front_Line_Whanau |
 | Privacy util | CAT-mail |
 
 ## Autonomy ceiling (all agentic work)
@@ -58,13 +58,13 @@ Canonical full fleet + runtime: **NZ-Start-Up** (`skills/`, `nz-startup` CLI).
 
 ## Licence
 
-Product IP is generally **dual proprietary + commercial** unless a specific repo declares open source (e.g. some whanau hubs). Do not re-licence without founder decision.
+Product IP is generally **dual proprietary + commercial** unless a specific repo declares open source (e.g. some whānau hubs). Do not re-licence without founder decision.
 
 ## This repository
 
 | Field | Value |
 |-------|-------|
 | **Repo** | `Front_Line_Whanau` |
-| **Role in stack** | Frontline whanau services platform |
+| **Role in stack** | Frontline whānau services platform |
 | **Agent fleet** | `.github/agent-fleet/` |
 | **Canonical skills runtime** | [NZ-Start-Up](https://github.com/fivepanelhat/NZ-Start-Up) |

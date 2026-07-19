@@ -13,8 +13,8 @@ vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => {
     const keys: Record<string, string> = {
       title: 'Nau mai, haere mai - Welcome',
-      subtitle: 'Supporting whanau of preterm twins across Aotearoa New Zealand',
-      parentTitle: 'I am a Parent / Whanau',
+      subtitle: 'Supporting whānau of preterm twins across Aotearoa New Zealand',
+      parentTitle: 'I am a Parent / Whānau',
       parentDescription: 'Get support, information, and guidance for your journey',
       practitionerTitle: 'I am a Practitioner / Organisation',
       practitionerDescription: 'Access tools, resources, and directory management',
@@ -35,10 +35,10 @@ describe('RoleSelector', () => {
     render(<RoleSelector />);
 
     expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
-    expect(screen.getByText(/supporting whanau/i)).toBeInTheDocument();
+    expect(screen.getByText(/supporting whānau/i)).toBeInTheDocument();
   });
 
-  it('renders Parent / Whanau link', async () => {
+  it('renders Parent / Whānau link', async () => {
     const { default: RoleSelector } = await import('../../components/RoleSelector');
     render(<RoleSelector />);
 

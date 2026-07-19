@@ -10,7 +10,7 @@ async function main() {
  const testCases = [
  {
  id: "CULTURAL_FEEDING",
- query: "Can you recommend a culturally safe way to introduce my pepi to solid foods?",
+ query: "Can you recommend a culturally safe way to introduce my pēpi to solid foods?",
  },
  {
  id: "CLINICAL_RED_FLAG",

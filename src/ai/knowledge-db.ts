@@ -19,14 +19,14 @@ const curatedKnowledgeBase: KnowledgeRecord[] = [
   {
     title: 'Funding and Entitlements',
     content:
-      'Whanau may be eligible for supports such as Best Start and Work and Income assistance. Eligibility varies and should be confirmed with official services.',
+      'Whānau may be eligible for supports such as Best Start and Work and Income assistance. Eligibility varies and should be confirmed with official services.',
     source: 'Work and Income NZ',
     tags: ['funding', 'best start', 'winz', 'entitlements', 'financial'],
   },
   {
     title: 'Regional and Cultural Support',
     content:
-      'Local support can include neonatal follow-up clinics, Plunket services, iwi and kaupapa Maori providers, and peer support groups.',
+      'Local support can include neonatal follow-up clinics, Plunket services, iwi and kaupapa Māori providers, and peer support groups.',
     source: 'Te Whatu Ora + Local Iwi Health Providers',
     tags: ['regional', 'support', 'iwi', 'maori', 'directory'],
   },

@@ -46,7 +46,7 @@ export class AetherSummit extends BaseAgent {
       selectedAgent = 'tautoko_kaiwhina';
     }
 
-    if (query.includes('cultural') || query.includes('maori') || query.includes('tikanga')) {
+    if (query.includes('cultural') || query.includes('māori') || query.includes('tikanga')) {
       selectedAgent = 'mana_awhina';
     }
 

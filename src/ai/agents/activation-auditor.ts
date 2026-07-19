@@ -77,7 +77,7 @@ const URGENT_CONTACTS: ResourcePathway[] = [
   {
     provider: 'Emergency services',
     contact: '111',
-    whatTheyOffer: 'Immediate emergency help for you or your pepi.',
+    whatTheyOffer: 'Immediate emergency help for you or your pēpi.',
     remoteAccessible: true,
     kaupapaMaori: false,
   },
@@ -127,7 +127,7 @@ const NEED_KEYWORDS: Record<NeedArea, string[]> = {
     'stress',
     'grief',
   ],
-  cultural: ['tikanga', 'karakia', 'marae', 'iwi', 'whakapapa', 'maori', 'maori', 'kaupapa'],
+  cultural: ['tikanga', 'karakia', 'marae', 'iwi', 'whakapapa', 'māori', 'maori', 'kaupapa'],
   twins_multiples: ['twin', 'multiple', 'triplet'],
   discharge_home: ['discharge', 'going home', 'take home', 'home soon', 'coming home'],
   partner_org: [
@@ -135,7 +135,7 @@ const NEED_KEYWORDS: Record<NeedArea, string[]> = {
     'our service',
     'referral pathway',
     'we support whanau',
-    'we support whanau',
+    'we support whānau',
   ],
 };
 
@@ -167,7 +167,7 @@ const MULTIPLES_NZ: ResourcePathway = {
 };
 
 const PLUNKET: ResourcePathway = {
-  provider: 'Whanau Awhina Plunket',
+  provider: 'Whānau Āwhina Plunket',
   contact: 'PlunketLine 0800 933 922',
   whatTheyOffer: '24/7 free advice from Plunket nurses, plus home visits after discharge.',
   remoteAccessible: true,
@@ -207,9 +207,9 @@ const PADA: ResourcePathway = {
 };
 
 const WHANAU_ORA: ResourcePathway = {
-  provider: 'Whanau Ora',
+  provider: 'Whānau Ora',
   contact: 'https://www.whanauora.nz',
-  whatTheyOffer: 'Kaupapa Maori, whanau-centred support through local navigators.',
+  whatTheyOffer: 'Kaupapa Māori, whānau-centred support through local navigators.',
   remoteAccessible: true,
   kaupapaMaori: true,
 };
@@ -224,7 +224,7 @@ const CAB: ResourcePathway = {
 
 /**
  * One play template per need area. `whyThisMatters` is finished at
- * generation time with the whanau's gestational context.
+ * generation time with the whānau's gestational context.
  */
 const PLAY_LIBRARY: Record<NeedArea, Omit<Play, 'whyThisMatters'>> = {
   nicu_navigation: {
@@ -273,7 +273,7 @@ const PLAY_LIBRARY: Record<NeedArea, Omit<Play, 'whyThisMatters'>> = {
   financial: {
     id: 'play_financial',
     category: 'financial',
-    title: 'Check the entitlements most whanau miss',
+    title: 'Check the entitlements most whānau miss',
     steps: [
       {
         action: 'Check Best Start - it is paid per child, so twins qualify twice.',
@@ -297,7 +297,7 @@ const PLAY_LIBRARY: Record<NeedArea, Omit<Play, 'whyThisMatters'>> = {
   emotional: {
     id: 'play_emotional',
     category: 'emotional',
-    title: 'Look after yourself, not just your pepi',
+    title: 'Look after yourself, not just your pēpi',
     steps: [
       { action: 'Tell one trusted person how you are actually doing this week.', effort: '5 min' },
       {
@@ -311,7 +311,7 @@ const PLAY_LIBRARY: Record<NeedArea, Omit<Play, 'whyThisMatters'>> = {
     ],
     resources: [PADA, PLUNKET],
     reviewRequired: false,
-    integrationHint: "The hub's wellbeing companion is here for a korero whenever you need one.",
+    integrationHint: "The hub's wellbeing companion is here for a kōrero whenever you need one.",
   },
   cultural: {
     id: 'play_cultural',
@@ -319,21 +319,21 @@ const PLAY_LIBRARY: Record<NeedArea, Omit<Play, 'whyThisMatters'>> = {
     title: 'Keep tikanga at the centre of your journey',
     steps: [
       {
-        action: 'Ask your unit about its whanau room and how tikanga can be supported on the ward.',
+        action: 'Ask your unit about its whānau room and how tikanga can be supported on the ward.',
         effort: 'one question',
       },
       {
         action:
-          'Connect with a Whanau Ora navigator to bring kaupapa Maori support alongside clinical care.',
+          'Connect with a Whānau Ora navigator to bring kaupapa Māori support alongside clinical care.',
         effort: 'one phone call',
       },
     ],
     resources: [WHANAU_ORA],
     // Cultural guidance beyond safe triage is HITL-gated - the hub does
-    // not issue tikanga rulings; it connects whanau with people who can.
+    // not issue tikanga rulings; it connects whānau with people who can.
     reviewRequired: true,
     integrationHint:
-      "The hub's cultural navigator can help find kaupapa Maori services in your rohe.",
+      "The hub's cultural navigator can help find kaupapa Māori services in your rohe.",
   },
   twins_multiples: {
     id: 'play_twins_multiples',
@@ -384,7 +384,7 @@ const PLAY_LIBRARY: Record<NeedArea, Omit<Play, 'whyThisMatters'>> = {
     title: 'Plug your service into the preterm support network',
     steps: [
       {
-        action: 'Map which of your services are reachable by rural whanau without travel.',
+        action: 'Map which of your services are reachable by rural whānau without travel.',
         effort: '30 min',
       },
       {
@@ -400,10 +400,10 @@ const PLAY_LIBRARY: Record<NeedArea, Omit<Play, 'whyThisMatters'>> = {
 
 const CONTEXT_FRAMING: Record<GestationalContext, string> = {
   antenatal: 'you are preparing for a preterm arrival',
-  nicu_current: 'your pepi are in neonatal care right now',
-  recently_home: 'you have recently brought your pepi home',
+  nicu_current: 'your pēpi are in neonatal care right now',
+  recently_home: 'you have recently brought your pēpi home',
   established_home: 'you are settled at home with ongoing needs',
-  unspecified: 'you are supporting preterm pepi',
+  unspecified: 'you are supporting preterm pēpi',
 };
 
 // ---------------------------------------------------------------------------
@@ -449,11 +449,11 @@ export function runActivationAudit(rawInput: ActivationAuditInput): KaitiakiPlay
         : template.resources;
     return {
       ...template,
-      // Rural whanau only see pathways they can actually reach.
+      // Rural whānau only see pathways they can actually reach.
       resources: resources.length > 0 ? resources : template.resources,
       whyThisMatters: `Included because ${framing}${
         need === 'cultural' && culturalPriority === 'te_ao_maori'
-          ? ' and you asked for kaupapa Maori support'
+          ? ' and you asked for kaupapa Māori support'
           : ''
       }.`,
     };
@@ -469,7 +469,7 @@ export function runActivationAudit(rawInput: ActivationAuditInput): KaitiakiPlay
       ? 'We noticed you may need urgent support - those contacts come first. ' +
         'The plays below will still be here whenever you are ready.'
       : `Kia ora. Based on what you shared - ${framing} - here are ${plays.length} ` +
-        'practical plays your whanau can start today. Each one has small, ' +
+        'practical plays your whānau can start today. Each one has small, ' +
         'doable steps and trusted places to reach.',
     auditBasis: {
       gestationalContext,
@@ -485,7 +485,7 @@ export function runActivationAudit(rawInput: ActivationAuditInput): KaitiakiPlay
             theme:
               gestationalContext === 'nicu_current'
                 ? 'strength and connection through the NICU journey'
-                : 'welcoming pepi into the arms of their whanau',
+                : 'welcoming pēpi into the arms of their whānau',
             audience: 'parents' as const,
             culturalElements:
               culturalPriority === 'te_ao_maori' ? ['manaakitanga', 'whanaungatanga'] : [],
@@ -544,7 +544,7 @@ export function renderPlaybookMarkdown(playbook: KaitiakiPlaybook): string {
     lines.push('');
     lines.push('**Where to reach out:**');
     for (const r of play.resources) {
-      lines.push(`- **${r.provider}**${r.kaupapaMaori ? ' (kaupapa Maori)' : ''} - ${r.contact}`);
+      lines.push(`- **${r.provider}**${r.kaupapaMaori ? ' (kaupapa Māori)' : ''} - ${r.contact}`);
     }
     if (play.reviewRequired) {
       lines.push('');
@@ -555,7 +555,7 @@ export function renderPlaybookMarkdown(playbook: KaitiakiPlaybook): string {
 
   if (playbook.weaverTrigger.shouldTrigger) {
     lines.push(
-      '---\n*If it would help, we can weave a short story for your whanau ' +
+      '---\n*If it would help, we can weave a short story for your whānau ' +
         'about this journey - just say the word and we will create one together.*',
     );
     lines.push('');

@@ -6,7 +6,7 @@ export default function FundingPage() {
           Sustainable Funding & Operations
         </h1>
         <p className="mx-auto max-w-2xl text-base text-white/80 sm:text-lg">
-          How we sustain the platform to provide free, equitable support for all whanau across
+          How we sustain the platform to provide free, equitable support for all whānau across
           Aotearoa.
         </p>
       </div>
@@ -14,9 +14,9 @@ export default function FundingPage() {
       <div className="prose prose-invert prose-lg mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
         <h2>Our Funding Model</h2>
         <p>
-          Front Line Whanau operates as a not-for-profit initiative. Our primary goal is to remove
+          Front Line Whānau operates as a not-for-profit initiative. Our primary goal is to remove
           barriers to access, meaning the platform will{' '}
-          <strong>always remain free for parents and whanau</strong>. To achieve this, we rely on a
+          <strong>always remain free for parents and whānau</strong>. To achieve this, we rely on a
           diversified, sustainable funding and operations model.
         </p>
 
@@ -47,7 +47,7 @@ export default function FundingPage() {
           By utilizing modern, serverless architecture and open-source models, we keep our
           operational overhead extremely low. This ensures that every dollar funded goes directly
           into improving the user experience and expanding access to vital resources for preterm
-          whanau.
+          whānau.
         </p>
       </div>
     </div>

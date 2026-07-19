@@ -51,7 +51,7 @@ export function Header() {
           >
             F
           </span>
-          <span className="text-gradient font-heading">Front Line Whanau</span>
+          <span className="text-gradient font-heading">Front Line Whānau</span>
         </Link>
 
         <nav className="hidden items-center gap-1 text-sm font-medium md:flex">

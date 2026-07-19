@@ -6,7 +6,7 @@ export default function PartnershipsPage() {
           National Partnerships
         </h1>
         <p className="text-accent-ink/80 mx-auto max-w-2xl text-base sm:text-lg">
-          Collaborating to provide a seamless support ecosystem for preterm whanau in Aotearoa.
+          Collaborating to provide a seamless support ecosystem for preterm whānau in Aotearoa.
         </p>
       </div>
 
@@ -18,7 +18,7 @@ export default function PartnershipsPage() {
           <p className="text-text-secondary">
             We are working towards interoperability with national health systems. Our future FHIR
             (Fast Healthcare Interoperability Resources) integrations will allow clinical teams to
-            directly recommend resources to whanau securely.
+            directly recommend resources to whānau securely.
           </p>
         </div>
 
@@ -35,7 +35,7 @@ export default function PartnershipsPage() {
 
         <div className="bg-bg-secondary border-border rounded-xl border p-6 sm:p-8">
           <h2 className="text-text-primary mb-3 text-xl font-bold sm:mb-4 sm:text-2xl">
-            Plunket (Whanau Awhina)
+            Plunket (Whānau Āwhina)
           </h2>
           <p className="text-text-secondary">
             Transitioning from NICU to home is a critical period. We collaborate with Plunket to
@@ -50,7 +50,7 @@ export default function PartnershipsPage() {
           </h2>
           <p className="text-text-secondary">
             Partnering directly with local Iwi health providers ensures that our platform accurately
-            reflects the kaupapa Maori support services available in specific regions across
+            reflects the kaupapa Māori support services available in specific regions across
             Aotearoa.
           </p>
         </div>

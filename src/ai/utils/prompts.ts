@@ -5,7 +5,7 @@ export function getRoleAwareSystemPrompt(basePrompt: string, role?: UserRole): s
 
   const roleInstructions: Record<UserRole, string> = {
     parent: `
-You are speaking directly to a parent or whanau member. 
+You are speaking directly to a parent or whānau member. 
 Use clear, empathetic, non-technical language. 
 Avoid jargon. Explain terms simply. 
 Be supportive and hopeful. 

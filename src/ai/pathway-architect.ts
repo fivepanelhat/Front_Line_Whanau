@@ -11,7 +11,7 @@ import { LegacyBaseAgent, AgentResponse, OrchestrationContext } from './types';
 const pathwayReactAgent = createReactAgent({
   llm: createAgentLLM({ temperature: 0.2, maxOutputTokens: 2048 }),
   tools: [webSearchTool],
-  prompt: `You are the Whanau Pathway Architect for families of preterm babies in Aotearoa New Zealand.
+  prompt: `You are the Whānau Pathway Architect for families of preterm babies in Aotearoa New Zealand.
 Your job is to answer "how do I..." and "what are the steps..." questions with a clear, practical, step-by-step plan tailored to the user's situation.
 
 Rules:
@@ -23,7 +23,7 @@ Rules:
 });
 
 export class WhanauPathwayArchitect implements LegacyBaseAgent {
-  name = 'Whanau Pathway Architect';
+  name = 'Whānau Pathway Architect';
   description = 'Designs clear, culturally safe support pathways';
 
   async process(query: string, context?: OrchestrationContext): Promise<AgentResponse> {

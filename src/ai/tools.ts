@@ -82,7 +82,7 @@ export const getCulturalResourcesTool = createSafeTool(
   {
     name: 'get_cultural_resources',
     description:
-      'Retrieve culturally grounded support resources including iwi and kaupapa Maori providers.',
+      'Retrieve culturally grounded support resources including iwi and kaupapa Māori providers.',
     schema: z.object({
       query: z.string().describe('Search query'),
     }),
@@ -163,10 +163,10 @@ export const getEmotionalSupportResourcesTool = createSafeTool(
     });
     return {
       resources: [
-        'Little Miracles Trust - Peer support for preterm whanau',
+        'Little Miracles Trust - Peer support for preterm whānau',
         '1737 - Need to talk? Free 24/7 support',
         'Perinatal Anxiety & Depression Aotearoa (PADA)',
-        'Iwi Maori Mental Health & Addiction Services',
+        'Iwi Māori Mental Health & Addiction Services',
         'Local hospital perinatal mental health team',
       ],
       message:
@@ -345,7 +345,7 @@ export const getHospitalSocialWorkerInfoTool = createSafeTool(
     if (topic && servicesMap[topic]) {
       return {
         overview:
-          'Hospital Social Workers are free, confidential, and specialized in supporting whanau.',
+          'Hospital Social Workers are free, confidential, and specialized in supporting whānau.',
         detail: servicesMap[topic],
         disclaimer: 'Services are free and confidential.',
       };
@@ -353,7 +353,7 @@ export const getHospitalSocialWorkerInfoTool = createSafeTool(
 
     return {
       overview:
-        'Hospital Social Workers are free, confidential, and specialized in supporting whanau during their hospital stay.',
+        'Hospital Social Workers are free, confidential, and specialized in supporting whānau during their hospital stay.',
       services: [
         'Financial Support: Help navigating WINZ, filling out forms, and applying for the Preterm Baby Payment.',
         'Transport & Accommodation: Assisting with National Travel Assistance (NTA) registrations and referrals to Ronald McDonald House or hospital family flats.',
@@ -373,7 +373,7 @@ export const getHospitalFacilitiesInfoTool = createSafeTool(
   {
     name: 'get_hospital_facilities_info',
     description:
-      'Provides information about common hospital facilities, such as the cafeteria, front desk reception, booking accommodation (whanau rooms), parent lounges, showers, food options, and transport (drop-off zones, Ubers, taxis, buses).',
+      'Provides information about common hospital facilities, such as the cafeteria, front desk reception, booking accommodation (whānau rooms), parent lounges, showers, food options, and transport (drop-off zones, Ubers, taxis, buses).',
     schema: z.object({
       topic: z
         .enum([
@@ -396,12 +396,12 @@ export const getHospitalFacilitiesInfoTool = createSafeTool(
       reception:
         'The front desk reception is located at the main entrance. They can provide hospital maps, visitor passes, direct you to the NICU/SCBU, and give information about parking validation.',
       accommodation:
-        'To book a room or hospital accommodation (such as a Ronald McDonald House, whanau room, or hospital flat), you usually cannot book directly at reception. You must speak to a Hospital Social Worker or the NICU Charge Nurse who will submit a referral based on availability and criteria (like how far you live from the hospital).',
+        'To book a room or hospital accommodation (such as a Ronald McDonald House, whānau room, or hospital flat), you usually cannot book directly at reception. You must speak to a Hospital Social Worker or the NICU Charge Nurse who will submit a referral based on availability and criteria (like how far you live from the hospital).',
       facilities:
         'Hospitals typically have dedicated parent lounges (with tea/coffee making facilities), breast milk expressing rooms, and multi-faith prayer rooms or chapels. Ask your bedside nurse or ward clerk where these are located on your ward.',
       showers:
-        'Whanau showers are usually available in or near the NICU or maternity ward. Ask your bedside nurse where they are located. You may need to bring your own toiletries, though some wards can provide towels.',
-      food: 'Hospital supplied kai (meals) are typically provided for the admitted patient (e.g., the mother if she is on a postnatal ward), but usually not for partners or whanau staying in the NICU. You are welcome to bring your own food. Parent lounges usually have a fridge and microwave-make sure to clearly label your food with your name and date. For food deliveries like Uber Eats or Delivereasy, drivers cannot enter the wards; you must meet them at the main hospital entrance or designated drop-off zone.',
+        'Whānau showers are usually available in or near the NICU or maternity ward. Ask your bedside nurse where they are located. You may need to bring your own toiletries, though some wards can provide towels.',
+      food: 'Hospital supplied kai (meals) are typically provided for the admitted patient (e.g., the mother if she is on a postnatal ward), but usually not for partners or whānau staying in the NICU. You are welcome to bring your own food. Parent lounges usually have a fridge and microwave-make sure to clearly label your food with your name and date. For food deliveries like Uber Eats or Delivereasy, drivers cannot enter the wards; you must meet them at the main hospital entrance or designated drop-off zone.',
       transport:
         'Major hospitals have designated P5 or P10 drop-off/pick-up zones right outside the main entrance. This is where Ubers, Ola, and family members should drop you off. Taxi ranks are usually located immediately next to these main doors. For public transport, most hospitals have local bus stops either directly within the hospital grounds or just outside the main gates. Check your local council transport app for exact routes.',
     };
@@ -409,7 +409,7 @@ export const getHospitalFacilitiesInfoTool = createSafeTool(
     if (topic && facilitiesMap[topic]) {
       return {
         overview:
-          'Hospitals in Aotearoa provide various facilities to support whanau during their stay.',
+          'Hospitals in Aotearoa provide various facilities to support whānau during their stay.',
         facilityDetail: facilitiesMap[topic],
         disclaimer:
           'Specific facilities and opening hours vary by hospital. Please ask the ward clerk or front reception.',
@@ -418,7 +418,7 @@ export const getHospitalFacilitiesInfoTool = createSafeTool(
 
     return {
       overview:
-        'Hospitals in Aotearoa provide various facilities to support whanau during their stay.',
+        'Hospitals in Aotearoa provide various facilities to support whānau during their stay.',
       facilities: facilitiesMap,
       disclaimer:
         'Specific facilities and opening hours vary by hospital. Please ask the ward clerk or front reception for a hospital map or specific details for your location.',

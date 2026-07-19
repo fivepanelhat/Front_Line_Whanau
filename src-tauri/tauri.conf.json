@@ -1,6 +1,6 @@
 {
  "$schema": "https://schema.tauri.app/v2/tauri.conf.json",
- "productName": "Front Line Whanau",
+ "productName": "Front Line Whānau",
  "version": "0.4.0",
  "identifier": "nz.frontlinewhanau.app",
  "build": {
@@ -11,7 +11,7 @@
  "app": {
  "windows": [
  {
- "title": "Front Line Whanau",
+ "title": "Front Line Whānau",
  "width": 1200,
  "height": 800,
  "resizable": true,

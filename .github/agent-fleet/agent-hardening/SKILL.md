@@ -26,7 +26,7 @@ tags:
 
 ## Overview
 Cross-cutting security skill for **all Coastal Alpine Tech** agentic workstreams
-(Kiwi Edge stack, founder OS, domain portals, whanau products).
+(Kiwi Edge stack, founder OS, domain portals, whānau products).
 
 Canonical runtime enforcement: [NZ-Start-Up](https://github.com/fivepanelhat/NZ-Start-Up)
 (`nz_startup/hitl.py`, `agent_guardrails.py`, `untrusted.py`).

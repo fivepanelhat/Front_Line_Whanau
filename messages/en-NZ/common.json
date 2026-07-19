@@ -1,6 +1,6 @@
 {
  "common": {
- "welcome": "Welcome, whanau",
+ "welcome": "Welcome, whānau",
  "loading": "Loading...",
  "search": "Search",
  "submit": "Submit",
@@ -35,8 +35,8 @@
  "label": "Change language",
  "current": "Language",
  "english": "English (NZ)",
- "maori": "Te Reo Maori",
- "choosingMaori": "Switch to Te Reo Maori",
+ "maori": "Te Reo Māori",
+ "choosingMaori": "Switch to Te Reo Māori",
  "choosingEnglish": "Switch to English"
  },
  "errors": {
@@ -53,12 +53,12 @@
  "serverDescription": "We're experiencing a temporary issue. Please try again shortly."
  },
  "footer": {
- "tagline": "Supporting whanau across Aotearoa",
+ "tagline": "Supporting whānau across Aotearoa",
  "notMedicalAdvice": "This platform is not a substitute for professional medical advice.",
  "privacyPolicy": "Privacy policy",
  "terms": "Terms of use",
  "contact": "Contact",
  "acknowledgement": "We acknowledge the tangata whenua of Aotearoa and are committed to the principles of Te Tiriti o Waitangi.",
- "copyright": "Front Line Whanau. Built with aroha in Aotearoa."
+ "copyright": "Front Line Whānau. Built with aroha in Aotearoa."
  }
 }

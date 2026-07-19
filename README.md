@@ -19,13 +19,13 @@ Anti-hallucination policy: [`.github/agent-fleet/anti-hallucination.md`](./.gith
 <!-- BEGIN PROBLEMS_SOLUTIONS_ECONOMY -->
 ## Problems we are solving
 
-**Front Line Whanau** is the **canonical social / care beachhead** - a national platform for whanau and practitioners navigating preterm and frontline support pathways.
+**Front Line Whānau** is the **canonical social / care beachhead** - a national platform for whānau and practitioners navigating preterm and frontline support pathways.
 
 1. **Fragmented support** - Health NZ, trusts, Plunket, iwi providers, and NGOs each hold pieces of the map.
 2. **Information overload** - NICU and high-stress journeys bury families in PDFs and phone trees.
 3. **Role mismatch** - Parents and practitioners need different tools, not one generic brochure site.
 4. **Stale directories** - Organisations struggle to keep listings current without self-service pathways.
-5. **Equity gaps** - Maori, Pacific, and rural whanau face navigation and cultural-safety gaps.
+5. **Equity gaps** - Māori, Pacific, and rural whānau face navigation and cultural-safety gaps.
 6. **Data risk** - Sensitive family information must not default to extractive third-party models.
 
 ## Solution we have built
@@ -59,7 +59,7 @@ Coastal Alpine Tech is a **pre-seed** company engineering in **New Plymouth, Tar
 | Pathway | What it creates |
 | :--- | :--- |
 | **Primary sector competitiveness** | Better yield, compliance, and biosecurity decisions support NZ's export food economy |
-| **Onshore data value** | Farm, whanau, and SME operational data stays under NZ custody (Privacy Act + Te Mana Raraunga) |
+| **Onshore data value** | Farm, whānau, and SME operational data stays under NZ custody (Privacy Act + Te Mana Raraunga) |
 | **Founder formation** | Faster, cleaner company setup and RDTI-ready logging keeps more early companies investable **in NZ** |
 | **Digital capability outside main centres** | Edge AI skills (vision, MQTT, local LLM) transferable across regions |
 | **Quality of work** | Human-in-the-loop design preserves skilled human roles in advice, compliance, and care |
@@ -74,7 +74,7 @@ See **Solution we have built** above. Cross-portfolio map: [Kiwi Edge AI Stack](
 | :--- | :--- |
 | **Frontline capacity** | Faster navigation means practitioners spend less time on directory hunting and more on care |
 | **NGO / iwi provider efficiency** | Self-service listings reduce duplicate brochure maintenance |
-| **Regional equity** | Rural and Maori / Pacific pathways get equal product attention - national cohesion |
+| **Regional equity** | Rural and Māori / Pacific pathways get equal product attention - national cohesion |
 | **Digital care skills** | Roles in content moderation, cultural advisory, and support tooling - not automated replacement of clinicians |
 <!-- END PROBLEMS_SOLUTIONS_ECONOMY -->
 
@@ -84,9 +84,9 @@ See **Solution we have built** above. Cross-portfolio map: [Kiwi Edge AI Stack](
 > The legacy scaffold [`whanau-preterm-support-hub`](https://github.com/fivepanelhat/whanau-preterm-support-hub) is redirected/archived. 
 > Merge details: [docs/MERGE_FROM_WHANAU_PRETERM_SUPPORT_HUB.md](./docs/MERGE_FROM_WHANAU_PRETERM_SUPPORT_HUB.md) | Status: [REALITY.md](./REALITY.md)
 
-Open-Source National Frontline Whanau Support Platform - Aotearoa New Zealand
+Open-Source National Frontline Whānau Support Platform - Aotearoa New Zealand
 
-A sovereign, privacy-first digital platform designed to support whanau of preterm twins and families navigating complex frontline services across Aotearoa New Zealand.
+A sovereign, privacy-first digital platform designed to support whānau of preterm twins and families navigating complex frontline services across Aotearoa New Zealand.
 
 **Live: https://front-line-whanau.vercel.app**
 
@@ -100,23 +100,23 @@ A sovereign, privacy-first digital platform designed to support whanau of preter
 
 ### Quick demo walkthrough
 
-1. Open the web link and choose **I am a Parent / Whanau"**
+1. Open the web link and choose **I am a Parent / Whānau"**
 2. Try the **AI Assistant** (Support page) ask "What is CPAP?"
 3. Open the **National Directory** search by region or service type
 4. Check **Financial Support Checker** run an eligibility report
-5. Open **Whanau Hub** (Resources) explore pathways, timers, and the Taonga Vault
+5. Open **Whānau Hub** (Resources) explore pathways, timers, and the Taonga Vault
 6. Switch to **Practitioner** view via the portal switcher for moderation and feedback tools
 
 ## The 5 W's
 
 **Who**
-Whanau (parents, caregivers, and extended families), practitioners, doctors, midwives, social workers, and frontline organisations with a strong focus on Maori, Pacific, and rural communities.
+Whānau (parents, caregivers, and extended families), practitioners, doctors, midwives, social workers, and frontline organisations with a strong focus on Māori, Pacific, and rural communities.
 
 **What**
-A unified, searchable national platform that brings together information and services from multiple organisations into one place. It features role-based experiences (Parent/Whanau and Practitioner/Organisation portals), self-service uploads, encrypted local storage, and AI-assisted curation.
+A unified, searchable national platform that brings together information and services from multiple organisations into one place. It features role-based experiences (Parent/Whānau and Practitioner/Organisation portals), self-service uploads, encrypted local storage, and AI-assisted curation.
 
 **Why**
-Frontline whanau often face fragmented services, information overload, navigation fatigue, and equity gaps. This platform reduces complexity while prioritising cultural safety and data sovereignty.
+Frontline whānau often face fragmented services, information overload, navigation fatigue, and equity gaps. This platform reduces complexity while prioritising cultural safety and data sovereignty.
 
 **When**
 MVP targeted for the next 48 weeks, with ongoing development toward national adoption.
@@ -127,7 +127,7 @@ Nationwide across Aotearoa New Zealand, available as Web, Desktop (Tauri), and P
 
 ## Features
 
-- **Dual Portals**: Tailored experiences for whanau/parents and practitioners/organisations
+- **Dual Portals**: Tailored experiences for whānau/parents and practitioners/organisations
 - **Searchable National Directory**: Filter by region, organisation, service type, and role
 - **Self-Service Uploads**: Organisations can submit directory listings and securely upload resources (Taonga Vault encryption)
 - **Privacy-First Storage**: Client-side encryption (Taonga Vault) with consent-driven access
@@ -145,9 +145,9 @@ Nationwide across Aotearoa New Zealand, available as Web, Desktop (Tauri), and P
 
 ## Architecture Overview
 
-Front Line Whanau is a **sovereign, privacy-first** multi-surface platform (web PWA, Tauri desktop) for whanau and frontline practitioners across Aotearoa, with optional LangGraph AI assist and strong data boundaries.
+Front Line Whānau is a **sovereign, privacy-first** multi-surface platform (web PWA, Tauri desktop) for whānau and frontline practitioners across Aotearoa, with optional LangGraph AI assist and strong data boundaries.
 
-![Front Line Whanau architecture liquid glass overview](assets/architecture_overview.png)
+![Front Line Whānau architecture liquid glass overview](assets/architecture_overview.png)
 
 ### System map
 
@@ -185,7 +185,7 @@ flowchart TB
  classDef ai fill:#3b0764,stroke:#e879f9,stroke-width:2px,color:#fdf4ff
  classDef app fill:#1e1b4b,stroke:#c4b5fd,stroke-width:2px,color:#eef2ff
 
- U["Whanau | practitioners | orgs"] --> WEB["Next.js web / PWA"]
+ U["Whānau | practitioners | orgs"] --> WEB["Next.js web / PWA"]
  U --> DESK["Tauri 2 desktop"]
  WEB & DESK --> API["API + auth<br/>rate limits | CSP"]
  API --> DB["Supabase / data plane<br/>tenant boundaries"]

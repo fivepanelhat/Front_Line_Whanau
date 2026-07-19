@@ -1,6 +1,6 @@
 # Aether Summit v0.2.0
 
-**Enterprise-grade, Te Tiriti o Waitangi-aligned multi-agent system** for the Whanau Preterm Support Hub NZ.
+**Enterprise-grade, Te Tiriti o Waitangi-aligned multi-agent system** for the Whānau Preterm Support Hub NZ.
 
 Built with LangGraph, designed for cultural safety, data sovereignty, and high-stakes decision support.
 

@@ -6,7 +6,7 @@
 
 ## Decision
 
-`Front_Line_Whanau` is the single national platform for whanau of preterm twins and frontline service navigation in Aotearoa. 
+`Front_Line_Whanau` is the single national platform for whānau of preterm twins and frontline service navigation in Aotearoa. 
 `whanau-preterm-support-hub` was an earlier Next.js scaffold (v0.1.0) with overlapping vision, cultural principles, and Aether release-preflight work.
 
 To stop dual-tracking:

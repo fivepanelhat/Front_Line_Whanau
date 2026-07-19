@@ -53,7 +53,7 @@ export default function FinancialEligibilityPage() {
           </h1>
           <p className="text-accent-ink/80 text-base sm:text-lg">
             Use our AI-assisted tool to figure out which grants and funding pathways (WINZ, Best
-            Start, Disability Allowance) your whanau might be eligible for.
+            Start, Disability Allowance) your whānau might be eligible for.
           </p>
         </div>
       </div>

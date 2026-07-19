@@ -41,7 +41,7 @@ const intentClassifier = createAgentLLM({
   maxOutputTokens: 1024,
 });
 
-const SYSTEM_PROMPT = `You are an intent classifier for a preterm whanau support system in Aotearoa New Zealand.
+const SYSTEM_PROMPT = `You are an intent classifier for a preterm whānau support system in Aotearoa New Zealand.
 
 Classify the user's query into exactly one of these categories:
 - RESEARCH: Questions about information, eligibility, definitions, or facts.
@@ -51,7 +51,7 @@ Classify the user's query into exactly one of these categories:
 - ADVOCACY: Requests to draft emails, challenge decisions, or learn about legal/hospital rights.
 - TRANSLATE: Requests to explain or translate complex medical jargon or reports into simple English.
 - NUTRITION: Questions specifically about feeding, tube feeding, breastfeeding, breastmilk, expressing, or solids.
-- CULTURAL: Questions specifically about tikanga, karakia, marae, iwi, whenua, or Maori cultural practices.
+- CULTURAL: Questions specifically about tikanga, karakia, marae, iwi, whenua, or Māori cultural practices.
 - LOCAL_SERVICES: Requests to find services, clinics, organisations, or support groups in a specific place or near the user (e.g. "services in Taranaki", "support groups near me").
 - COMPLEX: Queries that combine multiple intents or are emotionally heavy.
 

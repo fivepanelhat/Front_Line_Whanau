@@ -1,15 +1,15 @@
 # Supabase Row Level Security (RLS) Policies
 
-This document records and defines the Row Level Security (RLS) policies implemented on the database tables for Front Line Whanau.
+This document records and defines the Row Level Security (RLS) policies implemented on the database tables for Front Line Whānau.
 
-The security architecture follows a **Deny-by-Default** principle, aligning with data privacy best practices and **Te Mana Raraunga (Maori Data Sovereignty)** guidelines to ensure whanau retain ownership, protection, and sovereignty over their personal and collective information.
+The security architecture follows a **Deny-by-Default** principle, aligning with data privacy best practices and **Te Mana Raraunga (Māori Data Sovereignty)** guidelines to ensure whānau retain ownership, protection, and sovereignty over their personal and collective information.
 
 ---
 
 ## Architectural Alignment with Te Mana Raraunga
 
-1. **Whanau Control (Self-Determination / Rangatiratanga)**: Personal records, uploaded documents, consent logs, and support queries are bound directly to individual user identities (`auth.uid()`). No other standard user can query or modify this data.
-2. **Access Minimisation**: Practitioner access is limited to verification and directory administration. Cross-whanau data reading is strictly prohibited.
+1. **Whānau Control (Self-Determination / Rangatiratanga)**: Personal records, uploaded documents, consent logs, and support queries are bound directly to individual user identities (`auth.uid()`). No other standard user can query or modify this data.
+2. **Access Minimisation**: Practitioner access is limited to verification and directory administration. Cross-whānau data reading is strictly prohibited.
 3. **Immutable Audit Trails**: Actions like granting or revoking consents are logged on a non-deletable schema table (`consent_records`) ensuring integrity.
 
 ---

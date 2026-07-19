@@ -213,7 +213,7 @@ export function AiAssistantTab({ onNavigateTab }: { onNavigateTab: (tab: Dashboa
         </form>
         <p className="text-text-muted/80 mt-3 text-center text-[11px]">
           <span className="text-accent-warm font-semibold">Disclaimer:</span> Whilst our AI is a
-          trained guidance tool that navigates this space to tautoko whanau, remember to practice
+          trained guidance tool that navigates this space to tautoko whānau, remember to practice
           discernment and due diligence. It is{' '}
           <strong>not a registered medical, financial or cultural advisor</strong>. Always consult a
           registered practitioner for professional advice.

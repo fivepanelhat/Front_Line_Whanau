@@ -6,7 +6,7 @@
  },
  "portal": {
  "parent": {
- "welcome": "Welcome to your whanau portal",
+ "welcome": "Welcome to your whānau portal",
  "subtitle": "Your private space for support, information, and connection.",
  "quickLinks": "Quick links",
  "recentResources": "Recent resources",
@@ -35,7 +35,7 @@
  "analyticsTitle": "Usage analytics",
  "analyticsDescription": "Help us improve the platform by sharing anonymous usage data. No personal information is collected.",
  "supportTitle": "Peer support matching",
- "supportDescription": "Allow us to suggest connections with other whanau in similar circumstances.",
+ "supportDescription": "Allow us to suggest connections with other whānau in similar circumstances.",
  "grant": "Allow",
  "revoke": "Withdraw",
  "granted": "Allowed",

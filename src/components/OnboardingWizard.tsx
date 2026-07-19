@@ -85,7 +85,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
           <div className="animate-in fade-in zoom-in mt-4 space-y-4 duration-300">
             <h2 className="text-3xl font-bold text-gray-900">Welcome to the Beta 👋</h2>
             <p className="text-lg text-gray-600">
-              You are among the first to test the <strong>Front Line Whanau AI</strong>, an
+              You are among the first to test the <strong>Front Line Whānau AI</strong>, an
               intelligent assistant specifically designed to help Aotearoa parents navigate the NICU
               journey.
             </p>
@@ -131,7 +131,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
                 </div>
                 <p>
                   <strong>Your Voice Matters:</strong> Your feedback (using the thumbs up/down
-                  buttons on messages) actively helps us improve the system for all whanau.
+                  buttons on messages) actively helps us improve the system for all whānau.
                 </p>
               </div>
               <div className="flex items-start gap-4">
@@ -313,7 +313,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
                 />
                 <span className="text-sm font-medium text-amber-900">
                   I understand this is an experimental AI, not a doctor. I consent to my anonymized
-                  chat data being reviewed by the Front Line Whanau clinical team for safety
+                  chat data being reviewed by the Front Line Whānau clinical team for safety
                   improvements.
                 </span>
               </label>
@@ -340,7 +340,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
           <div className="animate-in slide-in-from-right mt-4 space-y-4 duration-300">
             <h2 className="text-3xl font-bold text-gray-900">You're All Set! 🎉</h2>
             <p className="text-lg text-gray-600">
-              Here are a few ways to get started with the Front Line Whanau assistant:
+              Here are a few ways to get started with the Front Line Whānau assistant:
             </p>
             <div className="my-6 space-y-4 rounded-xl border border-gray-100 bg-gray-50 p-5">
               <p

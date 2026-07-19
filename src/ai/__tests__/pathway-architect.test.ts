@@ -35,7 +35,7 @@ describe('WhanauPathwayArchitect', () => {
 
     const res = await agent.process('how do I apply for the preterm baby payment?');
     expect(res.content).toBe('Step 1: Call WINZ on 0800 559 009.');
-    expect(res.agentUsed).toBe('Whanau Pathway Architect');
+    expect(res.agentUsed).toBe('Whānau Pathway Architect');
     expect(res.requiresHumanReview).toBe(false);
   });
 

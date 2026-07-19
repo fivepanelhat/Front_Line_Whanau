@@ -32,7 +32,7 @@ export default function ParentPortal() {
       color: 'bg-indigo-50 text-indigo-700',
     },
     {
-      title: 'Whanau Hub',
+      title: 'Whānau Hub',
       description:
         'Your sovereign space: support pathways, checklists, and the encrypted Taonga Vault.',
       href: `/${locale}/resources`,
@@ -45,7 +45,7 @@ export default function ParentPortal() {
     <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-12">
       <div className="mb-6 sm:mb-10">
         <h1 className="text-text-primary text-2xl font-bold tracking-tight sm:text-4xl">
-          Parent & Whanau Portal
+          Parent & Whānau Portal
         </h1>
         <p className="text-text-secondary mt-2 text-base sm:mt-3 sm:text-lg">
           Support and information for families of preterm babies - nau mai, haere mai.

@@ -93,7 +93,7 @@ export function Dashboard({
             </svg>
           </button>
           <span className="font-heading text-gradient text-lg font-extrabold sm:text-xl">
-            Whanau Hub
+            Whānau Hub
           </span>
           <span className="border-accent-secondary/25 bg-accent-secondary/15 text-accent-secondary hidden rounded-full border px-2.5 py-0.5 text-xs font-semibold sm:inline">
             Sovereign Space

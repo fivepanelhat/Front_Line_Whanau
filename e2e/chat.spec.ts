@@ -6,7 +6,7 @@ test.describe('Chat Interface & Welcome Flow', () => {
  await page.goto('/en-NZ/parent');
 
  // Wait for the portal to load
- await expect(page.locator('h1').filter({ hasText: 'Parent & Whanau Portal' })).toBeVisible();
+ await expect(page.locator('h1').filter({ hasText: 'Parent & Whānau Portal' })).toBeVisible();
 
  // Click the ask AI button
  const askButton = page.getByRole('button', { name: /Ask AI Assistant/i });

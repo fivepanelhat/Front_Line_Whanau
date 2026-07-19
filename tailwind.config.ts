@@ -11,7 +11,7 @@ const config: Config = {
     extend: {
       // -- Color Palette ---------------------------------
       // Warm coastal forest palette: deep bush greens, driftwood amber,
-      // seafoam teal, warm sand neutrals. Dark surfaces (header, Whanau Hub)
+      // seafoam teal, warm sand neutrals. Dark surfaces (header, Whānau Hub)
       // use these directly; page-level theming lives in globals.css vars.
       colors: {
         bg: {

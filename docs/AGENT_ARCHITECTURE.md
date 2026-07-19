@@ -1,4 +1,4 @@
-## Whanau Preterm Support Hub - Agent System (v0.3)
+## Whānau Preterm Support Hub - Agent System (v0.3)
 
 ### Core Architecture
 - **Supervisor**: `AetherSummit` + `supervisorNode` (keyword-first + LLM fallback)

@@ -66,7 +66,7 @@ describe('runActivationAudit', () => {
     expect(a.auditBasis).toEqual(b.auditBasis);
   });
 
-  it('always offers the multiples community play for whanau', () => {
+  it('always offers the multiples community play for whānau', () => {
     const playbook = runActivationAudit({ freeText: 'feeling overwhelmed' });
     expect(playbook.plays.map((p) => p.category)).toContain('twins_multiples');
   });
@@ -78,7 +78,7 @@ describe('runActivationAudit', () => {
     expect(playbook.reviewStatus).toBe('pending_review');
   });
 
-  it('flags cultural plays for HITL review and honours te ao Maori priority', () => {
+  it('flags cultural plays for HITL review and honours te ao Māori priority', () => {
     const playbook = runActivationAudit({ culturalPriority: 'te_ao_maori' });
     const cultural = playbook.plays.find((p) => p.category === 'cultural');
     expect(cultural).toBeDefined();
@@ -92,7 +92,7 @@ describe('runActivationAudit', () => {
     expect(playbook.reviewStatus).toBe('auto_approved');
   });
 
-  it('gives rural whanau only remote-accessible pathways', () => {
+  it('gives rural whānau only remote-accessible pathways', () => {
     const playbook = runActivationAudit({
       needAreas: ['financial', 'emotional'],
       locationContext: 'rural',
@@ -122,7 +122,7 @@ describe('runActivationAudit', () => {
     expect(playbook.weaverTrigger.theme).toBeTruthy();
   });
 
-  it('carries cultural elements into the weaver trigger for te ao Maori whanau', () => {
+  it('carries cultural elements into the weaver trigger for te ao Māori whānau', () => {
     const playbook = runActivationAudit({
       culturalPriority: 'te_ao_maori',
       gestationalContext: 'recently_home',

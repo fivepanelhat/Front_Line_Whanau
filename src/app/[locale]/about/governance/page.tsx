@@ -6,7 +6,7 @@ export default function GovernancePage() {
           Community Governance Model
         </h1>
         <p className="mx-auto max-w-2xl text-base text-white/80 sm:text-lg">
-          Front Line Whanau is guided by the voices of those who have lived the neonatal journey.
+          Front Line Whānau is guided by the voices of those who have lived the neonatal journey.
         </p>
       </div>
 
@@ -23,7 +23,7 @@ export default function GovernancePage() {
         <p>Our board consists of:</p>
         <ul>
           <li>
-            <strong>Whanau Representatives:</strong> Parents who have navigated the NICU/SCBU
+            <strong>Whānau Representatives:</strong> Parents who have navigated the NICU/SCBU
             journey across different regions in Aotearoa.
           </li>
           <li>
@@ -31,7 +31,7 @@ export default function GovernancePage() {
             oversight.
           </li>
           <li>
-            <strong>Maori & Pasifika Cultural Advisors:</strong> Ensuring our platform upholds Te
+            <strong>Māori & Pasifika Cultural Advisors:</strong> Ensuring our platform upholds Te
             Tiriti o Waitangi and respects Pacific data sovereignty.
           </li>
           <li>
@@ -42,8 +42,8 @@ export default function GovernancePage() {
 
         <h3>Te Tiriti o Waitangi</h3>
         <p>
-          We are committed to the principles of Te Tiriti o Waitangi. All data collected about Maori
-          is treated as taonga (a treasure) and is subject to Maori data sovereignty principles.
+          We are committed to the principles of Te Tiriti o Waitangi. All data collected about Māori
+          is treated as taonga (a treasure) and is subject to Māori data sovereignty principles.
         </p>
       </div>
     </div>

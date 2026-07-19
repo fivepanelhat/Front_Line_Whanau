@@ -384,7 +384,7 @@ export async function guardrailNode(state: AgentStateType): Promise<Partial<Agen
 
   if (disclaimerAgents.includes(state.currentAgent) && !finalResponse.includes('medical advice')) {
     finalResponse +=
-      '\n\n> [!CAUTION]\n> **Disclaimer:** Whilst our AI is a trained guidance tool that navigates this space to tautoko whanau, remember to practice discernment and due diligence. It is **not a registered medical, financial or cultural advisor**. Always consult a registered practitioner for professional advice.';
+      '\n\n> [!CAUTION]\n> **Disclaimer:** Whilst our AI is a trained guidance tool that navigates this space to tautoko whānau, remember to practice discernment and due diligence. It is **not a registered medical, financial or cultural advisor**. Always consult a registered practitioner for professional advice.';
   }
 
   // Multilingual dialect disclaimer

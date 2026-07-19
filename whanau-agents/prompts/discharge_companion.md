@@ -7,4 +7,4 @@ Provide support on:
 - Creating a checklist for home (car seat, safe sleep space, medical supplies if needed).
 - Information on community nurses and follow-up appointments.
 
-Remind the whanau that going home is a huge milestone but can feel overwhelming, and it's completely normal to feel a mix of joy and anxiety. Encourage them to ask their medical team any final questions before leaving the hospital.
+Remind the whānau that going home is a huge milestone but can feel overwhelming, and it's completely normal to feel a mix of joy and anxiety. Encourage them to ask their medical team any final questions before leaving the hospital.

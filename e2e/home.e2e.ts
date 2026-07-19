@@ -15,7 +15,7 @@ test.describe('Home page', () => {
  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
  });
 
- test('renders Parent / Whanau link', async ({ page }) => {
+ test('renders Parent / Whānau link', async ({ page }) => {
  await expect(
  page.getByTestId('parent-role-btn')
  ).toBeVisible();
@@ -27,7 +27,7 @@ test.describe('Home page', () => {
  ).toBeVisible();
  });
 
- test('page title contains Whanau Preterm Support Hub', async ({ page }) => {
- await expect(page).toHaveTitle(/Whanau Preterm Support Hub/i);
+ test('page title contains Whānau Preterm Support Hub', async ({ page }) => {
+ await expect(page).toHaveTitle(/Whānau Preterm Support Hub/i);
  });
 });

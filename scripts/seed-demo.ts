@@ -76,7 +76,7 @@ async function ensureDemoUser(): Promise<string> {
  email: DEMO_EMAIL,
  password: DEMO_PASSWORD,
  email_confirm: true,
- user_metadata: { role: 'parent', display_name: 'Demo Whanau' },
+ user_metadata: { role: 'parent', display_name: 'Demo Whānau' },
  });
  if (createErr) throw createErr;
  console.log(`Demo user: created ${DEMO_EMAIL} (password: ${DEMO_PASSWORD}).`);
@@ -93,7 +93,7 @@ const STORIES = [
  {
  title: 'Getting the financial support we did not know existed',
  content:
- 'Nobody at the hospital mentioned we could apply for financial help while our son was in the neonatal unit. A social worker finally pointed us to Work and Income three weeks in. If your pepi arrived early: ask about Best Start, ask about the Disability Allowance for travel costs, and keep every parking receipt. The whanau in the ward next to us drove 90 minutes each way for five weeks - those costs count.',
+ 'Nobody at the hospital mentioned we could apply for financial help while our son was in the neonatal unit. A social worker finally pointed us to Work and Income three weeks in. If your pēpi arrived early: ask about Best Start, ask about the Disability Allowance for travel costs, and keep every parking receipt. The whānau in the ward next to us drove 90 minutes each way for five weeks - those costs count.',
  tags: ['financial', 'winz', 'best-start'],
  },
  {

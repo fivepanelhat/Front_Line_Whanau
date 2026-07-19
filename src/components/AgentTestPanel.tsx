@@ -287,7 +287,7 @@ export function AgentTestPanel({
   return (
     <div className="mx-auto flex h-full max-w-4xl flex-col px-2 py-2 sm:p-6">
       <div className="mb-3 flex flex-col gap-2 sm:mb-4 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-text-primary text-lg font-semibold sm:text-2xl">Whanau Support</h2>
+        <h2 className="text-text-primary text-lg font-semibold sm:text-2xl">Whānau Support</h2>
         <div className="flex flex-wrap gap-2 print:hidden">
           <button
             type="button"

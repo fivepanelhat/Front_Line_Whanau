@@ -224,7 +224,7 @@ describe('Tools', () => {
 
     it('getHospitalFacilitiesInfoTool returns topics and general info', async () => {
       let res = JSON.parse(await getHospitalFacilitiesInfoTool.invoke({ topic: 'showers' }));
-      expect(res.facilityDetail).toContain('Whanau showers');
+      expect(res.facilityDetail).toContain('Whānau showers');
 
       res = JSON.parse(await getHospitalFacilitiesInfoTool.invoke({}));
       expect(res.facilities).toBeDefined();
