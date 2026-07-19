@@ -1,0 +1,175 @@
+<svg viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Front Line Whanau Platform architecture, coastal-forest glass style</title>
+<desc>Five stacked frosted-glass tiers — Users, API Auth, Data Plane, LangGraph AI, Aether — connected by a vertical flow spine that shifts from coastal teal to gold to burgundy.</desc>
+<defs>
+  <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#0A1610"/>
+    <stop offset="45%" stop-color="#132A1F"/>
+    <stop offset="100%" stop-color="#1E1712"/>
+  </linearGradient>
+  <linearGradient id="spine" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" stop-color="#4E9C89"/>
+    <stop offset="45%" stop-color="#D9AE63"/>
+    <stop offset="100%" stop-color="#8C2F45"/>
+  </linearGradient>
+  <linearGradient id="panelSheen" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" stop-color="#EDE3CE" stop-opacity="0.16"/>
+    <stop offset="100%" stop-color="#EDE3CE" stop-opacity="0.045"/>
+  </linearGradient>
+  <linearGradient id="wave" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" stop-color="#4E9C89"/>
+    <stop offset="50%" stop-color="#D9AE63"/>
+    <stop offset="100%" stop-color="#8C2F45"/>
+  </linearGradient>
+  <filter id="soft" x="-60%" y="-60%" width="220%" height="220%">
+    <feGaussianBlur stdDeviation="18"/>
+  </filter>
+  <filter id="glow" x="-80%" y="-80%" width="260%" height="260%">
+    <feGaussianBlur stdDeviation="7"/>
+  </filter>
+  <filter id="titleGlow" x="-30%" y="-100%" width="160%" height="300%">
+    <feGaussianBlur stdDeviation="6"/>
+  </filter>
+</defs>
+
+<rect width="1600" height="900" fill="url(#bg)"/>
+
+<!-- ambient glow streaks -->
+<ellipse cx="1250" cy="180" rx="420" ry="140" fill="#4E9C89" opacity="0.14" filter="url(#soft)"/>
+<ellipse cx="260" cy="480" rx="380" ry="160" fill="#D9AE63" opacity="0.10" filter="url(#soft)"/>
+<ellipse cx="1300" cy="760" rx="420" ry="170" fill="#8C2F45" opacity="0.16" filter="url(#soft)"/>
+
+<!-- title -->
+<text x="800" y="98" text-anchor="middle" font-family="Iowan Old Style, Palatino Linotype, Palatino, Georgia, serif"
+      font-size="46" font-weight="600" fill="#D9AE63" opacity="0.55" filter="url(#titleGlow)">FRONT LINE WHANAU PLATFORM</text>
+<text x="800" y="98" text-anchor="middle" font-family="Iowan Old Style, Palatino Linotype, Palatino, Georgia, serif"
+      font-size="46" font-weight="600" fill="#F5EEDD" letter-spacing="1">FRONT LINE WHANAU PLATFORM</text>
+
+<!-- flow spine -->
+<line x1="150" y1="168" x2="150" y2="800" stroke="url(#spine)" stroke-width="3" opacity="0.8"/>
+<g font-family="Segoe UI, Helvetica Neue, Arial, sans-serif">
+
+<!-- === Panel 1: Users === -->
+<g>
+  <circle cx="150" cy="219" r="6" fill="#4E9C89"/>
+  <line x1="156" y1="219" x2="210" y2="219" stroke="#4E9C89" stroke-width="2" opacity="0.7"/>
+  <rect x="210" y="165" width="1180" height="108" rx="22" fill="url(#panelSheen)" stroke="#EDE3CE" stroke-opacity="0.22"/>
+  <text x="246" y="228" font-size="30" font-weight="700" fill="#F5EEDD">Users</text>
+
+  <!-- PWA chip -->
+  <rect x="1000" y="192" width="120" height="54" rx="10" fill="none" stroke="#D9AE63" stroke-width="1.6"/>
+  <rect x="1014" y="204" width="60" height="30" rx="3" fill="none" stroke="#D9AE63" stroke-width="1.4"/>
+  <line x1="1014" y1="212" x2="1074" y2="212" stroke="#D9AE63" stroke-width="1.4"/>
+  <text x="1060" y="238" text-anchor="middle" font-size="13" fill="#D9AE63" letter-spacing="1">PWA</text>
+
+  <!-- Tauri chip -->
+  <rect x="1140" y="192" width="150" height="54" rx="10" fill="none" stroke="#8C2F45" stroke-width="1.6"/>
+  <rect x="1154" y="202" width="50" height="34" rx="3" fill="none" stroke="#8C2F45" stroke-width="1.4"/>
+  <line x1="1170" y1="236" x2="1188" y2="236" stroke="#8C2F45" stroke-width="1.4"/>
+  <text x="1250" y="224" text-anchor="middle" font-size="12.5" fill="#EDE3CE">Desktop</text>
+  <text x="1250" y="240" text-anchor="middle" font-size="12.5" fill="#EDE3CE">(Tauri)</text>
+</g>
+
+<!-- === Panel 2: API Auth === -->
+<g>
+  <circle cx="150" cy="352" r="6" fill="#8AA36E"/>
+  <line x1="156" y1="352" x2="210" y2="352" stroke="#8AA36E" stroke-width="2" opacity="0.7"/>
+  <rect x="210" y="298" width="1180" height="108" rx="22" fill="url(#panelSheen)" stroke="#EDE3CE" stroke-opacity="0.22"/>
+  <text x="246" y="361" font-size="30" font-weight="700" fill="#F5EEDD">API Auth</text>
+
+  <!-- circuit ticks -->
+  <g stroke="#4E9C89" stroke-width="1.6" opacity="0.8">
+    <line x1="900" y1="330" x2="945" y2="330"/><circle cx="951" cy="330" r="4" fill="#4E9C89"/>
+    <line x1="900" y1="352" x2="945" y2="352"/><circle cx="951" cy="352" r="4" fill="#4E9C89"/>
+    <line x1="900" y1="374" x2="945" y2="374"/><circle cx="951" cy="374" r="4" fill="#4E9C89"/>
+  </g>
+
+  <!-- lock -->
+  <path d="M 1020 340 a 22 22 0 0 1 44 0 v 12 h -44 z" fill="none" stroke="#D9AE63" stroke-width="4"/>
+  <rect x="1008" y="352" width="68" height="46" rx="8" fill="#D9AE63" opacity="0.18"/>
+  <rect x="1008" y="352" width="68" height="46" rx="8" fill="none" stroke="#D9AE63" stroke-width="2.5"/>
+  <circle cx="1042" cy="372" r="6" fill="#D9AE63"/>
+
+  <!-- shield -->
+  <path d="M 1150 335 l 40 -14 l 40 14 v 34 c 0 24 -18 38 -40 46 c -22 -8 -40 -22 -40 -46 z"
+        fill="#8C2F45" opacity="0.16" stroke="#8C2F45" stroke-width="2.4"/>
+</g>
+
+<!-- === Panel 3: Data Plane === -->
+<g>
+  <circle cx="150" cy="485" r="6" fill="#D9AE63"/>
+  <line x1="156" y1="485" x2="210" y2="485" stroke="#D9AE63" stroke-width="2" opacity="0.7"/>
+  <rect x="210" y="431" width="1180" height="108" rx="22" fill="url(#panelSheen)" stroke="#EDE3CE" stroke-opacity="0.22"/>
+  <text x="246" y="494" font-size="30" font-weight="700" fill="#F5EEDD">Data Plane</text>
+
+  <g stroke="#4E9C89" stroke-width="1.4" opacity="0.75">
+    <line x1="980" y1="485" x2="920" y2="460"/>
+    <line x1="980" y1="485" x2="920" y2="510"/>
+    <line x1="980" y1="485" x2="1040" y2="455"/>
+    <line x1="980" y1="485" x2="1040" y2="515"/>
+  </g>
+  <circle cx="980" cy="485" r="10" fill="#D9AE63"/>
+  <circle cx="920" cy="460" r="6" fill="#4E9C89"/>
+  <circle cx="920" cy="510" r="6" fill="#4E9C89"/>
+  <circle cx="1040" cy="455" r="6" fill="#4E9C89"/>
+  <circle cx="1040" cy="515" r="6" fill="#4E9C89"/>
+
+  <!-- db cylinders -->
+  <g fill="none" stroke="#D9AE63" stroke-width="2">
+    <ellipse cx="1150" cy="458" rx="24" ry="9"/>
+    <path d="M 1126 458 v 30 a 24 9 0 0 0 48 0 v -30"/>
+    <ellipse cx="1150" cy="488" rx="24" ry="9" opacity="0.5"/>
+  </g>
+  <g fill="none" stroke="#8C2F45" stroke-width="2">
+    <ellipse cx="1230" cy="472" rx="22" ry="8"/>
+    <path d="M 1208 472 v 26 a 22 8 0 0 0 44 0 v -26"/>
+    <ellipse cx="1230" cy="498" rx="22" ry="8" opacity="0.5"/>
+  </g>
+</g>
+
+<!-- === Panel 4: LangGraph AI === -->
+<g>
+  <circle cx="150" cy="618" r="6" fill="#B87A4E"/>
+  <line x1="156" y1="618" x2="210" y2="618" stroke="#B87A4E" stroke-width="2" opacity="0.7"/>
+  <rect x="210" y="564" width="1180" height="108" rx="22" fill="url(#panelSheen)" stroke="#EDE3CE" stroke-opacity="0.22"/>
+  <text x="246" y="611" font-size="30" font-weight="700" fill="#F5EEDD">LangGraph AI</text>
+  <text x="246" y="636" font-size="15" font-style="italic" fill="#D9AE63" opacity="0.85">(Optional)</text>
+
+  <circle cx="1050" cy="618" r="26" fill="#8C2F45" opacity="0.28" filter="url(#glow)"/>
+  <circle cx="1050" cy="618" r="14" fill="#D9AE63"/>
+  <g stroke="#4E9C89" stroke-width="1.4" opacity="0.8">
+    <line x1="1050" y1="618" x2="980" y2="590"/>
+    <line x1="1050" y1="618" x2="980" y2="646"/>
+    <line x1="1050" y1="618" x2="1120" y2="588"/>
+    <line x1="1050" y1="618" x2="1120" y2="648"/>
+    <line x1="1050" y1="618" x2="1160" y2="618"/>
+  </g>
+  <circle cx="980" cy="590" r="6" fill="#EDE3CE"/>
+  <circle cx="980" cy="646" r="6" fill="#EDE3CE"/>
+  <circle cx="1120" cy="588" r="6" fill="#EDE3CE"/>
+  <circle cx="1120" cy="648" r="6" fill="#EDE3CE"/>
+  <circle cx="1160" cy="618" r="6" fill="#EDE3CE"/>
+</g>
+
+<!-- === Panel 5: Aether === -->
+<g>
+  <circle cx="150" cy="751" r="6" fill="#8C2F45"/>
+  <line x1="156" y1="751" x2="210" y2="751" stroke="#8C2F45" stroke-width="2" opacity="0.7"/>
+  <rect x="210" y="697" width="1180" height="108" rx="22" fill="url(#panelSheen)" stroke="#EDE3CE" stroke-opacity="0.22"/>
+  <text x="246" y="760" font-size="30" font-weight="700" fill="#F5EEDD">Aether</text>
+
+  <path d="M 900 730 C 960 700, 1020 760, 1080 730 S 1200 700, 1260 730 S 1360 760, 1380 735"
+        fill="none" stroke="url(#wave)" stroke-width="4" opacity="0.85"/>
+  <path d="M 900 770 C 960 745, 1020 795, 1080 770 S 1200 745, 1260 770 S 1360 795, 1380 772"
+        fill="none" stroke="url(#wave)" stroke-width="2.4" opacity="0.5"/>
+  <circle cx="1000" cy="722" r="3" fill="#F5EEDD" opacity="0.9"/>
+  <circle cx="1150" cy="712" r="2.4" fill="#F5EEDD" opacity="0.8"/>
+  <circle cx="1300" cy="726" r="3" fill="#F5EEDD" opacity="0.9"/>
+</g>
+
+</g>
+
+<!-- footer -->
+<text x="800" y="862" text-anchor="middle" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif"
+      font-size="14" letter-spacing="3" fill="#EDE3CE" opacity="0.55">SOVEREIGN · PRIVACY-FIRST · AOTEAROA NEW ZEALAND</text>
+</svg>

@@ -78,7 +78,7 @@ See **Solution we have built** above. Cross-portfolio map: [Kiwi Edge AI Stack](
 | **Digital care skills** | Roles in content moderation, cultural advisory, and support tooling - not automated replacement of clinicians |
 <!-- END PROBLEMS_SOLUTIONS_ECONOMY -->
 
-![Banner](assets/social_preview.png)
+![Banner](assets/social_preview.svg)
 
 > **Canonical product (2026-07-16 merge):** This repository is the **single** national platform. 
 > The legacy scaffold [`whanau-preterm-support-hub`](https://github.com/fivepanelhat/whanau-preterm-support-hub) is redirected/archived. 
@@ -147,7 +147,7 @@ Nationwide across Aotearoa New Zealand, available as Web, Desktop (Tauri), and P
 
 Front Line Whanau is a **sovereign, privacy-first** multi-surface platform (web PWA, Tauri desktop) for whanau and frontline practitioners across Aotearoa, with optional LangGraph AI assist and strong data boundaries.
 
-![Front Line Whanau architecture liquid glass overview](assets/architecture_overview.png)
+![Front Line Whanau architecture coastal-forest glass overview](assets/architecture_overview.svg)
 
 ### System map
 
