@@ -6,7 +6,7 @@ export default function GovernancePage() {
           Community Governance Model
         </h1>
         <p className="mx-auto max-w-2xl text-base text-white/80 sm:text-lg">
-          Front Line Whanau is guided by the voices of those who have lived the neonatal journey.
+          Front Line Whānau is guided by the voices of those who have lived the neonatal journey.
         </p>
       </div>
 

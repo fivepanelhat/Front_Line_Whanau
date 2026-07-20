@@ -8,14 +8,14 @@
 
 ## Context & Problem Statement
 
-The platform is designed to support families during highly critical periods, necessitating high software reliability and robust regression prevention. We needed an End-to-End (E2E) testing framework to validate full user journeys, role-based entry gates (Parent/Practitioner portals), internationalisation switching (Te Reo Maori/English), and critical API/security infrastructure (headers and health endpoints).
+The platform is designed to support families during highly critical periods, necessitating high software reliability and robust regression prevention. We needed an End-to-End (E2E) testing framework to validate full user journeys, role-based entry gates (Parent/Practitioner portals), internationalisation switching (Te Reo Māori/English), and critical API/security infrastructure (headers and health endpoints).
 
 ## Decision Drivers
 
 * **Next.js App Router Support**: Needs to handle dynamic layouts, locale-based routing (`/[locale]`), and client-side hydration without complexity.
 * **Security Verification**: Needs to support checking HTTP response headers (such as CSP, X-Frame-Options) as part of the test suite.
 * **Ease of CI Setup**: The framework must support headless runs, automatic server startup/cleanup, and detailed report generation for CI/CD runs.
-* **Cross-viewport Validation**: Needs to easily simulate mobile viewports (e.g., Mobile Chrome) to ensure accessibility for mobile whanau users.
+* **Cross-viewport Validation**: Needs to easily simulate mobile viewports (e.g., Mobile Chrome) to ensure accessibility for mobile whānau users.
 
 ## Considered Options
 

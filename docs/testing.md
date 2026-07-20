@@ -1,4 +1,4 @@
-# Testing Guide - Whanau Preterm Support Hub NZ
+# Testing Guide - Whānau Preterm Support Hub NZ
 
 ## Philosophy
 
@@ -22,7 +22,7 @@ npm run e2e:ui # Visual debugger (recommended for debugging)
 
 - Use `getByRole` and `getByTestId` as primary selectors
 - Add `data-testid` to all interactive components
-- Tests must work with both English and Te Reo Maori routes where applicable
+- Tests must work with both English and Te Reo Māori routes where applicable
 - Always use `await page.waitForLoadState('networkidle')` or explicit waits when needed
 - Never rely on fixed timeouts - use Playwright's auto-waiting
 

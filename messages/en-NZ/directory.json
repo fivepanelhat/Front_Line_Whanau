@@ -17,20 +17,20 @@
  "addListing": "Add your service",
  "regions": {
  "northland": "Northland / Te Tai Tokerau",
- "auckland": "Tamaki Makaurau / Auckland",
+ "auckland": "Tāmaki Makaurau / Auckland",
  "waikato": "Waikato",
  "bayOfPlenty": "Bay of Plenty / Te Moana-a-Toi",
- "gisborne": "Tairawhiti / Gisborne",
- "hawkesBay": "Hawke's Bay / Te Matau-a-Maui",
+ "gisborne": "Tairāwhiti / Gisborne",
+ "hawkesBay": "Hawke's Bay / Te Matau-a-Māui",
  "taranaki": "Taranaki",
- "manawatuWhanganui": "Manawatu-Whanganui",
+ "manawatuWhanganui": "Manawatū-Whanganui",
  "wellington": "Te Whanganui-a-Tara / Wellington",
  "nelson": "Nelson Tasman / Te Tauihu-o-te-waka",
  "marlborough": "Marlborough / Te Tauihu",
  "westCoast": "West Coast / Te Tai Poutini",
  "canterbury": "Waitaha / Canterbury",
  "timaru": "Timaru / Arowhenua",
- "otago": "Otakou / Otago",
+ "otago": "Ōtākou / Otago",
  "southland": "Murihiku / Southland"
  }
  }

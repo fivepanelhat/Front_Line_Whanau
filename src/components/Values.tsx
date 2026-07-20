@@ -3,7 +3,7 @@ const values = [
     emoji: '👑',
     title: 'Rangatiratanga',
     description:
-      'Whanau retain authority and final decision-making over their data, care pathways, and consent.',
+      'Whānau retain authority and final decision-making over their data, care pathways, and consent.',
   },
   {
     emoji: '🛡️',
@@ -15,7 +15,7 @@ const values = [
     emoji: '⚖️',
     title: 'Equity & Active Protection',
     description:
-      'Working to reduce disparities and proactively protect vulnerable whanau throughout their journey.',
+      'Working to reduce disparities and proactively protect vulnerable whānau throughout their journey.',
   },
   {
     emoji: '🌏',
@@ -25,7 +25,7 @@ const values = [
   },
   {
     emoji: '👨‍👩‍👧‍👦',
-    title: 'Extended Whanau',
+    title: 'Extended Whānau',
     description:
       'Recognising the vital role of grandparents, siblings, and chosen family in the care of preterm babies.',
   },

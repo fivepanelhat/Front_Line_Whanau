@@ -3,7 +3,7 @@
 
 # Taranaki Services Directory
 
-Services for whanau of preterm babies in Taranaki and nationally. This page is
+Services for whānau of preterm babies in Taranaki and nationally. This page is
 generated from the app's canonical data, so it always matches what families see.
 
 > Benefit and payment amounts are intentionally **not** listed here. For current
@@ -104,7 +104,7 @@ generated from the app's canonical data, so it always matches what families see.
 - **Description**: Free 24/7 parenting advice and support - feeding, sleep, development, and postnatal mental health.
 - **Last verified**: 2026-06-21
 
-### Taranaki Plunket - Whanau Awhina (Well Child & Parenting)
+### Taranaki Plunket - Whānau Āwhina (Well Child & Parenting)
 
 - **Region**: Taranaki
 - **Contact**: `0800 184 803`
@@ -171,7 +171,7 @@ generated from the app's canonical data, so it always matches what families see.
 - **Contact**: `0800 559 009`
 - **Hours**: Mon-Fri 8:30am-5:00pm
 - **URL**: <https://www.workandincome.govt.nz/>
-- **Description**: Government financial assistance: Preterm Baby Payment, Home Help, Childcare Assistance, Accommodation Supplement, Recoverable Assistance, and emergency grants. Offices in New Plymouth and Hawera.
+- **Description**: Government financial assistance: Preterm Baby Payment, Home Help, Childcare Assistance, Accommodation Supplement, Recoverable Assistance, and emergency grants. Offices in New Plymouth and Hāwera.
 - **Last verified**: 2026-06-21
 
 ### Inland Revenue (IRD) - Best Start / Working for Families (Financial Support)
@@ -204,7 +204,7 @@ generated from the app's canonical data, so it always matches what families see.
 - **Description**: Government tenancy advice: repairs, bond disputes, rent increases, tenant rights, and free dispute resolution.
 - **Last verified**: 2026-06-21
 
-### Kainga Ora - Homes and Communities (Housing & Tenancy)
+### Kāinga Ora - Homes and Communities (Housing & Tenancy)
 
 - **Region**: National
 - **Contact**: `0800 801 601`
@@ -253,9 +253,9 @@ generated from the app's canonical data, so it always matches what families see.
 
 ---
 
-## Community & Whanau
+## Community & Whānau
 
-### Little Miracles Trust (Community & Whanau)
+### Little Miracles Trust (Community & Whānau)
 
 - **Region**: National
 - **Contact**: `info@littlemiraclestrust.org.nz`
@@ -263,7 +263,7 @@ generated from the app's canonical data, so it always matches what families see.
 - **Description**: National neonatal charity. Emotional support, care packs, peer support, and playgroups for NICU families.
 - **Last verified**: 2026-06-21
 
-### Taranaki Retreat (Community & Whanau)
+### Taranaki Retreat (Community & Whānau)
 
 - **Region**: Taranaki
 - **Address**: 35 Octavius Place, New Plymouth (Waimanako Hub) / 517 Hurford Road, Omata (Residential)
@@ -273,7 +273,7 @@ generated from the app's canonical data, so it always matches what families see.
 - **Description**: Free community-based mental health support, peer support, walk-in services, and residential retreat stays.
 - **Last verified**: 2026-06-21
 
-### Citizens Advice Bureau - New Plymouth (Community & Whanau)
+### Citizens Advice Bureau - New Plymouth (Community & Whānau)
 
 - **Region**: Taranaki
 - **Address**: 32 Leach Street (Community House), New Plymouth
@@ -282,7 +282,7 @@ generated from the app's canonical data, so it always matches what families see.
 - **Description**: Free, confidential advice on financial entitlements, tenancy rights, employment, and government services.
 - **Last verified**: 2026-06-21
 
-### Multiple Birth Association NZ (Multiples NZ) (Community & Whanau)
+### Multiple Birth Association NZ (Multiples NZ) (Community & Whānau)
 
 - **Region**: National
 - **Contact**: `0800 489 467`
@@ -290,7 +290,7 @@ generated from the app's canonical data, so it always matches what families see.
 - **Description**: Support network for families with twins, triplets and higher-order multiples. Peer support, practical advice, and equipment hire via local groups (incl. Multiples Taranaki).
 - **Last verified**: 2026-06-21
 
-### Parents Centre New Zealand (Community & Whanau)
+### Parents Centre New Zealand (Community & Whānau)
 
 - **Region**: National
 - **Contact**: `(04) 476 6950`
@@ -298,7 +298,7 @@ generated from the app's canonical data, so it always matches what families see.
 - **Description**: Antenatal education, parenting support groups, and community connections for new parents.
 - **Last verified**: 2026-06-21
 
-### Oranga Tamariki - Ministry for Children (Community & Whanau)
+### Oranga Tamariki - Ministry for Children (Community & Whānau)
 
 - **Region**: National
 - **Contact**: `0508 326 459 (0508 FAMILY)`
@@ -346,7 +346,7 @@ generated from the app's canonical data, so it always matches what families see.
 
 ---
 
-*Maintained by the Front Line Whanau project team. To fix or add a service,
+*Maintained by the Front Line Whānau project team. To fix or add a service,
 edit `src/data/services.ts` and open a pull request - do not edit this
 file directly.*
 

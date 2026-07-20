@@ -17,7 +17,7 @@ vi.mock('next-intl', () => ({
 
 vi.mock('@/lib/locale-config', () => ({
   locales: ['en-NZ', 'mi'] as const,
-  localeNames: { 'en-NZ': 'English (NZ)', mi: 'Te Reo Maori' },
+  localeNames: { 'en-NZ': 'English (NZ)', mi: 'Te Reo Māori' },
 }));
 
 // -- Tests ------------------------------------------------------------------
@@ -31,9 +31,9 @@ describe('LanguageSwitcher', () => {
     const { LanguageSwitcher } = await import('../../components/LanguageSwitcher');
     render(<LanguageSwitcher />);
 
-    // Buttons render visible text: "English (NZ)" and "Te Reo Maori"
+    // Buttons render visible text: "English (NZ)" and "Te Reo Māori"
     expect(screen.getByText('English (NZ)')).toBeInTheDocument();
-    expect(screen.getByText('Te Reo Maori')).toBeInTheDocument();
+    expect(screen.getByText('Te Reo Māori')).toBeInTheDocument();
   });
 
   it('marks the current locale button as active', async () => {
@@ -43,7 +43,7 @@ describe('LanguageSwitcher', () => {
     const enButton = screen.getByRole('button', { name: 'Switch to English (NZ)' });
     expect(enButton).toHaveAttribute('aria-pressed', 'true');
 
-    const miButton = screen.getByRole('button', { name: 'Switch to Te Reo Maori' });
+    const miButton = screen.getByRole('button', { name: 'Switch to Te Reo Māori' });
     expect(miButton).toHaveAttribute('aria-pressed', 'false');
   });
 
@@ -51,18 +51,18 @@ describe('LanguageSwitcher', () => {
     const { LanguageSwitcher } = await import('../../components/LanguageSwitcher');
     render(<LanguageSwitcher />);
 
-    const miButton = screen.getByRole('button', { name: 'Switch to Te Reo Maori' });
+    const miButton = screen.getByRole('button', { name: 'Switch to Te Reo Māori' });
     fireEvent.click(miButton);
 
     expect(mockPush).toHaveBeenCalledWith('/mi/directory');
   });
 
-  it('displays "Te Reo Maori" label text - never the bare string "Maori"', async () => {
+  it('displays "Te Reo Māori" with the macron - never the bare string "Maori"', async () => {
     const { LanguageSwitcher } = await import('../../components/LanguageSwitcher');
-    render(<LanguageSwitcher />);
+    const { container } = render(<LanguageSwitcher />);
 
     // Cultural safety: the unadorned string "Maori" must never appear in the DOM
-    expect(screen.queryByText('Maori')).not.toBeInTheDocument();
-    expect(screen.getByText('Te Reo Maori')).toBeInTheDocument();
+    expect(container.textContent).not.toMatch(/\bMaori\b/);
+    expect(screen.getByText('Te Reo Māori')).toBeInTheDocument();
   });
 });

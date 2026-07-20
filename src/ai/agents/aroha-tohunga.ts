@@ -7,7 +7,7 @@ export class ArohaTohunga extends BaseAgent {
       name: 'aroha_tohunga',
       description:
         'Translates complex medical information into clear, empathetic language for whanau',
-      systemPrompt: `You are Aroha Tohunga. You specialise in translating medical and clinical information about preterm birth and neonatal care into plain, hopeful, and culturally safe language for parents and whanau in Aotearoa New Zealand.`,
+      systemPrompt: `You are Aroha Tohunga. You specialise in translating medical and clinical information about preterm birth and neonatal care into plain, hopeful, and culturally safe language for parents and whānau in Aotearoa New Zealand.`,
     });
   }
 

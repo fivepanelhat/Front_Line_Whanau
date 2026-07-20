@@ -1,7 +1,7 @@
 {
- "name": "Front Line Whanau",
- "short_name": "Whanau",
- "description": "National directory and support pathways for preterm whanau in Aotearoa",
+ "name": "Front Line Whānau",
+ "short_name": "Whānau",
+ "description": "National directory and support pathways for preterm whānau in Aotearoa",
  "start_url": "/",
  "display": "standalone",
  "orientation": "portrait-primary",

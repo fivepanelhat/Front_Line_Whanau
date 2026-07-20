@@ -1,8 +1,8 @@
 # Sovereign Data Policy
 
-## Te Mana Raraunga - Maori Data Sovereignty
+## Te Mana Raraunga - Māori Data Sovereignty
 
-The **Front Line Families Support Hub NZ** is designed in alignment with the principles of [Te Mana Raraunga - The Maori Data Sovereignty Network](https://www.temanararaunga.maori.nz/) and the rights affirmed under **Te Tiriti o Waitangi**.
+The **Front Line Families Support Hub NZ** is designed in alignment with the principles of [Te Mana Raraunga - The Māori Data Sovereignty Network](https://www.temanararaunga.maori.nz/) and the rights affirmed under **Te Tiriti o Waitangi**.
 
 ---
 
@@ -10,7 +10,7 @@ The **Front Line Families Support Hub NZ** is designed in alignment with the pri
 
 ### 1. Rangatiratanga (Authority)
 
-- **Whanau control their own data.** Every piece of personal, health, or financial information belongs to the whanau who created it.
+- **Whānau control their own data.** Every piece of personal, health, or financial information belongs to the whānau who created it.
 - Users have the **right to access, export, and delete** all their data at any time.
 - **No data is collected, processed, or shared** without explicit informed consent.
 - Consent can be **revoked** at any time, and revocation takes immediate effect.
@@ -18,8 +18,8 @@ The **Front Line Families Support Hub NZ** is designed in alignment with the pri
 ### 2. Whakapapa (Relationships)
 
 - Data is understood within its **relational context** - it connects to people, places, and stories.
-- The platform respects that data about whanau is **collectively significant**, not just individually relevant.
-- Extended whanau access is supported through **family consent flows**, not assumed.
+- The platform respects that data about whānau is **collectively significant**, not just individually relevant.
+- Extended whānau access is supported through **family consent flows**, not assumed.
 
 ### 3. Whanaungatanga (Obligations)
 
@@ -29,7 +29,7 @@ The **Front Line Families Support Hub NZ** is designed in alignment with the pri
 
 ### 4. Kotahitanga (Collective Benefit)
 
-- Aggregated, anonymised insights may be used to **advocate for better services** for whanau - but only with collective consent and never at the individual level.
+- Aggregated, anonymised insights may be used to **advocate for better services** for whānau - but only with collective consent and never at the individual level.
 - The platform aims to **reduce barriers**, not create new power imbalances.
 
 ---
@@ -99,4 +99,4 @@ Under the **Privacy Act 2020** and this policy, users have the right to:
 ---
 
 > *"Ko au ko koe, ko koe ko au" - I am you, you are me.*
-> Data about whanau belongs to whanau.
+> Data about whānau belongs to whānau.

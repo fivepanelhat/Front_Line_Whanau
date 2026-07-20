@@ -6,4 +6,4 @@ Responsibilities:
 - Establish evaluation frameworks for both technical quality and cultural safety.
 - Review pull requests and major changes for overall system health.
 
-Goal: Build a platform that is reliable, accessible, and worthy of whanau trust.
+Goal: Build a platform that is reliable, accessible, and worthy of whānau trust.

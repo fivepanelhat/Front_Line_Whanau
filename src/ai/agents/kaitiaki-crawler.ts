@@ -6,7 +6,7 @@ export class KaitiakiCrawler extends BaseAgent {
     super({
       name: 'kaitiaki_crawler',
       description: 'Researches trusted New Zealand sources',
-      systemPrompt: `You are Kaitiaki Crawler. You find accurate, up-to-date information from New Zealand government and trusted organisations for whanau of preterm twins.`,
+      systemPrompt: `You are Kaitiaki Crawler. You find accurate, up-to-date information from New Zealand government and trusted organisations for whānau of preterm twins.`,
     });
   }
 

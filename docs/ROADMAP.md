@@ -1,4 +1,4 @@
-# Roadmap - Whanau Preterm Support Hub NZ
+# Roadmap - Whānau Preterm Support Hub NZ
 
 ## [OK] Recently Completed
 
@@ -41,7 +41,7 @@
 
 ## Long-term Vision (2026-2027)
 
-- National platform for preterm twin and whanau support across Aotearoa New Zealand
-- Strong alignment with Maori data sovereignty (Te Mana Raraunga) and Te Tiriti o Waitangi
+- National platform for preterm twin and whānau support across Aotearoa New Zealand
+- Strong alignment with Māori data sovereignty (Te Mana Raraunga) and Te Tiriti o Waitangi
 - Integration pathways with Mana Kai and community resilience initiatives
 - Scalable, accessible, family-centred digital support infrastructure

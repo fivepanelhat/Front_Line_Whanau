@@ -17,7 +17,7 @@ In the interest of fostering an open, welcoming, and culturally safe environment
 - **Manaakitanga** - Being respectful and welcoming of differing viewpoints and experiences
 - **Kaitiakitanga** - Giving and gracefully accepting constructive feedback
 - **Rangatiratanga** - Accepting responsibility and apologising to those affected by our mistakes, and learning from the experience
-- **Whanaungatanga** - Focusing on what is best for the community and whanau we serve
+- **Whanaungatanga** - Focusing on what is best for the community and whānau we serve
 
 ### Unacceptable Behaviour
 
@@ -26,7 +26,7 @@ In the interest of fostering an open, welcoming, and culturally safe environment
 - Publishing others' private information without explicit permission
 - The use of sexualised language or imagery, and sexual attention or advances
 - Discrimination based on any protected characteristic
-- Misuse or misrepresentation of Maori cultural concepts, tikanga, or te reo
+- Misuse or misrepresentation of Māori cultural concepts, tikanga, or te reo
 - Other conduct which could reasonably be considered inappropriate in a professional setting
 
 ## Our Responsibilities
@@ -49,7 +49,7 @@ Project maintainers who do not follow or enforce the Code of Conduct in good fai
 
 This project is grounded in the principles of **Te Tiriti o Waitangi**. We are committed to:
 
-- Upholding **tino rangatiratanga** - the self-determination of Maori
+- Upholding **tino rangatiratanga** - the self-determination of Māori
 - Practising **kaitiakitanga** - responsible stewardship of cultural knowledge
 - Ensuring **equity** - actively working to address disparities
 - Honouring **partnership** - genuine collaboration with mana whenua

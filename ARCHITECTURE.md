@@ -2,7 +2,7 @@
 
 ## Overview
 
-**Front_Line_Whanau** is a privacy-first, sovereign digital platform designed to support whanau of preterm twins and families navigating complex frontline services in Aotearoa New Zealand.
+**Front_Line_Whanau** is a privacy-first, sovereign digital platform designed to support whānau of preterm twins and families navigating complex frontline services in Aotearoa New Zealand.
 
 The architecture prioritises:
 
@@ -14,8 +14,8 @@ The architecture prioritises:
 ## Core Principles
 
 - **Privacy by Design**: Sensitive data stays on-device by default (Taonga Vault).
-- **Role-Based Experience**: Separate but unified experiences for whanau/parents and practitioners/organisations.
-- **Cultural Safety First**: All content and features are reviewed through a Te Ao Maori lens.
+- **Role-Based Experience**: Separate but unified experiences for whānau/parents and practitioners/organisations.
+- **Cultural Safety First**: All content and features are reviewed through a Te Ao Māori lens.
 - **Progressive Enhancement**: Core functionality works offline/client-side; optional server sync available.
 
 ## Technology Stack
