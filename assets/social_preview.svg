@@ -1,0 +1,107 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Front Line Whanau social preview banner, coastal-forest dusk</title>
+<desc>A dusk coastline with a volcanic cone silhouette and forest treeline, floating frosted-glass cards bearing koru and manaaki glyphs, title Front Line Whanau Support Platform.</desc>
+<defs>
+  <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" stop-color="#0A1410"/>
+    <stop offset="55%" stop-color="#1C2E22"/>
+    <stop offset="80%" stop-color="#3A2418"/>
+    <stop offset="100%" stop-color="#4A2A1E"/>
+  </linearGradient>
+  <linearGradient id="sea" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" stop-color="#2E4A3E"/>
+    <stop offset="100%" stop-color="#0F211B"/>
+  </linearGradient>
+  <linearGradient id="mtn" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" stop-color="#0C1712"/>
+    <stop offset="55%" stop-color="#16241C"/>
+    <stop offset="100%" stop-color="#D9AE63" stop-opacity="0.5"/>
+  </linearGradient>
+  <linearGradient id="titleFill" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" stop-color="#F0CE8E"/>
+    <stop offset="100%" stop-color="#B9812F"/>
+  </linearGradient>
+  <linearGradient id="cardSheen" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" stop-color="#EDE3CE" stop-opacity="0.20"/>
+    <stop offset="100%" stop-color="#EDE3CE" stop-opacity="0.06"/>
+  </linearGradient>
+  <filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="22"/></filter>
+</defs>
+
+<rect width="1280" height="720" fill="url(#sky)"/>
+
+<!-- dusk glow behind mountain -->
+<ellipse cx="330" cy="430" rx="360" ry="180" fill="#D9AE63" opacity="0.16" filter="url(#soft)"/>
+<ellipse cx="980" cy="220" rx="380" ry="150" fill="#4E9C89" opacity="0.14" filter="url(#soft)"/>
+<ellipse cx="1050" cy="560" rx="320" ry="140" fill="#8C2F45" opacity="0.16" filter="url(#soft)"/>
+
+<!-- mountain silhouette -->
+<path d="M -20 470 L 200 250 C 230 220, 260 220, 290 250 L 520 470 Z" fill="url(#mtn)"/>
+<path d="M 200 250 C 230 220, 260 220, 290 250 L 330 300 L 250 260 L 170 300 Z" fill="#0C1712"/>
+
+<!-- forest treeline -->
+<path d="M -20 480 L 60 455 L 120 478 L 190 450 L 260 476 L 330 452 L 410 480 L 500 458 L 600 482 L 700 460 L 820 484 L 960 462 L 1120 486 L 1300 465 L 1300 500 L -20 500 Z"
+      fill="#0F1E16"/>
+
+<!-- town lights -->
+<circle cx="140" cy="472" r="2.4" fill="#D9AE63" opacity="0.85"/>
+<circle cx="230" cy="468" r="2" fill="#D9AE63" opacity="0.7"/>
+<circle cx="310" cy="474" r="2.4" fill="#D9AE63" opacity="0.85"/>
+<circle cx="380" cy="470" r="1.8" fill="#D9AE63" opacity="0.6"/>
+
+<!-- sea -->
+<rect x="0" y="498" width="1280" height="222" fill="url(#sea)"/>
+<path d="M 0 520 C 200 505, 400 535, 640 515 S 1080 500, 1280 522" fill="none" stroke="#4E9C89" stroke-width="2.5" opacity="0.55"/>
+<path d="M 0 560 C 220 545, 460 575, 700 555 S 1100 542, 1280 562" fill="none" stroke="#D9AE63" stroke-width="2" opacity="0.4"/>
+<path d="M 0 610 C 240 592, 500 622, 760 600 S 1120 588, 1280 608" fill="none" stroke="#EDE3CE" stroke-width="1.6" opacity="0.28"/>
+
+<!-- title -->
+<text x="70" y="150" font-family="Iowan Old Style, Palatino Linotype, Palatino, Georgia, serif"
+      font-size="66" font-weight="700" fill="url(#titleFill)" letter-spacing="1">FRONT LINE WHĀNAU</text>
+<text x="70" y="200" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif"
+      font-size="30" font-weight="600" fill="#8FC4B4" letter-spacing="4">SUPPORT PLATFORM</text>
+
+<!-- floating glass cards -->
+<g>
+  <!-- hero card: koru heart -->
+  <g transform="translate(760,235) rotate(-6)">
+    <rect x="-95" y="-115" width="190" height="240" rx="18" fill="url(#cardSheen)" stroke="#EDE3CE" stroke-opacity="0.28"/>
+    <path d="M 0 40 C -55 -10, -55 -70, -10 -70 C 10 -70, 10 -50, 0 -35 C -10 -50, -10 -70, 10 -70 C 55 -70, 55 -10, 0 40 Z"
+          fill="none" stroke="#D9AE63" stroke-width="4.5" stroke-linejoin="round"/>
+    <path d="M -55 -70 C -75 -95, -60 -120, -35 -110" fill="none" stroke="#D9AE63" stroke-width="3" opacity="0.75"/>
+    <path d="M 55 -70 C 75 -95, 60 -120, 35 -110" fill="none" stroke="#D9AE63" stroke-width="3" opacity="0.75"/>
+  </g>
+
+  <!-- unity spiral -->
+  <g transform="translate(600,340) rotate(-4)">
+    <rect x="-58" y="-70" width="116" height="150" rx="14" fill="url(#cardSheen)" stroke="#EDE3CE" stroke-opacity="0.26"/>
+    <path d="M -20 20 a 26 26 0 1 1 40 -14 a 14 14 0 1 1 -20 10" fill="none" stroke="#8C2F45" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- manaaki hands -->
+  <g transform="translate(985,430) rotate(5)">
+    <rect x="-64" y="-78" width="128" height="164" rx="14" fill="url(#cardSheen)" stroke="#EDE3CE" stroke-opacity="0.26"/>
+    <path d="M -28 18 C -28 -6, -10 -14, 0 -6 C 10 -14, 28 -6, 28 18 C 28 34, 10 44, 0 50 C -10 44, -28 34, -28 18 Z"
+          fill="none" stroke="#4E9C89" stroke-width="4" stroke-linejoin="round"/>
+  </g>
+
+  <!-- pathway diamond -->
+  <g transform="translate(830,540) rotate(-8)">
+    <rect x="-52" y="-64" width="104" height="132" rx="12" fill="url(#cardSheen)" stroke="#EDE3CE" stroke-opacity="0.26"/>
+    <path d="M 0 -30 L 26 0 L 0 30 L -26 0 Z" fill="none" stroke="#D9AE63" stroke-width="3.6" stroke-linejoin="round"/>
+  </g>
+
+  <!-- small koru top-right -->
+  <g transform="translate(1140,190) rotate(8)">
+    <rect x="-38" y="-46" width="76" height="96" rx="10" fill="url(#cardSheen)" stroke="#EDE3CE" stroke-opacity="0.24"/>
+    <path d="M -10 14 a 16 16 0 1 1 24 -10" fill="none" stroke="#8C2F45" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- small mark bottom-left -->
+  <g transform="translate(300,610) rotate(6)">
+    <rect x="-42" y="-52" width="84" height="106" rx="10" fill="url(#cardSheen)" stroke="#EDE3CE" stroke-opacity="0.24"/>
+    <path d="M -16 16 L 0 -14 L 16 16 Z M -16 16 L 16 16" fill="none" stroke="#D9AE63" stroke-width="3" stroke-linejoin="round"/>
+  </g>
+</g>
+
+</svg>
