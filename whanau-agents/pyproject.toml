@@ -1,7 +1,7 @@
 [project]
 name = "aether-summit"
 version = "0.2.0"
-description = "Enterprise-grade, Te Tiriti-aligned multi-agent system for Whanau Preterm Support Hub NZ"
+description = "Enterprise-grade, Te Tiriti-aligned multi-agent system for Whānau Preterm Support Hub NZ"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

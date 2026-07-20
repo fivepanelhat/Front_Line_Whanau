@@ -109,7 +109,7 @@ export const CONSENT_DESCRIPTIONS: Record<
   },
   'directory.share': {
     title: 'Share Directory Bookmarks',
-    description: 'Share your saved services and bookmarks with whanau members.',
+    description: 'Share your saved services and bookmarks with whānau members.',
     dataAccessed: 'Your directory bookmarks',
     riskLevel: 'low',
   },

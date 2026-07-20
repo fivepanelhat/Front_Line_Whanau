@@ -1,6 +1,6 @@
 # Developer Onboarding Guide
 
-Welcome to the Front Line Whanau platform! This document outlines the core architecture of our AI systems and how to contribute effectively.
+Welcome to the Front Line Whānau platform! This document outlines the core architecture of our AI systems and how to contribute effectively.
 
 ## Core Stack
 - **Framework**: Next.js 14 (App Router)

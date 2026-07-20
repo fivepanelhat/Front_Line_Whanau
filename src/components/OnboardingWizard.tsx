@@ -340,7 +340,7 @@ export function OnboardingWizard({ onComplete }: { onComplete: () => void }) {
           <div className="animate-in slide-in-from-right mt-4 space-y-4 duration-300">
             <h2 className="text-3xl font-bold text-gray-900">You're All Set! 🎉</h2>
             <p className="text-lg text-gray-600">
-              Here are a few ways to get started with the Front Line Whanau assistant:
+              Here are a few ways to get started with the Front Line Whānau assistant:
             </p>
             <div className="my-6 space-y-4 rounded-xl border border-gray-100 bg-gray-50 p-5">
               <p

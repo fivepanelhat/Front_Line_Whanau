@@ -38,7 +38,7 @@ test.describe('Language switcher', () => {
  includeHidden: isMobile,
  });
  const miButton = languageSwitcher.getByRole('button', {
- name: /te reo maori/i,
+ name: /te reo māori/i,
  includeHidden: isMobile,
  });
 

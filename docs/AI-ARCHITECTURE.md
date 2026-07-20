@@ -21,9 +21,9 @@ We'll keep the existing concept but formalise it:
  - **Kaitiaki Crawler** - Web research & data ingestion
  - **Rangahau Hauora** - Medical evidence synthesis
  - **Aroha Tohunga** - Clinical translation
- - **Mana Awhina** - Cultural safety & equity review
+ - **Mana Āwhina** - Cultural safety & equity review
  - **Tautoko Kaiwhina** - Services directory maintenance
- - **Mama & Papa Reo** - Lived experience integration
+ - **Māmā & Pāpā Reo** - Lived experience integration
 
 ## Target Directory Layout (`src/ai/`)
 

@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import { DirectorySearch } from '@/components/DirectorySearch';
 
 export const metadata = {
-  title: 'National Directory | Front Line Whanau',
+  title: 'National Directory | Front Line Whānau',
   description: 'Search for verified frontline services and organisations across Aotearoa.',
 };
 

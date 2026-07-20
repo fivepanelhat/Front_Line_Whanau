@@ -84,9 +84,9 @@ See **Solution we have built** above. Cross-portfolio map: [Kiwi Edge AI Stack](
 > The legacy scaffold [`whanau-preterm-support-hub`](https://github.com/fivepanelhat/whanau-preterm-support-hub) is redirected/archived. 
 > Merge details: [docs/MERGE_FROM_WHANAU_PRETERM_SUPPORT_HUB.md](./docs/MERGE_FROM_WHANAU_PRETERM_SUPPORT_HUB.md) | Status: [REALITY.md](./REALITY.md)
 
-Open-Source National Frontline Whanau Support Platform - Aotearoa New Zealand
+Open-Source National Frontline Whānau Support Platform - Aotearoa New Zealand
 
-A sovereign, privacy-first digital platform designed to support whanau of preterm twins and families navigating complex frontline services across Aotearoa New Zealand.
+A sovereign, privacy-first digital platform designed to support whānau of preterm twins and families navigating complex frontline services across Aotearoa New Zealand.
 
 **Live: https://front-line-whanau.vercel.app**
 
@@ -113,10 +113,10 @@ A sovereign, privacy-first digital platform designed to support whanau of preter
 Whanau (parents, caregivers, and extended families), practitioners, doctors, midwives, social workers, and frontline organisations with a strong focus on Maori, Pacific, and rural communities.
 
 **What**
-A unified, searchable national platform that brings together information and services from multiple organisations into one place. It features role-based experiences (Parent/Whanau and Practitioner/Organisation portals), self-service uploads, encrypted local storage, and AI-assisted curation.
+A unified, searchable national platform that brings together information and services from multiple organisations into one place. It features role-based experiences (Parent/Whānau and Practitioner/Organisation portals), self-service uploads, encrypted local storage, and AI-assisted curation.
 
 **Why**
-Frontline whanau often face fragmented services, information overload, navigation fatigue, and equity gaps. This platform reduces complexity while prioritising cultural safety and data sovereignty.
+Frontline whānau often face fragmented services, information overload, navigation fatigue, and equity gaps. This platform reduces complexity while prioritising cultural safety and data sovereignty.
 
 **When**
 MVP targeted for the next 48 weeks, with ongoing development toward national adoption.
@@ -127,7 +127,7 @@ Nationwide across Aotearoa New Zealand, available as Web, Desktop (Tauri), and P
 
 ## Features
 
-- **Dual Portals**: Tailored experiences for whanau/parents and practitioners/organisations
+- **Dual Portals**: Tailored experiences for whānau/parents and practitioners/organisations
 - **Searchable National Directory**: Filter by region, organisation, service type, and role
 - **Self-Service Uploads**: Organisations can submit directory listings and securely upload resources (Taonga Vault encryption)
 - **Privacy-First Storage**: Client-side encryption (Taonga Vault) with consent-driven access

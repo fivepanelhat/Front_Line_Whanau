@@ -78,7 +78,7 @@ export const SERVICES: Service[] = [
   },
   {
     id: 'taranaki-plunket',
-    name: 'Taranaki Plunket - Whanau Awhina',
+    name: 'Taranaki Plunket - Whānau Āwhina',
     categories: ['parenting'],
     region: 'Taranaki',
     contact: '0800 184 803',
@@ -139,7 +139,7 @@ export const SERVICES: Service[] = [
     hours: 'Mon-Fri 8:30am-5:00pm',
     availability: 'business-hours',
     description:
-      'Government financial assistance: Preterm Baby Payment, Home Help, Childcare Assistance, Accommodation Supplement, Recoverable Assistance, and emergency grants. Offices in New Plymouth and Hawera.',
+      'Government financial assistance: Preterm Baby Payment, Home Help, Childcare Assistance, Accommodation Supplement, Recoverable Assistance, and emergency grants. Offices in New Plymouth and Hāwera.',
     lastVerified: '2026-06-21',
   },
   {
@@ -183,7 +183,7 @@ export const SERVICES: Service[] = [
   },
   {
     id: 'kainga-ora',
-    name: 'Kainga Ora - Homes and Communities',
+    name: 'Kāinga Ora - Homes and Communities',
     categories: ['housing'],
     region: 'National',
     contact: '0800 801 601',

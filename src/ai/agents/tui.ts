@@ -9,7 +9,7 @@ export class Tui {
   private agent = createReactAgent({
     llm: createAgentLLM({ model: 'gemini-2.5-flash', temperature: 0.1, maxOutputTokens: 2048 }),
     tools: [],
-    prompt: `You are the Medical Jargon Translator for preterm whanau in Aotearoa New Zealand.
+    prompt: `You are the Medical Jargon Translator for preterm whānau in Aotearoa New Zealand.
 Your ONLY job is to take complex medical text, diagnoses, or NICU jargon and translate it into clear, compassionate, and easily understood language (approx 8th-grade reading level).
 Rules:
 1. Explain what the terms mean using simple analogies if helpful.

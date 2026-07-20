@@ -63,7 +63,7 @@ export class AetherSummit {
     const inputGate = checkInputGuardrails(userQuery);
     if (!inputGate.passed) {
       return {
-        content: "I'm unable to process that request. How else can I help your whanau today?",
+        content: "I'm unable to process that request. How else can I help your whānau today?",
         confidence: 1.0,
         requiresHumanReview: true,
         agentUsed: 'Security Guardian',
@@ -180,7 +180,7 @@ export class AetherSummit {
   }
 
   private synthesize(research: string, plan: string): string {
-    return `🔍 RESEARCH SUMMARY:\n${research}\n\n🗺️ RECOMMENDED PATHWAY:\n${plan}\n\nYour whanau's informed decision is final and respected. 💛`;
+    return `🔍 RESEARCH SUMMARY:\n${research}\n\n🗺️ RECOMMENDED PATHWAY:\n${plan}\n\nYour whānau's informed decision is final and respected. 💛`;
   }
 }
 

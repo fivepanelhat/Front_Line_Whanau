@@ -10,7 +10,7 @@ export function Footer() {
       <div className="max-w-site relative mx-auto px-6">
         <div className="glass-card mx-auto mb-10 max-w-2xl rounded-3xl px-6 py-8">
           <p className="font-heading text-text-secondary mb-2 text-lg italic">
-            &ldquo;He aha te mea nui o te ao? He tangata, he tangata, he tangata.&rdquo;
+            &ldquo;He aha te mea nui o te ao? He tāngata, he tāngata, he tāngata.&rdquo;
           </p>
           <p className="text-text-muted text-sm">
             What is the most important thing in the world? It is people, it is people, it is people.

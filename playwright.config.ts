@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Playwright E2E configuration for Front Line Whanau.
+ * Playwright E2E configuration for Front Line Whānau.
  *
  * Runs against a local dev server on port 3000.
  * Critical flows tested:

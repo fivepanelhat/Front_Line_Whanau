@@ -3,7 +3,7 @@ async function runTests() {
  "What financial support is available for parents of preterm twins in New Zealand?",
  "What are the current guidelines for skin-to-skin contact with preterm babies?",
  "How can I get help from Citizens Advice Bureau for my preterm baby in Taranaki?",
- "Where can whanau find culturally safe preterm support services?",
+ "Where can whānau find culturally safe preterm support services?",
  "What is the current Best Start payment amount for preterm babies?"
  ];
 

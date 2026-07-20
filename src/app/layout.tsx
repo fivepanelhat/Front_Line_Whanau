@@ -22,20 +22,20 @@ export const THEME_BOOTSTRAP_SCRIPT = `(function(){try{var t=localStorage.getIte
 export const metadata: Metadata = {
   metadataBase: new URL('https://frontline-whanau.nz'),
   title: {
-    default: 'Whanau Preterm Support Hub | Aotearoa New Zealand',
-    template: '%s | Whanau Preterm Support Hub',
+    default: 'Whānau Preterm Support Hub | Aotearoa New Zealand',
+    template: '%s | Whānau Preterm Support Hub',
   },
   description:
-    'Sovereign, privacy-first digital platform supporting whanau of preterm twins and families navigating frontline services across Aotearoa New Zealand. Te Tiriti o Waitangi aligned.',
+    'Sovereign, privacy-first digital platform supporting whānau of preterm twins and families navigating frontline services across Aotearoa New Zealand. Te Tiriti o Waitangi aligned.',
   icons: {
     icon: '/favicon.ico',
     apple: '/apple-touch-icon.png',
   },
   manifest: '/manifest.json',
   openGraph: {
-    title: 'Whanau Preterm Support Hub NZ',
+    title: 'Whānau Preterm Support Hub NZ',
     description:
-      'Privacy-first support for whanau of preterm twins. Culturally safe, Te Tiriti aligned.',
+      'Privacy-first support for whānau of preterm twins. Culturally safe, Te Tiriti aligned.',
     images: [{ url: '/og-image.png' }],
   },
 };

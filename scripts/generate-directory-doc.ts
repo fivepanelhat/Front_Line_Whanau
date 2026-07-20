@@ -36,7 +36,7 @@ function build(): string {
  '',
  '# Taranaki Services Directory',
  '',
- 'Services for whanau of preterm babies in Taranaki and nationally. This page is',
+ 'Services for whānau of preterm babies in Taranaki and nationally. This page is',
  "generated from the app's canonical data, so it always matches what families see.",
  '',
  '> Benefit and payment amounts are intentionally **not** listed here. For current',
@@ -53,7 +53,7 @@ function build(): string {
  }
 
  parts.push(
- '*Maintained by the Front Line Whanau project team. To fix or add a service,',
+ '*Maintained by the Front Line Whānau project team. To fix or add a service,',
  'edit `src/data/services.ts` and open a pull request - do not edit this',
  'file directly.*',
  '',

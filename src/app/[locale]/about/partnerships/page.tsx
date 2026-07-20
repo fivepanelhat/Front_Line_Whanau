@@ -6,7 +6,7 @@ export default function PartnershipsPage() {
           National Partnerships
         </h1>
         <p className="text-accent-ink/80 mx-auto max-w-2xl text-base sm:text-lg">
-          Collaborating to provide a seamless support ecosystem for preterm whanau in Aotearoa.
+          Collaborating to provide a seamless support ecosystem for preterm whānau in Aotearoa.
         </p>
       </div>
 

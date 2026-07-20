@@ -400,7 +400,7 @@ export const getHospitalFacilitiesInfoTool = createSafeTool(
       facilities:
         'Hospitals typically have dedicated parent lounges (with tea/coffee making facilities), breast milk expressing rooms, and multi-faith prayer rooms or chapels. Ask your bedside nurse or ward clerk where these are located on your ward.',
       showers:
-        'Whanau showers are usually available in or near the NICU or maternity ward. Ask your bedside nurse where they are located. You may need to bring your own toiletries, though some wards can provide towels.',
+        'Whānau showers are usually available in or near the NICU or maternity ward. Ask your bedside nurse where they are located. You may need to bring your own toiletries, though some wards can provide towels.',
       food: 'Hospital supplied kai (meals) are typically provided for the admitted patient (e.g., the mother if she is on a postnatal ward), but usually not for partners or whanau staying in the NICU. You are welcome to bring your own food. Parent lounges usually have a fridge and microwave-make sure to clearly label your food with your name and date. For food deliveries like Uber Eats or Delivereasy, drivers cannot enter the wards; you must meet them at the main hospital entrance or designated drop-off zone.',
       transport:
         'Major hospitals have designated P5 or P10 drop-off/pick-up zones right outside the main entrance. This is where Ubers, Ola, and family members should drop you off. Taxi ranks are usually located immediately next to these main doors. For public transport, most hospitals have local bus stops either directly within the hospital grounds or just outside the main gates. Check your local council transport app for exact routes.',

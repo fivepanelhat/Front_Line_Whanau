@@ -13,14 +13,14 @@ async function classifyAndRoute(query: string) {
  return { intent: 'EXECUTION', agent: 'funding_eligibility_checker' };
  }
 
- // 2. Cultural Safety (Maori / Iwi)
+ // 2. Cultural Safety (Māori / Iwi)
  if (
  q.includes('cultural') ||
  q.includes('marae') ||
  q.includes('iwi') ||
- q.includes('kaumatua') ||
+ q.includes('kaumātua') ||
  q.includes('whakapapa') ||
- q.includes('maori')
+ q.includes('māori')
  ) {
  return { intent: 'RESEARCH', agent: 'cultural_safety_guardian' };
  }

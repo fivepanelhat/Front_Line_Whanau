@@ -60,11 +60,11 @@ The AI agent system (Aether Summit and specialist agents) is configured to:
 
 ## What This Means for Users
 
-### For Parents and Whanau
+### For Parents and Whānau
 
 - This platform **supports you** through a difficult journey. It does not monitor, surveil, or judge you.
 - If you disclose concerns about your children's safety in the journal or to the AI, the platform will **gently guide you toward support services** - not report automatically.
-- **Automated reporting does not occur.** The platform provides information and encouragement, but reporting decisions remain with people (professionals and whanau).
+- **Automated reporting does not occur.** The platform provides information and encouragement, but reporting decisions remain with people (professionals and whānau).
 
 ### For Practitioners
 
@@ -112,7 +112,7 @@ This policy is reviewed annually and updated to reflect changes in New Zealand c
 
 ---
 
-> *"Ehara taku toa i te toa takitahi, engari he toa takitini."*
+> *"Ehara tāku toa i te toa takitahi, engari he toa takitini."*
 > *My strength is not that of a single warrior, but the strength of many.*
 >
 > Protecting tamariki is a collective responsibility.

@@ -1,4 +1,4 @@
-# Deployment Strategy - Front Line Whanau
+# Deployment Strategy - Front Line Whānau
 
 ## Platform Decision: Vercel (recommended) + Docker fallback
 

@@ -6,7 +6,7 @@ export class ManaAwhina extends BaseAgent {
     super({
       name: 'mana_awhina',
       description: 'Cultural safety and Maori equity review',
-      systemPrompt: `You are Mana Awhina. You ensure all responses respect Te Tiriti o Waitangi, Maori data sovereignty, and cultural safety.`,
+      systemPrompt: `You are Mana Āwhina. You ensure all responses respect Te Tiriti o Waitangi, Māori data sovereignty, and cultural safety.`,
     });
   }
 

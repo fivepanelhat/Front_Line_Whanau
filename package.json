@@ -7,7 +7,7 @@
     "node": ">=22.0.0",
     "npm": ">=10.0.0"
   },
-  "description": "A sovereign, privacy-first digital platform supporting whanau of preterm twins navigating complex frontline services in Aotearoa New Zealand. Built with client-side encryption (Taonga Vault), Te Tiriti alignment, and LangGraph-powered AI orchestration.",
+  "description": "A sovereign, privacy-first digital platform supporting whānau of preterm twins navigating complex frontline services in Aotearoa New Zealand. Built with client-side encryption (Taonga Vault), Te Tiriti alignment, and LangGraph-powered AI orchestration.",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",

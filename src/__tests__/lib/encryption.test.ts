@@ -39,7 +39,7 @@ describe('Encryption Library', () => {
   });
 
   it('should encrypt and decrypt a string successfully', async () => {
-    const secretMessage = 'Hello, Sovereign Whanau Support Hub!';
+    const secretMessage = 'Hello, Sovereign Whānau Support Hub!';
     const passphrase = 'secure-whanau-passphrase';
 
     const payload = await encrypt(secretMessage, passphrase);
@@ -123,7 +123,7 @@ describe('Encryption Library', () => {
     });
 
     it('should encrypt data and return a base64 string', async () => {
-      const testData = 'Sensitive whanau information';
+      const testData = 'Sensitive whānau information';
       const encrypted = await encryptData(testData, key);
 
       expect(typeof encrypted).toBe('string');

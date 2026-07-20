@@ -1,7 +1,7 @@
 import { HumanMessage, SystemMessage, BaseMessage } from '@langchain/core/messages';
 
 const LOCALE_DIRECTIVES: Record<string, string> = {
-  mi: "CRITICAL: The user has selected 'mi' (Te Reo Maori). You MUST respond entirely in Te Reo Maori.",
+  mi: "CRITICAL: The user has selected 'mi' (Te Reo Māori). You MUST respond entirely in Te Reo Māori.",
   sm: "CRITICAL: The user has selected 'sm' (Gagana Samoa). You MUST respond entirely in Gagana Samoa.",
   to: "CRITICAL: The user has selected 'to' (Lea Faka-Tonga). You MUST respond entirely in Lea Faka-Tonga.",
 };
