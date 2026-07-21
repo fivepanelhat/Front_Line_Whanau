@@ -53,3 +53,11 @@ We actively log high-risk actions using `createAuditLog()` in `src/ai/security.t
 | ------- | ---------- |
 | Workflow token scope | `permissions: contents: read` on CI |
 | Supply chain | Dependabot enabled; lockfile commits required |
+
+## Fleet security principles
+
+- **No silent exfiltration** of personal or tenant operational data
+- Prefer **local-first** processing; third-party AI only with explicit operator configuration and UI/docs disclosure
+- Report vulnerabilities via GitHub Security Advisories or the maintainer contact on the org profile
+- High-stakes production changes require human approval (HITL)
+
