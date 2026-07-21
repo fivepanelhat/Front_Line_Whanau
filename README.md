@@ -84,7 +84,7 @@ See **Solution we have built** above. Cross-portfolio map: [Kiwi Edge AI Stack](
 > The legacy scaffold [`whanau-preterm-support-hub`](https://github.com/fivepanelhat/whanau-preterm-support-hub) is redirected/archived. 
 > Merge details: [docs/MERGE_FROM_WHANAU_PRETERM_SUPPORT_HUB.md](./docs/MERGE_FROM_WHANAU_PRETERM_SUPPORT_HUB.md) | Status: [REALITY.md](./REALITY.md)
 
-Open-Source National Frontline Whānau Support Platform - Aotearoa New Zealand
+Sovereign National Frontline Whānau Support Platform - Aotearoa New Zealand
 
 A sovereign, privacy-first digital platform designed to support whānau of preterm twins and families navigating complex frontline services across Aotearoa New Zealand.
 
@@ -298,7 +298,8 @@ npm run e2e:ui
 
 ## License
 
-This project is licensed under the **Apache License 2.0**. See [LICENSE](./LICENSE).
+Proprietary — © 2026 Coastal Alpine Tech Limited. All rights reserved.
+No open-source grant is implied by access to this repository; see [LICENSE](./LICENSE).
 
 ---
 
@@ -306,7 +307,7 @@ This project is licensed under the **Apache License 2.0**. See [LICENSE](./LICEN
 
 Status badges for this repository (CI, security, license, and stack metadata):
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/badge/License-Proprietary%20(CAT)-8B2F45?style=flat-square)](LICENSE)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)]()
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript&logoColor=white)]()
 [![Te Tiriti](https://img.shields.io/badge/Te%20Tiriti-Aligned-00247D?style=flat-square)]()
