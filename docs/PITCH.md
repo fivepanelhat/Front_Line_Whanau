@@ -20,7 +20,7 @@ One platform, two portals:
 1. **Data sovereignty by design.** Client-side encryption, Maori data-sovereignty policy, NZ-hosted data, and a published Child Protection Policy. Nothing leaves the whanau's control.
 2. **AI with a human safety net.** A LangGraph multi-agent system (research, financial eligibility, advocacy, cultural safety, clinical triage) where sensitive outputs are gated behind practitioner review - not shipped straight to vulnerable users.
 3. **Culturally grounded.** Te Tiriti-aligned governance, cultural-safety review built into content moderation, multilingual from day one.
-4. **Open source.** MIT-licensed, auditable, community-extendable.
+4. **Proprietary & auditable.** Coastal Alpine Tech proprietary licence; source is visible for partner and regulator audit, but no open-source grant or redistribution right is implied.
 
 ## Traction & Technical Readiness
 

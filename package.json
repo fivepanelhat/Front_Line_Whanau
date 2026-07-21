@@ -45,7 +45,7 @@
     "maori-data-sovereignty"
   ],
   "author": "fivepanelhat",
-  "license": "Apache-2.0",
+  "license": "UNLICENSED",
   "dependencies": {
     "@ducanh2912/next-pwa": "^10.2.6",
     "@langchain/community": "^1.1.29",
