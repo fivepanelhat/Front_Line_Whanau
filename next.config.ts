@@ -76,14 +76,21 @@ const nextConfig: NextConfig = {
 
 import { withSentryConfig } from '@sentry/nextjs';
 
-import withPWAInit from '@ducanh2912/next-pwa';
+import withSerwistInit from '@serwist/next';
 
-const withPWA = withPWAInit({
-  dest: 'public',
+// Serwist replaces @ducanh2912/next-pwa (removes the unmaintained workbox ->
+// ejs/jake/glob/minimatch chain flagged in the 25/07 SecOps sweep). The service
+// worker source lives in src/sw.ts; Serwist injects the precache manifest at build.
+// NOTE: the SW build is webpack-based (Turbopack SW is not yet supported — Serwist
+// issue #54), which is why the `build` script uses `next build --webpack`.
+const withSerwist = withSerwistInit({
+  swSrc: 'src/sw.ts',
+  swDest: 'public/sw.js',
   disable: process.env.NODE_ENV === 'development',
+  reloadOnOnline: true,
 });
 
-const finalConfig = withBundleAnalyzer(withNextIntl(withPWA(nextConfig)));
+const finalConfig = withBundleAnalyzer(withNextIntl(withSerwist(nextConfig)));
 
 export default withSentryConfig(finalConfig, {
   // For all available options, see:
