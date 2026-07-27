@@ -1,48 +1,48 @@
 {
- "home": {
- "heroTitle": "Support for whānau of preterm twins",
- "heroSubtitle": "Private. Culturally safe. Built for Aotearoa.",
- "heroDescription": "A sovereign, privacy-first platform connecting whānau of preterm twins with services, information, and each other - across Aotearoa New Zealand.",
- "ctaDirectory": "Browse Directory",
- "ctaResources": "View Resources & Guides",
- "ctaLaunchHub": "Enter your portal",
- "intro": "A sovereign platform to help families navigate support, services, and information with dignity and care."
- },
- "roleSelector": {
- "title": "Nau mai, haere mai - Welcome",
- "subtitle": "Supporting whānau of preterm twins across Aotearoa New Zealand",
- "parentTitle": "I am a Parent / Whānau",
- "parentDescription": "Get support, information, and guidance for your journey",
- "practitionerTitle": "I am a Practitioner / Organisation",
- "practitionerDescription": "Access tools, resources, and directory management",
- "choosePortal": "Choose your portal to continue"
- },
- "features": {
- "title": "Built for whānau, by whānau",
- "subtitle": "Every feature designed with cultural safety and privacy at its heart.",
- "privacyTitle": "Sovereign Privacy",
- "privacyDescription": "Your data never leaves Aotearoa. End-to-end encrypted and under your control.",
- "directoryTitle": "National Directory",
- "directoryDescription": "Find services, support groups, and specialists across all regions of Aotearoa.",
- "culturalTitle": "Culturally Safe",
- "culturalDescription": "Designed with and for Māori whānau. Te Tiriti o Waitangi-aligned practices throughout.",
- "supportTitle": "Peer Support",
- "supportDescription": "Connect with other whānau who understand the journey of premature twins.",
- "guidesTitle": "Resources & Guides",
- "guidesDescription": "Curated information in plain language, reviewed by clinicians and whānau.",
- "aiTitle": "Guided AI Assistant",
- "aiDescription": "A gentle AI guide to help navigate information - always transparent, never a replacement for your care team."
- },
- "values": {
- "title": "What we stand for",
- "subtitle": "Our kaupapa guides every decision we make.",
- "manaTitle": "Mana Motuhake",
- "manaDescription": "Upholding the sovereignty and self-determination of whānau in every interaction.",
- "whanauTitle": "Whānau-Centred",
- "whanauDescription": "The whole whānau is supported - not just the patient. Siblings, partners, grandparents included.",
- "tikaTitle": "Tika me Pono",
- "tikaDescription": "Honest, accurate, and culturally appropriate information - always.",
- "manaakiTitle": "Manaakitanga",
- "manaakiDescription": "Genuine care and hospitality in every feature, every word, every interaction."
- }
+  "home": {
+    "heroTitle": "Hard days, hopeful days — we walk with you",
+    "heroSubtitle": "Private. Culturally safe. Built for Aotearoa — for struggle and for celebration.",
+    "heroDescription": "A sovereign, privacy-first platform for whānau of preterm twins and frontline families: services and information when the path is tough, and space to honour the milestones, firsts, and joy that belong to this chapter too.",
+    "ctaDirectory": "Browse Directory",
+    "ctaResources": "View Resources & Guides",
+    "ctaLaunchHub": "Enter your portal",
+    "intro": "Navigate support with dignity. Protect what is precious. Celebrate how far you have come."
+  },
+  "roleSelector": {
+    "title": "Nau mai, haere mai — Welcome",
+    "subtitle": "Whether today feels heavy or hopeful, you are in the right place. Supporting whānau of preterm twins across Aotearoa New Zealand.",
+    "parentTitle": "I am a Parent / Whānau",
+    "parentDescription": "Support, information, and a place that honours both the hard work and the happy moments of your journey",
+    "practitionerTitle": "I am a Practitioner / Organisation",
+    "practitionerDescription": "Tools, directory management, and moderation that protect safety while uplifting whānau",
+    "choosePortal": "Choose your portal to continue"
+  },
+  "features": {
+    "title": "Built for the whole journey",
+    "subtitle": "Cultural safety and privacy at the centre — with room for hope, humour, and celebration.",
+    "privacyTitle": "Sovereign privacy",
+    "privacyDescription": "Your data is treated with care. Local-first patterns and consent — so you decide what is shared.",
+    "directoryTitle": "National directory",
+    "directoryDescription": "Find services, support groups, and specialists across Aotearoa — including supports that help families stay connected and mark progress.",
+    "culturalTitle": "Culturally safe",
+    "culturalDescription": "Designed with Te Tiriti in mind. Designed in accordance with Te Mana Raraunga principles where Māori data interests arise.",
+    "supportTitle": "Peer connection",
+    "supportDescription": "Whānau who understand NICU nights — and the relief of good news, weight gains, and going home.",
+    "guidesTitle": "Resources & guides",
+    "guidesDescription": "Plain-language information reviewed with care — practical help without drowning out your own story.",
+    "aiTitle": "Guided AI assistant",
+    "aiDescription": "A gentle, draft-only guide to navigate information — transparent, never a replacement for your care team, never the author of your joy."
+  },
+  "values": {
+    "title": "What we stand for",
+    "subtitle": "Our kaupapa holds both the struggle and the celebration.",
+    "manaTitle": "Mana motuhake",
+    "manaDescription": "Upholding the sovereignty and self-determination of whānau in every interaction.",
+    "whanauTitle": "Whānau-centred",
+    "whanauDescription": "The whole whānau is supported — siblings, partners, grandparents — the people who share both the worry and the wins.",
+    "tikaTitle": "Tika me pono",
+    "tikaDescription": "Honest, accurate, and culturally appropriate information — always.",
+    "manaakiTitle": "Manaakitanga",
+    "manaakiDescription": "Genuine care in every feature — including the right to smile, rest, and celebrate progress."
+  }
 }

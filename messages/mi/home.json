@@ -1,48 +1,48 @@
 {
- "home": {
- "heroTitle": "Tautoko mō ngā whānau o ngā pēpi whakamua",
- "heroSubtitle": "He tūmataiti. He haumaru ahurea. He mea hanga mō Aotearoa.",
- "heroDescription": "He papatono motuhake, tūmataiti-tuatahi hei hono i ngā whānau o ngā pēpi matua ki ngā ratonga, ki ngā mōhiotanga, ki ētahi atu - puta noa i Aotearoa.",
- "ctaDirectory": "Tirohia te Rārangi",
- "ctaResources": "Tirohia ngā Rauemi",
- "ctaLaunchHub": "Tomokia tō whatunga",
- "intro": "He papaaho tūmataiti hei āwhina i ngā whānau ki te whakatere i ngā ratonga me ngā mōhiohio i runga i te mana me te atawhai."
- },
- "roleSelector": {
- "title": "Nau mai, haere mai - Tūtaki",
- "subtitle": "Hei tautoko i ngā whānau o ngā pēpi matua puta noa i Aotearoa",
- "parentTitle": "He Mātua / Whānau ahau",
- "parentDescription": "Kimihia he tautoko, he mōhiotanga, he arahi mō tō haerenga",
- "practitionerTitle": "He Kaimahi Hauora / Whakahaere ahau",
- "practitionerDescription": "Uru atu ki ngā taputapu, ngā rauemi, me te whakahaere rārangi",
- "choosePortal": "Kōwhiria tō whatunga ki te haere tonu"
- },
- "features": {
- "title": "I hangaia mō te whānau, e the whānau",
- "subtitle": "I hoahoa ia āhuatanga me te haumaru ahurea me te tūmataiti i roto i tōna ngākau.",
- "privacyTitle": "Tūmataiti Motuhake",
- "privacyDescription": "Kāore tō raraunga e rere ana i Aotearoa. He whiriwhiri-mutunga me tō mana whakahaere.",
- "directoryTitle": "Rārangi ā-Motu",
- "directoryDescription": "Kimihia ngā ratonga, ngā rōpū tautoko, me ngā tohunga i ngā wāhi katoa o Aotearoa.",
- "culturalTitle": "Haumaru Ahurea",
- "culturalDescription": "I hoahoa tahi me ōna mō ngā whānau Māori. Ngā tikanga e hāngai ana ki Te Tiriti o Waitangi i ngā wāhi katoa.",
- "supportTitle": "Tautoko ā-Hoa",
- "supportDescription": "Hono atu ki ētahi atu whānau e mārama ana ki te haerenga o ngā pēpi matua.",
- "guidesTitle": "Ngā Rauemi me Ngā Aratohu",
- "guidesDescription": "He mōhiotanga i āta kōwhiria, i reo māmā, i arotakehia e ngā kaitiaki hauora me ngā whānau.",
- "aiTitle": "Ārahina AI Ārahina",
- "aiDescription": "He kaiārahi AI māmā hei āwhina i te whakatere mōhiotanga - he mārama tonu, ehara i te whakakapi mō tō rōpū tiaki."
- },
- "values": {
- "title": "Ō mātou tū",
- "subtitle": "Ko tō mātou kaupapa e ārahi ana i ia whakatau e mahia ana.",
- "manaTitle": "Mana Motuhake",
- "manaDescription": "E tū ana ki te mana motuhake me te rangatiratanga o te whānau i ia whakawhitinga.",
- "whanauTitle": "Whānau-Aro",
- "whanauDescription": "Ka tautokohia te whānau katoa - kaua ko te tūroro anake. Ko ngā tuākana, ko ngā hoa rangatira, ko ngā koro, ko ngā kuia hoki.",
- "tikaTitle": "Tika me Pono",
- "tikaDescription": "He mōhiotanga tōtika, tika, e hāngai ana ki te ahurea - i ngā wā koa.",
- "manaakiTitle": "Manaakitanga",
- "manaakiDescription": "He tiaki pono me te manaaki i ia āhuatanga, i ia kupu, i ia whakawhitinga."
- }
+  "home": {
+    "heroTitle": "Ngā rā uaua, ngā rā tūmanako — kei konei mātou",
+    "heroSubtitle": "He tūmataiti. He haumaru ahurea. He mea hanga mō Aotearoa — mō te pakanga me te haringa.",
+    "heroDescription": "He papatono motuhake, tūmataiti-tuatahi mō ngā whānau o ngā pēpi matua: ngā ratonga me ngā mōhiotanga i ngā wā uaua, me te wāhi hei whakanui i ngā tohu angitu, ngā tuatahitanga, me te hari o tēnei wāhanga.",
+    "ctaDirectory": "Tirohia te Rārangi",
+    "ctaResources": "Tirohia ngā Rauemi",
+    "ctaLaunchHub": "Tomokia tō whatunga",
+    "intro": "Whakatere i te tautoko me te mana. Tiakina ngā taonga. Whakanuia te ahunga whakamua."
+  },
+  "roleSelector": {
+    "title": "Nau mai, haere mai",
+    "subtitle": "Ahakoa he taumaha, he tūmanako rānei te rā, kei te wāhi tika koe. Hei tautoko i ngā whānau o ngā pēpi matua puta noa i Aotearoa.",
+    "parentTitle": "He Mātua / Whānau ahau",
+    "parentDescription": "He tautoko, he mōhiotanga, he wāhi e whakanui ana i te mahi uaua me ngā wā hari o tō haerenga",
+    "practitionerTitle": "He Kaimahi Hauora / Whakahaere ahau",
+    "practitionerDescription": "Ngā taputapu, te whakahaere rārangi, me te arotake e tiaki ana i te haumaru me te whakamanawa i te whānau",
+    "choosePortal": "Kōwhiria tō whatunga ki te haere tonu"
+  },
+  "features": {
+    "title": "I hangaia mō te haerenga katoa",
+    "subtitle": "Ko te haumaru ahurea me te tūmataiti te pūtake — me te wāhi mō te tūmanako, te katakata, me te whakanui.",
+    "privacyTitle": "Tūmataiti Motuhake",
+    "privacyDescription": "Ka tiakina ō raraunga. Ko ngā ara tūmataiti-tuatahi me te whakaae — ko koe te kaiwhakatau.",
+    "directoryTitle": "Rārangi ā-Motu",
+    "directoryDescription": "Kimihia ngā ratonga, ngā rōpū tautoko, me ngā tohunga puta noa i Aotearoa — tae atu ki ngā tautoko e āwhina ana i te whānau ki te noho hono me te tohu i te ahunga whakamua.",
+    "culturalTitle": "Haumaru Ahurea",
+    "culturalDescription": "I hoahoa ki Te Tiriti. I hoahoa kia hāngai ki ngā mātāpono o Te Mana Raraunga ina pā ana ngā pānga raraunga Māori.",
+    "supportTitle": "Tautoko ā-Hoa",
+    "supportDescription": "Ngā whānau e mārama ana ki ngā pō NICU — me te oranga ngākau o ngā rongo pai, te piki o te taumaha, me te hoki ki te kāinga.",
+    "guidesTitle": "Ngā Rauemi me Ngā Aratohu",
+    "guidesDescription": "He mōhiotanga i reo māmā, i āta arotakehia — he āwhina mahi, kāore e pehia tō ake kōrero.",
+    "aiTitle": "Kaiārahi AI māmā",
+    "aiDescription": "He kaiārahi māmā, huatau-anake hei whakatere mōhiotanga — he mārama, ehara i te whakakapi mō tō rōpū tiaki."
+  },
+  "values": {
+    "title": "Ō mātou tū",
+    "subtitle": "Ko tō mātou kaupapa e pupuri ana i te pakanga me te haringa.",
+    "manaTitle": "Mana Motuhake",
+    "manaDescription": "E tū ana ki te mana motuhake me te rangatiratanga o te whānau i ia whakawhitinga.",
+    "whanauTitle": "Whānau-Aro",
+    "whanauDescription": "Ka tautokohia te whānau katoa — tuākana, hoa, koro, kuia — te hunga e tiri ana i te māharahara me ngā angitu.",
+    "tikaTitle": "Tika me Pono",
+    "tikaDescription": "He mōhiotanga tōtika, tika, e hāngai ana ki te ahurea — i ngā wā katoa.",
+    "manaakiTitle": "Manaakitanga",
+    "manaakiDescription": "He tiaki pono i ia āhuatanga — tae atu ki te tika ki te kata, ki te okioki, ki te whakanui i te ahunga whakamua."
+  }
 }
