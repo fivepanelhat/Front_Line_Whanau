@@ -37,29 +37,31 @@ export function Header() {
     };
   }, [isOpen]);
 
+  const navItems = [
+    { href: `/${locale}/directory`, label: 'Directory' },
+    { href: `/${locale}/resources`, label: 'Resources' },
+    { href: `/${locale}/support`, label: 'Support' },
+  ];
+
   return (
     <header className="sticky top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
       <div className="glass-nav mx-auto flex max-w-7xl items-center justify-between rounded-2xl px-4 py-3 sm:px-6 sm:py-3.5">
         <Link
           href={`/${locale}`}
-          className="text-text-primary flex items-center gap-2 text-lg font-semibold tracking-tight sm:text-xl"
+          className="text-text-primary flex min-w-0 items-center gap-2 text-lg font-semibold tracking-tight sm:text-xl"
           onClick={closeMenu}
         >
           <span
             aria-hidden
-            className="bg-gradient-brand shadow-glow flex h-8 w-8 items-center justify-center rounded-xl text-sm text-white"
+            className="bg-gradient-brand shadow-glow flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-sm text-white"
           >
             F
           </span>
-          <span className="text-gradient font-heading">Front Line Whanau</span>
+          <span className="text-gradient font-heading truncate">Front Line Whanau</span>
         </Link>
 
         <nav className="hidden items-center gap-1 text-sm font-medium md:flex">
-          {[
-            { href: `/${locale}/directory`, label: 'Directory' },
-            { href: `/${locale}/resources`, label: 'Resources' },
-            { href: `/${locale}/support`, label: 'Support' },
-          ].map((item) => (
+          {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -81,7 +83,15 @@ export function Header() {
           </button>
         </div>
 
-        <div className="flex items-center gap-1 md:hidden">
+        {/* Mobile: one primary CTA (Support) + menu */}
+        <div className="flex items-center gap-1.5 md:hidden">
+          <Link
+            href={`/${locale}/support`}
+            className="bg-gradient-brand shadow-glow rounded-xl px-3 py-2 text-xs font-semibold text-white"
+            onClick={closeMenu}
+          >
+            Support
+          </Link>
           <ThemeToggle />
           <button
             data-testid="mobile-menu-btn"
@@ -130,11 +140,7 @@ export function Header() {
         <div ref={menuRef} className="mx-auto mt-2 max-w-7xl md:hidden">
           <div className="glass-nav rounded-2xl px-5 py-5">
             <div className="flex flex-col space-y-1 text-base font-medium">
-              {[
-                { href: `/${locale}/directory`, label: 'Directory' },
-                { href: `/${locale}/resources`, label: 'Resources' },
-                { href: `/${locale}/support`, label: 'Support' },
-              ].map((item) => (
+              {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
