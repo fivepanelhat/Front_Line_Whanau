@@ -31,16 +31,24 @@ export function Hero({ onLaunchHub }: HeroProps) {
           >
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
           </svg>
-          Sovereign &amp; Privacy-First for Aotearoa
+          Built with aroha · Privacy-first for Aotearoa
         </div>
 
         <h1 className="animate-hero-fade-2 mb-6 text-[clamp(1.875rem,5vw,3.25rem)] font-extrabold tracking-tight">
-          Supporting <span className="text-gradient">Front Line Families</span> of Preterm Twins
+          For the hard days — and the{' '}
+          <span className="text-gradient">moments worth celebrating</span>
         </h1>
 
-        <p className="animate-hero-fade-3 text-text-secondary mx-auto mb-10 max-w-[600px] text-lg leading-relaxed">
-          Clear, personalised, and culturally safe guidance through financial support, housing,
-          health services, and mental wellbeing - before, during, and after the neonatal journey.
+        <p className="animate-hero-fade-3 text-text-secondary mx-auto mb-6 max-w-[640px] text-lg leading-relaxed">
+          Preterm and frontline journeys can be exhausting, uncertain, and full of paperwork. They
+          are also full of first holds, weight-gain stickers, quiet laughs in the family room, and
+          the day you finally go home.
+        </p>
+
+        <p className="animate-hero-fade-3 text-text-secondary mx-auto mb-10 max-w-[600px] text-base leading-relaxed">
+          Front Line Whānau helps you navigate services, finances, and care pathways with dignity —
+          while making space for joy, milestones, and the celebration of your pēpi and your
+          strength as whānau.
         </p>
 
         <div className="glass-card animate-hero-fade-4 mx-auto mb-4 inline-flex flex-wrap justify-center gap-3 rounded-3xl p-3 sm:gap-4 sm:p-4">
@@ -65,10 +73,10 @@ export function Hero({ onLaunchHub }: HeroProps) {
               <polyline points="12 16 16 12 12 8" />
               <line x1="8" y1="12" x2="16" y2="12" />
             </svg>
-            Launch Sovereign Hub
+            Enter your hub
           </button>
           <a href="#features" className="btn btn-secondary" id="hero-cta-features">
-            Explore Features
+            See how we support you
           </a>
         </div>
       </div>
