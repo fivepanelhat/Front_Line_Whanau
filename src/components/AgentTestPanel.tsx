@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { saveConversation, loadConversation, MessageInput } from '@/lib/conversation';
 import ReactMarkdown from 'react-markdown';
 import { AiDisclaimer } from '@/components/AiDisclaimer';
+import { ExpandableMessage } from '@/components/ExpandableMessage';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -32,16 +33,13 @@ export function AgentTestPanel({
 
   const [threadId] = useState(() => initialThreadId || `thread_${Date.now()}`);
 
-  // HITL State
   const [showReview, setShowReview] = useState(false);
   const [interruptData, setInterruptData] = useState<InterruptData | null>(null);
 
-  // Summary State
   const [showSummary, setShowSummary] = useState(false);
   const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
   const [summaryMarkdown, setSummaryMarkdown] = useState<string | null>(null);
 
-  // Cancel in-flight SSE / fetch when unmounting or sending a new message
   const abortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
@@ -50,7 +48,6 @@ export function AgentTestPanel({
     };
   }, []);
 
-  // Load previous conversation
   useEffect(() => {
     let cancelled = false;
     const loadPrevious = async () => {
@@ -91,7 +88,6 @@ export function AgentTestPanel({
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
 
-    // Abort any previous stream before starting a new one
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
@@ -125,14 +121,12 @@ export function AgentTestPanel({
       let assistantResponse = '';
       let sseBuffer = '';
 
-      // Add placeholder for assistant
       setMessages([...newMessages, { role: 'assistant', content: '' }]);
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
 
-        // Buffer partial SSE frames across TCP chunks
         sseBuffer += decoder.decode(value, { stream: true });
         const frames = sseBuffer.split('\n\n');
         sseBuffer = frames.pop() ?? '';
@@ -146,8 +140,6 @@ export function AgentTestPanel({
             const data = JSON.parse(raw);
 
             if (data.type === 'reset') {
-              // New model call in the graph (classifier -> agent steps):
-              // discard interim output, keep only the final call's stream.
               assistantResponse = '';
               setMessages((prev) => {
                 const updated = [...prev];
@@ -177,9 +169,6 @@ export function AgentTestPanel({
             }
 
             if (data.type === 'final') {
-              // Some graph nodes answer without streaming model tokens; in
-              // that case the streamed buffer holds only the classifier's
-              // intent label. Prefer the authoritative finalResponse then.
               if (data.finalResponse && assistantResponse.trim().length < 40) {
                 assistantResponse = data.finalResponse;
               }
@@ -200,7 +189,6 @@ export function AgentTestPanel({
         }
       }
 
-      // Auto-save after successful response
       const finalMessages: Message[] = [
         ...newMessages,
         { role: 'assistant' as const, content: assistantResponse },
@@ -211,7 +199,7 @@ export function AgentTestPanel({
         return;
       }
       console.error(err);
-      setError('I am currently experiencing connection issues. Please try again in a moment.');
+      setError('Connection issue. Please try again in a moment.');
     } finally {
       if (!controller.signal.aborted) {
         setIsLoading(false);
@@ -230,7 +218,7 @@ export function AgentTestPanel({
         setInterruptData(null);
         window.location.reload();
       } else {
-        alert('Your request is still pending review by a practitioner. Please check back later.');
+        alert('Still waiting for practitioner review. Please check back later.');
       }
     } catch (err) {
       console.error(err);
@@ -256,7 +244,7 @@ export function AgentTestPanel({
           agent,
         }),
       });
-      alert('Thank you for your feedback!');
+      alert('Thank you for your feedback.');
     } catch (err) {
       console.error('Failed to submit feedback', err);
     }
@@ -276,7 +264,7 @@ export function AgentTestPanel({
       if (res.ok && data.summary) {
         setSummaryMarkdown(data.summary);
       } else {
-        setSummaryMarkdown('Error generating summary: ' + (data.error || 'Unknown error'));
+        setSummaryMarkdown('Could not generate summary: ' + (data.error || 'Unknown error'));
       }
     } catch {
       setSummaryMarkdown('Network error while generating summary.');
@@ -324,56 +312,66 @@ export function AgentTestPanel({
 
       <div className="shadow-glass mb-4 flex-1 overflow-y-auto rounded-3xl border border-white/10 bg-black/15 p-4 backdrop-blur-xl">
         {messages.length === 0 && (
-          <p className="text-text-muted mt-8 text-center">Start a conversation...</p>
+          <p className="text-text-muted mt-8 text-center">Start a conversation…</p>
         )}
 
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`mb-4 flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-4 duration-300`}
-          >
+        {messages.map((msg, index) => {
+          const isStreaming = isLoading && index === messages.length - 1 && msg.role === 'assistant';
+          return (
             <div
-              className={`group relative max-w-[80%] rounded-3xl px-5 py-4 ${
-                msg.role === 'user'
-                  ? 'bg-gradient-brand shadow-glow rounded-br-sm text-white'
-                  : 'text-text-primary shadow-glass rounded-bl-sm border border-white/10 bg-white/5 backdrop-blur-md'
-              }`}
+              key={index}
+              className={`mb-4 flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-4 duration-300`}
             >
-              {msg.role === 'assistant' ? (
-                <div className="prose prose-sm prose-invert prose-p:my-1 prose-ul:my-1 max-w-none break-words">
-                  <ReactMarkdown>{msg.content}</ReactMarkdown>
-                </div>
-              ) : (
-                <div className="break-words whitespace-pre-wrap">{msg.content}</div>
-              )}
-              {msg.role === 'assistant' && msg.content && (
-                <div className="bg-bg-secondary border-border absolute -top-3 -right-2 flex gap-1 rounded-full border p-1 opacity-0 transition group-hover:opacity-100">
-                  <button
-                    onClick={() => submitFeedback(msg.content, 1, msg.agent)}
-                    className="rounded-full p-1 text-xs hover:bg-white/10"
-                    title="Helpful"
-                  >
-                    👍
-                  </button>
-                  <button
-                    onClick={() => submitFeedback(msg.content, -1, msg.agent)}
-                    className="rounded-full p-1 text-xs hover:bg-white/10"
-                    title="Not Helpful"
-                  >
-                    👎
-                  </button>
-                  <button
-                    onClick={() => copyToClipboard(msg.content, index)}
-                    className="rounded-full p-1 text-xs hover:bg-white/10"
-                    title="Copy"
-                  >
-                    {copiedIndex === index ? '[OK]' : '📋'}
-                  </button>
-                </div>
-              )}
+              <div
+                className={`group relative max-w-[80%] rounded-3xl px-5 py-4 ${
+                  msg.role === 'user'
+                    ? 'bg-gradient-brand shadow-glow rounded-br-sm text-white'
+                    : 'text-text-primary shadow-glass rounded-bl-sm border border-white/10 bg-white/5 backdrop-blur-md'
+                }`}
+              >
+                {msg.role === 'assistant' ? (
+                  isStreaming ? (
+                    <div className="prose prose-sm prose-invert prose-p:my-1 prose-ul:my-1 max-w-none break-words">
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    </div>
+                  ) : (
+                    <ExpandableMessage content={msg.content} markdown />
+                  )
+                ) : (
+                  <div className="break-words whitespace-pre-wrap">{msg.content}</div>
+                )}
+                {msg.role === 'assistant' && msg.content && !isStreaming && (
+                  <div className="bg-bg-secondary border-border absolute -top-3 -right-2 flex gap-1 rounded-full border p-1 opacity-0 transition group-hover:opacity-100">
+                    <button
+                      type="button"
+                      onClick={() => submitFeedback(msg.content, 1, msg.agent)}
+                      className="rounded-full p-1 text-xs hover:bg-white/10"
+                      title="Helpful"
+                    >
+                      👍
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => submitFeedback(msg.content, -1, msg.agent)}
+                      className="rounded-full p-1 text-xs hover:bg-white/10"
+                      title="Not Helpful"
+                    >
+                      👎
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => copyToClipboard(msg.content, index)}
+                      className="rounded-full p-1 text-xs hover:bg-white/10"
+                      title="Copy"
+                    >
+                      {copiedIndex === index ? '[OK]' : '📋'}
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         {isLoading && (
           <div className="text-text-muted animate-in fade-in flex items-center gap-2 py-2 pl-4 duration-300">
@@ -391,7 +389,7 @@ export function AgentTestPanel({
                 style={{ animationDelay: '300ms' }}
               />
             </div>
-            <span className="text-sm font-medium">Gathering thoughts...</span>
+            <span className="text-sm font-medium">Gathering thoughts…</span>
           </div>
         )}
 
@@ -402,6 +400,7 @@ export function AgentTestPanel({
               {error}
             </div>
             <button
+              type="button"
               onClick={() => setError(null)}
               className="rounded-lg bg-red-500/20 px-3 py-1 font-semibold transition-colors hover:bg-red-500/30"
             >
@@ -417,7 +416,7 @@ export function AgentTestPanel({
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-          placeholder="Ask about services, pathways, or support options..."
+          placeholder="Ask about services, pathways, or support options…"
           className="glass-input text-text-primary flex-1 px-5 py-4 outline-none"
           disabled={isLoading}
         />
@@ -433,27 +432,28 @@ export function AgentTestPanel({
 
       <AiDisclaimer variant="footer" />
 
-      {/* Human Review Modal (Read-Only) */}
       {showReview && interruptData && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 print:hidden">
           <div className="bg-bg-secondary border-border w-full max-w-lg rounded-xl border p-6">
             <h3 className="text-accent-primary mb-4 text-lg font-semibold">
-              Pending Practitioner Review
+              Pending practitioner review
             </h3>
             <p className="text-text-secondary mb-4 text-sm">
-              To ensure cultural safety and accurate information, this response requires review by a
-              practitioner before it can be provided to you.
+              For cultural safety and accurate information, this response needs a practitioner to
+              review it before you see it.
             </p>
 
             <div className="flex gap-3">
               <button
+                type="button"
                 onClick={checkReviewStatus}
                 disabled={isLoading}
                 className="bg-accent-success flex-1 rounded-lg py-2 text-white hover:opacity-90 disabled:opacity-50"
               >
-                {isLoading ? 'Checking...' : 'Refresh Status'}
+                {isLoading ? 'Checking…' : 'Refresh status'}
               </button>
               <button
+                type="button"
                 onClick={() => setShowReview(false)}
                 className="bg-accent-primary text-accent-ink flex-1 rounded-lg py-2 hover:opacity-90"
               >
@@ -464,13 +464,13 @@ export function AgentTestPanel({
         </div>
       )}
 
-      {/* Summary Modal */}
       {showSummary && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 print:bg-white print:p-0">
           <div className="bg-bg-secondary border-border flex max-h-[90vh] w-full max-w-2xl flex-col rounded-xl border p-6 print:h-auto print:max-h-none print:max-w-full print:border-none print:bg-white print:shadow-none">
             <div className="mb-4 flex items-center justify-between print:hidden">
               <h3 className="text-accent-primary text-xl font-semibold">🩺 Clinical Summary</h3>
               <button
+                type="button"
                 onClick={() => setShowSummary(false)}
                 className="text-text-muted rounded-lg p-2 hover:bg-white/10"
               >
@@ -482,7 +482,7 @@ export function AgentTestPanel({
               {isGeneratingSummary ? (
                 <div className="text-text-muted flex h-40 items-center justify-center">
                   <div className="border-accent-primary mr-3 h-8 w-8 animate-spin rounded-full border-b-2"></div>
-                  Synthesizing conversation...
+                  Synthesizing conversation…
                 </div>
               ) : (
                 <div className="prose prose-sm prose-invert sm:prose-base print:prose max-w-none print:text-gray-800">
@@ -493,9 +493,10 @@ export function AgentTestPanel({
 
             <div className="mt-4 flex justify-end gap-3 print:hidden">
               <button
+                type="button"
                 onClick={() => {
                   if (summaryMarkdown) navigator.clipboard.writeText(summaryMarkdown);
-                  alert('Copied to clipboard!');
+                  alert('Copied to clipboard.');
                 }}
                 disabled={isGeneratingSummary}
                 className="border-border text-text-secondary rounded-lg border px-4 py-2 font-medium hover:bg-white/5"
@@ -503,6 +504,7 @@ export function AgentTestPanel({
                 📋 Copy
               </button>
               <button
+                type="button"
                 onClick={() => window.print()}
                 disabled={isGeneratingSummary}
                 className="bg-accent-primary text-accent-ink rounded-lg px-4 py-2 font-medium transition hover:opacity-90"
