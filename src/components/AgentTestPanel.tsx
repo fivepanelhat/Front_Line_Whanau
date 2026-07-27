@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { saveConversation, loadConversation, MessageInput } from '@/lib/conversation';
 import ReactMarkdown from 'react-markdown';
+import { AiDisclaimer } from '@/components/AiDisclaimer';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -277,7 +278,7 @@ export function AgentTestPanel({
       } else {
         setSummaryMarkdown('Error generating summary: ' + (data.error || 'Unknown error'));
       }
-    } catch (err) {
+    } catch {
       setSummaryMarkdown('Network error while generating summary.');
     } finally {
       setIsGeneratingSummary(false);
@@ -318,6 +319,8 @@ export function AgentTestPanel({
           </button>
         </div>
       </div>
+
+      <AiDisclaimer variant="strip" />
 
       <div className="shadow-glass mb-4 flex-1 overflow-y-auto rounded-3xl border border-white/10 bg-black/15 p-4 backdrop-blur-xl">
         {messages.length === 0 && (
@@ -414,7 +417,7 @@ export function AgentTestPanel({
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-          placeholder="Ask the agent anything..."
+          placeholder="Ask about services, pathways, or support options..."
           className="glass-input text-text-primary flex-1 px-5 py-4 outline-none"
           disabled={isLoading}
         />
@@ -427,6 +430,8 @@ export function AgentTestPanel({
           Send
         </button>
       </div>
+
+      <AiDisclaimer variant="footer" />
 
       {/* Human Review Modal (Read-Only) */}
       {showReview && interruptData && (
