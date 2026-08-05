@@ -10,7 +10,7 @@
   "description": "A sovereign, privacy-first digital platform supporting whānau of preterm twins navigating complex frontline services in Aotearoa New Zealand. Built with client-side encryption (Taonga Vault), Te Tiriti alignment, and LangGraph-powered AI orchestration.",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "next build --webpack",
     "analyze": "cross-env ANALYZE=true next build --webpack",
     "start": "node .next/standalone/server.js",
     "type-check": "tsc --noEmit",
@@ -47,7 +47,6 @@
   "author": "fivepanelhat",
   "license": "UNLICENSED",
   "dependencies": {
-    "@ducanh2912/next-pwa": "^10.2.6",
     "@langchain/community": "^1.1.29",
     "@langchain/core": "^1.2.2",
     "@langchain/google-genai": "^2.2.0",
@@ -56,6 +55,7 @@
     "@langchain/tavily": "^1.2.0",
     "@next/bundle-analyzer": "^16.2.10",
     "@sentry/nextjs": "^10.62.0",
+    "@serwist/next": "^9.5.12",
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.108.2",
     "@tauri-apps/api": "^2.11.1",
@@ -103,6 +103,7 @@
     "postcss": "^8.5.15",
     "prettier": "^3.8.4",
     "prettier-plugin-tailwindcss": "^0.6.12",
+    "serwist": "^9.5.12",
     "tailwindcss": "^4.3.1",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3",

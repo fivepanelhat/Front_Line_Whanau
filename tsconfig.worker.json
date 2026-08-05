@@ -1,0 +1,11 @@
+{
+  "//": "Type-checks the Serwist service worker (src/sw.ts) with WebWorker libs, kept separate from the app tsconfig (which uses DOM libs) to avoid conflicting globals. @serwist/next compiles sw.ts at build; this file exists so the worker is still type-safe.",
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": ["webworker", "esnext"],
+    "types": ["@serwist/next/typings"],
+    "noEmit": true
+  },
+  "include": ["src/sw.ts"],
+  "exclude": ["node_modules"]
+}
