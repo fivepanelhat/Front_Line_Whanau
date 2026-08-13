@@ -2,44 +2,44 @@ const features = [
   {
     icon: '🛤️',
     iconClass: 'feature-icon--pathway',
-    title: 'Personalised Pathways',
+    title: 'Personalised pathways',
     description:
-      'Guided support tailored to your whānau situation - financial assistance, housing, health services, and practical help, all in one place.',
+      'Practical routes through financial help, housing, health services, and everyday support — so you can spend more energy on your pēpi and the milestones that matter.',
   },
   {
     icon: '📝',
     iconClass: 'feature-icon--forms',
-    title: 'Intelligent Form Pre-Fill',
+    title: 'Lighter admin load',
     description:
-      'Smart assistance for WINZ and IRD applications. Pre-fills forms with your consent, reducing stress during an already overwhelming time.',
+      'Assistance with WINZ and IRD-style forms (with your consent). Less time on paperwork, more room for rest, visitors, and small celebrations.',
   },
   {
     icon: '🔐',
     iconClass: 'feature-icon--vault',
     title: 'Taonga Vault',
     description:
-      'Secure, encrypted multi-modal document storage. Your documents are treated as taonga - precious and protected, always under your control.',
+      'A secure place for documents — and for the keepsakes of this chapter: notes, photos you choose to store, and records you control as taonga.',
   },
   {
     icon: '📋',
     iconClass: 'feature-icon--doc',
-    title: 'Client-Side Documentor',
+    title: 'Your private notes',
     description:
-      'A private, independent space to record decisions, interactions, and notes. Everything stays on your device unless you choose otherwise.',
+      'A quiet space to capture decisions, questions for the care team, and the wins worth remembering. Stays on your device unless you choose otherwise.',
   },
   {
     icon: '🗺️',
     iconClass: 'feature-icon--dir',
-    title: 'Services Directory',
+    title: 'Services directory',
     description:
-      'Up-to-date directory of Taranaki and national services - neonatal support, mental health, housing, financial aid, and community resources.',
+      'Find neonatal, mental health, housing, financial, and community supports — including places that help whānau mark progress and stay connected.',
   },
   {
     icon: '🤖',
     iconClass: 'feature-icon--ai',
-    title: 'Sovereign Edge AI',
+    title: 'Gentle AI guide',
     description:
-      'Trauma-informed AI assistance that runs client-side first. Your data stays with you. Transparent consent for any server-side processing.',
+      'Trauma-informed, draft-only assistance to navigate information. Never a doctor. Always transparent. Built to support, not to overshadow your joy or your care team.',
   },
 ];
 
@@ -51,13 +51,14 @@ export function Features() {
         className="liquid-orb liquid-orb--teal pointer-events-none absolute top-0 -right-24 h-64 w-64 opacity-40"
       />
       <div className="relative mb-16 text-center">
-        <p className="section-label">Key Features</p>
+        <p className="section-label">Key features</p>
         <h2 className="section-title">
-          Built for Whānau, <span className="text-gradient">By Design</span>
+          Built for the whole chapter —{' '}
+          <span className="text-gradient">struggle and celebration</span>
         </h2>
         <p className="section-description">
-          Every feature is designed with cultural safety, privacy, and trauma-informed care at its
-          foundation.
+          Cultural safety, privacy, and trauma-informed care — with room for hope, humour, and the
+          moments you will tell for years.
         </p>
       </div>
 

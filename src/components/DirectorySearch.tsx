@@ -52,13 +52,18 @@ export function DirectorySearch({ initialListings }: DirectorySearchProps) {
 
   const isStale = search !== deferredSearch;
 
+  const clearFilters = () => {
+    setSearch('');
+    setRegionFilter('All');
+  };
+
   return (
     <div className="space-y-6 sm:space-y-8">
       <div className="glass-card flex flex-col gap-3 rounded-3xl p-4 sm:gap-4 md:flex-row md:items-center">
         <div className="relative flex-1">
           <input
             type="search"
-            placeholder="Search organisations, services, keywords..."
+            placeholder="Search organisations, services, keywords…"
             className="glass-input text-text-primary placeholder:text-text-muted w-full px-4 py-3"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -84,7 +89,18 @@ export function DirectorySearch({ initialListings }: DirectorySearchProps) {
 
       {filtered.length === 0 ? (
         <div className="glass-card rounded-3xl border-dashed py-12 text-center">
-          <p className="text-text-muted">No services found matching your criteria.</p>
+          <p className="text-text-primary mb-2 font-medium">No matching services</p>
+          <p className="text-text-muted mx-auto mb-5 max-w-sm text-sm leading-relaxed">
+            Try a broader keyword, choose a different region, or clear filters. Listings grow as
+            organisations add themselves.
+          </p>
+          <button
+            type="button"
+            onClick={clearFilters}
+            className="border-accent-primary/30 bg-accent-primary/10 text-accent-primary hover:bg-accent-primary/20 rounded-full border px-4 py-2 text-sm font-semibold transition"
+          >
+            Clear search and region
+          </button>
         </div>
       ) : (
         <div
@@ -140,7 +156,7 @@ export function DirectorySearch({ initialListings }: DirectorySearchProps) {
                       rel="noopener noreferrer"
                       className="text-accent-primary truncate hover:underline"
                     >
-                      Visit Site
+                      Visit site
                     </a>
                   </div>
                 )}
