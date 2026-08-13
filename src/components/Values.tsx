@@ -3,37 +3,37 @@ const values = [
     emoji: '👑',
     title: 'Rangatiratanga',
     description:
-      'Whānau retain authority and final decision-making over their data, care pathways, and consent.',
+      'Whānau retain authority and final decision-making over their data, care pathways, and consent — including how their story is told.',
   },
   {
     emoji: '🛡️',
     title: 'Kaitiakitanga',
     description:
-      'Responsible guardianship of sensitive information as taonga - precious and protected.',
+      'Responsible guardianship of sensitive information as taonga — precious and protected, in hard seasons and in happy ones.',
+  },
+  {
+    emoji: '💛',
+    title: 'Aroha & celebration',
+    description:
+      'We make space for joy: first cuddles, growth charts that turn a corner, siblings meeting pēpi, and discharge day. Hardship is real; so is happiness.',
   },
   {
     emoji: '⚖️',
-    title: 'Equity & Active Protection',
+    title: 'Equity & active protection',
     description:
       'Working to reduce disparities and proactively protect vulnerable whānau throughout their journey.',
   },
   {
-    emoji: '🌏',
-    title: 'Inclusivity',
-    description:
-      'For all families, regardless of ethnicity, culture, religion, family structure, or background.',
-  },
-  {
     emoji: '👨‍👩‍👧‍👦',
-    title: 'Extended Whānau',
+    title: 'Extended whānau',
     description:
-      'Recognising the vital role of grandparents, siblings, and chosen family in the care of preterm babies.',
+      'Recognising grandparents, siblings, and chosen family — the people who bring meals, jokes, and the photos you will treasure.',
   },
   {
     emoji: '🤝',
-    title: 'Practitioner Safety',
+    title: 'Practitioner partnership',
     description:
-      'Balanced protection for practitioners - respecting professional autonomy and reducing administrative burden.',
+      'Respect for professional autonomy and less admin burden — so clinicians and support workers can focus on care and encouragement.',
   },
 ];
 
@@ -46,13 +46,13 @@ export function Values() {
       />
       <div className="max-w-site relative mx-auto px-6">
         <div className="mb-16 text-center">
-          <p className="section-label">Our Values</p>
+          <p className="section-label">Our values</p>
           <h2 className="section-title">
-            Grounded in <span className="text-gradient">Te Tiriti</span>
+            Grounded in <span className="text-gradient">Te Tiriti</span> and lived reality
           </h2>
           <p className="section-description">
-            Aligned with Te Mana Raraunga and the principles of Te Tiriti o Waitangi - Tino
-            Rangatiratanga, Kaitiakitanga, and Equity.
+            Designed in accordance with Te Mana Raraunga and Te Tiriti principles — holding both
+            the weight of the neonatal journey and the right to celebrate progress.
           </p>
         </div>
 

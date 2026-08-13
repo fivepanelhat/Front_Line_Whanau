@@ -2,6 +2,25 @@
 
 All notable changes to this project are documented in this file.
 
+## [0.5.0] - 2026-07-27
+
+### Added — UI/UX tidy-up (Slices 1–3)
+- **`AiDisclaimer`** — persistent non-clinical strip + footer on Support chat and dashboard AI tab (111, Healthline, PlunketLine)
+- **`LoadingSkeleton`** — page / card / chat variants with `role="status"`
+- **`ExpandableMessage`** — progressive disclosure for long AI replies (~420 char preview + “Show more detail”)
+- **`CulturalReviewChecklist`** — practitioner affordance on directory moderation and AI review queues
+
+### Changed
+- **Claim language** — README and badges: “Designed in accordance with” Te Mana Raraunga / Te Tiriti (aligned with Aether Hub scorecard L0–L1); WCAG badge → **target**
+- **Mobile header** — primary **Support** CTA for one-handed access
+- **Error pages** (`error.tsx`, locale error, `global-error.tsx`) — plain NZ English + emergency numbers
+- **Directory empty state** — clear filters CTA and honest “listings grow” copy
+- **AI welcome copy** — inform and draft only; humans decide
+
+### Related
+- Aether Alignment Week scorecard: Front_Line_Whanau **L0–L1** (external strong sovereignty claims blocked until MVS runtime evidence)
+- PRs #49 (Slice 1), #50 (Slice 2), #51 (Slice 3)
+
 ## [0.4.0] - 2026-07-01
 
 ### Added

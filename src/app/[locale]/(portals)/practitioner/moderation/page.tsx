@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { CulturalReviewChecklist } from '@/components/CulturalReviewChecklist';
+import { LoadingSkeleton } from '@/components/LoadingSkeleton';
 
 type DirectoryListing = {
   id: string;
@@ -33,9 +35,9 @@ export default function ModerationDashboard() {
 
       if (error) throw error;
       setListings(data || []);
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      setError('Failed to load listings or you do not have permission.');
+      setError('Could not load listings, or you do not have permission.');
     } finally {
       setIsLoading(false);
     }
@@ -49,17 +51,15 @@ export default function ModerationDashboard() {
         body: JSON.stringify({ id }),
       });
 
-      if (!res.ok) throw new Error('Failed to approve');
+      if (!res.ok) throw new Error('Could not approve this listing');
 
-      // Remove from list
       setListings((prev) => prev.filter((l) => l.id !== id));
-    } catch (err: any) {
-      alert(err.message);
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : 'Approval failed');
     }
   };
 
-  if (isLoading)
-    return <div className="text-text-secondary p-8 text-center">Loading pending approvals...</div>;
+  if (isLoading) return <LoadingSkeleton label="Loading pending approvals…" variant="page" />;
   if (error) return <div className="p-8 text-center text-red-400">{error}</div>;
 
   return (
@@ -71,9 +71,11 @@ export default function ModerationDashboard() {
         </p>
       </div>
 
+      <CulturalReviewChecklist />
+
       {listings.length === 0 ? (
         <div className="bg-bg-secondary border-border rounded-xl border p-8 text-center sm:p-12">
-          <p className="text-text-muted">No pending listings to review. You're all caught up!</p>
+          <p className="text-text-muted">No pending listings to review. You are all caught up.</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -103,10 +105,11 @@ export default function ModerationDashboard() {
                 </p>
               </div>
               <button
+                type="button"
                 onClick={() => handleApprove(listing.id)}
                 className="bg-accent-success w-full shrink-0 rounded-lg px-6 py-2 font-medium text-white transition hover:opacity-90 md:w-auto"
               >
-                Approve Listing
+                Approve listing
               </button>
             </div>
           ))}

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocale } from 'next-intl';
 import { useConsent } from '@/hooks/useConsent';
 import { ConsentScope } from '@/lib/consent';
+import { AiDisclaimer } from '@/components/AiDisclaimer';
 import { cleanAsterisks, type DashboardTab } from './types';
 
 type ChatMessage = {
@@ -17,7 +18,7 @@ type ChatMessage = {
 const WELCOME: ChatMessage = {
   sender: 'agent',
   agent: 'aether-summit',
-  text: `Kia ora! Welcome to your private, sovereign support hub dashboard. 💛\n\nI can help you look up NZ health and financial services, design pathways, and draft WINZ or tenancy templates. All interactions are protected under NZ Privacy policies.`,
+  text: `Kia ora! Welcome to your private, sovereign support hub dashboard.\n\nI can help you look up NZ health and financial services, design pathways, and draft WINZ or tenancy templates. I inform and draft only — you and your advisors decide.`,
   suggestedActions: [
     { label: 'Explore Financial Support', type: 'info', target: 'preterm baby payment' },
     { label: 'Get Housing Help', type: 'info', target: 'healthy homes' },
@@ -96,6 +97,8 @@ export function AiAssistantTab({ onNavigateTab }: { onNavigateTab: (tab: Dashboa
 
   return (
     <div className="mx-auto flex h-full max-w-3xl flex-col">
+      <AiDisclaimer variant="strip" />
+
       <div className="flex-1 space-y-4 overflow-y-auto pr-2 pb-6">
         {chatMessages.map((msg, i) => (
           <div
@@ -173,8 +176,8 @@ export function AiAssistantTab({ onNavigateTab }: { onNavigateTab: (tab: Dashboa
       {(!aiProcessGranted || !aiExecuteGranted) && (
         <div className="border-accent-warm/20 bg-accent-warm/5 mb-4 flex items-center justify-between gap-4 rounded-xl border p-4">
           <div className="text-text-secondary text-xs">
-            💡 Informed Consent Notice: Some AI pathways or document generation capabilities require
-            active consent scopes for local processing.
+            Informed consent: some AI pathways or document generation require active consent scopes
+            for processing.
           </div>
           <button
             type="button"
@@ -211,13 +214,7 @@ export function AiAssistantTab({ onNavigateTab }: { onNavigateTab: (tab: Dashboa
             Send
           </button>
         </form>
-        <p className="text-text-muted/80 mt-3 text-center text-[11px]">
-          <span className="text-accent-warm font-semibold">Disclaimer:</span> Whilst our AI is a
-          trained guidance tool that navigates this space to tautoko whanau, remember to practice
-          discernment and due diligence. It is{' '}
-          <strong>not a registered medical, financial or cultural advisor</strong>. Always consult a
-          registered practitioner for professional advice.
-        </p>
+        <AiDisclaimer variant="footer" />
       </div>
     </div>
   );

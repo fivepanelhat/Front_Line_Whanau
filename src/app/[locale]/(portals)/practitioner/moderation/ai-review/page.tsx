@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { CulturalReviewChecklist } from '@/components/CulturalReviewChecklist';
+import { LoadingSkeleton } from '@/components/LoadingSkeleton';
 
 interface AIReview {
   id: string;
@@ -60,12 +62,17 @@ export default function AIReviewQueuePage() {
 
   return (
     <div className="mx-auto max-w-5xl p-4 sm:p-8">
-      <h1 className="text-text-primary mb-6 text-2xl font-bold sm:mb-8 sm:text-3xl">
+      <h1 className="text-text-primary mb-2 text-2xl font-bold sm:text-3xl">
         AI Response Review Queue
       </h1>
+      <p className="text-text-secondary mb-6 text-sm">
+        HITL gate — agents draft; you approve, edit, or reject before whānau see the reply.
+      </p>
+
+      <CulturalReviewChecklist />
 
       {isLoading ? (
-        <div className="text-text-muted">Loading pending reviews...</div>
+        <LoadingSkeleton label="Loading pending reviews…" variant="page" />
       ) : reviews.length === 0 ? (
         <div className="bg-bg-secondary border-border text-text-muted rounded-xl border p-8 text-center sm:p-12">
           No agent responses pending review.
@@ -94,11 +101,11 @@ export default function AIReviewQueuePage() {
               {editingId === review.id ? (
                 <div className="mb-4">
                   <div className="bg-bg-primary text-text-secondary border-border mb-4 rounded-lg border-l-4 p-3 font-serif text-sm italic sm:p-4">
-                    <strong className="text-text-primary">User Asked:</strong>{' '}
+                    <strong className="text-text-primary">User asked:</strong>{' '}
                     {review.query || 'No query recorded'}
                   </div>
                   <label className="text-text-secondary mb-2 block text-sm font-medium">
-                    Edit Proposed Response:
+                    Edit proposed response
                   </label>
                   <textarea
                     className="border-border bg-bg-primary text-text-primary focus:ring-accent-primary min-h-[150px] w-full rounded-lg border p-3 font-serif focus:ring-2"
@@ -107,12 +114,14 @@ export default function AIReviewQueuePage() {
                   />
                   <div className="mt-2 flex flex-wrap gap-2">
                     <button
+                      type="button"
                       onClick={() => handleReview(review, true, editedResponse)}
                       className="bg-accent-success rounded-lg px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
                     >
-                      Approve Edited
+                      Approve edited
                     </button>
                     <button
+                      type="button"
                       onClick={() => setEditingId(null)}
                       className="text-text-secondary rounded-lg bg-white/10 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/15"
                     >
@@ -123,22 +132,24 @@ export default function AIReviewQueuePage() {
               ) : (
                 <>
                   <div className="bg-bg-primary text-text-secondary border-border mb-4 rounded-lg border-l-4 p-3 font-serif text-sm italic sm:p-4">
-                    <strong className="text-text-primary">User Asked:</strong>{' '}
+                    <strong className="text-text-primary">User asked:</strong>{' '}
                     {review.query || 'No query recorded'}
                   </div>
                   <div className="bg-bg-primary text-text-secondary border-border mb-4 rounded-lg border p-3 font-serif whitespace-pre-wrap sm:p-4">
-                    <strong className="text-text-primary">Proposed AI Response:</strong>
+                    <strong className="text-text-primary">Proposed AI response:</strong>
                     <br />
                     {review.proposed_response}
                   </div>
                   <div className="border-border flex flex-wrap gap-2 border-t pt-4 sm:gap-3">
                     <button
+                      type="button"
                       onClick={() => handleReview(review, true)}
                       className="bg-accent-success rounded-lg px-4 py-2 font-medium text-white transition-opacity hover:opacity-90"
                     >
                       Approve
                     </button>
                     <button
+                      type="button"
                       onClick={() => {
                         setEditingId(review.id);
                         setEditedResponse(review.proposed_response);
@@ -148,6 +159,7 @@ export default function AIReviewQueuePage() {
                       Edit
                     </button>
                     <button
+                      type="button"
                       onClick={() => handleReview(review, false)}
                       className="rounded-lg bg-red-500/15 px-4 py-2 font-medium text-red-400 transition-colors hover:bg-red-500/25"
                     >
